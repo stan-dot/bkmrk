@@ -3,18 +3,21 @@
   "description": "Build an Extension",
   "version": "1.0",
   "manifest_version": 3,
-  "options_page":"options.html",
+  "options_page": "options.html",
   "background": {
     "service_worker": "background.js"
   },
   "permissions": [
     "storage",
-    "activeTab", 
+    "activeTab",
     "scripting"
   ],
-  "short_name":"bkmrk",
-  "default_locale":"en",
-  "author":"stan-dot",
+  "chrome_url_overrides": {
+    "PAGE_TO_OVERRIDE": "myPage.html"
+  },
+  "short_name": "bkmrk",
+  "default_locale": "en",
+  "author": "stan-dot",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

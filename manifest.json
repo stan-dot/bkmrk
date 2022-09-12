@@ -12,6 +12,9 @@
     "activeTab", 
     "scripting"
   ],
+  "short_name":"bkmrk",
+  "default_locale":"en",
+  "author":"stan-dot",
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

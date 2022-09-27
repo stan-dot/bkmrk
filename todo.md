@@ -41,3 +41,6 @@ https://developer.chrome.com/docs/extensions/mv3/messaging/#external-webpage
 - [ ] automatic grouping of bookmarks?
 - [ ] automatic cutting of tracing links ( need to read more about this one)
 - [ ] maybe some sort of similarity view, like Obsidian visualization algorithm...
+
+
+# bin from manifest

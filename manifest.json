@@ -1,7 +1,7 @@
 {
-  "name": "Getting started exmample",
-  "description": "Build an Extension",
-  "version": "1.0",
+  "name": "Bocasta Bookmark Manager",
+  "description": "A better and faster version",
+  "version": "0.1",
   "manifest_version": 3,
   "options_page": "options.html",
   "background": {

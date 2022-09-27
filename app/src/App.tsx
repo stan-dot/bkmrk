@@ -1,26 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { LinkPreviewer } from './components/LinkPreviewer';
+import logo from './logo.svg';
+import "./styles.css";
 
-function App() {
+export default function App() {
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <LinkPreviewer
+        link="https://hackernoon.com/"
+      >
+        IT news website: hackernoon
+      </LinkPreviewer>
+      <LinkPreviewer
+        link="https://dev.to"
+      >
+      another IT news website: dev.to
+      </LinkPreviewer>
     </div>
   );
 }
-
-export default App;

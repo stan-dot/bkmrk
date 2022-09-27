@@ -1,0 +1,19 @@
+  /* <style css-build="shadow"> */
+  html {
+  --card-max-width:960px;--card-padding-side:32px;--folder-icon-color:#757575;--folder-inactive-color:#5a5a5a;--highlight-color:var(--third-party-blue-50);--interactive-color:var(--third-party-blue-500);--iron-icon-height:20px;--iron-icon-width:20px;--min-sidebar-width:256px;--splitter-width:15px
+}
+
+@media (prefers-color-scheme:dark) {
+html {
+  --folder-icon-color:var(--third-party-grey-500);--folder-inactive-color:var(--third-party-grey-500);--highlight-color:var(--third-party-blue-300);--interactive-color:var(--third-party-blue-300)
+}
+
+}
+body {
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+  font-size: 81.25%;
+}
+
+button {
+  font-family: Roboto, 'Segoe UI', Tahoma, sans-serif;
+}

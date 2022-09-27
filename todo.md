@@ -44,3 +44,7 @@ https://developer.chrome.com/docs/extensions/mv3/messaging/#external-webpage
 
 
 # bin from manifest
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "start_url": ".",

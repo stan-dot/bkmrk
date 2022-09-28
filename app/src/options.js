@@ -9,12 +9,12 @@ function handleButtonClick(event) {
   }
   const color = event.target.dataset.color;
   event.target.classList.add(selectedClassName);
-  chrome.storage.sync.set({ color });
+  window.chrome.storage.sync.set({ color });
 }
 
 
 function constructOptions(buttonColors) {
-  chrome.storage.sync.get('color', (data) => {
+  window.chrome.storage.sync.get('color', (data) => {
     const currentColor = data.color;
     for (const buttonColor of buttonColors) {
       const button = document.createElement('button');

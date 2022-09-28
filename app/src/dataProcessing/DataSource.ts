@@ -1,2 +1,5 @@
+import { Bookmark } from "../types/Bookmark";
 
-export { };
+export function sort(a: Bookmark[]): Bookmark[]{
+  return a;
+}

@@ -15,7 +15,6 @@ export default function App() {
       <p>search - is in the table</p>
       <p>3 dots for manipulation</p>
       <p>sorting, keywords - need to do in the data source</p>
-      <p> here there'll be a table</p>
       <BookmarkTable />
     </div>
   );

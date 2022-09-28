@@ -2,6 +2,7 @@
   "name": "testbed 2",
   "description": "here before moving on from the html version",
   "version": "1.0",
+  "options_page": "index.html",
   "manifest_version": 3,
   "icons": {
     "16": "logo192.png",

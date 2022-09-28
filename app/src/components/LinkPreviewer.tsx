@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 import { ReactNode, useEffect, useState } from "react";
 import { CardData } from "../types/CardProps";
 import { Card } from "./Card";
@@ -24,8 +24,16 @@ export function LinkPreviewer(
     async function logPreviewData() {
       // rickroll for testing
       const str = 'https://www.youtube.com/watch?v=sXwaRjU7Tj0';
-      const config = { params: { "foo": "bar" } };
-      axios.head(str, config).then(response => console.info("headers:", response.headers))
+      const config: AxiosRequestConfig = {
+        params: { "foo": "bar" },
+      };
+      axios.head(str, config).then(response => {
+        console.info("headers:", response.headers)
+        setIsLoaded(true);
+        // todo here load the response headers into the card type, change the type
+      }).catch(e => {
+        console.error(e);
+      });
     }
     return () => { };
   }, [isShown]);

@@ -56,6 +56,13 @@ https://blog.logrocket.com/web-scraping-rust/#be-good-citizen-writing-web-scrape
 manual requesting
 https://stackoverflow.com/questions/44763985/fetch-only-headers-of-a-get-request-in-node
 
+
+## termination of the link preview
+https://stackoverflow.com/questions/50949594/axios-having-cors-issue
+
+this is about security and CORS would be persistent.
+could theoretically do this, with some microbackend and 
+
 # bin from manifest
   "display": "standalone",
   "theme_color": "#000000",

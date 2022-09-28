@@ -1,7 +1,7 @@
 import './App.css';
 import { LinkPreviewer } from './components/LinkPreviewer';
 import logo from './logo.svg';
-import "./styles.css";
+import "./index.css";
 
 export default function App() {
   return (

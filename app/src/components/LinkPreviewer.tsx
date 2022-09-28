@@ -1,7 +1,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { CardData } from "../types/CardProps";
 import { Card } from "./Card";
-import linkPreviewGenerator from "link-preview-generator";
+// import linkPreviewGenerator from "link-preview-generator";
 
 const DEFAULT_CARD_DATA: CardData = {
   image: undefined,
@@ -24,10 +24,10 @@ export function LinkPreviewer(
     async function logPreviewData() {
       // rickroll
       const str = 'https://www.youtube.com/watch?v=sXwaRjU7Tj0';
-      const previewData = await linkPreviewGenerator(
-        str,
-      );
-      console.log(previewData);
+      // const previewData = await linkPreviewGenerator(
+      //   str,
+      // );
+      // console.log(previewData);
     }
     return () => { };
   }, [isShown]);

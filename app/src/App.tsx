@@ -1,7 +1,6 @@
 import './App.css';
-import { LinkPreviewer } from './components/LinkPreviewer';
-import logo from './logo.svg';
 import "./index.css";
+import logo from './logo.svg';
 
 export default function App() {
   return (
@@ -9,16 +8,8 @@ export default function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
       </header>
-      <LinkPreviewer
-        link="https://hackernoon.com/"
-      >
-        IT news website: hackernoon
-      </LinkPreviewer>
-      <LinkPreviewer
-        link="https://dev.to"
-      >
-      another IT news website: dev.to
-      </LinkPreviewer>
+
+      <p> here there'll be a table</p>
     </div>
   );
 }

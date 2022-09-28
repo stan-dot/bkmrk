@@ -1,8 +1,11 @@
 
 ### basic features
-- [ ] path available in the table
+- [ ] display some table
+- [ ] load bookmarks
+- [ ] have a tree to navigate on the left
+- [ ] path available above the table, copiable
 - [ ] can copy the path anytime
-- [ ] alphabetic sorting, or by date, or tags(?). these could be as keywords inside the title tbh
+- [ ] sorting A-Z, by date, or tags(?). these could be as keywords inside the title tbh
 
 
 ### advanced features

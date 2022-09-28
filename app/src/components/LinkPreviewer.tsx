@@ -1,7 +1,7 @@
+import axios from "axios";
 import { ReactNode, useEffect, useState } from "react";
 import { CardData } from "../types/CardProps";
 import { Card } from "./Card";
-// import linkPreviewGenerator from "link-preview-generator";
 
 const DEFAULT_CARD_DATA: CardData = {
   image: undefined,
@@ -22,21 +22,17 @@ export function LinkPreviewer(
     // that is async
     logPreviewData();
     async function logPreviewData() {
-      // rickroll
+      // rickroll for testing
       const str = 'https://www.youtube.com/watch?v=sXwaRjU7Tj0';
-      // const previewData = await linkPreviewGenerator(
-      //   str,
-      // );
-      // console.log(previewData);
+      const config = { params: { "foo": "bar" } };
+      axios.head(str, config).then(response => console.info("headers:", response.headers))
     }
     return () => { };
   }, [isShown]);
   useEffect(() => {
-    
+
     // todo here change the cardData
-    return () => {
-      
-    }
+    return () => { }
   }, [isLoaded])
 
   return (

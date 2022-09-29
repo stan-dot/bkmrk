@@ -11,6 +11,7 @@ import logo from './logo.svg';
 // serviceWorkerRegistration.unregister();
 
 export default function App() {
+  console.log('starting the app');
   return (
     <div className="App">
       {/* <header className="App-header">

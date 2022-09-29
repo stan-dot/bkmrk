@@ -1,7 +1,6 @@
 import { useState } from "react";
 import '../button.css';
-
-const presetButtonColors = ['#3aa757', '#e8453c', '#f9bb2d', '#4688f1'];
+import { presetButtonColors } from "./presetButtonColors";
 
 export function OptionsField(): JSX.Element {
   const [currentColorNumber, setCurrentColorNumber] = useState(0);
@@ -12,6 +11,7 @@ export function OptionsField(): JSX.Element {
 
   chrome.storage.sync.get('colorNumber', data => setCurrentColorNumber(data.colorNumber));
   const handleClick = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>, colorNumber: number) => {
+    console.log('click registered at diff colors:', event, ' number: ', colorNumber);
     if (colorNumber !== currentColorNumber) {
       setCurrentColorNumber(colorNumber);
       chrome.storage.sync.set({ colorNumber });

@@ -22,7 +22,7 @@
   },
   "include": [
     "src"
-, "build/background.js"  ],
+  ],
   "exclude": [
     "background"
   ]

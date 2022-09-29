@@ -6,8 +6,8 @@ import { getData } from "../dataProcessing/getData";
 
 
 export function BookmarkTable(props: {}): JSX.Element {
-  const numRows = 2;
+  const numRows = 4;
   return <>
-    <DataEditor getCellContent={getData} columns={columns} rows={numRows} />
+    <DataEditor  getCellContent={getData} columns={columns} rows={numRows} />
   </>
 }

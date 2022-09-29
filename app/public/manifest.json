@@ -7,6 +7,7 @@
   "permissions": [
     "storage",
     "activeTab",
+    "bookmarks",
     "scripting"
   ],
   "chrome_url_overrides": {

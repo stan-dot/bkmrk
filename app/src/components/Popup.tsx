@@ -2,14 +2,15 @@ import { useState } from "react";
 import { presetButtonColors } from "./presetButtonColors";
 
 function setPageBackgroundColor(): any {
+  console.log("trying to get the color");
   chrome.storage.sync.get('color', ({ color }) => {
+    console.log(color);
     document.body.style.backgroundColor = color;
   })
 }
 
 export function PopupField(): JSX.Element {
-  const defaultColor: string = presetButtonColors[0];
-  const [buttonColor, setButtonColor] = useState(defaultColor);
+  const [buttonColor, setButtonColor] = useState(presetButtonColors[0]);
 
   const handleButtonClick = async () => {
     console.log('handling button click');

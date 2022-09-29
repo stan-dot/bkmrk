@@ -4,6 +4,7 @@ type Person = {
   firstName: string;
   lastName: string;
 };
+
 function getPersonData(row: number): Person {
   const mockPerson: Person = {
     firstName: "John",
@@ -11,6 +12,7 @@ function getPersonData(row: number): Person {
   };
   return mockPerson;
 }
+
 // If fetching data is slow you can use the DataEditor ref to send updates for cells
 // once data is loaded.
 export function getData([col, row]: Item): GridCell {

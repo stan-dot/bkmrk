@@ -136,11 +136,10 @@ html {
 }
 
 @media (forced-colors: active) {
-html {
-  --cr-focus-outline-hcm: 2px solid transparent;
-      --cr-border-hcm: 2px solid transparent;
-}
-
+  html {
+    --cr-focus-outline-hcm: 2px solid transparent;
+        --cr-border-hcm: 2px solid transparent;
+  }
 }
 
 html {
@@ -188,7 +187,6 @@ html {
 
     --cr-container-shadow-max-opacity: 1;
 
-    
     --cr-card-border-radius: 8px;
     --cr-disabled-opacity: .38;
     --cr-form-field-bottom-spacing: 16px;

@@ -1,4 +1,6 @@
 import './App.css';
+import { OptionsField } from './components/options';
+import { PopupField } from './components/popup';
 import { BookmarkTable } from './components/Table';
 import "./index.css";
 import logo from './logo.svg';
@@ -16,6 +18,8 @@ export default function App() {
       <p>3 dots for manipulation</p>
       <p>sorting, keywords - need to do in the data source</p>
       <BookmarkTable />
+      <OptionsField />
+      <PopupField/>
     </div>
   );
 }

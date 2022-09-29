@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 
-function setPageBackgroundColor(): chrome.scripting.InjectionResult<void> {
+function setPageBackgroundColor(): any {
   chrome.storage.sync.get('color', ({ color }) => {
     document.body.style.backgroundColor = color;
   })
@@ -16,7 +16,7 @@ export function PopupField(): JSX.Element {
     // todo here tab might not exist
     if (tab) {
       const target: chrome.scripting.InjectionTarget = { tabId: tab.id! };
-      const script: chrome.scripting.ScriptInjection<any, chrome.scripting.InjectionResult<void>> = {
+      const script: chrome.scripting.ScriptInjection<any, any> = {
         target: target,
         func: setPageBackgroundColor,
       };

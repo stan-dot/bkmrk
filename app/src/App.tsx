@@ -18,8 +18,8 @@ export default function App() {
       <p>3 dots for manipulation</p>
       <p>sorting, keywords - need to do in the data source</p>
       <BookmarkTable />
-      <OptionsField />
-      <PopupField/>
+      {/* <OptionsField /> */}
+      {/* <PopupField/> */}
     </div>
   );
 }

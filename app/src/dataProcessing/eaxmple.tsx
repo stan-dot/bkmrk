@@ -1,32 +1,41 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+import { useState } from "react";
 
-// Search the bookmarks when entering the search keyword.
-$(function() {
-  $('#search').change(function() {
-     $('#bookmarks').empty();
-     dumpBookmarks($('#search').val());
-  });
-});
-// Traverse the bookmark tree, and print the folder and nodes.
-function dumpBookmarks(query) {
-  var bookmarkTreeNodes = chrome.bookmarks.getTree(
-    function(bookmarkTreeNodes) {
-      $('#bookmarks').append(dumpTreeNodes(bookmarkTreeNodes, query));
-    });
-}
+export function TreeDisplay(): JSX.Element {
+  const [searchTerm, setSearchTerm] = useState('search');
+  // todo the default is not empty
+  const [bookmarksList, setBookmarksList] = useState([] as chrome.bookmarks.BookmarkTreeNode[])
 
-function dumpTreeNodes(bookmarkNodes, query) {
-  var list = $('<ul>');
-  var i;
-  for (i = 0; i < bookmarkNodes.length; i++) {
-    list.append(dumpNode(bookmarkNodes[i], query));
+  const handleSearch = () => {
+    setBookmarksList([]);
+
   }
-  return list;
+
+  // Traverse the bookmark tree, and print the folder and nodes.
+  // load these once content is loaded
+  const tree: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome.bookmarks.getTree();
+
+  return <div style={{ width: 400 }}>
+    <div>Search Bookmarks:
+      <input id="search" onChange={v => setSearchTerm(v.target.value)} />
+      {searchTerm}
+    </div>
+    <div id="bookmarks"></div>
+    <div id="editdialog"></div>
+    <div id="deletedialog"></div>
+    <div id="adddialog"></div>
+    <div id="test-frame"></div>
+    <script src="popup.js"></script>
+  </div>
+
+
 }
 
-function dumpNode(bookmarkNode, query) {
+
+function dumpTreeNodes(nodes: chrome.bookmarks.BookmarkTreeNode[], query: any): chrome.bookmarks.BookmarkTreeNode[] {
+  return nodes.map(node => dumpNode(node, query));
+}
+
+function dumpNode(bookmarkNode: chrome.bookmarks.BookmarkTreeNode, query: string) {
   if (bookmarkNode.title) {
     if (query && !bookmarkNode.children) {
       if (String(bookmarkNode.title).indexOf(query) == -1) {
@@ -40,8 +49,8 @@ function dumpNode(bookmarkNode, query) {
      * When clicking on a bookmark in the extension, a new tab is fired with
      * the bookmark url.
      */
-    anchor.click(function() {
-      chrome.tabs.create({url: bookmarkNode.url});
+    anchor.click(function () {
+      chrome.tabs.create({ url: bookmarkNode.url });
     });
     var span = $('<span>');
     var options = bookmarkNode.children ?
@@ -52,69 +61,15 @@ function dumpNode(bookmarkNode, query) {
       '<input id="title"></td></tr><tr><td>URL</td><td><input id="url">' +
       '</td></tr></table>') : $('<input>');
     // Show add and edit links when hover over.
-        span.hover(function() {
-        span.append(options);
-        $('#deletelink').click(function() {
-          $('#deletedialog').empty().dialog({
-                 autoOpen: false,
-                 title: 'Confirm Deletion',
-                 resizable: false,
-                 height: 140,
-                 modal: true,
-                 overlay: {
-                   backgroundColor: '#000',
-                   opacity: 0.5
-                 },
-                 buttons: {
-                   'Yes, Delete It!': function() {
-                      chrome.bookmarks.remove(String(bookmarkNode.id));
-                      span.parent().remove();
-                      $(this).dialog('destroy');
-                    },
-                    Cancel: function() {
-                      $(this).dialog('destroy');
-                    }
-                 }
-               }).dialog('open');
-         });
-        $('#addlink').click(function() {
-          $('#adddialog').empty().append(edit).dialog({autoOpen: false,
-            closeOnEscape: true, title: 'Add New Bookmark', modal: true,
-            buttons: {
-            'Add' : function() {
-               chrome.bookmarks.create({parentId: bookmarkNode.id,
-                 title: $('#title').val(), url: $('#url').val()});
-               $('#bookmarks').empty();
-               $(this).dialog('destroy');
-               window.dumpBookmarks();
-             },
-            'Cancel': function() {
-               $(this).dialog('destroy');
-            }
-          }}).dialog('open');
-        });
-        $('#editlink').click(function() {
-         edit.val(anchor.text());
-         $('#editdialog').empty().append(edit).dialog({autoOpen: false,
-           closeOnEscape: true, title: 'Edit Title', modal: true,
-           show: 'slide', buttons: {
-              'Save': function() {
-                 chrome.bookmarks.update(String(bookmarkNode.id), {
-                   title: edit.val()
-                 });
-                 anchor.text(edit.val());
-                 options.show();
-                 $(this).dialog('destroy');
-              },
-             'Cancel': function() {
-                 $(this).dialog('destroy');
-             }
-         }}).dialog('open');
-        });
-        options.fadeIn();
-      },
+    span.hover(function () {
+      span.append(options);
+      deletePopup(bookmarkNode, span);
+      addPopup(edit, bookmarkNode);
+      editPopup(edit, anchor, bookmarkNode, options);
+      options.fadeIn();
+    },
       // unhover
-      function() {
+      function () {
         options.remove();
       }).append(anchor);
   }
@@ -124,9 +79,75 @@ function dumpNode(bookmarkNode, query) {
   }
   return li;
 }
+function editPopup(edit: any, anchor: any, bookmarkNode: chrome.bookmarks.BookmarkTreeNode, options: any) {
+  $('#editlink').click(function () {
+    edit.val(anchor.text());
+    $('#editdialog').empty().append(edit).dialog({
+      autoOpen: false,
+      closeOnEscape: true, title: 'Edit Title', modal: true,
+      show: 'slide', buttons: {
+        'Save': function () {
+          chrome.bookmarks.update(String(bookmarkNode.id), {
+            title: edit.val()
+          });
+          anchor.text(edit.val());
+          options.show();
+          $(this).dialog('destroy');
+        },
+        'Cancel': function () {
+          $(this).dialog('destroy');
+        }
+      }
+    }).dialog('open');
+  });
+}
 
-document.addEventListener('DOMContentLoaded', function () {
-  dumpBookmarks();
-});
+function addPopup(edit: any, bookmarkNode: chrome.bookmarks.BookmarkTreeNode) {
+  $('#addlink').click(function () {
+    $('#adddialog').empty().append(edit).dialog({
+      autoOpen: false,
+      closeOnEscape: true, title: 'Add New Bookmark', modal: true,
+      buttons: {
+        'Add': function () {
+          chrome.bookmarks.create({
+            parentId: bookmarkNode.id,
+            title: $('#title').val(), url: $('#url').val()
+          });
+          $('#bookmarks').empty();
+          $(this).dialog('destroy');
+          window.dumpBookmarks();
+        },
+        'Cancel': function () {
+          $(this).dialog('destroy');
+        }
+      }
+    }).dialog('open');
+  });
+}
 
+function deletePopup(bookmarkNode: chrome.bookmarks.BookmarkTreeNode, span: any) {
+  $('#deletelink').click(function () {
+    $('#deletedialog').empty().dialog({
+      autoOpen: false,
+      title: 'Confirm Deletion',
+      resizable: false,
+      height: 140,
+      modal: true,
+      overlay: {
+        backgroundColor: '#000',
+        opacity: 0.5
+      },
+      buttons: {
+        'Yes, Delete It!': function () {
+          chrome.bookmarks.remove(String(bookmarkNode.id));
+          span.parent().remove();
+          $(this).dialog('destroy');
+        },
+        Cancel: function () {
+          $(this).dialog('destroy');
+        }
+      }
+    }).dialog('open');
+  });
+}
 

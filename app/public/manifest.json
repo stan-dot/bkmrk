@@ -11,7 +11,7 @@
     "scripting"
   ],
   "chrome_url_overrides": {
-    "PAGE_TO_OVERRIDE": "myPage.html"
+    "PAGE_TO_OVERRIDE": "bookmarks.html"
   },
   "short_name": "bkmrk",
   "author": "stan-dot",

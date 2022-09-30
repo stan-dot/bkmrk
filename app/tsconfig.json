@@ -22,7 +22,7 @@
   },
   "include": [
     "src"
-  ],
+, "src/types/.ts"  ],
   "exclude": [
     "background"
   ]

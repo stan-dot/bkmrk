@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { deletePopup, addPopup, editPopup } from "./dialogs";
 
 export function TreeDisplay(): JSX.Element {
   const [searchTerm, setSearchTerm] = useState('search');
@@ -9,6 +10,14 @@ export function TreeDisplay(): JSX.Element {
     setBookmarksList([]);
 
   }
+  useEffect(() => {
+    first
+
+    return () => {
+      second
+    }
+  }, [])
+
 
   // Traverse the bookmark tree, and print the folder and nodes.
   // load these once content is loaded
@@ -27,127 +36,68 @@ export function TreeDisplay(): JSX.Element {
     <script src="popup.js"></script>
   </div>
 
-
 }
 
 
-function dumpTreeNodes(nodes: chrome.bookmarks.BookmarkTreeNode[], query: any): chrome.bookmarks.BookmarkTreeNode[] {
+function dumpTreeNodes(nodes: chrome.bookmarks.BookmarkTreeNode[], query: string): chrome.bookmarks.BookmarkTreeNode[] {
   return nodes.map(node => dumpNode(node, query));
 }
 
-function dumpNode(bookmarkNode: chrome.bookmarks.BookmarkTreeNode, query: string) {
-  if (bookmarkNode.title) {
-    if (query && !bookmarkNode.children) {
-      if (String(bookmarkNode.title).indexOf(query) == -1) {
-        return $('<span></span>');
-      }
-    }
-    var anchor = $('<a>');
-    anchor.attr('href', bookmarkNode.url);
-    anchor.text(bookmarkNode.title);
-    /*
-     * When clicking on a bookmark in the extension, a new tab is fired with
-     * the bookmark url.
-     */
-    anchor.click(function () {
-      chrome.tabs.create({ url: bookmarkNode.url });
-    });
-    var span = $('<span>');
-    var options = bookmarkNode.children ?
-      $('<span>[<a href="#" id="addlink">Add</a>]</span>') :
-      $('<span>[<a id="editlink" href="#">Edit</a> <a id="deletelink" ' +
-        'href="#">Delete</a>]</span>');
-    var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
-      '<input id="title"></td></tr><tr><td>URL</td><td><input id="url">' +
-      '</td></tr></table>') : $('<input>');
-    // Show add and edit links when hover over.
-    span.hover(function () {
-      span.append(options);
-      deletePopup(bookmarkNode, span);
-      addPopup(edit, bookmarkNode);
-      editPopup(edit, anchor, bookmarkNode, options);
-      options.fadeIn();
-    },
-      // unhover
-      function () {
-        options.remove();
-      }).append(anchor);
+// https://stackoverflow.com/questions/35491425/double-click-and-click-on-reactjs-component
+// double click
+
+export function LineVisualized(node: chrome.bookmarks.BookmarkTreeNode): JSX.Element {
+  const [showOptions, setshowOptions] = useState(false);
+  // there was a 400 ms delay
+
+  const handleHover = () => {
+    deletePopup(bookmarkNode, span);
+    addPopup(edit, bookmarkNode);
+    editPopup(edit, anchor, bookmarkNode, options);
   }
-  var li = $(bookmarkNode.title ? '<li>' : '<div>').append(span);
+
+  const clickHandler = () => {
+    chrome.tabs.create({ url: node.url });
+  }
+  // if children, add link, not edit link
+  const options = bookmarkNode.children ?
+    $('<span>[<a href="#" id="addlink">Add</a>]</span>') :
+    $('<span>[<a id="editlink" href="#">Edit</a> <a id="deletelink" ' +
+      'href="#">Delete</a>]</span>');
+  // edit if children as table, otherwise just input
+  var edit = bookmarkNode.children ? $('<table><tr><td>Name</td><td>' +
+    '<input id="title"></td></tr><tr><td>URL</td><td><input id="url">' +
+    '</td></tr></table>') : $('<input>');
+  // Show CRUD links when hover over.
+  return <div>
+    <p onTouchMove={e => setshowOptions(true)} onTouchEnd={e => setshowOptions(false)} onContextMenu={handleHover} onClick={clickHandler}>{node.title}</p>
+    {showOptions ?? <p>here options</p>}
+  </div>
+
+}
+
+function dumpNode(bookmarkNode: chrome.bookmarks.BookmarkTreeNode, query: string) {
+  // handles the empty folder case
+  if (query && !bookmarkNode.children) {
+    if (String(bookmarkNode.title).indexOf(query) == -1) {
+      return $('<span></span>');
+    }
+  }
+  var li = '<li>'.append(span);
   if (bookmarkNode.children && bookmarkNode.children.length > 0) {
     li.append(dumpTreeNodes(bookmarkNode.children, query));
   }
   return li;
 }
-function editPopup(edit: any, anchor: any, bookmarkNode: chrome.bookmarks.BookmarkTreeNode, options: any) {
-  $('#editlink').click(function () {
-    edit.val(anchor.text());
-    $('#editdialog').empty().append(edit).dialog({
-      autoOpen: false,
-      closeOnEscape: true, title: 'Edit Title', modal: true,
-      show: 'slide', buttons: {
-        'Save': function () {
-          chrome.bookmarks.update(String(bookmarkNode.id), {
-            title: edit.val()
-          });
-          anchor.text(edit.val());
-          options.show();
-          $(this).dialog('destroy');
-        },
-        'Cancel': function () {
-          $(this).dialog('destroy');
-        }
-      }
-    }).dialog('open');
-  });
+
+
+function renderNoTitle(node: chrome.bookmarks.BookmarkTreeNode, query: string): JSX.Element {
+
+  let li = <div> append span</div>
+  if (node.children > 0) {
+    li.append(dumpTreeNodes(node.children, query));
+  }
+  return li;
 }
 
-function addPopup(edit: any, bookmarkNode: chrome.bookmarks.BookmarkTreeNode) {
-  $('#addlink').click(function () {
-    $('#adddialog').empty().append(edit).dialog({
-      autoOpen: false,
-      closeOnEscape: true, title: 'Add New Bookmark', modal: true,
-      buttons: {
-        'Add': function () {
-          chrome.bookmarks.create({
-            parentId: bookmarkNode.id,
-            title: $('#title').val(), url: $('#url').val()
-          });
-          $('#bookmarks').empty();
-          $(this).dialog('destroy');
-          window.dumpBookmarks();
-        },
-        'Cancel': function () {
-          $(this).dialog('destroy');
-        }
-      }
-    }).dialog('open');
-  });
-}
-
-function deletePopup(bookmarkNode: chrome.bookmarks.BookmarkTreeNode, span: any) {
-  $('#deletelink').click(function () {
-    $('#deletedialog').empty().dialog({
-      autoOpen: false,
-      title: 'Confirm Deletion',
-      resizable: false,
-      height: 140,
-      modal: true,
-      overlay: {
-        backgroundColor: '#000',
-        opacity: 0.5
-      },
-      buttons: {
-        'Yes, Delete It!': function () {
-          chrome.bookmarks.remove(String(bookmarkNode.id));
-          span.parent().remove();
-          $(this).dialog('destroy');
-        },
-        Cancel: function () {
-          $(this).dialog('destroy');
-        }
-      }
-    }).dialog('open');
-  });
-}
 

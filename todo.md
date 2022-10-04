@@ -6,14 +6,16 @@
 - [x] path available above the table, copiable
 - [x] can copy the path anytime
 - [ ] sorting A-Z, by date
-- [ ] tree to navigate on the left
-- [ ] the general layout - should be very similar to the original
-- [ ] reload the rows on path change
-- [ ] hooks for column header context menus - filtering, sorting, advanced search
-- [ ] will be able to use absolute positioning
+- [ ] tree to navigate on the left - needs recursive rendering
+- [ ] general layout - should be very similar to the original; will be able to use absolute positioning
+- [ ] hooks for column header context menus - filtering, sorting
+- [ ] advanced search
+- [ ] show the option to navigate to parent folder of any searched item
+
+## features added in the meantime
+- [ ] the idea of which thins on the tree are open or not is new every time - that must be in some cookies
 - [ ] different styles for icon svgs, and tailwind css
 - [ ] lunr search to display, could be smart & advanced; still can search inside the results, I always do so tbh
-
 
 ### advanced features
 - [ ] keywords only if performance is alright - could in fact have areas inside the title that wouldn't be displayed

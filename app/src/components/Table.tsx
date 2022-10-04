@@ -135,8 +135,8 @@ export function TableLoader(props: {}): JSX.Element {
   };
 
   return <>
-    <Icon />
-    <ManipulationMenu sortCallback={() => console.log('should sort current location')} importCallback={() => console.log('should open the filesystem to look 4 files')} />
+    <p> some svg icon</p>
+    <ManipulationMenu sortCallback={() => console.log('should sort current location')} importCallback={() => console.log('should load the datastructure')} />
     <p>loading status:{loaded}</p>
     <p>sorting, keywords - need to do in the data source</p>
     {
@@ -164,6 +164,7 @@ function DisplayCurrentPath(props: {
     props.setter(props.path.slice(0, index));
   }
 
+  const text: string = props.path.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join('/');
   // creates a '>' linked horizontal list of locations, genealogy of the currrent path
   return <div style={{ 'display': 'flex' }}>
     {props.path.map((node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
@@ -174,31 +175,34 @@ function DisplayCurrentPath(props: {
         {'>'}
       </div>
     })}
+    <button onClick={() => window.navigator.clipboard.writeText(text)}>Copy path</button>
   </div>
 }
 
 
 function traverseBookmarks(bookmarkTreeNodes: chrome.bookmarks.BookmarkTreeNode[]): void {
-  for (var i = 0; i < bookmarkTreeNodes.length; i++) {
-    console.log(bookmarkTreeNodes[i].title, bookmarkTreeNodes[i].url ? bookmarkTreeNodes[i].url : "[Folder]");
-    if (bookmarkTreeNodes[i].children) {
-      traverseBookmarks(bookmarkTreeNodes[i].children!);
+  bookmarkTreeNodes.map((node: chrome.bookmarks.BookmarkTreeNode) => {
+    console.log(node.title, node.url ? node.url : '[Folder]');
+    // todo here execute other necessary actions
+    if (node.children) {
+      traverseBookmarks(node.children);
     }
-
-  }
+  })
 }
 
-function Icon() {
-  return <p>icon</p>;
-}
+
 
 function ManipulationMenu(props: { sortCallback: Function, importCallback: Function }): JSX.Element {
+  enum OpenMenuStates {
+    IMPORT,
+    EXPORT,
+    NEW_FOLDER,
+    NEW_BOOKMARK,
+  }
   const [showMenu, setShowMenu] = useState(false);
-  const [importWindowOpen, setImportWindowOpen] = useState(false);
-  // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
+  const [openVariant, setOpenVariant] = useState(OpenMenuStates.NEW_BOOKMARK);
 
-  // keywords, tags, in the title tbh
-  const ar: chrome.bookmarks.BookmarkCreateArg = {};
+  // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
 
   // todo there should be dialog popups for the new bookmark and new folder
   return <div>
@@ -208,41 +212,202 @@ function ManipulationMenu(props: { sortCallback: Function, importCallback: Funct
         <div>
           <ul>
             <li>sort by name <button onClick={v => props.sortCallback} /></li>
+            <li>sort by date made<button onClick={v => props.sortCallback} /></li>
             <li>add new bookmark <button onClick={v => makeBookmark('someId')} /></li>
             <li>add new folder <button onClick={v => makeFolder('test', 'someid')} /></li>
-            <li>import bookmarks<button onClick={v => setImportWindowOpen(true)}>import</button></li>
+            <li>import bookmarks<button onClick={v => setOpenVariant(OpenMenuStates.IMPORT)}>import</button></li>
             <li>export bookmarks <button onClick={v => exportBookmarks}>export</button></li>
             <li> help center</li>
           </ul>
         </div>
-        : <p>show svg for 3 dots</p>
+        : <div>
+          <p>svg for 3 dots</p>
+          <button onClick={v => setShowMenu(true)}>Open</button>
+        </div>
     }
     {
-      importWindowOpen ?? <BookmarkImportWindow callback={props.importCallback} />
+      openVariant === OpenMenuStates.IMPORT ?? <BookmarkImportWindow callback={props.importCallback} />
     }
 
+    {
+      openVariant === OpenMenuStates.NEW_BOOKMARK ?? <NewBookmarkWindow />
+    }
+    {
+      openVariant === OpenMenuStates.NEW_FOLDER ?? <NewFolderWindow />
+    }
   </div >
-
 }
 
+function NewBookmarkWindow(props: {}): JSX.Element {
+  return <dialog>
+    <p>hi, what's the new bookmark that you need?</p>
+  </dialog>
+}
+
+function NewFolderWindow(props: {}): JSX.Element {
+  return <dialog>
+    <p>hi, what's the new folder that you need?</p>
+  </dialog>
+}
+
+/**
+ * todo use this link
+ * https://codesandbox.io/s/lpjol1opmq
+ * @param props 
+ * @returns 
+ */
 function SideTree(props: { tree: chrome.bookmarks.BookmarkTreeNode[] }): JSX.Element {
   /**
-   * on the context menu
-   * - rename
-   * - delete
-   * - cut
-   * - copy
-   * - paste
-   * - open all (number)
-   * - open all (number) in new window
-   * - open all (number) in Incognito window
+   * for each node there is 1 state variable - open /close
    */
   return <>
     <p>side panel with the tree</p>
     <p>scroll indicator on the side</p>
+    <div>
+      <h3>test one name</h3>
+
+    </div>
   </>
 }
 
+function isAFolder(item: chrome.bookmarks.BookmarkTreeNode): boolean {
+  return !item.url
+}
+function ifHasChildrenFolders(item: chrome.bookmarks.BookmarkTreeNode): boolean {
+  if (!item.children) {
+    return false;
+  }
+  const someThatFills: chrome.bookmarks.BookmarkTreeNode | undefined = item.children.find(v => isAFolder(v));
+  return someThatFills ? true : false;
+}
+
+function getChildrenLinks(item: chrome.bookmarks.BookmarkTreeNode): chrome.bookmarks.BookmarkTreeNode[] {
+  if (!item.children) {
+    return [];
+  }
+  return item.children.filter(v => !isAFolder(v));
+}
+
+/**
+ * this doesn't assume that children are present, but if no children, it shouldn't show as active when only folders
+ * @param parent 
+ * @param newWindow 
+ * @param incognito 
+ */
+async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode, newWindow?: boolean, incognito?: boolean): Promise<void> {
+  const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = parent.children;
+  if (!children) return;
+
+  const standard: boolean = (!newWindow && !incognito);
+  const currentWindow: chrome.windows.Window = await chrome.windows.getCurrent();
+  // todo why is this possibly undefined?
+  let finalId: number = currentWindow.id!;
+  if (!standard) {
+    const createData: chrome.windows.CreateData = { 'incognito': incognito ?? false };
+    const openedNewWindow: chrome.windows.Window = await chrome.windows.create(createData);
+    finalId = openedNewWindow.id!;
+  }
+
+  const propertiesGenerator: (url: string) => chrome.tabs.CreateProperties = (url: string) => {
+    const props: chrome.tabs.CreateProperties = { windowId: finalId, url: url };
+    return props;
+  };
+
+  children.forEach((b: chrome.bookmarks.BookmarkTreeNode) => {
+    if (!isAFolder(b)) {
+      chrome.tabs.create(propertiesGenerator(b.url!));
+    }
+  })
+}
+
+/**
+ * for side displaying FOLDERS ONLY
+ * need to display with some offset to the fight
+ * todo maybe add display children prop
+ * @param props 
+ * @returns 
+ */
+function SideTreeElement(props: { thing: chrome.bookmarks.BookmarkTreeNode }): JSX.Element {
+  const [unrolled, setUnrolled] = useState(false);
+  const [contextMenuOpen, setContextMenuOpen] = useState(false);
+  const hasChildrenFolders: boolean = ifHasChildrenFolders(props.thing);
+  const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(props.thing);
+  const hasChildrenLinks: boolean = childrenLinks.length > 0;
+  const handleClick = () => {
+    console.log('should change the path to this dir');
+    // todo integrate via some callback
+  }
+
+  /**
+   * on the context menu
+   * - rename - edit bookmark fucntion
+   * - delete - delete bookmark - just fetch the api
+   * - cut - need to have the clipboard integrated tbh, but only link changes location
+   * - copy - like cut in many ways
+   * - paste - using the clipboard
+   * - open all (number) - the simplest function
+   * - open all (number) in new window
+   * - open all (number) in Incognito window
+   */
+
+
+
+  const handleContextMenu = () => {
+
+  };
+
+  return <div style={{ 'display': 'flex' }} id={`${props.thing.id}-side-tree-row`}  >
+    {
+      hasChildrenFolders ?? <div id={`${props.thing.id}-arrow`}>
+        {
+          unrolled
+            ?
+            <button onClick={e => setUnrolled(false)}>
+              <p>arrow down svg</p>
+            </button>
+            :
+            <button onClick={e => setUnrolled(true)}>
+              <p>arrow right svg</p>
+            </button>
+        }
+      </div>
+    }
+    <div>
+      <button onClick={e => handleClick} onContextMenu={e => handleContextMenu}>
+        <p>{props.thing.title}</p>
+      </button>
+    </div>
+    {
+      contextMenuOpen
+      ??
+      <div>
+        <div className="group1">
+          <p>rename button</p>
+          <p>delete button</p>
+        </div>
+        <div className="group2">
+          <p>cut button</p>
+          <p>copy buton</p>
+          <p>paste buton</p>
+
+        </div>
+        <div className="group3">
+          <button onClick={e => openAllChildren(props.thing)} disabled={!hasChildrenLinks}>
+            <p>open all {childrenLinks.length}</p>
+          </button>
+          <button onClick={e => openAllChildren(props.thing, true)} disabled={!hasChildrenLinks}>
+            <p>open all {childrenLinks.length} in new window</p>
+          </button>
+          <button onClick={e => openAllChildren(props.thing, true, true)} disabled={!hasChildrenLinks}>
+            <p>open all {childrenLinks.length} in Incognito winow</p>
+          </button>
+
+        </div>
+      </div>
+    }
+  </div>
+
+}
 
 function BookmarkTable(props: { rows: chrome.bookmarks.BookmarkTreeNode[], cellClickHandler: ((cell: Item, event: CellClickedEventArgs) => void) }): JSX.Element {
 

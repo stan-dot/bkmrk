@@ -8,7 +8,8 @@
     "storage",
     "activeTab",
     "bookmarks",
-    "scripting"
+    "scripting",
+    "incognito"
   ],
   "chrome_url_overrides": {
     "PAGE_TO_OVERRIDE": "bookmarks.html"

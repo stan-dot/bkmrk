@@ -3,15 +3,16 @@
 - [x] display some table
 - [x] load bookmarks
 - [x] column grouping https://glideapps.github.io/glide-data-grid/?path=/story/glide-data-grid-docs--column-grouping
-- [ ] path available above the table, copiable
-- [ ] can copy the path anytime
+- [x] path available above the table, copiable
+- [x] can copy the path anytime
 - [ ] sorting A-Z, by date
 - [ ] tree to navigate on the left
-- [ ] todo the general layout - should be very similar to the original
-- [ ] todo reload the rows on path change
+- [ ] the general layout - should be very similar to the original
+- [ ] reload the rows on path change
 - [ ] hooks for column header context menus - filtering, sorting, advanced search
 - [ ] will be able to use absolute positioning
 - [ ] different styles for icon svgs, and tailwind css
+- [ ] lunr search to display, could be smart & advanced; still can search inside the results, I always do so tbh
 
 
 ### advanced features

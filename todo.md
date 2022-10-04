@@ -3,6 +3,7 @@
 - [x] display some table
 - [x] load bookmarks
 - [ ] path available above the table, copiable
+- [ ] column grouping https://glideapps.github.io/glide-data-grid/?path=/story/glide-data-grid-docs--column-grouping
 - [ ] can copy the path anytime
 - [ ] sorting A-Z, by date
 - [ ] tree to navigate on the left

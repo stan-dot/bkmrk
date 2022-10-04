@@ -4,6 +4,7 @@ import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
 import { GridColumn } from "@glideapps/glide-data-grid";
 import { GridCell, GridCellKind, Item } from "@glideapps/glide-data-grid";
+import { makeFolder } from "../dataProcessing/interact";
 
 
 const columns: GridColumn[] = [
@@ -59,6 +60,7 @@ function getData(bookmarksArr: chrome.bookmarks.BookmarkTreeNode[]): ([col, row]
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
+  const [currentPath, setCurrentPath] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
 
   // tbh this doesn't track the current location status
   const treePromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome.bookmarks.getTree();
@@ -66,10 +68,20 @@ export function TableLoader(props: {}): JSX.Element {
     console.log(nodes);
     setLoaded(true);
     setRows(nodes);
+    setCurrentPath([nodes[0]]);
   });
 
+  // todo the general layout - should be very similar to the original
+  // hooks for column header context menus - filtering, sorting, advanced search
   return <>
+
+    <Icon />
+    <SideTree tree={rows} />
+    <ManipulationMenu />
     <p>loading status:{loaded}</p>
+    <p>sorting, keywords - need to do in the data source</p>
+
+
     {
       loaded
         ?
@@ -81,8 +93,26 @@ export function TableLoader(props: {}): JSX.Element {
 }
 
 
+function Icon() {
+  return <p>icon</p>;
+}
+
+function ManipulationMenu() {
+  // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
+  //todo export should be native
+  return <p>3 dots for manipulation</p>;
+}
+
+function SideTree(props: { tree: chrome.bookmarks.BookmarkTreeNode[] }): JSX.Element {
+  return <>
+    <p>side panel with the tree</p>
+    <p>scroll indicator on the side</p>
+  </>
+}
+
+
 function BookmarkTable(props: { rows: chrome.bookmarks.BookmarkTreeNode[] }): JSX.Element {
 
-  return <DataEditor getCellContent={getData(props.rows)} columns={columns} rows={props.rows.length} />
+  return <DataEditor keybindings={{ 'search': true }} showSearch={true} getCellContent={getData(props.rows)} columns={columns} rows={props.rows.length} />
 
 }

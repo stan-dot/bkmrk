@@ -1,14 +1,6 @@
 
-export interface BookmarkCreateArg {
-  /** Optional. Defaults to the Other Bookmarks folder.  */
-  parentId?: string | undefined;
-  index?: number | undefined;
-  title?: string | undefined;
-  url?: string | undefined;
-}
-
 export function makeFolder(parentId:string, title:string) {
-  const args:BookmarkCreateArg = { parentId:parentId, title: title };
+  const args:chrome.bookmarks.BookmarkCreateArg= { parentId:parentId, title: title };
   chrome.bookmarks.create(
     args,
     folderCallback

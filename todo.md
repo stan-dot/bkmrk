@@ -2,8 +2,8 @@
 ### basic features
 - [x] display some table
 - [x] load bookmarks
+- [x] column grouping https://glideapps.github.io/glide-data-grid/?path=/story/glide-data-grid-docs--column-grouping
 - [ ] path available above the table, copiable
-- [ ] column grouping https://glideapps.github.io/glide-data-grid/?path=/story/glide-data-grid-docs--column-grouping
 - [ ] can copy the path anytime
 - [ ] sorting A-Z, by date
 - [ ] tree to navigate on the left
@@ -15,6 +15,7 @@
 
 
 ### advanced features
+- [ ] keywords only if performance is alright - could in fact have areas inside the title that wouldn't be displayed
 - [ ] sorting by tags these could be as keywords inside the title tbh
 - [ ] automatic grouping of bookmarks - clustering by time, topic - with visualizations
 - [ ] commands for shortucts https://developer.chrome.com/docs/extensions/reference/commands/

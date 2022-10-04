@@ -1,7 +1,7 @@
 
 import DataEditor, { LoadingCell } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useState } from "react";
+import React, { useState } from "react";
 import { GridColumn } from "@glideapps/glide-data-grid";
 import { GridCell, GridCellKind, Item } from "@glideapps/glide-data-grid";
 import { makeFolder } from "../dataProcessing/interact";
@@ -62,7 +62,6 @@ export function TableLoader(props: {}): JSX.Element {
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
   const [currentPath, setCurrentPath] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
 
-  // tbh this doesn't track the current location status
   const treePromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome.bookmarks.getTree();
   treePromise.then((nodes: chrome.bookmarks.BookmarkTreeNode[]) => {
     console.log(nodes);
@@ -71,21 +70,19 @@ export function TableLoader(props: {}): JSX.Element {
     setCurrentPath([nodes[0]]);
   });
 
-  // todo the general layout - should be very similar to the original
-  // hooks for column header context menus - filtering, sorting, advanced search
   return <>
-
     <Icon />
-    <SideTree tree={rows} />
     <ManipulationMenu />
     <p>loading status:{loaded}</p>
     <p>sorting, keywords - need to do in the data source</p>
-
-
     {
       loaded
         ?
-        <BookmarkTable rows={rows} />
+        <>
+          <SideTree tree={rows} />
+          <DisplayCurrentPath path={currentPath} setter={setCurrentPath} />
+          <BookmarkTable rows={rows} />
+        </>
         :
         <p>Loading...</p>
     }
@@ -93,14 +90,73 @@ export function TableLoader(props: {}): JSX.Element {
 }
 
 
+function DisplayCurrentPath(props: {
+  path: chrome.bookmarks.BookmarkTreeNode[],
+  setter: React.Dispatch<React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>>
+}): JSX.Element {
+
+  // goes backs, changes the current location, the current pathq
+  const handleClick = (node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
+    props.setter(props.path.slice(0, index));
+  }
+
+  // creates a '>' linked horizontal list of locations, genealogy of the currrent path
+  return <div style={{ 'display': 'flex' }}>
+    {props.path.map((node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
+      return <div>
+        <button onClick={v => handleClick(node, index)}>
+          {node.title}
+        </button>
+        {'>'}
+      </div>
+    })}
+  </div>
+}
+
+
+function traverseBookmarks(bookmarkTreeNodes: chrome.bookmarks.BookmarkTreeNode[]): void {
+  for (var i = 0; i < bookmarkTreeNodes.length; i++) {
+    console.log(bookmarkTreeNodes[i].title, bookmarkTreeNodes[i].url ? bookmarkTreeNodes[i].url : "[Folder]");
+    if (bookmarkTreeNodes[i].children) {
+      traverseBookmarks(bookmarkTreeNodes[i].children!);
+    }
+
+  }
+}
+
 function Icon() {
   return <p>icon</p>;
 }
 
-function ManipulationMenu() {
+function ManipulationMenu(): JSX.Element {
+  const [showMenu, setShowMenu] = useState(false);
   // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
   //todo export should be native
-  return <p>3 dots for manipulation</p>;
+
+  // keywords, tags, in the title tbh
+  const ar: chrome.bookmarks.BookmarkCreateArg = {};
+
+  return <div>
+    {
+      showMenu
+        ?
+        <div>
+
+          <ul>
+            <li>sort by name</li>
+            <li>add new bookmark</li>
+            <li>add new folder</li>
+            <li>import bookmarks</li>
+            <li>export bookmarks</li>
+            <li> help center</li>
+          </ul>
+        </div>
+        :
+        <p>show svg for 3 dots</p>}
+
+
+  </div>
+
 }
 
 function SideTree(props: { tree: chrome.bookmarks.BookmarkTreeNode[] }): JSX.Element {

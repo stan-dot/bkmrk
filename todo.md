@@ -7,6 +7,11 @@
 - [ ] can copy the path anytime
 - [ ] sorting A-Z, by date
 - [ ] tree to navigate on the left
+- [ ] todo the general layout - should be very similar to the original
+- [ ] todo reload the rows on path change
+- [ ] hooks for column header context menus - filtering, sorting, advanced search
+- [ ] will be able to use absolute positioning
+- [ ] different styles for icon svgs, and tailwind css
 
 
 ### advanced features

@@ -41,7 +41,6 @@ export function TableLoader(props: {}): JSX.Element {
   };
 
   return <>
-    <p> some svg icon</p>
     <ManipulationMenu sortCallback={() => console.log('should sort current location')} importCallback={() => console.log('should load the datastructure')} />
     <p>loading status:{loaded}</p>
     <p>sorting, keywords - need to do in the data source</p>

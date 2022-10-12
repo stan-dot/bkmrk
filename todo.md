@@ -5,8 +5,8 @@
 - [x] column grouping https://glideapps.github.io/glide-data-grid/?path=/story/glide-data-grid-docs--column-grouping
 - [x] path available above the table, copiable
 - [x] can copy the path anytime
-- [ ] sorting A-Z, by date
 - [ ] tree to navigate on the left - needs recursive rendering
+- [ ] sorting A-Z, by date
 - [ ] general layout - should be very similar to the original; will be able to use absolute positioning
 - [ ] hooks for column header context menus - filtering, sorting
 - [ ] advanced search

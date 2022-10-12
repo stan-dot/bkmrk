@@ -14,12 +14,10 @@ export default function App() {
     <div className="App">
       <p>icon</p>
       <p>side panel with the tree</p>
-      <p>scroll indicator on the side</p>
-      <p>search - is in the table</p>
-      <p>3 dots for manipulation</p>
+      <p>lunr search - is in the table</p>
       <p>sorting, keywords - need to do in the data source</p>
-      <ManipulationMenu sortCallback={() => console.log('should sort current location')} importCallback={() => console.log('should load the datastructure')} />
-      {/* <TableLoader /> */}
+      {/* <ManipulationMenu sortCallback={() => console.log('should sort current location')} importCallback={() => console.log('should load the datastructure')} /> */}
+      <TableLoader />
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import './App.css';
+import { ManipulationMenu } from './components/ManipulationMenu';
 import { TableLoader } from './components/Table';
 import "./index.css";
 
@@ -17,7 +18,8 @@ export default function App() {
       <p>search - is in the table</p>
       <p>3 dots for manipulation</p>
       <p>sorting, keywords - need to do in the data source</p>
-      <TableLoader />
+      <ManipulationMenu sortCallback={() => console.log('should sort current location')} importCallback={() => console.log('should load the datastructure')} />
+      {/* <TableLoader /> */}
     </div>
   );
 }

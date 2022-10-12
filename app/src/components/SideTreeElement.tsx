@@ -17,23 +17,14 @@ export function SideTreeElement(props: { thing: chrome.bookmarks.BookmarkTreeNod
   const handleClick = () => {
     console.log('should change the path to this dir');
     // todo integrate via some callback
+    // todo on mouse hover handler
   };
 
-  /**
-   * on the context menu
-   * - rename - edit bookmark fucntion
-   * - delete - delete bookmark - just fetch the api
-   * - cut - need to have the clipboard integrated tbh, but only link changes location
-   * - copy - like cut in many ways
-   * - paste - using the clipboard
-   * - open all (number) - the simplest function
-   * - open all (number) in new window
-   * - open all (number) in Incognito window
-   */
   const handleContextMenu = () => {
   };
+  const WIDTH_OF_NODE = 120;
 
-  return <div style={{ 'display': 'flex' }} id={`${props.thing.id}-side-tree-row`}>
+  return <div style={{ display: 'flex', width: WIDTH_OF_NODE }} id={`${props.thing.id}-side-tree-row`}>
     {hasChildrenFolders ?? <div id={`${props.thing.id}-arrow`}>
       {unrolled
         ?

@@ -10,7 +10,7 @@ export const columns: GridColumn[] = [
   { title: "parentId", width: 100, group: 'Core' },
   { title: "Date Added", width: 100, group: 'Superuser' },
   { title: "Number of Children", width: 100, group: 'Superuser' },
-  { title: "Unmodifiable", width: 100, group: 'Extra' },
+  // { title: "Unmodifiable", width: 100, group: 'Extra' },
 ];
 
 export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTreeNode) => GridCell> = new Map([

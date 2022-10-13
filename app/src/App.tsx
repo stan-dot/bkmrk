@@ -9,7 +9,7 @@ import "./index.css";
 
 export default function App() {
   return (
-    <div className="App">
+    <div className="App" style={{ width: window.screen.availWidth, height: window.screen.availHeight }}>
       <TableLoader />
     </div>
   );

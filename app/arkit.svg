@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="700px" preserveAspectRatio="none" style="width:1278px;height:700px;" version="1.1" viewBox="0 0 1278 700" width="1278px" zoomAndPan="magnify"><defs/><g><ellipse cx="123.5586" cy="31.9417" fill="#F8F8F8" rx="82.1236" ry="18.8247" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="142" x="52.5586" y="35.4261">155.dfe431d2.chunk</text><ellipse cx="123.5075" cy="88.0315" fill="#F8F8F8" rx="82.5725" ry="18.9145" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="143" x="52.0075" y="91.5159">787.c1112931.chunk</text><ellipse cx="123.4056" cy="525.9944" fill="#F8F8F8" rx="19.9706" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="24" x="111.4056" y="529.4788">App</text><ellipse cx="123.2756" cy="387.9944" fill="#F8F8F8" rx="46.8406" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="62" x="92.2756" y="391.4788">App.test</text><ellipse cx="587.2944" cy="424.9889" fill="#F8F8F8" rx="62.3594" ry="14.8719" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="96" x="539.2944" y="428.4733">BookmarkTable</text><ellipse cx="123.2137" cy="145.0727" fill="#F8F8F8" rx="85.2787" ry="19.4557" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="149" x="48.7137" y="148.5571">build/service-worker</text><!--MD5=[278f8977da912284d1c50fe32adc20c6]
+entity _columnNumberToGridCell--><rect fill="#F8F8F8" height="33.9688" rx="3" ry="3" style="stroke: #000000; stroke-width: 0.5;" width="175" x="904.935" y="390.117"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="155" x="914.935" y="411.2557">columnNumberToGridCell</text><ellipse cx="992.412" cy="657.3128" fill="#F8F8F8" rx="56.477" ry="13.6954" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="81" x="951.912" y="660.7972">ContextMenu</text><ellipse cx="123.6583" cy="200.2617" fill="#F8F8F8" rx="73.7233" ry="17.1447" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="123" x="62.1583" y="203.746">CopyToClipboard</text><ellipse cx="344.5412" cy="32.2382" fill="#F8F8F8" rx="98.6062" ry="22.1212" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="178" x="255.5412" y="35.7226">dataProcessing/example</text><ellipse cx="344.2046" cy="84.9944" fill="#F8F8F8" rx="39.7696" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="52" x="318.2046" y="88.4788">dialogs</text><ellipse cx="587.4262" cy="474.9152" fill="#F8F8F8" rx="71.9912" ry="16.7982" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="119" x="527.9262" y="478.3996">DisplayCurrentPath</text><ellipse cx="800.0851" cy="476.147" fill="#F8F8F8" rx="68.1501" ry="16.03" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="110" x="745.0851" y="479.6314">exportBookmarks</text><ellipse cx="799.9974" cy="426.9944" fill="#F8F8F8" rx="39.0624" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="51" x="774.4974" y="430.4788">getData</text><ellipse cx="1192.4092" cy="657.1112" fill="#F8F8F8" rx="75.4692" ry="17.4938" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="127" x="1128.9092" y="660.5956">ifHasChildrenFolders</text><ellipse cx="800.1636" cy="526.0627" fill="#F8F8F8" rx="67.7286" ry="15.9457" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="109" x="745.6636" y="529.5471">importBookmarks</text><ellipse cx="799.8761" cy="572.9944" fill="#F8F8F8" rx="36.9411" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="48" x="775.8761" y="576.4788">interact</text><ellipse cx="344.4058" cy="132.3112" fill="#F8F8F8" rx="66.4708" ry="15.6942" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="106" x="291.4058" y="135.7955">main.f3384906</text><ellipse cx="587.6636" cy="526.0627" fill="#F8F8F8" rx="67.7286" ry="15.9457" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="109" x="533.1636" y="529.5471">ManipulationMenu</text><ellipse cx="123.3259" cy="247.9944" fill="#F8F8F8" rx="41.8909" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="55" x="95.8259" y="251.4788">options</text><ellipse cx="123.2548" cy="291.9944" fill="#F8F8F8" rx="34.8198" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="45" x="100.7548" y="295.4788">Popup</text><ellipse cx="123.2905" cy="340.0881" fill="#F8F8F8" rx="72.8555" ry="16.9711" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="121" x="62.7905" y="343.5725">presetButtonColors</text><ellipse cx="344.4955" cy="182.3291" fill="#F8F8F8" rx="71.5605" ry="16.7121" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="118" x="285.4955" y="185.8135">react-app-env.d</text><ellipse cx="123.3336" cy="478.8967" fill="#F8F8F8" rx="64.3986" ry="15.2797" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="101" x="72.8336" y="482.3811">reportWebVitals</text><ellipse cx="587.5901" cy="573.148" fill="#F8F8F8" rx="53.1551" ry="13.031" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="72" x="551.5901" y="576.6324">SearchField</text><ellipse cx="587.4424" cy="32.0185" fill="#F8F8F8" rx="107.5074" ry="23.9015" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="197" x="488.9424" y="35.5028">serviceWorkerRegistration</text><ellipse cx="587.5568" cy="88.0414" fill="#F8F8F8" rx="57.6218" ry="13.9244" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="84" x="545.5568" y="91.5257">setupTests</text><ellipse cx="587.3259" cy="616.9948" fill="#F8F8F8" rx="41.8909" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="55" x="559.8259" y="620.4792">SideTree</text><ellipse cx="800.0731" cy="659.145" fill="#F8F8F8" rx="65.6381" ry="15.5276" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="104" x="748.0731" y="662.6294">SideTreeElement</text><ellipse cx="123.1985" cy="431.9944" fill="#F8F8F8" rx="19.2635" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="23" x="111.6985" y="435.4788">src</text><ellipse cx="587.3231" cy="138.9946" fill="#F8F8F8" rx="79.8881" ry="18.3776" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="137" x="518.8231" y="142.479">src/service-worker</text><ellipse cx="344.4766" cy="525.9944" fill="#F8F8F8" rx="27.0416" ry="12.8774" style="stroke: #383838; stroke-width: 0.5;"/><text fill="#000000" font-family="Tahoma, sans-serif" font-size="12" lengthAdjust="spacingAndGlyphs" textLength="34" x="327.4766" y="529.4788">Table</text><!--MD5=[f35aa0139daa916a24000cc1d45a63b9]
+link App to Table--><path d="M143.487,526.117 C181.264,526.117 265.984,526.117 312.092,526.117 " fill="none" id="App-&gt;Table" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="317.246,526.117,308.246,522.117,312.246,526.117,308.246,530.117,317.246,526.117" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[ade7508b8fd28882668ed72a2a00701f]
+link <b>App.test</b> to App--><path d="M76.4476,388.879 C54.8304,392.008 31.3759,400.03 19.4354,419.117 C1.5215,447.754 1.5215,466.481 19.4354,495.117 C35.5738,520.915 72.7449,526.5 97.9857,527.109 " fill="none" id="&lt;b&gt;App.test&lt;/b&gt;-&gt;App" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="103.1788,527.169,94.2255,523.0656,98.1791,527.1114,94.1333,531.0651,103.1788,527.169" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[6467f29a20a50a540e042f9986891302]
+link BookmarkTable to _columnNumberToGridCell--><path d="M638.397,416.422 C665.9,412.074 700.694,407.284 731.935,405.117 C792.235,400.936 807.493,404.628 867.935,405.117 C878.163,405.2 888.866,405.322 899.513,405.464 " fill="none" id="BookmarkTable-&gt;_columnNumberToGridCell" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="904.733,405.536,895.7887,401.413,899.7335,405.4674,895.679,409.4122,904.733,405.536" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[422de35f045c017a6aa88797a2ea28b1]
+link BookmarkTable to getData--><path d="M650.17,425.704 C684,426.025 725.111,426.416 755.535,426.705 " fill="none" id="BookmarkTable-&gt;getData" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="760.704,426.754,751.7421,422.6693,755.7042,426.7069,751.6667,430.669,760.704,426.754" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[d4b84509e922a3d46dc526bffeb1f723]
+link ContextMenu to ifHasChildrenFolders--><path d="M1049.12,657.1174 C1068.49,657.1174 1090.63,657.1174 1111.58,657.1174 " fill="none" id="ContextMenu-&gt;ifHasChildrenFolders" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="1116.59,657.1174,1107.59,653.1174,1111.59,657.1174,1107.59,661.1174,1116.59,657.1174" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[906c15e60abb41d402d71b6c7ab9823a]
+link getData to _columnNumberToGridCell--><path d="M837.666,423.261 C855.457,421.393 877.696,419.059 899.686,416.75 " fill="none" id="getData-&gt;_columnNumberToGridCell" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="904.669,416.227,895.3009,413.1874,899.6963,416.7484,896.1352,421.1437,904.669,416.227" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[3de1341d822445392a1effae89872ac2]
+link ManipulationMenu to exportBookmarks--><path d="M636.162,514.971 C654.539,510.665 675.718,505.683 694.935,501.117 C711.8,497.111 730.193,492.703 746.758,488.718 " fill="none" id="ManipulationMenu-&gt;exportBookmarks" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="751.836,487.496,742.1499,485.7129,746.9748,488.6659,744.0218,493.4909,751.836,487.496" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[16c97f357e079760f8033e1414cd5c52]
+link ManipulationMenu to importBookmarks--><path d="M655.039,526.117 C677.995,526.117 703.799,526.117 727.15,526.117 " fill="none" id="ManipulationMenu-&gt;importBookmarks" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="732.404,526.117,723.404,522.117,727.404,526.117,723.404,530.117,732.404,526.117" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[02a27f2c4235a4cf75f95f63e7df56bc]
+link ManipulationMenu to interact--><path d="M637.257,537.018 C675.805,545.625 728.691,557.433 763.325,565.166 " fill="none" id="ManipulationMenu-&gt;interact" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="768.299,566.277,760.3858,560.4135,763.4189,565.1884,758.644,568.2216,768.299,566.277" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[4d900c7b925dfd8622d32d2ce706f349]
+link <b>options</b> to presetButtonColors--><path d="M81.2949,248.253 C58.4286,250.862 32.2752,258.593 19.4354,279.117 C13.307,288.914 13.307,295.321 19.4354,305.117 C27.084,317.344 39.3036,325.4 52.7218,330.683 " fill="none" id="&lt;b&gt;options&lt;/b&gt;-&gt;presetButtonColors" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="57.7133,332.507,50.632,325.6619,53.0168,330.7915,47.8872,333.1763,57.7133,332.507" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[d661e7db66997287bfd21655dc450e80]
+link <b>Popup</b> to presetButtonColors--><path d="M123.435,305.571 C123.435,309.625 123.435,313.678 123.435,317.732 " fill="none" id="&lt;b&gt;Popup&lt;/b&gt;-&gt;presetButtonColors" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="123.435,322.867,127.435,313.867,123.435,317.867,119.435,313.867,123.435,322.867" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[d180b729373e11b3296ef641d418a913]
+link SideTree to ifHasChildrenFolders--><path d="M629.381,616.4362 C713.902,615.5093 913.696,615.7961 1079.94,635.1174 C1097.34,637.1405 1116.09,640.4077 1133.16,643.8123 " fill="none" id="SideTree-&gt;ifHasChildrenFolders" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="1138.39,644.8721,1130.3555,639.1759,1133.4882,643.8862,1128.778,647.0189,1138.39,644.8721" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[fc718e724d4f6ee32eb074b2a168349d]
+link SideTree to SideTreeElement--><path d="M623.195,624.0529 C656.051,630.6085 705.869,640.5484 744.084,648.1732 " fill="none" id="SideTree-&gt;SideTreeElement" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="749.158,649.1856,741.1149,643.5015,744.2547,648.207,739.5492,651.3468,749.158,649.1856" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[e0e67285a7ec415cada74c0047cd742b]
+link SideTreeElement to ContextMenu--><path d="M865.43,658.4403 C886.526,658.2189 909.876,657.9737 930.686,657.7552 " fill="none" id="SideTreeElement-&gt;ContextMenu" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="935.919,657.7003,926.8772,653.7957,930.9193,657.7532,926.9618,661.7952,935.919,657.7003" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[765060efcc1c984e8edc5b84e28b4b3b]
+link SideTreeElement to ifHasChildrenFolders--><path d="M845.943,670.2419 C864.138,674.2042 885.415,678.1664 904.935,680.1174 C982.328,687.853 1002.56,688.0148 1079.94,680.1174 C1098.18,678.2555 1117.84,674.7223 1135.5,670.9737 " fill="none" id="SideTreeElement-&gt;ifHasChildrenFolders" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="1140.43,669.9119,1130.7878,667.9049,1135.543,670.9689,1132.479,675.7241,1140.43,669.9119" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[f39319d2be27e673ece5aa4b202a2579]
+link <b>src</b> to App--><path d="M103.6257,431.286 C78.6486,431.482 36.868,436.251 19.4354,464.117 C12.1285,475.798 12.1285,483.437 19.4354,495.117 C35.5738,520.915 72.7449,526.5 97.9857,527.109 " fill="none" id="&lt;b&gt;src&lt;/b&gt;-&gt;App" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="103.1788,527.169,94.2255,523.0656,98.1791,527.1114,94.1333,531.0651,103.1788,527.169" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[f1a337901fa5ebf3530ace6eeadcb81b]
+link <b>src</b> to reportWebVitals--><path d="M123.435,445.285 C123.435,449.608 123.435,453.931 123.435,458.254 " fill="none" id="&lt;b&gt;src&lt;/b&gt;-&gt;reportWebVitals" style="stroke: #000000; stroke-width: 1.0;"/><polygon fill="#000000" points="123.435,463.328,127.435,454.328,123.435,458.328,119.435,454.328,123.435,463.328" style="stroke: #000000; stroke-width: 1.0;"/><!--MD5=[c2316ddc6dc3a1f13d2f53d5527a572f]
+link Table to BookmarkTable--><path d="M360.418,515.528 C384.497,498.987 433.792,467.057 479.935,449.117 C495.784,442.956 513.605,438.165 530.069,434.541 " fill="none" id="Table-&gt;BookmarkTable" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="535.131,433.454,525.4917,431.4332,530.2425,434.504,527.1717,439.2548,535.131,433.454" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[3478233405011048ab1b6c6de4636164]
+link Table to DisplayCurrentPath--><path d="M369.425,521.041 C406.143,513.271 477.366,498.199 528.202,487.441 " fill="none" id="Table-&gt;DisplayCurrentPath" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="533.365,486.348,523.7316,484.2991,528.4735,487.3837,525.3888,492.1256,533.365,486.348" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[bf157f08b025cf887c19de1790b0f62b]
+link Table to ManipulationMenu--><path d="M371.685,526.117 C405.703,526.117 466.362,526.117 514.556,526.117 " fill="none" id="Table-&gt;ManipulationMenu" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="519.772,526.117,510.772,522.117,514.772,526.117,510.772,530.117,519.772,526.117" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[ce699cb27419ab280888b4cb22532fbb]
+link Table to SearchField--><path d="M369.87,530.883 C409.784,538.667 489.603,554.233 540.395,564.139 " fill="none" id="Table-&gt;SearchField" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="545.522,565.139,537.4542,559.49,540.6145,564.1818,535.9227,567.342,545.522,565.139" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[b6a5ea0a671a92a50859f4e87214d5aa]
+link Table to SideTree--><path d="M361.768,536.348 C386.449,551.373 435.135,579.327 479.935,595.1174 C500.454,602.3494 524.08,607.5283 543.858,611.0371 " fill="none" id="Table-&gt;SideTree" style="stroke: #000000; stroke-width: 0.5;"/><polygon fill="#000000" points="548.799,611.8934,540.6147,606.4145,543.8725,611.0391,539.2479,614.2969,548.799,611.8934" style="stroke: #000000; stroke-width: 0.5;"/><!--MD5=[480e16b5d599bb93a62bdbefcc6f6890]
+link <b>155.dfe431d2.chunk</b> to <b>787.c1112931.chunk</b>--><!--MD5=[85762ae6f8fec692c8b8dd8b0358618e]
+link <b>787.c1112931.chunk</b> to <b>build/service-worker</b>--><!--MD5=[83dcf004624c6c73a37cbad9228c8d31]
+link <b>build/service-worker</b> to <b>CopyToClipboard</b>--><!--MD5=[64bfdf50c90613e522b883b7d8dc8c66]
+link <b>155.dfe431d2.chunk</b> to <b>dataProcessing/example</b>--><!--MD5=[ea50b5839d298d58d82833ded63d0025]
+link <b>dataProcessing/example</b> to <b>dialogs</b>--><!--MD5=[85d6c4563e7c6abccb9b8568e2388ba9]
+link <b>dialogs</b> to <b>main.f3384906</b>--><!--MD5=[b7a029c0e1d73aaba70bbdc2bd836f0d]
+link <b>main.f3384906</b> to <b>react-app-env.d</b>--><!--MD5=[f5f28777328db119e7d8a7e94aa2c565]
+link <b>dataProcessing/example</b> to <b>serviceWorkerRegistration</b>--><!--MD5=[2f305079f8507ad11f349c4d560dffd6]
+link <b>serviceWorkerRegistration</b> to <b>setupTests</b>--><!--MD5=[f68a754c9324d0563707a3263aa91272]
+link <b>setupTests</b> to <b>src/service-worker</b>--><script type="text/plantuml"><![CDATA[MD5=[ff6399ac37bb42890fb5e642d75f3eeb]
+@startuml
+
+scale max 1920 width
+left to right direction
+
+skinparam nodesep 18
+skinparam ranksep 37
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Tahoma
+skinparam defaultFontSize 12
+skinparam roundCorner 6
+skinparam dpi 150
+skinparam arrowColor black
+skinparam arrowThickness 0.5
+skinparam packageTitleAlignment left
+
+skinparam usecase {
+  borderThickness 0.5
+}
+
+skinparam rectangle {
+  borderThickness 0.5
+}
+
+skinparam component {
+  borderThickness 1
+}
+
+
+(<b>155.dfe431d2.chunk</b>)
+(<b>787.c1112931.chunk</b>)
+(App)
+(<b>App.test</b>)
+(BookmarkTable)
+(<b>build/service-worker</b>)
+rectangle "columnNumberToGridCell" as _columnNumberToGridCell
+(ContextMenu)
+(<b>CopyToClipboard</b>)
+(<b>dataProcessing/example</b>)
+(<b>dataProcessing/example</b>)
+(<b>dialogs</b>)
+(DisplayCurrentPath)
+(exportBookmarks)
+(getData)
+(ifHasChildrenFolders)
+(importBookmarks)
+(interact)
+(<b>main.f3384906</b>)
+(ManipulationMenu)
+(<b>options</b>)
+(<b>Popup</b>)
+(presetButtonColors)
+(<b>react-app-env.d</b>)
+(reportWebVitals)
+(SearchField)
+(<b>serviceWorkerRegistration</b>)
+(<b>setupTests</b>)
+(SideTree)
+(SideTreeElement)
+(<b>src</b>)
+(<b>src/service-worker</b>)
+(Table)
+
+
+(App) --> (Table)
+(<b>App.test</b>) -[thickness=1]> (App)
+(BookmarkTable) --> _columnNumberToGridCell
+(BookmarkTable) --> (getData)
+(ContextMenu) --> (ifHasChildrenFolders)
+(getData) --> _columnNumberToGridCell
+(ManipulationMenu) --> (exportBookmarks)
+(ManipulationMenu) --> (importBookmarks)
+(ManipulationMenu) --> (interact)
+(<b>options</b>) -[thickness=1]> (presetButtonColors)
+(<b>Popup</b>) -[thickness=1]> (presetButtonColors)
+(SideTree) --> (ifHasChildrenFolders)
+(SideTree) --> (SideTreeElement)
+(SideTreeElement) --> (ContextMenu)
+(SideTreeElement) --> (ifHasChildrenFolders)
+(<b>src</b>) -[thickness=1]> (App)
+(<b>src</b>) -[thickness=1]> (reportWebVitals)
+(Table) --> (BookmarkTable)
+(Table) --> (DisplayCurrentPath)
+(Table) --> (ManipulationMenu)
+(Table) --> (SearchField)
+(Table) --> (SideTree)
+
+@enduml
+
+
+' View and edit on https://arkit.pro
+]]></script></g></svg>

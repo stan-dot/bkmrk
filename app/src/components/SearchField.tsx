@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 const ENTER_KEY = 13;
 const SEARCH_BUTTON_EDGE = 35;
 
-const searchFieldStyle = {
+const searchFieldStyle: React.CSSProperties = {
   border: '1px #ddd solid',
   display: 'inline-flex',
   justifyContent: 'space-between',

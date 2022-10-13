@@ -17,8 +17,9 @@ export function ManipulationMenu(
 
   // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
   // todo there should be dialog popups for the new bookmark and new folder
+  // todo add a theme selection panel to the options
   return (
-    <div>
+    <div style={{ zIndex: 4, position: "absolute", left: "90%" }}>
       {showMenu
         ? (
           <div>
@@ -30,40 +31,52 @@ export function ManipulationMenu(
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 29.96 122.88"
               >
-                <title>3-vertical-dots</title>
-                <path
-                  className="cls-1"
-                  d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"
-                />
+                <g>
+                  <path
+                    className="cls-1"
+                    d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"
+                  />
+                </g>
               </svg>
             </button>
-            <ul>
+            <ul style={{ listStyle: "none", fontSize: "15px" }}>
               <li>
-                sort by name <button onClick={(v) => props.sortCallback} />
-              </li>
-              <li>
-                sort by date made<button onClick={(v) => props.sortCallback} />
-              </li>
-              <li>
-                add new bookmark{" "}
-                <button onClick={(v) => makeBookmark("someId")} />
-              </li>
-              <li>
-                add new folder{" "}
-                <button onClick={(v) => makeFolder("test", "someid")} />
-              </li>
-              <li>
-                import bookmarks<button
-                  onClick={(v) => setOpenVariant(OpenMenuStates.IMPORT)}
-                >
-                  import
+                <button onClick={(v) => props.sortCallback}>
+                  sort by name
                 </button>
               </li>
               <li>
-                export bookmarks{" "}
-                <button onClick={(v) => exportBookmarks}>export</button>
+                <button onClick={(v) => props.sortCallback}>
+                  sort by date made
+                </button>
               </li>
-              <li>help center</li>
+              <li>
+                <button onClick={(v) => makeBookmark("someId")}>
+                  add new bookmark{" "}
+                </button>
+              </li>
+              <li>
+                <button onClick={(v) => makeFolder("test", "someid")}>
+                  add new folder{" "}
+                </button>
+              </li>
+              <li>
+                <button
+                  onClick={(v) => setOpenVariant(OpenMenuStates.IMPORT)}
+                >
+                  import bookmarks
+                </button>
+              </li>
+              <li>
+                <button onClick={(v) => exportBookmarks}>
+                  export bookmarks{" "}
+                </button>
+              </li>
+              <li >
+                <a href="https://github.com/stan-dot/bkmrk" >
+                  help center
+                </a>
+              </li>
             </ul>
           </div>
         )
@@ -79,9 +92,7 @@ export function ManipulationMenu(
                 <title>3-vertical-dots</title>
                 <g fill="#61DAFB">
                   <circle cx="420.9" cy="296.5" r="45.7" />
-                  <path
-                    d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z"
-                  />
+                  <path d="M15,0A15,15,0,1,1,0,15,15,15,0,0,1,15,0Zm0,92.93a15,15,0,1,1-15,15,15,15,0,0,1,15-15Zm0-46.47a15,15,0,1,1-15,15,15,15,0,0,1,15-15Z" />
                 </g>
               </svg>
             </button>
@@ -95,6 +106,7 @@ export function ManipulationMenu(
     </div>
   );
 }
+
 function NewBookmarkWindow(props: {}): JSX.Element {
   return (
     <dialog>
@@ -102,6 +114,7 @@ function NewBookmarkWindow(props: {}): JSX.Element {
     </dialog>
   );
 }
+
 function NewFolderWindow(props: {}): JSX.Element {
   return (
     <dialog>

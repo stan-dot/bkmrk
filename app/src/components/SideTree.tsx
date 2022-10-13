@@ -20,7 +20,6 @@ export function SideTree(
   return (
     <div id="vericalHoriontalScrollArea" style={styles}>
       <div id="mainStyledSideTreeBox">
-        <h3>Side tree</h3>
         {props.tree.filter(isAFolder).map(
           (node: chrome.bookmarks.BookmarkTreeNode) => {
             return <SideTreeElement thing={node} />;

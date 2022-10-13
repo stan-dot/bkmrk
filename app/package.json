@@ -51,6 +51,7 @@
   },
   "devDependencies": {
     "@types/chrome": "^0.0.197",
+    "arkit": "^1.6.4",
     "serve": "^14.0.1"
   }
 }

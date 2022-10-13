@@ -1,9 +1,8 @@
-import DataEditor, { CellClickedEventArgs, Item } from "@glideapps/glide-data-grid";
+import { CellClickedEventArgs, Item } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
-import { columns } from "./columnNumberToGridCell";
+import { BookmarkTable } from "./BookmarkTable";
 import { DisplayCurrentPath } from "./DisplayCurrentPath";
-import { getData } from "./getData";
 import { ManipulationMenu } from "./ManipulationMenu";
 import { SearchField } from "./SearchField";
 import { SideTree } from "./SideTree";
@@ -48,7 +47,7 @@ export function TableLoader(props: {}): JSX.Element {
 
   return (
     <>
-      <nav>
+      <nav style={{ display: 'flex-row', flex: 'max-content' }}>
         <svg>
           <link
             rel="icon"
@@ -74,18 +73,18 @@ export function TableLoader(props: {}): JSX.Element {
           importCallback={() => console.log("should load the datastructure")}
         />
       </nav>
-      <p>loading status:{loaded}</p>
-      <p>sorting, keywords - need to do in the data source</p>
       {loaded
         ? (
           <>
-            <p>
-              side panel for only opening folders with such and such tag, and with
-              color moods
-            </p>
-            <SideTree tree={rows} />
-            <DisplayCurrentPath path={currentPath} setter={setCurrentPath} />
-            <BookmarkTable rows={rows} cellClickHandler={cellClickHandler} />
+            <div id="sidePanel" style={{ position: 'absolute', left: '0px' }}>
+
+              <SideTree tree={rows} />
+            </div>
+            <div id="mainContainer" style={{ position: "absolute", left: '240px' }}>
+
+              <DisplayCurrentPath path={currentPath} setter={setCurrentPath} />
+              <BookmarkTable rows={rows} cellClickHandler={cellClickHandler} />
+            </div>
           </>
         )
         : <p>Loading...</p>}
@@ -105,22 +104,4 @@ function traverseBookmarks(
   });
 }
 
-function BookmarkTable(
-  props: {
-    rows: chrome.bookmarks.BookmarkTreeNode[];
-    cellClickHandler: (cell: Item, event: CellClickedEventArgs) => void;
-  },
-): JSX.Element {
-  return (
-    <DataEditor
-      onCellContextMenu={props.cellClickHandler}
-      onHeaderClicked={() => console.log("clicked header")}
-      onCellClicked={() => console.log("todo here create highlight")}
-      keybindings={{ "search": true }}
-      // showSearch={true}
-      getCellContent={getData(props.rows)}
-      columns={columns}
-      rows={props.rows.length}
-    />
-  );
-}
+

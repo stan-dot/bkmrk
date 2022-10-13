@@ -38,11 +38,11 @@ export function BookmarkTable(
   };
 
   return (
-    <div onClick={contextClickHandler} className='dev-test-outline'>
+    <div onClick={contextClickHandler} className='dev-test-outline' style={{ position: 'relative', top:'250px', left: '200px'}}>
       {showContextMenu ?? (
         <div
           id="contextMenu"
-          style={{ top: `${position[0]}px`, left: `${position[1]}px` }}
+          // style={{ top: `${position[0]}px`, left: `${position[1]}px` }}
         >
           <p>context menu</p>
           <button onClick={() => setShowContextMenu(false)}>close</button>

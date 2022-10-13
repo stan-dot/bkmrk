@@ -3,7 +3,7 @@ import { isAFolder } from "./ifHasChildrenFolders";
 import { SideTreeElement } from "./SideTreeElement";
 
 const styles: React.CSSProperties = {
-  position: "absolute",
+  position: "fixed",
   left: "20px",
 };
 
@@ -18,7 +18,7 @@ export function SideTree(
   props: { tree: chrome.bookmarks.BookmarkTreeNode[] },
 ): JSX.Element {
   return (
-    <div id="vericalHoriontalScrollArea" style={styles}>
+    <div id="vericalHoriontalScrollArea" style={styles} className='dev-test-outline'>
       <div id="mainStyledSideTreeBox">
         {props.tree.filter(isAFolder).map(
           (node: chrome.bookmarks.BookmarkTreeNode) => {

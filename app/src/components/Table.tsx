@@ -8,7 +8,7 @@ import { SearchField } from "./SearchField";
 import { SideTree } from "./SideTree";
 
 export const BookIcon = () => {
-  const SEARCH_BUTTON_EDGE = 80;
+  const SEARCH_BUTTON_EDGE = 180;
   const iconEdge = Math.ceil(SEARCH_BUTTON_EDGE * 0.60);
   const searchIconStyle = {
     fill: '#727272',
@@ -19,7 +19,8 @@ export const BookIcon = () => {
     y="0px"
     width={iconEdge}
     height={iconEdge}
-    viewBox="0 0 635 635"
+    // viewBox="0 0 635 635"
+    viewBox="0 0 200 200"
     style={searchIconStyle}
   >
     <g>
@@ -66,14 +67,21 @@ export function TableLoader(props: {}): JSX.Element {
     chrome.tabs.create({ url: bookmark.url });
   };
 
+  const SEARCH_PLACEHOLDER = 'Search bookmarks';
+  const [sideTreeWidth, setSideTreeWidth] = useState(240);
+
+  const navStyles: React.CSSProperties = { justifyContent: 'space-between', display: 'inline-block', position: 'fixed', height: '300px' };
   return (
     <>
-      <nav style={{ display: 'inline-block' }}>
+      <nav style={navStyles}>
+        <h2>
+          BOOKasta
+        </h2>
         <BookIcon />
         <SearchField
           classNames={undefined}
           searchText={undefined}
-          placeholder={undefined}
+          placeholder={SEARCH_PLACEHOLDER}
           disabled={undefined}
           onChange={undefined}
           onEnter={undefined}
@@ -85,19 +93,27 @@ export function TableLoader(props: {}): JSX.Element {
           importCallback={() => console.log("should load the datastructure")}
         />
       </nav>
-      {loaded
-        ? (
+      {
+        loaded
+          ?
           <>
-            <div id="sidePanel" style={{ position: 'absolute', left: '0px' }}>
+            <div id="sidePanel"
+              style={{ position: 'absolute', top: '200px' }}
+            // style={{ position: 'relative', left: '0px' }}
+            >
               <SideTree tree={rows} />
             </div>
-            <div id="mainContainer" style={{ position: "absolute", left: '240px' }}>
+            <div id="mainContainer"
+              style={{ position: 'absolute', top: '200px', left }}
+            // style={{ position: "relative", left: `${sideTreeWidth}px` }}g
+            >
               <DisplayCurrentPath path={currentPath} setter={setCurrentPath} />
               <BookmarkTable rows={rows} cellClickHandler={cellClickHandler} />
             </div>
           </>
-        )
-        : <p>Loading...</p>}
+          :
+          <p>Loading...</p>
+      }
     </>
   );
 }

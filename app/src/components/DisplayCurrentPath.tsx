@@ -12,9 +12,9 @@ export function DisplayCurrentPath(props: {
 
   const text: string = props.path.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join('/');
   // creates a '>' linked horizontal list of locations, genealogy of the currrent path
-  return <div style={{ 'display': 'flex' }}>
+  return <div style={{ display: 'flex', justifyContent: 'space-between' }}>
     {props.path.map((node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
-      return <div>
+      return <div style={{ display: 'flex', justifyContent: 'start' }}>
         <button onClick={v => handleClick(node, index)}>
           {node.title}
         </button>

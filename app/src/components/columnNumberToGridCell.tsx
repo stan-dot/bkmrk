@@ -6,7 +6,7 @@ export const columns: GridColumn[] = [
   { title: "index", width: 100 },
   { title: "Date Added", width: 100, group: 'Superuser' },
   { title: "URL", width: 100, group: 'Core' },
-  { title: "Title", width: 100, group: 'Core' },
+  { title: "Title", width: 400, group: 'Core' },
   { title: "ID", width: 100 },
   { title: "parentId", width: 100 },
   { title: "Number of Children", width: 100, group: 'Superuser' },

@@ -1,31 +1,12 @@
-import DataEditor, { CellClickedEventArgs } from "@glideapps/glide-data-grid";
+import DataEditor, { CellClickedEventArgs, Item } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import React, { useMemo, useState } from "react";
-import { GridCell, Item } from "@glideapps/glide-data-grid";
-import {
-  columnNumberToGridCell,
-  columns,
-  DEFAULT_GRID_CELL,
-} from "./columnNumberToGridCell";
+import { useState } from "react";
+import { columns } from "./columnNumberToGridCell";
 import { DisplayCurrentPath } from "./DisplayCurrentPath";
+import { getData } from "./getData";
 import { ManipulationMenu } from "./ManipulationMenu";
+import { SearchField } from "./SearchField";
 import { SideTree } from "./SideTree";
-
-// If fetching data is slow you can use the DataEditor ref to send updates for cells
-// once data is loaded.
-function getData(
-  bookmarksArr: chrome.bookmarks.BookmarkTreeNode[],
-): ([col, row]: Item) => GridCell {
-  const curriedFunction: ([col, row]: Item) => GridCell = (v: Item) => {
-    const columnSpecificFunction = columnNumberToGridCell.get(v[0]);
-    if (columnSpecificFunction === undefined) {
-      return DEFAULT_GRID_CELL as GridCell;
-    }
-    const bookmark: chrome.bookmarks.BookmarkTreeNode = bookmarksArr[v[1]];
-    return columnSpecificFunction(bookmark);
-  };
-  return curriedFunction;
-}
 
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
@@ -34,25 +15,29 @@ export function TableLoader(props: {}): JSX.Element {
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
 
-  // const treePromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome.bookmarks.getTree();
   const DEV_NUMBER_OF_BOOKMARKS = 10000;
   if (rows.length === 0) {
+    // const idsNumber: number[] = [...Array(DEV_NUMBER_OF_BOOKMARKS).keys()];
+    // console.log('ids number:', idsNumber);
+    // const ids: string[] = idsNumber.map(v => v.toString());
+    // console.log('ids:', ids);
+
+    const rootPromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome
+      .bookmarks.getTree();
     // const treePromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome
-    //   .bookmarks.getRecent(DEV_NUMBER_OF_BOOKMARKS);
-    // getting the first 100 ids to get to the right folder
-    const idsNumber: number[] = [...Array(DEV_NUMBER_OF_BOOKMARKS).keys()];
-    console.log('ids number:', idsNumber);
-    const ids: string[] = idsNumber.map(v => v.toString());
-    console.log('ids:', ids);
-
-
-    const treePromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome
-      .bookmarks.get(ids);
-    treePromise.then((nodes: chrome.bookmarks.BookmarkTreeNode[]) => {
-      console.log(nodes);
+    //   .bookmarks.get(ids);
+    // NOTE: the gettree returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarkq
+    rootPromise.then((root: chrome.bookmarks.BookmarkTreeNode[]) => {
+      const main3: chrome.bookmarks.BookmarkTreeNode[] = root[0].children!;
+      console.log(main3);
+      // try loading bookmarks bar
+      const bookmarksBar = main3[0];
+      console.log("displaying the bookmarks bar");
+      setRows(bookmarksBar.children ?? []);
       setLoaded(true);
-      setRows(nodes);
-      setCurrentPath([nodes[0]]);
+      setCurrentPath([bookmarksBar]);
+      // setLoaded(true);
+      // setRows(nodes);
     });
   }
 
@@ -63,15 +48,41 @@ export function TableLoader(props: {}): JSX.Element {
 
   return (
     <>
-      <ManipulationMenu
-        sortCallback={() => console.log("should sort current location")}
-        importCallback={() => console.log("should load the datastructure")}
-      />
+      <nav>
+        <svg>
+          <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>📖</text></svg>"
+          >
+          </link>
+        </svg>
+
+        <div id="lunrSearchField">
+          <SearchField
+            classNames={undefined}
+            searchText={undefined}
+            placeholder={undefined}
+            disabled={undefined}
+            onChange={undefined}
+            onEnter={undefined}
+            onSearchClick={undefined}
+            onBlur={undefined}
+          />
+        </div>
+        <ManipulationMenu
+          sortCallback={() => console.log("should sort current location")}
+          importCallback={() => console.log("should load the datastructure")}
+        />
+      </nav>
       <p>loading status:{loaded}</p>
       <p>sorting, keywords - need to do in the data source</p>
       {loaded
         ? (
           <>
+            <p>
+              side panel for only opening folders with such and such tag, and with
+              color moods
+            </p>
             <SideTree tree={rows} />
             <DisplayCurrentPath path={currentPath} setter={setCurrentPath} />
             <BookmarkTable rows={rows} cellClickHandler={cellClickHandler} />
@@ -104,7 +115,7 @@ function BookmarkTable(
     <DataEditor
       onCellContextMenu={props.cellClickHandler}
       onHeaderClicked={() => console.log("clicked header")}
-      onCellClicked={() => console.log('todo here create highlight')}
+      onCellClicked={() => console.log("todo here create highlight")}
       keybindings={{ "search": true }}
       // showSearch={true}
       getCellContent={getData(props.rows)}

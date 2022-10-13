@@ -10,11 +10,6 @@ import "./index.css";
 export default function App() {
   return (
     <div className="App">
-      <p>icon</p>
-      <p>side panel with the tree</p>
-      <p>lunr search - is in the table</p>
-      <p>sorting, keywords - need to do in the data source</p>
-      <p>side panel for only opening folders with such and such tag, and with color moods</p>
       <TableLoader />
     </div>
   );

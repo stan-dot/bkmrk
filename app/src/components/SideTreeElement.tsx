@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { ifHasChildrenFolders, getChildrenLinks, openAllChildren } from "./SideTree";
+import { useState } from "react";
+import { ifHasChildrenFolders, getChildrenLinks, openAllChildren } from "./ifHasChildrenFolders";
 
 /**
  * for side displaying FOLDERS ONLY
  * need to display with some offset to the fight
  * todo maybe add display children prop
+ * todo impossible to delete, rename if it's a stuck variant
  * @param props
  * @returns
  */
@@ -37,7 +38,7 @@ export function SideTreeElement(props: { thing: chrome.bookmarks.BookmarkTreeNod
         </button>}
     </div>}
     <div>
-      <button onClick={e => handleClick} onContextMenu={e => handleContextMenu}>
+      <button onClick={e => handleClick()} onContextMenu={e => handleContextMenu}>
         <p>{props.thing.title}</p>
       </button>
     </div>

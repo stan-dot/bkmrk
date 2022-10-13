@@ -96,13 +96,14 @@ export function SearchField(props: {
     props.onBlur(event.target.value, event);
   }, [props.onBlur]);
 
-  const className = `react-search-field ${props.classNames}`;
+  const className = `react-search-field dev-test-outline ${props.classNames}`;
 
   const style: React.CSSProperties = searchFieldButtonStyle(props.disabled);
   return (
     <div
       className={className}
       style={searchFieldStyle}
+
     >
       <input
         className="react-search-field-input"

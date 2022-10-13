@@ -38,7 +38,7 @@ export function BookmarkTable(
   };
 
   return (
-    <div onClick={contextClickHandler}>
+    <div onClick={contextClickHandler} className='dev-test-outline'>
       {showContextMenu ?? (
         <div
           id="contextMenu"

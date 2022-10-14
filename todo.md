@@ -8,10 +8,14 @@
 - [ ] tree to navigate on the left - needs recursive rendering
 - [ ] multiple selection with ctrl clicked and/or shift
 - [ ] sorting A-Z, by date
+- [ ] add sorting by website - from a context menu
 - [ ] general layout - should be very similar to the original; will be able to use absolute positioning
 - [ ] hooks for column header context menus - filtering, sorting
+- [ ] change path copying into a context menu functionality, also to go to a sibling
 - [ ] advanced search
 - [ ] show the option to navigate to parent folder of any searched item
+- [ ] Identify Duplicate bookmarks.
+- [ ] Clean your bookmarks by deleting empty folders.
 
 ## features added in the meantime
 - [ ] the idea of which thins on the tree are open or not is new every time - that must be in some cookies

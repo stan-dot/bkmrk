@@ -20,7 +20,10 @@ export function SideTreeElement(props: { thing: chrome.bookmarks.BookmarkTreeNod
     // todo on mouse hover handler
   };
 
-  const handleContextMenu = () => {
+  const handleContextMenu: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    console.log('clicked the side button');
+    console.log(hasChildrenFolders, contextMenuOpen, unrolled);
   };
   const WIDTH_OF_NODE = 120;
 
@@ -36,8 +39,8 @@ export function SideTreeElement(props: { thing: chrome.bookmarks.BookmarkTreeNod
           <p>arrow right svg</p>
         </button>}
     </div>}
-    <div>
-      <button onClick={e => handleClick()} onContextMenu={e => handleContextMenu}>
+    <div style={{ width: '100%' }}>
+      <button onClick={e => handleClick()} onContextMenu={e => handleContextMenu} style={{ width: '100%', textAlign: 'left' }}>
         <p>{props.thing.title}</p>
       </button>
     </div>

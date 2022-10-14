@@ -13,9 +13,9 @@ const DotsSvg = () => {
     version="1.1"
     x="0px"
     y="0px"
-    width={iconEdge}
-    height={iconEdge}
-    viewBox="0 0 65 65"
+    width={18}
+    height={64}
+    viewBox="-10 -20 45 165"
     style={searchIconStyle}
   >
     <g>
@@ -38,12 +38,16 @@ export function ManipulationMenu(
   const [showMenu, setShowMenu] = useState(false);
   const [openVariant, setOpenVariant] = useState(OpenMenuStates.NEW_BOOKMARK);
 
+  const clickHandler = (v: React.MouseEvent<HTMLButtonElement, MouseEvent>): void => {
+    console.log('clicked the side button', showMenu);
+    setShowMenu(!showMenu)
+  };
   // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
   // todo there should be dialog popups for the new bookmark and new folder
   // todo add a theme selection panel to the options
   return (
-    <div style={{ zIndex: 4, position: "absolute", left: "90%" }} className={'dev-test-outline'}>
-      <button onClick={(v) => setShowMenu(!showMenu)} style={{ border: '10px solid transparent' }}>
+    <div style={{ zIndex: 4, position: "relative" }} className={'dev-test-outline'}>
+      <button onClick={clickHandler} style={{ width: 'fit-content', padding: '20px' }} >
         <DotsSvg />
       </button>
       {showMenu

@@ -8,6 +8,7 @@ const searchFieldStyle: React.CSSProperties = {
   display: 'inline-flex',
   justifyContent: 'space-between',
   height: SEARCH_BUTTON_EDGE,
+  width: '40%'
 };
 
 const searchFieldButtonStyle = (disabled: boolean): React.CSSProperties => ({
@@ -103,7 +104,6 @@ export function SearchField(props: {
     <div
       className={className}
       style={searchFieldStyle}
-
     >
       <input
         className="react-search-field-input"
@@ -115,6 +115,7 @@ export function SearchField(props: {
         type="text"
         value={value}
         disabled={props.disabled}
+        width={"40%"}
       />
       <button
         className="react-search-field-button"

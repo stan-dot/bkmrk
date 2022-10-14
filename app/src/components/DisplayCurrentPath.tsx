@@ -1,5 +1,13 @@
 import React from "react";
 
+
+
+export const basicNodes: string[] = [
+  'Bookmarks bar',
+  'Mobile bookmarks',
+  'Other bookmarks'
+];
+
 export function DisplayCurrentPath(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
   setter: React.Dispatch<React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>>;
@@ -7,12 +15,15 @@ export function DisplayCurrentPath(props: {
 
   // goes backs, changes the current location, the current path
   const handleClick = (node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
-    props.setter(props.path.slice(0, index));
+    const clickedNodeName = props.path.slice(0, index);
+    if (index !== 0) {
+      props.setter(clickedNodeName);
+    }
   };
 
   const text: string = props.path.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join('/');
   // creates a '>' linked horizontal list of locations, genealogy of the currrent path
-  return <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+  return <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}>
     {props.path.map((node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
       return <div style={{ display: 'flex', justifyContent: 'start' }}>
         <button onClick={v => handleClick(node, index)}>

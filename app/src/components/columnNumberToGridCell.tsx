@@ -3,10 +3,10 @@ import { GridColumn } from "@glideapps/glide-data-grid";
 import { GridCell, GridCellKind } from "@glideapps/glide-data-grid";
 
 export const columns: GridColumn[] = [
-  { title: "index", width: 30 },
+  { title: "index", width: 40 },
   { title: "ID", width: 400, group: 'Core' },
-  { title: "Title", width: 400, group: 'Core' },
   { title: "URL", width: 100, group: 'Core' },
+  { title: "Title", width: 400, group: 'Core' },
   { title: "parentId", width: 100, group: 'Core' },
   { title: "Date Added", width: 100, group: 'Superuser' },
   { title: "Number of Children", width: 100, group: 'Superuser' },

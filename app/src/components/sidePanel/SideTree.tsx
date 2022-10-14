@@ -1,5 +1,5 @@
 import React, { Dispatch } from "react";
-import { isAFolder } from "./ifHasChildrenFolders";
+import { isAFolder } from "../../functions/ifHasChildrenFolders";
 import { SideTreeElement } from "./SideTreeElement";
 
 const styles: React.CSSProperties = {

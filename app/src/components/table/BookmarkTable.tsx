@@ -1,19 +1,11 @@
 import DataEditor, {
   CellClickedEventArgs,
-  Item,
+  Item
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
 
-/**
- * todo if a folder, on click it should open
- * todo use this example to create a new context menu div @ any location - just need to track position, then using absolute location
- * https://www.pluralsight.com/guides/how-to-create-a-right-click-menu-using-react
- * todo when clicking anywhere, 2 options - add new bookmark, add new folder
- * @param props
- * @returns
- */
 export function BookmarkTable(
   props: {
     rows: chrome.bookmarks.BookmarkTreeNode[];
@@ -27,13 +19,13 @@ export function BookmarkTable(
     e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
+    e.stopPropagation();
     setPosition(
       [
         e.pageX,
         e.pageY,
       ],
     );
-    //
     console.log("todo here create highlight");
   };
 
@@ -42,7 +34,7 @@ export function BookmarkTable(
       {showContextMenu ?? (
         <div
           id="contextMenu"
-        // style={{ top: `${position[0]}px`, left: `${position[1]}px` }}
+          style={{ top: `${position[0]}px`, left: `${position[1]}px` }}
         >
           <p>context menu</p>
           <button onClick={() => setShowContextMenu(false)}>close</button>

@@ -2,7 +2,7 @@ import React from "react";
 
 
 
-export function DisplayCurrentPath(props: {
+export function PathDisplay(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
   setter: React.Dispatch<React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>>;
 }): JSX.Element {

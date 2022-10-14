@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { ContextMenu } from "./ContextMenu";
-import { ifHasChildrenFolders } from "./ifHasChildrenFolders";
+import { ifHasChildrenFolders } from "../../functions/ifHasChildrenFolders";
+import { SidePanelContextMenu } from "./SidePanelContextMenu";
 
 /**
  * for side displaying FOLDERS ONLY
@@ -13,6 +13,7 @@ import { ifHasChildrenFolders } from "./ifHasChildrenFolders";
 export function SideTreeElement(
   props: { thing: chrome.bookmarks.BookmarkTreeNode },
 ): JSX.Element {
+  const [position, setPosition] = useState([0, 0]);
   const [unrolled, setUnrolled] = useState(false);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const hasChildrenFolders: boolean = ifHasChildrenFolders(props.thing);
@@ -23,10 +24,11 @@ export function SideTreeElement(
   };
 
   const handleContextMenu: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    e.preventDefault();
     console.log("clicked the side button");
     console.log(hasChildrenFolders, contextMenuOpen, unrolled);
+    e.preventDefault();
     e.stopPropagation();
+    setPosition([e.pageX, e.pageY]);
   };
   const WIDTH_OF_NODE = 120;
 
@@ -59,8 +61,11 @@ export function SideTreeElement(
           <p>{props.thing.title}</p>
         </button>
       </div>
-      {contextMenuOpen ??
-        <ContextMenu thing={props.thing} />}
+      {
+        contextMenuOpen
+        ??
+        <SidePanelContextMenu thing={props.thing} position={position} />
+      }
     </div>
   );
 }

@@ -13,6 +13,9 @@
 - [ ] different styles - darkmode, etc - with tailwind possibly
 - [ ] sorting A-Z, by date
 - [ ] filtering, sorting - with hooks for column header context menus
+- [ ] if a folder, on click it should open
+- [ ] use [this](https://www.pluralsight.com/guides/how-to-create-a-right-click-menu-using-react) example to create a new context menu div @ any location - just need to track position, then using absolute location
+- [ ] when clicking anywhere, 2 options - add new bookmark, add new folder
 
 ## extra context menus
 - [ ] add sorting by website - from a context menu

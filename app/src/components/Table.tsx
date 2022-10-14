@@ -1,6 +1,6 @@
 import { CellClickedEventArgs, Item } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BookmarkTable } from "./table/BookmarkTable";
 import { BrandingSection } from "./navbar/BrandingSection";
 import { isAFolder } from "../functions/ifHasChildrenFolders";
@@ -11,14 +11,16 @@ import { PathDisplay } from "./table/PathDisplay";
 
 /**
  * todo this needs to find the easiest path for the final root
- * @param node 
+ * @param node
  */
-export async function getPath(node: chrome.bookmarks.BookmarkTreeNode): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
+export async function getPath(
+  node: chrome.bookmarks.BookmarkTreeNode,
+): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
   let output: chrome.bookmarks.BookmarkTreeNode[] = [node];
   let lastNode: chrome.bookmarks.BookmarkTreeNode = node;
   while (lastNode.parentId) {
     const parent = await chrome.bookmarks.get(lastNode.parentId);
-    console.log('getting parent of the clicked element', parent);
+    console.log("getting parent of the clicked element", parent);
     output.unshift(parent[0]);
     lastNode = parent[0];
   }
@@ -62,13 +64,27 @@ export function TableLoader(props: {}): JSX.Element {
     // check if it's folder or a bookmark
     const bookmark: chrome.bookmarks.BookmarkTreeNode = rows[cell[1]];
     if (isAFolder(bookmark)) {
-      getPath(bookmark).then(path => {
+      getPath(bookmark).then((path) => {
         setCurrentPath(path);
-      })
+      });
     } else {
       chrome.tabs.create({ url: bookmark.url });
     }
   };
+
+
+  useEffect(() => {
+    const last: chrome.bookmarks.BookmarkTreeNode = currentPath[currentPath.length - 1];
+    console.log(last);
+    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
+    if (children) {
+      // display the rows there
+      setRows(children);
+    }
+    return () => {
+    }
+  }, [currentPath])
+
 
   const SEARCH_PLACEHOLDER = "Search bookmarks";
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
@@ -104,8 +120,7 @@ export function TableLoader(props: {}): JSX.Element {
       {loaded
         ? (
           <>
-            <div id="sidePanel" style={{ position: "absolute", top: "120px" }}
-            >
+            <div id="sidePanel" style={{ position: "absolute", top: "120px" }}>
               <SideTree tree={rows} pathSetter={setCurrentPath} />
             </div>
             <div
@@ -118,14 +133,18 @@ export function TableLoader(props: {}): JSX.Element {
             </div>
           </>
         )
-        : <div id="Loading status" style={{
-          position: 'absolute',
-          top: "120px",
-          left: "200px"
-        }}>
-          <p>Loading...</p>
-        </div>
-      }
+        : (
+          <div
+            id="Loading status"
+            style={{
+              position: "absolute",
+              top: "120px",
+              left: "200px",
+            }}
+          >
+            <p>Loading...</p>
+          </div>
+        )}
     </>
   );
 }

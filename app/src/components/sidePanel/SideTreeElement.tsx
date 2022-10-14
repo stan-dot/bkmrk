@@ -1,36 +1,43 @@
-import { useState } from "react";
+import { Dispatch, MouseEvent, useState } from "react";
 import { ifHasChildrenFolders } from "../../functions/ifHasChildrenFolders";
+import { getPath } from "../Table";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
+
+const WIDTH_OF_NODE = 120;
+
 
 /**
  * for side displaying FOLDERS ONLY
  * need to display with some offset to the fight
- * todo maybe add display children prop
- * todo impossible to delete, rename if it's a stuck variant
  * @param props
  * @returns
  */
 export function SideTreeElement(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode },
+  props: {
+    thing: chrome.bookmarks.BookmarkTreeNode,
+    pathSetter: Dispatch<
+      React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
+    >;
+  },
 ): JSX.Element {
   const [position, setPosition] = useState([0, 0]);
   const [unrolled, setUnrolled] = useState(false);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const hasChildrenFolders: boolean = ifHasChildrenFolders(props.thing);
-  const handleClick = () => {
+  const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     console.log("should change the path to this dir");
-    // todo integrate via some callback
-    // todo on mouse hover handler
+    getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
+      props.pathSetter(path);
+    });
   };
 
-  const handleContextMenu: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+  const handleContextMenu = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     console.log("clicked the side button");
-    console.log(hasChildrenFolders, contextMenuOpen, unrolled);
     e.preventDefault();
     e.stopPropagation();
     setPosition([e.pageX, e.pageY]);
+    setContextMenuOpen(true);
   };
-  const WIDTH_OF_NODE = 120;
 
   return (
     <div
@@ -54,7 +61,7 @@ export function SideTreeElement(
       )}
       <div style={{ width: "100%" }}>
         <button
-          onClick={(e) => handleClick()}
+          onClick={handleClick}
           onContextMenu={(e) => handleContextMenu(e)}
           style={{ width: "100%", textAlign: "left" }}
         >

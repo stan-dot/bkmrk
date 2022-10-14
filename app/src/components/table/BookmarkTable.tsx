@@ -12,6 +12,7 @@ export function BookmarkTable(
     cellClickHandler: (cell: Item, event: CellClickedEventArgs) => void;
   },
 ): JSX.Element {
+  const [searchVisible, setSearchVisible] = useState(false);
   const [position, setPosition] = useState([0, 0]);
   const [showContextMenu, setShowContextMenu] = useState(false);
 
@@ -45,7 +46,8 @@ export function BookmarkTable(
         onHeaderClicked={() => console.log("clicked header")}
         onCellContextMenu={() => setShowContextMenu(true)}
         keybindings={{ "search": true }}
-        // showSearch={true}
+        showSearch={searchVisible}
+        onSearchClose={() => setSearchVisible(false)}
         getCellContent={getData(props.rows)}
         columns={columns}
         rows={props.rows.length}

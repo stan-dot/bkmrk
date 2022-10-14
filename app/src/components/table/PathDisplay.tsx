@@ -18,14 +18,16 @@ export function PathDisplay(props: {
   const text: string = props.path.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join('/');
   // creates a '>' linked horizontal list of locations, genealogy of the currrent path
   return <div style={{ position: 'relative', display: 'flex', justifyContent: 'space-between' }}>
-    {props.path.map((node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
-      return <div style={{ display: 'flex', justifyContent: 'start' }}>
-        <button onClick={v => handleClick(node, index)}>
-          {node.title}
-        </button>
-        {'>'}
-      </div>;
-    })}
+    <div style={{ display: 'flex', justifyContent: 'start' }}>
+      {props.path.map((node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
+        return <div style={{ display: 'flex', justifyContent: 'start' }}>
+          <button onClick={v => handleClick(node, index)}>
+            {node.title}
+          </button>
+          {'>'}
+        </div>;
+      })}
+    </div>
     <button onClick={() => window.navigator.clipboard.writeText(text)}>Copy path</button>
   </div>;
 }

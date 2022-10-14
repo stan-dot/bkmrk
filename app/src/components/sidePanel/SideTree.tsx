@@ -15,14 +15,23 @@ const styles: React.CSSProperties = {
  * @returns
  */
 export function SideTree(
-  props: { tree: chrome.bookmarks.BookmarkTreeNode[], pathSetter: Dispatch<React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>> },
+  props: {
+    tree: chrome.bookmarks.BookmarkTreeNode[];
+    pathSetter: Dispatch<
+      React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
+    >;
+  },
 ): JSX.Element {
   return (
-    <div id="vericalHoriontalScrollArea" style={styles} className='dev-test-outline'>
+    <div
+      id="vericalHoriontalScrollArea"
+      style={styles}
+      className="dev-test-outline"
+    >
       <div id="mainStyledSideTreeBox">
         {props.tree.filter(isAFolder).map(
           (node: chrome.bookmarks.BookmarkTreeNode) => {
-            return <SideTreeElement thing={node} />;
+            return <SideTreeElement thing={node} pathSetter={props.pathSetter} />;
           },
         )}
       </div>

@@ -8,6 +8,12 @@
 - [x] general layout - should be very similar to the original; will be able to use absolute positioning
 - [ ] tree to navigate on the left with context menus and navigation changes
 
+## bug fixes
+- [ ] this should be displayed - so instead of 'loaded' a general state - display table or not, and another state for the text to be shown (loading/ this:)    
+    const str = 'To bookmark pages, click the star in the address bar';
+- [ ] add display children prop to side tree element
+- [ ] make some nodes impossible to delete, rename if it's a stuck variant
+
 ## navigation and interactvity
 - [ ] multiple selection with ctrl clicked and/or shift
 - [ ] different styles - darkmode, etc - with tailwind possibly

@@ -20,6 +20,7 @@ export function SideTree(
     pathSetter: Dispatch<
       React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
     >;
+    path: chrome.bookmarks.BookmarkTreeNode[];
   },
 ): JSX.Element {
   return (
@@ -31,7 +32,8 @@ export function SideTree(
       <div id="mainStyledSideTreeBox">
         {props.tree.filter(isAFolder).map(
           (node: chrome.bookmarks.BookmarkTreeNode) => {
-            return <SideTreeElement thing={node} pathSetter={props.pathSetter} />;
+            const unrolled = props.path.includes(node);
+            return <SideTreeElement thing={node} pathSetter={props.pathSetter} unrolled={unrolled} />;
           },
         )}
       </div>

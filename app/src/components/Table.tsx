@@ -77,10 +77,8 @@ export function TableLoader(props: {}): JSX.Element {
   useEffect(() => {
     console.log('reacting to a change in path', currentPath);
     const last: chrome.bookmarks.BookmarkTreeNode = currentPath[currentPath.length - 1];
-    console.log(last);
     const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
     if (children) {
-      // display the rows there
       setRows(children);
     }
   }, [currentPath])
@@ -92,7 +90,6 @@ export function TableLoader(props: {}): JSX.Element {
     const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
     console.log('last element of the path', last, ' its children :', children);
     if (children) {
-      // display the rows there
       setRows(children);
     }
   }
@@ -133,7 +130,7 @@ export function TableLoader(props: {}): JSX.Element {
         ? (
           <>
             <div id="sidePanel" style={{ position: "absolute", top: "120px" }}>
-              <SideTree tree={globalTree} pathSetter={setCurrentPath} />
+              <SideTree tree={globalTree} pathSetter={setCurrentPath} path={currentPath} />
             </div>
             <div
               id="mainContainer"

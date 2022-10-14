@@ -18,10 +18,11 @@ export function SideTreeElement(
     pathSetter: Dispatch<
       React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
     >;
+    unrolled: boolean;
   },
 ): JSX.Element {
   const [position, setPosition] = useState([0, 0]);
-  const [unrolled, setUnrolled] = useState(false);
+  const [unrolled, setUnrolled] = useState(props.unrolled);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const hasChildrenFolders: boolean = ifHasChildrenFolders(props.thing);
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {

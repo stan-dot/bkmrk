@@ -6,7 +6,7 @@
 - [x] path available above the table, copiable
 - [x] can copy the path anytime
 - [x] general layout - should be very similar to the original; will be able to use absolute positioning
-- [ ] tree to navigate on the left with context menus and navigation changes
+- [ ] tree to navigate on the left with navigation changes
 
 ## bug fixes
 - [ ] this should be displayed - so instead of 'loaded' a general state - display table or not, and another state for the text to be shown (loading/ this:)    
@@ -15,6 +15,11 @@
 - [ ] make some nodes impossible to delete, rename if it's a stuck variant
 
 ## navigation and interactvity
+- [ ] context menus for
+  - [ ] side panel
+  - [ ] path display
+  - [ ] any area
+  - [ ] main table
 - [ ] multiple selection with ctrl clicked and/or shift
 - [ ] react to ctrl+a clicks
 - [ ] different styles - darkmode, etc - with tailwind possibly

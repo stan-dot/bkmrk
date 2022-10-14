@@ -7,8 +7,10 @@ const searchFieldStyle: React.CSSProperties = {
   border: '1px #ddd solid',
   display: 'inline-flex',
   justifyContent: 'space-between',
+  padding: '20px',
   height: SEARCH_BUTTON_EDGE,
-  width: '40%'
+  width: '40%',
+  top: '10px'
 };
 
 const searchFieldButtonStyle = (disabled: boolean): React.CSSProperties => ({

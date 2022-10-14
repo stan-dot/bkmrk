@@ -145,7 +145,14 @@ export function TableLoader(props: {}): JSX.Element {
             </div>
           </>
         )
-        : <p>Loading...</p>}
+        : <div id="Loading status" style={{
+          position: 'absolute',
+          top: "120px",
+          left: "200px"
+        }}>
+          <p>Loading...</p>
+        </div>
+      }
     </>
   );
 }

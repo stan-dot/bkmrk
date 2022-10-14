@@ -41,33 +41,27 @@ export function SideTreeElement(
 
   return (
     <div
-      style={{ display: "flex", width: WIDTH_OF_NODE }}
+      style={{ display: "flex", width: WIDTH_OF_NODE, border: '1px solid', borderColor: 'red' }}
       id={`${props.thing.id}-side-tree-row`}
     >
-      {hasChildrenFolders ?? (
-        <div id={`${props.thing.id}-arrow`}>
-          {unrolled
-            ? (
-              <button onClick={(e) => setUnrolled(false)}>
-                <p>arrow down svg</p>
-              </button>
-            )
-            : (
-              <button onClick={(e) => setUnrolled(true)}>
-                <p>arrow right svg</p>
-              </button>
-            )}
-        </div>
-      )}
-      <div style={{ width: "100%" }}>
-        <button
-          onClick={handleClick}
-          onContextMenu={(e) => handleContextMenu(e)}
-          style={{ width: "100%", textAlign: "left" }}
-        >
-          <p>{props.thing.title}</p>
-        </button>
+      <div>
+        {
+          hasChildrenFolders
+          ??
+          <div id={`${props.thing.id}-arrow`}>
+            <button onClick={(e) => setUnrolled(!unrolled)}>
+              {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
+            </button>
+          </div>
+        }
       </div>
+      <button
+        onClick={handleClick}
+        onContextMenu={(e) => handleContextMenu(e)}
+        style={{ width: "100%", textAlign: "left" }}
+      >
+        <p>{props.thing.title}</p>
+      </button>
       {
         contextMenuOpen
         ??

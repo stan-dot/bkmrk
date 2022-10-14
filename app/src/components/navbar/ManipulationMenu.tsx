@@ -4,8 +4,8 @@ import { exportBookmarks } from "../../io/exportBookmarks";
 import { BookmarkImportWindow } from "../../io/importBookmarks";
 
 const DotsSvg = () => {
-  const SEARCH_BUTTON_EDGE = 180;
-  const iconEdge = Math.ceil(SEARCH_BUTTON_EDGE * 0.60);
+  // const SEARCH_BUTTON_EDGE = 180;
+  // const iconEdge = Math.ceil(SEARCH_BUTTON_EDGE * 0.60);
   const searchIconStyle = {
     fill: '#727272',
   };
@@ -13,9 +13,9 @@ const DotsSvg = () => {
     version="1.1"
     x="0px"
     y="0px"
-    width={18}
-    height={64}
-    viewBox="-10 -20 45 165"
+    width={12}
+    height={49}
+    viewBox="-10 -20 80 235"
     style={searchIconStyle}
   >
     <g>
@@ -52,7 +52,7 @@ export function ManipulationMenu(
       </button>
       {showMenu
         ?? (
-          <div id="manipulationMenuContainer" style={{ position: 'absolute' }}>
+          <div id="manipulationMenuContainer" style={{ position: 'absolute', left: '90%', top: '10%' }}>
             <ul style={{ listStyle: "none", fontSize: "15px" }}>
               <li>
                 <button onClick={(v) => props.sortCallback}>

@@ -30,6 +30,7 @@ export async function getPath(
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
+  const [globalTree, setGlobalTree] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
   const [currentPath, setCurrentPath] = useState(
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
@@ -55,6 +56,7 @@ export function TableLoader(props: {}): JSX.Element {
       setRows(bookmarksBar.children ?? []);
       setLoaded(true);
       setCurrentPath([bookmarksBar]);
+      setGlobalTree(main3);
       // setLoaded(true);
       // setRows(nodes);
     });
@@ -72,8 +74,8 @@ export function TableLoader(props: {}): JSX.Element {
     }
   };
 
-
   useEffect(() => {
+    console.log('reacting to a change in path', currentPath);
     const last: chrome.bookmarks.BookmarkTreeNode = currentPath[currentPath.length - 1];
     console.log(last);
     const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
@@ -81,9 +83,19 @@ export function TableLoader(props: {}): JSX.Element {
       // display the rows there
       setRows(children);
     }
-    return () => {
-    }
   }, [currentPath])
+
+  const pathChangeHandler = (nodes: chrome.bookmarks.BookmarkTreeNode[]) => {
+    setCurrentPath(nodes);
+    console.log('reacting to a change in path', currentPath);
+    const last: chrome.bookmarks.BookmarkTreeNode = currentPath[currentPath.length - 1];
+    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
+    console.log('last element of the path', last, ' its children :', children);
+    if (children) {
+      // display the rows there
+      setRows(children);
+    }
+  }
 
 
   const SEARCH_PLACEHOLDER = "Search bookmarks";
@@ -121,15 +133,15 @@ export function TableLoader(props: {}): JSX.Element {
         ? (
           <>
             <div id="sidePanel" style={{ position: "absolute", top: "120px" }}>
-              <SideTree tree={rows} pathSetter={setCurrentPath} />
+              <SideTree tree={globalTree} pathSetter={setCurrentPath} />
             </div>
             <div
               id="mainContainer"
-              style={{ position: "absolute", top: "120px", left: "200px" }}
+              style={{ position: "absolute", top: "150px", left: "200px" }}
             // style={{ position: "relative", left: `${sideTreeWidth}px` }}g
             >
-              <PathDisplay path={currentPath} setter={setCurrentPath} />
-              <BookmarkTable rows={rows} cellClickHandler={cellClickHandler} />
+              <PathDisplay path={currentPath} setter={pathChangeHandler} />
+              <BookmarkTable rows={rows} globalClickHandler={cellClickHandler} />
             </div>
           </>
         )

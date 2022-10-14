@@ -1,13 +1,12 @@
 import { getChildrenLinks, openAllChildren } from "../../functions/ifHasChildrenFolders";
 
-export function SidePanelContextMenu(props: { thing: chrome.bookmarks.BookmarkTreeNode, position: number[] }): JSX.Element {
+export function PathDisplayContextMenu(props: { thing: chrome.bookmarks.BookmarkTreeNode, position: number[] }): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(props.thing);
   const hasChildrenLinks: boolean = childrenLinks.length > 0;
-  return <div id="sidePanelContextMenu" className="contextMenu" style={{
+  return <div id="tableContextMenu" className="contextMenu" style={{
     position: 'absolute',
     left: `${props.position[0]}px`,
     right: `${props.position[1]}px`,
-    zIndex: 5
 
   }}>
     <div className="group1">
@@ -15,8 +14,7 @@ export function SidePanelContextMenu(props: { thing: chrome.bookmarks.BookmarkTr
       <p>delete button</p>
     </div>
     <div className="group2">
-      <p>cut button</p>
-      <p>copy buton</p>
+      <p>copy path</p>
       <p>paste buton</p>
 
     </div>

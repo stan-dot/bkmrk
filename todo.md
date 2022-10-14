@@ -16,6 +16,7 @@
 
 ## navigation and interactvity
 - [ ] multiple selection with ctrl clicked and/or shift
+- [ ] react to ctrl+a clicks
 - [ ] different styles - darkmode, etc - with tailwind possibly
 - [ ] sorting A-Z, by date
 - [ ] filtering, sorting - with hooks for column header context menus

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Dispatch } from "react";
 import { isAFolder } from "./ifHasChildrenFolders";
 import { SideTreeElement } from "./SideTreeElement";
 
@@ -15,7 +15,7 @@ const styles: React.CSSProperties = {
  * @returns
  */
 export function SideTree(
-  props: { tree: chrome.bookmarks.BookmarkTreeNode[] },
+  props: { tree: chrome.bookmarks.BookmarkTreeNode[], pathSetter: Dispatch<React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>> },
 ): JSX.Element {
   return (
     <div id="vericalHoriontalScrollArea" style={styles} className='dev-test-outline'>

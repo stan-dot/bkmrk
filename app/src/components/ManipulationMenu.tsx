@@ -52,7 +52,7 @@ export function ManipulationMenu(
       </button>
       {showMenu
         ?? (
-          <div id="manipulationMenuContainer">
+          <div id="manipulationMenuContainer" style={{ position: 'absolute' }}>
             <ul style={{ listStyle: "none", fontSize: "15px" }}>
               <li>
                 <button onClick={(v) => props.sortCallback}>

@@ -2,12 +2,6 @@ import React from "react";
 
 
 
-export const basicNodes: string[] = [
-  'Bookmarks bar',
-  'Mobile bookmarks',
-  'Other bookmarks'
-];
-
 export function DisplayCurrentPath(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
   setter: React.Dispatch<React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>>;

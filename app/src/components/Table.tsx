@@ -3,9 +3,26 @@ import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
 import { BookmarkTable } from "./BookmarkTable";
 import { DisplayCurrentPath } from "./DisplayCurrentPath";
+import { isAFolder } from "./ifHasChildrenFolders";
 import { ManipulationMenu } from "./ManipulationMenu";
 import { SearchField } from "./SearchField";
 import { SideTree } from "./SideTree";
+
+/**
+ * todo this needs to find the easiest path for the final root
+ * @param node 
+ */
+export async function getPath(node: chrome.bookmarks.BookmarkTreeNode): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
+  let output: chrome.bookmarks.BookmarkTreeNode[] = [node];
+  let lastNode: chrome.bookmarks.BookmarkTreeNode = node;
+  while (lastNode.parentId) {
+    const parent = await chrome.bookmarks.get(lastNode.parentId);
+    console.log('getting parent of the clicked element', parent);
+    output.unshift(parent[0]);
+    lastNode = parent[0];
+  }
+  return output;
+}
 
 export const BrandingSection = () => {
   const SEARCH_BUTTON_EDGE = 180;
@@ -69,8 +86,15 @@ export function TableLoader(props: {}): JSX.Element {
   }
 
   const cellClickHandler = (cell: Item, event: CellClickedEventArgs) => {
+    // check if it's folder or a bookmark
     const bookmark: chrome.bookmarks.BookmarkTreeNode = rows[cell[1]];
-    chrome.tabs.create({ url: bookmark.url });
+    if (isAFolder(bookmark)) {
+      getPath(bookmark).then(path => {
+        setCurrentPath(path);
+      })
+    } else {
+      chrome.tabs.create({ url: bookmark.url });
+    }
   };
 
   const SEARCH_PLACEHOLDER = "Search bookmarks";
@@ -107,9 +131,9 @@ export function TableLoader(props: {}): JSX.Element {
       {loaded
         ? (
           <>
-            <div id="sidePanel" style={{ position: "absolute", top: "120px"}}
+            <div id="sidePanel" style={{ position: "absolute", top: "120px" }}
             >
-              <SideTree tree={rows} />
+              <SideTree tree={rows} pathSetter={setCurrentPath} />
             </div>
             <div
               id="mainContainer"

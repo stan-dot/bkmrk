@@ -40,3 +40,6 @@ body{
     transform: rotate(360deg);
   }
 }
+.contextMenu * {
+  font-size: small;
+}

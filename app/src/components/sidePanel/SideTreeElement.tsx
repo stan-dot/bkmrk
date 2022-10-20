@@ -1,7 +1,8 @@
-import { Dispatch, MouseEvent, useState } from "react";
-import { ifLeaveNode } from "../../functions/ifHasChildrenFolders";
+import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
+import { ifLeafNode } from "../../functions/ifHasChildrenFolders";
 import { getPath } from "../getPath";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
+import { SideSubTree } from "./SideSubTree";
 
 const WIDTH_OF_NODE = 120;
 const sideTreElementStyles: React.CSSProperties = {
@@ -24,18 +25,18 @@ export function SideTreeElement(
       React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
     >;
     unrolled: boolean;
+    path: chrome.bookmarks.BookmarkTreeNode[];
   },
 ): JSX.Element {
   const [position, setPosition] = useState([0, 0]);
   const [unrolled, setUnrolled] = useState(props.unrolled);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
-  const leafNode: boolean = ifLeaveNode(props.thing);
+  const isALeafNode: boolean = ifLeafNode(props.thing);
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
       props.pathSetter(path);
     });
   };
-
 
   const handleContextMenu = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
@@ -57,7 +58,7 @@ export function SideTreeElement(
       <button
         id={`${props.thing.id}-arrow`}
         onClick={(e) => setUnrolled(!unrolled)}
-        style={{ visibility: leafNode ? "visible" : "hidden" }}
+        style={{ visibility: isALeafNode ? "visible" : "hidden" }}
       >
         {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
       </button>
@@ -68,11 +69,15 @@ export function SideTreeElement(
       >
         <p>{props.thing.title}</p>
       </button>
-      {
-        contextMenuOpen
-        &&
-        <SidePanelContextMenu thing={props.thing} position={position} />
-      }
+      {contextMenuOpen &&
+        <SidePanelContextMenu thing={props.thing} position={position} />}
+      {unrolled && !isALeafNode && (
+        <SideSubTree
+          nodes={props.thing.children!}
+          pathSetter={props.pathSetter}
+          path={props.path}
+        />
+      )}
     </div>
   );
 }

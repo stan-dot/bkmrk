@@ -1,6 +1,5 @@
 import React, { Dispatch } from "react";
-import { isAFolder } from "../../functions/ifHasChildrenFolders";
-import { SideTreeElement } from "./SideTreeElement";
+import { SideSubTree } from "./SideSubTree";
 
 const styles: React.CSSProperties = {
   position: "fixed",
@@ -30,12 +29,11 @@ export function SideTree(
       className="dev-test-outline"
     >
       <div id="mainStyledSideTreeBox">
-        {props.tree.filter(isAFolder).map(
-          (node: chrome.bookmarks.BookmarkTreeNode) => {
-            const unrolled = props.path.includes(node);
-            return <SideTreeElement thing={node} pathSetter={props.pathSetter} unrolled={unrolled} />;
-          },
-        )}
+        <SideSubTree
+          nodes={props.tree}
+          pathSetter={props.pathSetter}
+          path={props.tree}
+        />
       </div>
     </div>
   );

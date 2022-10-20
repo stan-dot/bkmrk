@@ -3,6 +3,7 @@ import { getChildrenLinks, openAllChildren } from "../../functions/ifHasChildren
 export function SidePanelContextMenu(props: { thing: chrome.bookmarks.BookmarkTreeNode, position: number[] }): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(props.thing);
   const hasChildrenLinks: boolean = childrenLinks.length > 0;
+  console.log('rendering side panel context menu for', props.thing.title);
   return <div id="sidePanelContextMenu" className="contextMenu" style={{
     position: 'absolute',
     left: `${props.position[0]}px`,

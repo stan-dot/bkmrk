@@ -8,24 +8,7 @@ import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
 import { SideTree } from "./sidePanel/SideTree";
 import { PathDisplay } from "./table/PathDisplay";
-
-/**
- * todo this needs to find the easiest path for the final root
- * @param node
- */
-export async function getPath(
-  node: chrome.bookmarks.BookmarkTreeNode,
-): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
-  let output: chrome.bookmarks.BookmarkTreeNode[] = [node];
-  let lastNode: chrome.bookmarks.BookmarkTreeNode = node;
-  while (lastNode.parentId) {
-    const parent = await chrome.bookmarks.get(lastNode.parentId);
-    console.log("getting parent of the clicked element", parent);
-    output.unshift(parent[0]);
-    lastNode = parent[0];
-  }
-  return output;
-}
+import { getPath } from "./getPath";
 
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
@@ -37,44 +20,28 @@ export function TableLoader(props: {}): JSX.Element {
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
 
-  const DEV_NUMBER_OF_BOOKMARKS = 10000;
-  if (rows.length === 0) {
+  if (!loaded) {
     // const idsNumber: number[] = [...Array(DEV_NUMBER_OF_BOOKMARKS).keys()];
     // console.log('ids number:', idsNumber);
     // const ids: string[] = idsNumber.map(v => v.toString());
     // console.log('ids:', ids);
-
     const rootPromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome
       .bookmarks.getTree();
-    // const treePromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome
-    //   .bookmarks.get(ids);
-    // NOTE: the gettree returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarkq
+
+    /**
+     * NOTE: the getTree method returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarkq
+     */
     rootPromise.then((root: chrome.bookmarks.BookmarkTreeNode[]) => {
       const main3: chrome.bookmarks.BookmarkTreeNode[] = root[0].children!;
       console.log(main3);
       // try loading bookmarks bar
       const bookmarksBar = main3[0];
-      console.log("displaying the bookmarks bar");
       setRows(bookmarksBar.children ?? []);
       setLoaded(true);
-      setCurrentPath([bookmarksBar]);
+      setCurrentPath([root[0], bookmarksBar]);
       setGlobalTree(main3);
-      // setLoaded(true);
-      // setRows(nodes);
     });
   }
-
-  const cellClickHandler = (cell: Item, event: CellClickedEventArgs) => {
-    // check if it's folder or a bookmark
-    const bookmark: chrome.bookmarks.BookmarkTreeNode = rows[cell[1]];
-    if (isAFolder(bookmark)) {
-      getPath(bookmark).then((path) => {
-        setCurrentPath(path);
-      });
-    } else {
-      chrome.tabs.create({ url: bookmark.url });
-    }
-  };
 
   useEffect(() => {
     console.log("reacting to a change in path", currentPath);
@@ -98,10 +65,10 @@ export function TableLoader(props: {}): JSX.Element {
     );
     const currentLocationLastOnPath: chrome.bookmarks.BookmarkTreeNode =
       nodesForNewPath[nodesForNewPath.length - 1];
-    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
-      currentLocationLastOnPath?.children ?? undefined;
+    const children: chrome.bookmarks.BookmarkTreeNode[] =
+      currentLocationLastOnPath?.children ?? [];
     setCurrentPath(nodesForNewPath);
-    children ? setRows(children) : setRows([]);
+    setRows(children);
     console.log(
       "last element of the path",
       currentLocationLastOnPath,
@@ -159,7 +126,7 @@ export function TableLoader(props: {}): JSX.Element {
               <PathDisplay path={currentPath} setter={pathChangeHandler} />
               <BookmarkTable
                 rows={rows}
-                globalClickHandler={cellClickHandler}
+                pathChangeHandler={pathChangeHandler}
               />
             </div>
           </>
@@ -178,16 +145,4 @@ export function TableLoader(props: {}): JSX.Element {
         )}
     </>
   );
-}
-
-function traverseBookmarks(
-  bookmarkTreeNodes: chrome.bookmarks.BookmarkTreeNode[],
-): void {
-  bookmarkTreeNodes.map((node: chrome.bookmarks.BookmarkTreeNode) => {
-    console.log(node.title, node.url ? node.url : "[Folder]");
-    // todo here execute other necessary actions
-    if (node.children) {
-      traverseBookmarks(node.children);
-    }
-  });
 }

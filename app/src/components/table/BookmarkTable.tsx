@@ -3,6 +3,8 @@ import DataEditor, {
   Item
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
+import { isAFolder } from "../../functions/ifHasChildrenFolders";
+import { getPath } from "../getPath";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
 import { TableContextMenu } from "./TableContextMenu";
@@ -10,7 +12,7 @@ import { TableContextMenu } from "./TableContextMenu";
 export function BookmarkTable(
   props: {
     rows: chrome.bookmarks.BookmarkTreeNode[];
-    globalClickHandler: (cell: Item, event: CellClickedEventArgs) => void;
+    pathChangeHandler: (nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[]) => void
   },
 ): JSX.Element {
   const [searchVisibility, setSearchVisibility] = useState(false);
@@ -34,11 +36,21 @@ export function BookmarkTable(
     }
     // todo here create highlight"
   };
-
+  const globalClickHandler = (cell: Item, event: CellClickedEventArgs) => {
+    // check if it's folder or a bookmark
+    const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
+    if (isAFolder(bookmark)) {
+      getPath(bookmark).then((path) => {
+        props.pathChangeHandler(path);
+      });
+    } else {
+      chrome.tabs.create({ url: bookmark.url });
+    }
+  };
   return <div onClick={contextClickHandler} className='dev-test-outline' style={{ position: 'fixed' }}>
     {showContextMenu ?? <TableContextMenu thing={props.rows[lastInteractedItem[1]]} position={position} />}
     <DataEditor
-      onCellClicked={props.globalClickHandler}
+      onCellClicked={globalClickHandler}
       onHeaderClicked={() => console.log("clicked header")}
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         setLastInteractedItem(cell);

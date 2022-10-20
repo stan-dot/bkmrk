@@ -1,10 +1,15 @@
 import { Dispatch, MouseEvent, useState } from "react";
-import { ifHasChildrenFolders } from "../../functions/ifHasChildrenFolders";
-import { getPath } from "../Table";
+import { ifLeaveNode } from "../../functions/ifHasChildrenFolders";
+import { getPath } from "../getPath";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
 
 const WIDTH_OF_NODE = 120;
-
+const sideTreElementStyles: React.CSSProperties = {
+  display: "flex",
+  width: WIDTH_OF_NODE,
+  border: "1px solid",
+  borderColor: "red",
+};
 
 /**
  * for side displaying FOLDERS ONLY
@@ -14,7 +19,7 @@ const WIDTH_OF_NODE = 120;
  */
 export function SideTreeElement(
   props: {
-    thing: chrome.bookmarks.BookmarkTreeNode,
+    thing: chrome.bookmarks.BookmarkTreeNode;
     pathSetter: Dispatch<
       React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
     >;
@@ -24,50 +29,47 @@ export function SideTreeElement(
   const [position, setPosition] = useState([0, 0]);
   const [unrolled, setUnrolled] = useState(props.unrolled);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
-  const hasChildrenFolders: boolean = ifHasChildrenFolders(props.thing);
+  const leafNode: boolean = ifLeaveNode(props.thing);
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    // console.log("should change the path to this dir");
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
       props.pathSetter(path);
     });
   };
 
-  const handleContextMenu = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+
+  const handleContextMenu = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  ) => {
     console.log("clicked the side button");
     e.preventDefault();
     e.stopPropagation();
     setPosition([e.pageX, e.pageY]);
     setContextMenuOpen(true);
   };
+  // https://www.svgrepo.com/svg/175769/down-arrow
+  // todo add this
 
   return (
     <div
-      style={{ display: "flex", width: WIDTH_OF_NODE, border: '1px solid', borderColor: 'red' }}
+      style={sideTreElementStyles}
       id={`${props.thing.id}-side-tree-row`}
     >
-      <div>
-        {
-          hasChildrenFolders
-          ??
-          <div id={`${props.thing.id}-arrow`}>
-            <button onClick={(e) => setUnrolled(!unrolled)}>
-              {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
-            </button>
-          </div>
-        }
-      </div>
+      <button
+        id={`${props.thing.id}-arrow`}
+        onClick={(e) => setUnrolled(!unrolled)}
+        style={{ visibility: leafNode ? "visible" : "hidden" }}
+      >
+        {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
+      </button>
       <button
         onClick={handleClick}
         onContextMenu={(e) => handleContextMenu(e)}
-        style={{ width: "100%", textAlign: "left" }}
+        style={{ width: "80%", textAlign: "left" }}
       >
         <p>{props.thing.title}</p>
       </button>
-      {
-        contextMenuOpen
-        ??
-        <SidePanelContextMenu thing={props.thing} position={position} />
-      }
+      {contextMenuOpen ??
+        <SidePanelContextMenu thing={props.thing} position={position} />}
     </div>
   );
 }

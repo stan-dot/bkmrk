@@ -31,7 +31,6 @@ export function PathDisplay(props: {
       0,
       index,
     );
-    console.log(slicedPath);
     /**
      * cases when want to change to the root or to the last(current) element
      */

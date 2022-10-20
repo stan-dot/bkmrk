@@ -2,6 +2,11 @@ import React, { Dispatch } from "react";
 import { isAFolder } from "../../functions/ifHasChildrenFolders";
 import { SideTreeElement } from "./SideTreeElement";
 
+const subTreeStyles: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column'
+}
+
 export function SideSubTree(props: {
   nodes: chrome.bookmarks.BookmarkTreeNode[];
   pathSetter: Dispatch<
@@ -9,8 +14,9 @@ export function SideSubTree(props: {
   >;
   path: chrome.bookmarks.BookmarkTreeNode[];
 }): JSX.Element {
+
   return (
-    <>
+    <div>
       {props.nodes.filter(isAFolder).map((n) => (
         <SideTreeElement
           thing={n}
@@ -18,6 +24,6 @@ export function SideSubTree(props: {
           unrolled={props.path.includes(n)}
           path={props.path} />
       ))}
-    </>
+    </div>
   );
 }

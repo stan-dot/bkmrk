@@ -1,14 +1,21 @@
-import { CellClickedEventArgs, Item } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useEffect, useState } from "react";
-import { BookmarkTable } from "./table/BookmarkTable";
 import { BrandingSection } from "./navbar/BrandingSection";
-import { isAFolder } from "../functions/ifHasChildrenFolders";
 import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
 import { SideTree } from "./sidePanel/SideTree";
+import { BookmarkTable } from "./table/BookmarkTable";
 import { PathDisplay } from "./table/PathDisplay";
-import { getPath } from "./getPath";
+
+const navStyles: React.CSSProperties = {
+  justifyContent: "space-between",
+  display: "inline-flex",
+  position: "fixed",
+  width: "100%",
+  left: "0px",
+  border: "2px solid",
+  borderColor: "red",
+};
 
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
@@ -21,26 +28,22 @@ export function TableLoader(props: {}): JSX.Element {
   );
 
   if (!loaded) {
-    // const idsNumber: number[] = [...Array(DEV_NUMBER_OF_BOOKMARKS).keys()];
-    // console.log('ids number:', idsNumber);
-    // const ids: string[] = idsNumber.map(v => v.toString());
-    // console.log('ids:', ids);
-    const rootPromise: Promise<chrome.bookmarks.BookmarkTreeNode[]> = chrome
-      .bookmarks.getTree();
-
     /**
-     * NOTE: the getTree method returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarkq
+     * NOTE: the getTree method returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarks.
+     * these only show up if not empty
      */
-    rootPromise.then((root: chrome.bookmarks.BookmarkTreeNode[]) => {
-      const main3: chrome.bookmarks.BookmarkTreeNode[] = root[0].children!;
-      console.log(main3);
-      // try loading bookmarks bar
-      const bookmarksBar = main3[0];
-      setRows(bookmarksBar.children ?? []);
-      setLoaded(true);
-      setCurrentPath([root[0], bookmarksBar]);
-      setGlobalTree(main3);
-    });
+    chrome.bookmarks.getTree().then(
+      (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+        const main3: chrome.bookmarks.BookmarkTreeNode[] = root[0].children!;
+        console.log(main3);
+        // try loading bookmarks bar
+        const bookmarksBar = main3[0];
+        setRows(bookmarksBar.children ?? []);
+        setLoaded(true);
+        setCurrentPath([root[0], bookmarksBar]);
+        setGlobalTree(main3);
+      },
+    );
   }
 
   useEffect(() => {
@@ -50,6 +53,7 @@ export function TableLoader(props: {}): JSX.Element {
     const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
       last?.children ?? undefined;
     if (children) {
+      console.log("about to set path to children:", children);
       setRows(children);
     }
   }, [currentPath]);
@@ -68,27 +72,19 @@ export function TableLoader(props: {}): JSX.Element {
     const children: chrome.bookmarks.BookmarkTreeNode[] =
       currentLocationLastOnPath?.children ?? [];
     setCurrentPath(nodesForNewPath);
+    console.log("about to set path to children:", children);
     setRows(children);
-    console.log(
-      "last element of the path",
-      currentLocationLastOnPath,
-      " its children :",
-      children,
-    );
+    // console.log(
+    //   "last element of the path",
+    //   currentLocationLastOnPath,
+    //   " its children :",
+    //   children,
+    // );
   };
 
   const SEARCH_PLACEHOLDER = "Search bookmarks";
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
 
-  const navStyles: React.CSSProperties = {
-    justifyContent: "space-between",
-    display: "inline-flex",
-    position: "fixed",
-    width: "100%",
-    left: "0px",
-    border: "2px solid",
-    borderColor: "red",
-  };
   return (
     <>
       <nav style={navStyles}>

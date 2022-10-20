@@ -43,3 +43,11 @@ body{
 .contextMenu * {
   font-size: small;
 }
+
+.contextMenu > button{
+  width: '100%'
+}
+
+p{
+  font-size: smaller;
+}

@@ -14,6 +14,7 @@
 - [ ] make some nodes impossible to delete, rename if it's a stuck variant
 - [ ] todo get the local timezone
 - [ ] console.log(date.toLocaleString('en-GB', { timeZone: 'UTC' }));
+- [ ] on click elsewhere anyt context menu should automatically change
 
 ## navigation and interactvity
 - [ ] context menus for

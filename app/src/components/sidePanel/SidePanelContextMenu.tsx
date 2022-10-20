@@ -14,6 +14,7 @@ function getStyles(position: number[]): React.CSSProperties {
     borderColor: "#FF0000",
     background: "solid",
     backgroundColor: "coral",
+    width: 'fit-content'
   };
 }
 

@@ -20,6 +20,7 @@ export function ManipulationMenu(
     console.log('clicked the side button', showMenu);
     setShowMenu(!showMenu)
   };
+
   // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
   // todo there should be dialog popups for the new bookmark and new folder
   // todo add a theme selection panel to the options
@@ -30,7 +31,7 @@ export function ManipulationMenu(
       </button>
       {showMenu
         && (
-          <div id="manipulationMenuContainer" style={{ position: 'absolute', left: '90%', top: '10%' }}>
+          <div id="manipulationMenuContainer" style={{ position: 'absolute', left: '-190%', top: '90%' }}>
             <ul style={{ listStyle: "none", fontSize: "15px" }}>
               <li>
                 <button onClick={(v) => props.sortCallback}>

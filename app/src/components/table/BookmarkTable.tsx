@@ -48,7 +48,7 @@ export function BookmarkTable(
     }
   };
   return <div onClick={contextClickHandler} className='dev-test-outline' style={{ position: 'fixed' }}>
-    {showContextMenu && <TableContextMenu thing={props.rows[lastInteractedItem[1]]} position={position} />}
+    {/* {showContextMenu && <TableContextMenu thing={props.rows[lastInteractedItem[1]]} position={position} />} */}
     <DataEditor
       onCellClicked={globalClickHandler}
       onHeaderClicked={() => console.log("clicked header")}

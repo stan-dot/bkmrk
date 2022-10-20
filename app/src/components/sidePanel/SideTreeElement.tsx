@@ -19,7 +19,8 @@ const sideTreeElementContainerStyles: React.CSSProperties = {
 
 const sideTreeElementStyles: React.CSSProperties = {
   display: "flex",
-  width: WIDTH_OF_NODE,
+  minWidth: WIDTH_OF_NODE,
+  width: 'fit-content',
   border: "1px solid",
   borderColor: "purple",
   justifyContent: 'space-between',
@@ -56,7 +57,7 @@ export function SideTreeElement(
   const handleContextMenu = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => {
-    console.log("clicked the side button");
+    console.log("summoned the context menu on", props.thing.title);
     e.preventDefault();
     e.stopPropagation();
     setPosition([e.pageX, e.pageY]);

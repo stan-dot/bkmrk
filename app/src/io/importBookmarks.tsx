@@ -45,12 +45,12 @@ export function BookmarkImportWindow(props: { callback: Function }): JSX.Element
     setOpen(false);
   }
 
-  return <dialog open={open }>
+  return <dialog open={open}>
     <p>
-      test
+      test bookmark import window
     </p>
-    <input type='file' onInput={v=>setFileName('testname')}>your file: {fileName}</input>
-    <button disabled={fileName === EMPTY_NAME} onClick={v=>handleClick(fileName)}>
+    <input type='file' onInput={v => setFileName('testname')} value={`your file: ${fileName}`} />
+    <button disabled={fileName === EMPTY_NAME} onClick={v => handleClick(fileName)}>
       OK
     </button>
   </dialog>

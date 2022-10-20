@@ -15,6 +15,7 @@ const navStyles: React.CSSProperties = {
   left: "0px",
   border: "2px solid",
   borderColor: "red",
+  zIndex: 10
 };
 
 export function TableLoader(props: {}): JSX.Element {
@@ -34,14 +35,11 @@ export function TableLoader(props: {}): JSX.Element {
      */
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-        const main3: chrome.bookmarks.BookmarkTreeNode[] = root[0].children!;
-        console.log(main3);
-        // try loading bookmarks bar
-        const bookmarksBar = main3[0];
-        setRows(bookmarksBar.children ?? []);
         setLoaded(true);
+        setGlobalTree(root[0].children!);
+        const bookmarksBar = root[0].children![0];
+        setRows(bookmarksBar.children ?? []);
         setCurrentPath([root[0], bookmarksBar]);
-        setGlobalTree(main3);
       },
     );
   }
@@ -118,7 +116,7 @@ export function TableLoader(props: {}): JSX.Element {
               id="mainContainer"
               style={{ position: "absolute", top: "150px", left: "200px" }}
             >
-              <PathDisplay path={currentPath} setter={pathChangeHandler} />
+              <PathDisplay path={currentPath} globalPathChanger={pathChangeHandler} />
               <BookmarkTable
                 rows={rows}
                 pathChangeHandler={pathChangeHandler}

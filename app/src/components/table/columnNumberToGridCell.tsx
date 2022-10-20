@@ -4,12 +4,12 @@ import { GridCell, GridCellKind } from "@glideapps/glide-data-grid";
 
 export const columns: GridColumn[] = [
   // { title: "index", width: 40 },
-  // { title: "ID", width: 400, group: 'Core' },
-  { title: "URL", width: 100, group: 'Core' },
-  { title: "Title", width: 400, group: 'Core' },
-  // { title: "parentId", width: 100, group: 'Core' },
-  { title: "Date Added", width: 100, group: 'Superuser' },
-  // { title: "Number of Children", width: 100, group: 'Superuser' },
+  // { title: "ID", width: 400},
+  { title: "Date Added", width: 300 },
+  { title: "URL", width: 100 },
+  { title: "Title", width: 600 },
+  { title: "Number of Children", width: 200 },
+  // { title: "parentId", width: 100},
   // { title: "Unmodifiable", width: 100, group: 'Extra' },
 ];
 
@@ -26,7 +26,7 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
   //   return cell;
   // }],
   // date added
-  [1, (v) => {
+  [0, (v) => {
     const date: Date = new Date(v.dateAdded || 0);
     const cell: GridCell = {
       kind: GridCellKind.Text,
@@ -37,7 +37,7 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
     return cell;
   }],
   // url
-  [2, (v) => {
+  [1, (v) => {
     return {
       kind: GridCellKind.Text,
       data: v.url ? v.url : '',
@@ -46,12 +46,21 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
     };
   }],
   // title
-  [3, (v) => {
+  [2, (v) => {
     return {
       kind: GridCellKind.Text,
       data: v.title,
       allowOverlay: false,
       displayData: v.title,
+    };
+  }],
+  // number of Children
+  [3, (v) => {
+    return {
+      kind: GridCellKind.Text,
+      data: v.children ? v.children.length.toString() : '0',
+      allowOverlay: false,
+      displayData: v.children ? v.children.length.toString() : '0',
     };
   }],
   // ID
@@ -72,24 +81,15 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
   //     displayData: v.parentId ? v.parentId! : 'root',
   //   };
   // }],
-  // number of Children
-  [6, (v) => {
-    return {
-      kind: GridCellKind.Text,
-      data: v.children ? v.children.length.toString() : '0',
-      allowOverlay: false,
-      displayData: v.children ? v.children.length.toString() : '0',
-    };
-  }],
   // Unmodifiable
-  [7, (v) => {
-    return {
-      kind: GridCellKind.Text,
-      data: v.unmodifiable ? v.unmodifiable : '',
-      allowOverlay: false,
-      displayData: v.unmodifiable ? v.unmodifiable : '',
-    };
-  }],
+  // [4, (v) => {
+  //   return {
+  //     kind: GridCellKind.Text,
+  //     data: v.unmodifiable ? v.unmodifiable : '',
+  //     allowOverlay: false,
+  //     displayData: v.unmodifiable ? v.unmodifiable : '',
+  //   };
+  // }],
 ]);
 
 export const DEFAULT_GRID_CELL: LoadingCell = {

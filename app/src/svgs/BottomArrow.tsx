@@ -9,7 +9,7 @@ export function BottomArrow() {
       height={30}
       fill-rule="evenodd"
       clip-rule="evenodd"
-      viewBox="-60 -70 500 600"
+      viewBox="-60 -100 500 600"
     >
       <g>
         <path

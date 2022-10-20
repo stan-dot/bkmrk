@@ -1,8 +1,5 @@
 import React from "react";
-
-function stringifyPath(nodes: chrome.bookmarks.BookmarkTreeNode[]): string {
-  return nodes.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join("/");
-}
+import { PathItem } from "./PathItem";
 
 const pathDisplayStyle: React.CSSProperties = {
   position: "fixed",
@@ -16,17 +13,15 @@ const pathDisplayStyle: React.CSSProperties = {
 
 export function PathDisplay(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
-  setter: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
+  globalPathChanger: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }): JSX.Element {
-  // const [position, setPosition] = useState([0, 0]);
-  // const [contextMenuVisibility, setContextMenuVisibility] = useState(false);
 
   /**
    * goes backs, changes the current location, the current path
    */
   const handleClick = (
     index: number,
-  ) => {
+  ): void => {
     const slicedPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
       0,
       index,
@@ -39,35 +34,27 @@ export function PathDisplay(props: {
         0,
         index,
       );
-      props.setter(newPath);
+      props.globalPathChanger(newPath);
     }
   };
 
-  const handleContextMenuClick = () => {
+  const handleContextMenuClick = (node: chrome.bookmarks.BookmarkTreeNode): void => {
   };
 
-  const handleCopyOption = () => {
-    const text: string = stringifyPath(props.path);
-    window.navigator.clipboard.writeText(text);
-    // todo some sweet alert to notify it's copied
-  };
 
   return (
     <div style={pathDisplayStyle}>
-      {/* {contextMenuVisibility ?? <PathDisplayContextMenu thing={ } position={position} />} */}
       <div style={{ display: "flex", justifyContent: "start" }}>
-        {props.path.map(
-          (node: chrome.bookmarks.BookmarkTreeNode, index: number) => {
-            return (
-              <div style={{ display: "flex", justifyContent: "start" }}>
-                {"/"}
-                <button onClick={(v) => handleClick(index)}>
-                  {node.title}
-                </button>
-              </div>
-            );
-          },
-        )}
+        {
+          props.path.map((n, i) => (
+            <PathItem
+              handleClick={handleClick}
+              index={i}
+              node={n}
+              contextMenuHandler={handleContextMenuClick}
+            />
+          ))
+        }
       </div>
       <button onClick={() => handleClick(props.path.length - 1)}>
         [..]

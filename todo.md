@@ -15,6 +15,7 @@
 - [ ] todo get the local timezone
 - [ ] console.log(date.toLocaleString('en-GB', { timeZone: 'UTC' }));
 - [ ] on click elsewhere anyt context menu should automatically change
+- [ ] the open in incognito doesn't work
 
 ## navigation and interactvity
 - [ ] context menus for
@@ -30,6 +31,7 @@
 - [ ] if a folder, on click it should open
 - [ ] use [this](https://www.pluralsight.com/guides/how-to-create-a-right-click-menu-using-react) example to create a new context menu div @ any location - just need to track position, then using absolute location
 - [ ] when clicking anywhere, 2 options - add new bookmark, add new folder
+- [ ] cypress tests - maybe
 
 ## extra context menus
 - [ ] add sorting by website - from a context menu

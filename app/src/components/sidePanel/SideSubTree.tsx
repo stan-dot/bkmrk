@@ -2,7 +2,6 @@ import React, { Dispatch } from "react";
 import { isAFolder } from "../../functions/ifHasChildrenFolders";
 import { SideTreeElement } from "./SideTreeElement";
 
-
 export function SideSubTree(props: {
   nodes: chrome.bookmarks.BookmarkTreeNode[];
   pathSetter: Dispatch<
@@ -14,13 +13,14 @@ export function SideSubTree(props: {
   return (
     <div style={{ position: 'relative', left: '5%' }}>
       {
-        props.nodes.filter(isAFolder).map((n) => (
-          <SideTreeElement
+        props.nodes.filter(isAFolder).map((n) => {
+          const unrolled: boolean = props.path.includes(n);
+          return < SideTreeElement
             thing={n}
             pathSetter={props.pathSetter}
-            unrolled={props.path.includes(n)}
+            unrolled={unrolled}
             path={props.path} />
-        ))
+        })
       }
     </div >
   );

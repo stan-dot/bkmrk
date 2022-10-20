@@ -1,7 +1,7 @@
 import React, { Dispatch } from "react";
 import { SideSubTree } from "./SideSubTree";
 
-const styles: React.CSSProperties = {
+const rootSideTreeStyles: React.CSSProperties = {
   position: "absolute",
   left: "20px",
 };
@@ -25,16 +25,14 @@ export function SideTree(
   return (
     <div
       id="vericalHoriontalScrollArea"
-      style={styles}
+      style={rootSideTreeStyles}
       className="dev-test-outline"
     >
-      <div id="mainStyledSideTreeBox">
-        <SideSubTree
-          nodes={props.tree}
-          pathSetter={props.pathSetter}
-          path={props.tree}
-        />
-      </div>
+      <SideSubTree
+        nodes={props.tree}
+        pathSetter={props.pathSetter}
+        path={props.tree}
+      />
     </div>
   );
 }

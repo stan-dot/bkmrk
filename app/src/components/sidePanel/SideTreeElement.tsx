@@ -5,11 +5,14 @@ import { SidePanelContextMenu } from "./SidePanelContextMenu";
 import { SideSubTree } from "./SideSubTree";
 
 const WIDTH_OF_NODE = 120;
-const sideTreElementStyles: React.CSSProperties = {
+const sideTreeElementStyles: React.CSSProperties = {
   display: "flex",
   width: WIDTH_OF_NODE,
   border: "1px solid",
-  borderColor: "red",
+  borderColor: "purple",
+  justifyContent: 'space-between',
+  height: 'fit-content',
+  flexDirection: 'column'
 };
 
 /**
@@ -49,28 +52,32 @@ export function SideTreeElement(
   };
   // https://www.svgrepo.com/svg/175769/down-arrow
   // todo add this
-
   return (
     <div
-      style={sideTreElementStyles}
-      id={`${props.thing.id}-side-tree-row`}
+      style={sideTreeElementStyles}
+      id={`${props.thing.id}-side-tree-container`}
     >
-      <button
-        id={`${props.thing.id}-arrow`}
-        onClick={(e) => setUnrolled(!unrolled)}
-        style={{ visibility: isALeafNode ? "visible" : "hidden" }}
+      <div
+        style={sideTreeElementStyles}
+        id={`${props.thing.id}-side-tree-row`}
       >
-        {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
-      </button>
-      <button
-        onClick={handleClick}
-        onContextMenu={(e) => handleContextMenu(e)}
-        style={{ width: "80%", textAlign: "left" }}
-      >
-        <p>{props.thing.title}</p>
-      </button>
-      {contextMenuOpen &&
-        <SidePanelContextMenu thing={props.thing} position={position} />}
+        <button
+          id={`${props.thing.id}-arrow`}
+          onClick={(e) => setUnrolled(!unrolled)}
+          style={{ visibility: isALeafNode ? "visible" : "hidden" }}
+        >
+          {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
+        </button>
+        <button
+          onClick={handleClick}
+          onContextMenu={(e) => handleContextMenu(e)}
+          style={{ width: "80%", textAlign: "left" }}
+        >
+          <p>{props.thing.title}</p>
+        </button>
+        {contextMenuOpen &&
+          <SidePanelContextMenu thing={props.thing} position={position} />}
+      </div>
       {unrolled && !isALeafNode && (
         <SideSubTree
           nodes={props.thing.children!}

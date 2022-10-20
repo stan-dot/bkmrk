@@ -1,6 +1,6 @@
-export function ifLeafNode(item: chrome.bookmarks.BookmarkTreeNode): boolean {
+export function ifIsALeafNode(item: chrome.bookmarks.BookmarkTreeNode): boolean {
   if (!item.children) {
-    return false;
+    return true;
   }
   const existingChildFolder: chrome.bookmarks.BookmarkTreeNode | undefined = item.children.find(v => isAFolder(v));
   return existingChildFolder ? false:true;

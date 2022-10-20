@@ -1,8 +1,3 @@
-/**
- * todo this needs to find the easiest path for the final root
- * @param node
- */
-
 export async function getPath(
   node: chrome.bookmarks.BookmarkTreeNode
 ): Promise<chrome.bookmarks.BookmarkTreeNode[]> {

@@ -1,11 +1,13 @@
 import { Dispatch, MouseEvent, SetStateAction, useState } from "react";
-import { ifLeafNode } from "../../functions/ifHasChildrenFolders";
+import { ifIsALeafNode } from "../../functions/ifHasChildrenFolders";
+import { BottomArrow } from "../../svgs/BottomArrow";
+import { RightArrow } from "../../svgs/RightArrow";
 import { getPath } from "../getPath";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
 import { SideSubTree } from "./SideSubTree";
 
 const WIDTH_OF_NODE = 120;
-const sideTreeElementStyles: React.CSSProperties = {
+const sideTreeElementContainerStyles: React.CSSProperties = {
   display: "flex",
   width: WIDTH_OF_NODE,
   border: "1px solid",
@@ -13,6 +15,16 @@ const sideTreeElementStyles: React.CSSProperties = {
   justifyContent: 'space-between',
   height: 'fit-content',
   flexDirection: 'column'
+};
+
+const sideTreeElementStyles: React.CSSProperties = {
+  display: "flex",
+  width: WIDTH_OF_NODE,
+  border: "1px solid",
+  borderColor: "purple",
+  justifyContent: 'space-between',
+  height: 'fit-content',
+  flexDirection: 'row'
 };
 
 /**
@@ -34,7 +46,7 @@ export function SideTreeElement(
   const [position, setPosition] = useState([0, 0]);
   const [unrolled, setUnrolled] = useState(props.unrolled);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
-  const isALeafNode: boolean = ifLeafNode(props.thing);
+  const isALeafNode: boolean = ifIsALeafNode(props.thing);
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
       props.pathSetter(path);
@@ -50,11 +62,12 @@ export function SideTreeElement(
     setPosition([e.pageX, e.pageY]);
     setContextMenuOpen(true);
   };
+
   // https://www.svgrepo.com/svg/175769/down-arrow
   // todo add this
   return (
     <div
-      style={sideTreeElementStyles}
+      style={sideTreeElementContainerStyles}
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
@@ -66,7 +79,7 @@ export function SideTreeElement(
           onClick={(e) => setUnrolled(!unrolled)}
           style={{ visibility: isALeafNode ? "visible" : "hidden" }}
         >
-          {unrolled ? <p>arrow right svg</p> : <p>arrow down svg</p>}
+          {unrolled ? <RightArrow /> : <BottomArrow />}
         </button>
         <button
           onClick={handleClick}

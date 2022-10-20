@@ -3,28 +3,28 @@ import { GridColumn } from "@glideapps/glide-data-grid";
 import { GridCell, GridCellKind } from "@glideapps/glide-data-grid";
 
 export const columns: GridColumn[] = [
-  { title: "index", width: 40 },
-  { title: "ID", width: 400, group: 'Core' },
+  // { title: "index", width: 40 },
+  // { title: "ID", width: 400, group: 'Core' },
   { title: "URL", width: 100, group: 'Core' },
   { title: "Title", width: 400, group: 'Core' },
-  { title: "parentId", width: 100, group: 'Core' },
+  // { title: "parentId", width: 100, group: 'Core' },
   { title: "Date Added", width: 100, group: 'Superuser' },
-  { title: "Number of Children", width: 100, group: 'Superuser' },
+  // { title: "Number of Children", width: 100, group: 'Superuser' },
   // { title: "Unmodifiable", width: 100, group: 'Extra' },
 ];
 
 
 export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTreeNode) => GridCell> = new Map([
   // index
-  [0, (v) => {
-    const cell: GridCell = {
-      kind: GridCellKind.Text,
-      data: v.index?.toString() ?? '-1',
-      allowOverlay: false,
-      displayData: v.index?.toString() ?? '',
-    };
-    return cell;
-  }],
+  // [0, (v) => {
+  //   const cell: GridCell = {
+  //     kind: GridCellKind.Text,
+  //     data: v.index?.toString() ?? '-1',
+  //     allowOverlay: false,
+  //     displayData: v.index?.toString() ?? '',
+  //   };
+  //   return cell;
+  // }],
   // date added
   [1, (v) => {
     const date: Date = new Date(v.dateAdded || 0);
@@ -55,23 +55,23 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
     };
   }],
   // ID
-  [4, (v) => {
-    return {
-      kind: GridCellKind.Text,
-      data: v.id,
-      allowOverlay: false,
-      displayData: v.id,
-    };
-  }],
+  // [4, (v) => {
+  //   return {
+  //     kind: GridCellKind.Text,
+  //     data: v.id,
+  //     allowOverlay: false,
+  //     displayData: v.id,
+  //   };
+  // }],
   // parent ID
-  [5, (v) => {
-    return {
-      kind: GridCellKind.Text,
-      data: v.parentId ? v.parentId! : 'root',
-      allowOverlay: false,
-      displayData: v.parentId ? v.parentId! : 'root',
-    };
-  }],
+  // [5, (v) => {
+  //   return {
+  //     kind: GridCellKind.Text,
+  //     data: v.parentId ? v.parentId! : 'root',
+  //     allowOverlay: false,
+  //     displayData: v.parentId ? v.parentId! : 'root',
+  //   };
+  // }],
   // number of Children
   [6, (v) => {
     return {

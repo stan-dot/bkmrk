@@ -2,7 +2,7 @@ import React, { Dispatch } from "react";
 import { SideSubTree } from "./SideSubTree";
 
 const styles: React.CSSProperties = {
-  position: "fixed",
+  position: "absolute",
   left: "20px",
 };
 

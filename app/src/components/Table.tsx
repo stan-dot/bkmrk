@@ -117,7 +117,6 @@ export function TableLoader(props: {}): JSX.Element {
             <div
               id="mainContainer"
               style={{ position: "absolute", top: "150px", left: "200px" }}
-            // style={{ position: "relative", left: `${sideTreeWidth}px` }}
             >
               <PathDisplay path={currentPath} setter={pathChangeHandler} />
               <BookmarkTable

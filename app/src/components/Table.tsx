@@ -30,7 +30,9 @@ export async function getPath(
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState(false);
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
-  const [globalTree, setGlobalTree] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
+  const [globalTree, setGlobalTree] = useState(
+    [] as chrome.bookmarks.BookmarkTreeNode[],
+  );
   const [currentPath, setCurrentPath] = useState(
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
@@ -75,25 +77,38 @@ export function TableLoader(props: {}): JSX.Element {
   };
 
   useEffect(() => {
-    console.log('reacting to a change in path', currentPath);
-    const last: chrome.bookmarks.BookmarkTreeNode = currentPath[currentPath.length - 1];
-    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
+    console.log("reacting to a change in path", currentPath);
+    const last: chrome.bookmarks.BookmarkTreeNode =
+      currentPath[currentPath.length - 1];
+    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
+      last?.children ?? undefined;
     if (children) {
       setRows(children);
     }
-  }, [currentPath])
+  }, [currentPath]);
 
-  const pathChangeHandler = (nodes: chrome.bookmarks.BookmarkTreeNode[]) => {
-    setCurrentPath(nodes);
-    console.log('reacting to a change in path', currentPath);
-    const last: chrome.bookmarks.BookmarkTreeNode = currentPath[currentPath.length - 1];
-    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = last?.children ?? undefined;
-    console.log('last element of the path', last, ' its children :', children);
-    if (children) {
-      setRows(children);
-    }
-  }
-
+  const pathChangeHandler = (
+    nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
+  ): void => {
+    console.log(
+      "reacting to a change in path",
+      currentPath,
+      " new path: ",
+      nodesForNewPath,
+    );
+    const currentLocationLastOnPath: chrome.bookmarks.BookmarkTreeNode =
+      nodesForNewPath[nodesForNewPath.length - 1];
+    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
+      currentLocationLastOnPath?.children ?? undefined;
+    setCurrentPath(nodesForNewPath);
+    children ? setRows(children) : setRows([]);
+    console.log(
+      "last element of the path",
+      currentLocationLastOnPath,
+      " its children :",
+      children,
+    );
+  };
 
   const SEARCH_PLACEHOLDER = "Search bookmarks";
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
@@ -130,15 +145,22 @@ export function TableLoader(props: {}): JSX.Element {
         ? (
           <>
             <div id="sidePanel" style={{ position: "absolute", top: "120px" }}>
-              <SideTree tree={globalTree} pathSetter={setCurrentPath} path={currentPath} />
+              <SideTree
+                tree={globalTree}
+                pathSetter={setCurrentPath}
+                path={currentPath}
+              />
             </div>
             <div
               id="mainContainer"
               style={{ position: "absolute", top: "150px", left: "200px" }}
-            // style={{ position: "relative", left: `${sideTreeWidth}px` }}g
+            // style={{ position: "relative", left: `${sideTreeWidth}px` }}
             >
               <PathDisplay path={currentPath} setter={pathChangeHandler} />
-              <BookmarkTable rows={rows} globalClickHandler={cellClickHandler} />
+              <BookmarkTable
+                rows={rows}
+                globalClickHandler={cellClickHandler}
+              />
             </div>
           </>
         )

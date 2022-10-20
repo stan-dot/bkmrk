@@ -13,6 +13,7 @@ export const columns: GridColumn[] = [
   // { title: "Unmodifiable", width: 100, group: 'Extra' },
 ];
 
+
 export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTreeNode) => GridCell> = new Map([
   // index
   [0, (v) => {
@@ -26,11 +27,12 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
   }],
   // date added
   [1, (v) => {
+    const date: Date = new Date(v.dateAdded || 0);
     const cell: GridCell = {
       kind: GridCellKind.Text,
       data: v.dateAdded?.toString() ?? '-1',
       allowOverlay: false,
-      displayData: v.dateAdded?.toString() ?? '',
+      displayData: date.toString(),
     };
     return cell;
   }],

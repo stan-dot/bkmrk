@@ -26,7 +26,7 @@ export function SideTreeElement(
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const hasChildrenFolders: boolean = ifHasChildrenFolders(props.thing);
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    console.log("should change the path to this dir");
+    // console.log("should change the path to this dir");
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
       props.pathSetter(path);
     });

@@ -32,28 +32,24 @@ export function BookmarkTable(
     if (showContextMenu) {
       setShowContextMenu(false);
     }
-    console.log("todo here create highlight");
+    // todo here create highlight"
   };
 
-  const clickHandler = props.globalClickHandler;
-  return (
-    <div onClick={contextClickHandler} className='dev-test-outline' style={{ position: 'relative' }}>
-      {showContextMenu ?? <TableContextMenu thing={props.rows[lastInteractedItem[1]]} position={position} />}
-      <DataEditor
-        onCellClicked={clickHandler}
-        onHeaderClicked={() => console.log("clicked header")}
-        onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
-          setLastInteractedItem(cell);
-          setShowContextMenu(true)
-        }}
-        keybindings={{ "search": true }}
-        showSearch={searchVisibility}
-        onSearchClose={() => setSearchVisibility(false)}
-        getCellContent={getData(props.rows)}
-        columns={columns}
-        rows={props.rows.length}
-      />
-
-    </div>
-  );
+  return <div onClick={contextClickHandler} className='dev-test-outline' style={{ position: 'fixed' }}>
+    {showContextMenu ?? <TableContextMenu thing={props.rows[lastInteractedItem[1]]} position={position} />}
+    <DataEditor
+      onCellClicked={props.globalClickHandler}
+      onHeaderClicked={() => console.log("clicked header")}
+      onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
+        setLastInteractedItem(cell);
+        setShowContextMenu(true)
+      }}
+      keybindings={{ "search": true }}
+      showSearch={searchVisibility}
+      onSearchClose={() => setSearchVisibility(false)}
+      getCellContent={getData(props.rows)}
+      columns={columns}
+      rows={props.rows.length}
+    />
+  </div>
 }

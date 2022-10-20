@@ -10,9 +10,10 @@
 
 ## bug fixes
 - [ ] this should be displayed - so instead of 'loaded' a general state - display table or not, and another state for the text to be shown (loading/ this:)    
-    const str = 'To bookmark pages, click the star in the address bar';
 - [ ] add display children prop to side tree element
 - [ ] make some nodes impossible to delete, rename if it's a stuck variant
+- [ ] todo get the local timezone
+- [ ] console.log(date.toLocaleString('en-GB', { timeZone: 'UTC' }));
 
 ## navigation and interactvity
 - [ ] context menus for

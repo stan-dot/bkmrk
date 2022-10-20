@@ -51,7 +51,7 @@ export function ManipulationMenu(
         <DotsSvg />
       </button>
       {showMenu
-        ?? (
+        && (
           <div id="manipulationMenuContainer" style={{ position: 'absolute', left: '90%', top: '10%' }}>
             <ul style={{ listStyle: "none", fontSize: "15px" }}>
               <li>
@@ -95,11 +95,11 @@ export function ManipulationMenu(
           </div>
         )
       }
-      {openVariant === OpenMenuStates.IMPORT ?? (
+      {openVariant === OpenMenuStates.IMPORT && (
         <BookmarkImportWindow callback={props.importCallback} />
       )}
-      {openVariant === OpenMenuStates.NEW_BOOKMARK ?? <NewBookmarkWindow />}
-      {openVariant === OpenMenuStates.NEW_FOLDER ?? <NewFolderWindow />}
+      {openVariant === OpenMenuStates.NEW_BOOKMARK && <NewBookmarkWindow />}
+      {openVariant === OpenMenuStates.NEW_FOLDER && <NewFolderWindow />}
     </div>
   );
 }

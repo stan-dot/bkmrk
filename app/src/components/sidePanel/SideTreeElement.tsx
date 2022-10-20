@@ -68,8 +68,11 @@ export function SideTreeElement(
       >
         <p>{props.thing.title}</p>
       </button>
-      {contextMenuOpen ??
-        <SidePanelContextMenu thing={props.thing} position={position} />}
+      {
+        contextMenuOpen
+        &&
+        <SidePanelContextMenu thing={props.thing} position={position} />
+      }
     </div>
   );
 }

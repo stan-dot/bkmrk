@@ -51,7 +51,7 @@ export function PathDisplay(props: {
     window.navigator.clipboard.writeText(text);
     // todo some sweet alert to notify it's copied
   };
-  // creates a '>' linked horizontal list of locations, genealogy of the currrent path
+
   return (
     <div style={pathDisplayStyle}>
       {/* {contextMenuVisibility ?? <PathDisplayContextMenu thing={ } position={position} />} */}

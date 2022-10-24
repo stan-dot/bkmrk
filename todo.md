@@ -3,6 +3,10 @@
 ## appearance
 - [ ] different styles - darkmode, etc - with tailwind possibly
 - [ ] prettify the whole thing, make it nice colours and right sizes  
+- [ ] add 3 dots at the end of each link cell
+- [ ] add a folder icon
+- [ ] add shadow
+- [ ] mirror layout minutely, if there's grid, do grid
 
 ## core features
 - [ ] the open in incognito doesn't work

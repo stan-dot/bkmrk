@@ -5,7 +5,7 @@ import { GridCell, GridCellKind } from "@glideapps/glide-data-grid";
 export const columns: GridColumn[] = [
   // { title: "index", width: 40 },
   // { title: "ID", width: 400},
-  { title: "Date Added", width: 200 },
+  { title: "Date Added", width: 90 },
   { title: "URL", width: 100 },
   { title: "Title", width: 600 },
   { title: "Number of Children", width: 200 },
@@ -15,8 +15,8 @@ export const columns: GridColumn[] = [
 
 
 function getDisplayableData(d: Date): string {
-  const hour: string = `${d.getHours()}/${d.getMinutes()}/${d.getMinutes()}`;
-  const day: string = `${d.getFullYear()}/${d.getMonth()}/${d.getDay()}`;
+  const hour: string = `${d.getHours()}:${d.getMinutes()}`;
+  const day: string = `${d.getFullYear()}/${d.getMonth()}/${d.getDate()}`;
   return `${hour} - ${day}`
 }
 

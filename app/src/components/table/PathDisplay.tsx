@@ -12,7 +12,6 @@ export function PathDisplay(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
   pathChangeHandler: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }): JSX.Element {
-
   /**
    * goes backs, changes the current location, the current path
    */
@@ -27,7 +26,7 @@ export function PathDisplay(props: {
         0,
         index,
       );
-      console.log('new path: ', newPath);
+      console.log("new path: ", newPath);
       props.pathChangeHandler(newPath);
     }
   };
@@ -37,40 +36,48 @@ export function PathDisplay(props: {
       0,
       props.path.length - 1,
     );
-    console.log('button up, new path: ', newPath);
+    console.log("button up, new path: ", newPath);
     props.pathChangeHandler(newPath);
-  }
-
-  const handleContextMenuClick = (node: chrome.bookmarks.BookmarkTreeNode): void => {
-    console.log('context menu click detected on the PathDisplay element');
   };
 
+  const handleContextMenuClick = (
+    node: chrome.bookmarks.BookmarkTreeNode,
+  ): void => {
+    console.log("context menu click detected on the PathDisplay element");
+  };
 
-  return <div id='taskbar' style={{ display: 'flex', justifyContent: 'flex-start' }}>
-    <div id="buttonArea" style={{ position: "relative" }}>
-      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
-        {"<-"}
-      </button>
-      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
-        {"->"}
-      </button>
-      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
-        [..]
-      </button>
-    </div>
-    <div style={pathDisplayStyle}>
-      <div style={{ display: "flex", justifyContent: "start" }}>
-        {
-          props.path.map((n, i) => (
+  return (
+    <div
+      id="taskbar"
+      style={{
+        display: "flex",
+        justifyContent: "flex-start",
+        minWidth: "200px",
+      }}
+    >
+      <div id="buttonArea" style={{ position: "relative" }}>
+        <button disabled={true} onClick={upButtonHandler}>
+          {"<-"}
+        </button>
+        <button disabled={true} onClick={upButtonHandler}>
+          {"->"}
+        </button>
+        <button disabled={props.path.length < 2} onClick={upButtonHandler}>
+          [..]
+        </button>
+      </div>
+      <div style={pathDisplayStyle}>
+        <div style={{ display: "flex", justifyContent: "start" }}>
+          {props.path.map((n, i) => (
             <PathItem
               handleClick={handleClick}
               index={i}
               node={n}
               contextMenuHandler={handleContextMenuClick}
             />
-          ))
-        }
+          ))}
+        </div>
       </div>
     </div>
-  </div>
+  );
 }

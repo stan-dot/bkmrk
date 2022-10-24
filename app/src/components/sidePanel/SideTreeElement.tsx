@@ -14,6 +14,7 @@ const sideTreeElementContainerStyles: React.CSSProperties = {
   borderColor: "purple",
   justifyContent: "space-between",
   height: "fit-content",
+  minHeight: '50px',
   flexDirection: "column",
 };
 
@@ -25,6 +26,7 @@ const sideTreeElementStyles: React.CSSProperties = {
   borderColor: "purple",
   justifyContent: "space-between",
   height: "fit-content",
+  minHeight: '50px',
   flexDirection: "row",
 };
 

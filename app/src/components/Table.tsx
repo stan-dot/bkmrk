@@ -118,13 +118,11 @@ export function TableLoader(props: {}): JSX.Element {
       {loaded === MainDisplayStates.LOADED &&
         (
           <>
-            <div id="sidePanel" style={{ position: "absolute", top: "120px" }}>
-              <SideTree
-                tree={globalTree}
-                pathSetter={pathChangeHandler}
-                path={currentPath}
-              />
-            </div>
+            <SideTree
+              tree={globalTree}
+              pathSetter={pathChangeHandler}
+              path={currentPath}
+            />
             <div
               id="mainContainer"
               style={{ position: "absolute", top: "150px", left: "200px" }}

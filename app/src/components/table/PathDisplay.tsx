@@ -3,9 +3,6 @@ import { PathItem } from "./PathItem";
 
 const pathDisplayStyle: React.CSSProperties = {
   position: "fixed",
-  display: "flex",
-  top: "120px",
-  left: "200px",
   border: "2px solid",
   justifyContent: "space-between",
   borderColor: "#FF0000",
@@ -49,7 +46,18 @@ export function PathDisplay(props: {
   };
 
 
-  return <>
+  return <div id='taskbar' style={{ display: 'flex', justifyContent: 'flex-start' }}>
+    <div id="buttonArea" style={{ position: "relative" }}>
+      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
+        {"<-"}
+      </button>
+      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
+        {"->"}
+      </button>
+      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
+        [..]
+      </button>
+    </div>
     <div style={pathDisplayStyle}>
       <div style={{ display: "flex", justifyContent: "start" }}>
         {
@@ -64,15 +72,5 @@ export function PathDisplay(props: {
         }
       </div>
     </div>
-    <div id="buttonArea" style={{
-      position: "fixed",
-      display: "flex",
-      top: "120px",
-      left: "200px",
-    }}>
-      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
-        [..]
-      </button>
-    </div>
-  </>
+  </div>
 }

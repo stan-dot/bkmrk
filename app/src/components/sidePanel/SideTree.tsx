@@ -4,7 +4,10 @@ import { SideSubTree } from "./SideSubTree";
 const rootSideTreeStyles: React.CSSProperties = {
   position: "absolute",
   left: "20px",
+  top:"120px",
   overflow: 'scroll',
+  overflowX: 'scroll',
+  overflowY:'scroll',
   minWidth: '200px'
 };
 

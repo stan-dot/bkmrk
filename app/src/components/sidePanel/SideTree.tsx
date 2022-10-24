@@ -4,6 +4,8 @@ import { SideSubTree } from "./SideSubTree";
 const rootSideTreeStyles: React.CSSProperties = {
   position: "absolute",
   left: "20px",
+  overflow: 'scroll',
+  minWidth: '200px'
 };
 
 /**
@@ -16,9 +18,7 @@ const rootSideTreeStyles: React.CSSProperties = {
 export function SideTree(
   props: {
     tree: chrome.bookmarks.BookmarkTreeNode[];
-    pathSetter: Dispatch<
-      React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
-    >;
+    pathSetter: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
     path: chrome.bookmarks.BookmarkTreeNode[];
   },
 ): JSX.Element {

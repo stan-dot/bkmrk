@@ -1,5 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useEffect, useState } from "react";
+import { getChildrenLinks } from "../functions/ifHasChildrenFolders";
 import { BrandingSection } from "./navbar/BrandingSection";
 import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -15,11 +16,17 @@ const navStyles: React.CSSProperties = {
   left: "0px",
   border: "2px solid",
   borderColor: "red",
-  zIndex: 10
+  zIndex: 10,
 };
 
+enum MainDisplayStates {
+  LOADING,
+  LOADED,
+  RESULT_EMPTY,
+}
+
 export function TableLoader(props: {}): JSX.Element {
-  const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(MainDisplayStates.LOADING);
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
   const [globalTree, setGlobalTree] = useState(
     [] as chrome.bookmarks.BookmarkTreeNode[],
@@ -35,7 +42,7 @@ export function TableLoader(props: {}): JSX.Element {
      */
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-        setLoaded(true);
+        setLoaded(MainDisplayStates.LOADED);
         setGlobalTree(root[0].children!);
         const bookmarksBar = root[0].children![0];
         setRows(bookmarksBar.children ?? []);
@@ -44,43 +51,50 @@ export function TableLoader(props: {}): JSX.Element {
     );
   }
 
-  useEffect(() => {
-    console.log("reacting to a change in path", currentPath);
-    const last: chrome.bookmarks.BookmarkTreeNode =
-      currentPath[currentPath.length - 1];
-    const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
-      last?.children ?? undefined;
-    if (children) {
-      console.log("about to set path to children:", children);
-      setRows(children);
-    }
-  }, [currentPath]);
+  // useEffect(() => {
+  //   console.log("reacting to a change in path", currentPath);
+  //   const last: chrome.bookmarks.BookmarkTreeNode =
+  //     currentPath[currentPath.length - 1];
+  //   const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
+  //     last?.children ?? undefined;
+  //   console.log("last: ", last);
+  //   console.log("about to set path to children:", children);
+  //   if (children) {
+  //     console.log("last: ", last);
+  //     console.log("about to set path to children:", children);
+  //     setRows(children);
+  //   }
+  // }, [currentPath]);
 
   const pathChangeHandler = (
     nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
   ): void => {
+    setCurrentPath(nodesForNewPath);
     console.log(
       "reacting to a change in path",
       currentPath,
       " new path: ",
       nodesForNewPath,
     );
-    const currentLocationLastOnPath: chrome.bookmarks.BookmarkTreeNode =
+    const last: chrome.bookmarks.BookmarkTreeNode =
       nodesForNewPath[nodesForNewPath.length - 1];
-    const children: chrome.bookmarks.BookmarkTreeNode[] =
-      currentLocationLastOnPath?.children ?? [];
-    setCurrentPath(nodesForNewPath);
-    console.log("about to set path to children:", children);
-    setRows(children);
-    // console.log(
-    //   "last element of the path",
-    //   currentLocationLastOnPath,
-    //   " its children :",
-    //   children,
-    // );
+    try {
+      chrome.bookmarks.getChildren(last.id).then((children: chrome.bookmarks.BookmarkTreeNode[]) => {
+        console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
+        if (children) {
+          // console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
+          console.log('changing rows');
+          setRows(children);
+        } else {
+          setLoaded(MainDisplayStates.RESULT_EMPTY);
+        }
+      })
+
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const SEARCH_PLACEHOLDER = "Search bookmarks";
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
 
   return (
@@ -90,7 +104,6 @@ export function TableLoader(props: {}): JSX.Element {
         <SearchField
           classNames={undefined}
           searchText={undefined}
-          placeholder={SEARCH_PLACEHOLDER}
           disabled={undefined}
           onChange={undefined}
           onEnter={undefined}
@@ -102,13 +115,13 @@ export function TableLoader(props: {}): JSX.Element {
           importCallback={() => console.log("should load the datastructure")}
         />
       </nav>
-      {loaded
-        ? (
+      {loaded === MainDisplayStates.LOADED &&
+        (
           <>
             <div id="sidePanel" style={{ position: "absolute", top: "120px" }}>
               <SideTree
                 tree={globalTree}
-                pathSetter={setCurrentPath}
+                pathSetter={pathChangeHandler}
                 path={currentPath}
               />
             </div>
@@ -116,15 +129,19 @@ export function TableLoader(props: {}): JSX.Element {
               id="mainContainer"
               style={{ position: "absolute", top: "150px", left: "200px" }}
             >
-              <PathDisplay path={currentPath} globalPathChanger={pathChangeHandler} />
+              <PathDisplay
+                path={currentPath}
+                pathChangeHandler={pathChangeHandler}
+              />
               <BookmarkTable
                 rows={rows}
                 pathChangeHandler={pathChangeHandler}
               />
             </div>
           </>
-        )
-        : (
+        )}
+      {loaded === MainDisplayStates.LOADING &&
+        (
           <div
             id="Loading status"
             style={{
@@ -134,6 +151,19 @@ export function TableLoader(props: {}): JSX.Element {
             }}
           >
             <p>Loading...</p>
+          </div>
+        )}
+      {loaded === MainDisplayStates.RESULT_EMPTY &&
+        (
+          <div
+            id="Loading status"
+            style={{
+              position: "absolute",
+              top: "120px",
+              left: "200px",
+            }}
+          >
+            <p>To bookmark pages, click the star in the address bar</p>
           </div>
         )}
     </>

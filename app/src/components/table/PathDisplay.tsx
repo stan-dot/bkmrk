@@ -13,7 +13,7 @@ const pathDisplayStyle: React.CSSProperties = {
 
 export function PathDisplay(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
-  globalPathChanger: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
+  pathChangeHandler: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }): JSX.Element {
 
   /**
@@ -22,27 +22,34 @@ export function PathDisplay(props: {
   const handleClick = (
     index: number,
   ): void => {
-    const slicedPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
-      0,
-      index,
-    );
     /**
      * cases when want to change to the root or to the last(current) element
      */
     if (index !== 0 && index !== props.path.length - 1) {
-      const newPath: chrome.bookmarks.BookmarkTreeNode[] = slicedPath.splice(
+      const newPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
         0,
         index,
       );
-      props.globalPathChanger(newPath);
+      console.log('new path: ', newPath);
+      props.pathChangeHandler(newPath);
     }
   };
 
+  const upButtonHandler = () => {
+    const newPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
+      0,
+      props.path.length - 1,
+    );
+    console.log('button up, new path: ', newPath);
+    props.pathChangeHandler(newPath);
+  }
+
   const handleContextMenuClick = (node: chrome.bookmarks.BookmarkTreeNode): void => {
+    console.log('context menu click detected on the PathDisplay element');
   };
 
 
-  return (
+  return <>
     <div style={pathDisplayStyle}>
       <div style={{ display: "flex", justifyContent: "start" }}>
         {
@@ -56,9 +63,11 @@ export function PathDisplay(props: {
           ))
         }
       </div>
-      <button onClick={() => handleClick(props.path.length - 1)}>
+    </div>
+    <div id="buttonArea">
+      <button disabled={props.path.length < 2} onClick={upButtonHandler}>
         [..]
       </button>
     </div>
-  );
+  </>
 }

@@ -5,13 +5,20 @@ import { GridCell, GridCellKind } from "@glideapps/glide-data-grid";
 export const columns: GridColumn[] = [
   // { title: "index", width: 40 },
   // { title: "ID", width: 400},
-  { title: "Date Added", width: 300 },
+  { title: "Date Added", width: 200 },
   { title: "URL", width: 100 },
   { title: "Title", width: 600 },
   { title: "Number of Children", width: 200 },
   // { title: "parentId", width: 100},
   // { title: "Unmodifiable", width: 100, group: 'Extra' },
 ];
+
+
+function getDisplayableData(d: Date): string {
+  const hour: string = `${d.getHours()}/${d.getMinutes()}/${d.getMinutes()}`;
+  const day: string = `${d.getFullYear()}/${d.getMonth()}/${d.getDay()}`;
+  return `${hour} - ${day}`
+}
 
 
 export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTreeNode) => GridCell> = new Map([
@@ -32,7 +39,7 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
       kind: GridCellKind.Text,
       data: v.dateAdded?.toString() ?? '-1',
       allowOverlay: false,
-      displayData: date.toString(),
+      displayData: getDisplayableData(date),
     };
     return cell;
   }],

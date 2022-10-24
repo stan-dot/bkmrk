@@ -7,14 +7,17 @@
 - [x] can copy the path anytime
 - [x] general layout - should be very similar to the original; will be able to use absolute positioning
 - [ ] tree to navigate on the left with navigation changes
+- [ ] add display children prop to side tree element
+
+
+## done bug fixes
+- [x] console.log(date.toLocaleString('en-GB', { timeZone: 'UTC' }));
+- [x] todo get the local timezone
+- [x] this should be displayed - so instead of 'loaded' a general state - display table or not, and another state for the text to be shown (loading/ this:)    
 
 ## bug fixes
-- [ ] this should be displayed - so instead of 'loaded' a general state - display table or not, and another state for the text to be shown (loading/ this:)    
-- [ ] add display children prop to side tree element
 - [ ] make some nodes impossible to delete, rename if it's a stuck variant
-- [ ] todo get the local timezone
-- [ ] console.log(date.toLocaleString('en-GB', { timeZone: 'UTC' }));
-- [ ] on click elsewhere anyt context menu should automatically change
+- [ ] on click elsewhere any context menu should automatically change
 - [ ] the open in incognito doesn't work
 
 ## navigation and interactvity

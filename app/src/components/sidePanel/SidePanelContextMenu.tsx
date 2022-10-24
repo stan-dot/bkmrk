@@ -14,18 +14,21 @@ function getStyles(position: number[]): React.CSSProperties {
     borderColor: "#FF0000",
     background: "solid",
     backgroundColor: "coral",
-    width: 'fit-content'
+    width: "fit-content",
   };
 }
 
 export function SidePanelContextMenu(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode; position: number[] },
+  props: {
+    thing: chrome.bookmarks.BookmarkTreeNode;
+    position: number[];
+    closeCallback: () => void;
+  },
 ): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
     props.thing,
   );
   const hasChildrenLinks: boolean = childrenLinks.length > 0;
-  console.log("rendering side panel context menu for", props.thing.title);
 
   const styles = getStyles(props.position);
   return (
@@ -57,6 +60,11 @@ export function SidePanelContextMenu(
           disabled={!hasChildrenLinks}
         >
           <p>open all {childrenLinks.length} in Incognito winow</p>
+        </button>
+      </div>
+      <div className="group4">
+        <button onClick={() => props.closeCallback()}>
+          Close
         </button>
       </div>
     </div>

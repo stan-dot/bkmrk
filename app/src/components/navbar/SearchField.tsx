@@ -63,11 +63,16 @@ const SearchIcon = () => {
     </svg>
   );
 };
+const SEARCH_PLACEHOLDER = "Search bookmarks";
 
+/**
+ * todo chrome.bookmarks.search - it returns a list of objects
+ * @param props 
+ * @returns 
+ */
 export function SearchField(props: {
   classNames: any,
   searchText: any,
-  placeholder: any,
   disabled: any,
   onChange: any,
   onEnter: any,
@@ -113,7 +118,7 @@ export function SearchField(props: {
         onChange={onChangeHandler}
         onKeyDown={onEnterHandler}
         onBlur={onBlurHandler}
-        placeholder={props.placeholder}
+        placeholder={SEARCH_PLACEHOLDER}
         type="text"
         value={value}
         disabled={props.disabled}

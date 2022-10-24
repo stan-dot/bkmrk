@@ -12,20 +12,20 @@ const sideTreeElementContainerStyles: React.CSSProperties = {
   width: WIDTH_OF_NODE,
   border: "1px solid",
   borderColor: "purple",
-  justifyContent: 'space-between',
-  height: 'fit-content',
-  flexDirection: 'column'
+  justifyContent: "space-between",
+  height: "fit-content",
+  flexDirection: "column",
 };
 
 const sideTreeElementStyles: React.CSSProperties = {
   display: "flex",
   minWidth: WIDTH_OF_NODE,
-  width: 'fit-content',
+  width: "fit-content",
   border: "1px solid",
   borderColor: "purple",
-  justifyContent: 'space-between',
-  height: 'fit-content',
-  flexDirection: 'row'
+  justifyContent: "space-between",
+  height: "fit-content",
+  flexDirection: "row",
 };
 
 /**
@@ -37,9 +37,7 @@ const sideTreeElementStyles: React.CSSProperties = {
 export function SideTreeElement(
   props: {
     thing: chrome.bookmarks.BookmarkTreeNode;
-    pathSetter: Dispatch<
-      React.SetStateAction<chrome.bookmarks.BookmarkTreeNode[]>
-    >;
+    pathSetter: (path: chrome.bookmarks.BookmarkTreeNode[]) => void;
     unrolled: boolean;
     path: chrome.bookmarks.BookmarkTreeNode[];
   },
@@ -48,8 +46,10 @@ export function SideTreeElement(
   const [unrolled, setUnrolled] = useState(props.unrolled);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const isALeafNode: boolean = ifIsALeafNode(props.thing);
+
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
+      console.log("path: ", path);
       props.pathSetter(path);
     });
   };
@@ -90,9 +90,15 @@ export function SideTreeElement(
           <p>{props.thing.title}</p>
         </button>
         {contextMenuOpen &&
-          <SidePanelContextMenu thing={props.thing} position={position} />}
+          (
+            <SidePanelContextMenu
+              thing={props.thing}
+              position={position}
+              closeCallback={() => setContextMenuOpen(false)}
+            />
+          )}
       </div>
-      {unrolled && !isALeafNode && (
+      {unrolled && (
         <SideSubTree
           nodes={props.thing.children!}
           pathSetter={props.pathSetter}

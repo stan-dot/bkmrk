@@ -8,7 +8,7 @@ export function RightArrow() {
       height={30}
       fill-rule="evenodd"
       clip-rule="evenodd"
-      viewBox="0 -120 500 600"
+      viewBox="0 -100 500 600"
     >
       <g>
         <path

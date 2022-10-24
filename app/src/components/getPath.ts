@@ -5,7 +5,7 @@ export async function getPath(
   let lastNode: chrome.bookmarks.BookmarkTreeNode = node;
   while (lastNode.parentId) {
     const parent = await chrome.bookmarks.get(lastNode.parentId);
-    console.log("getting parent of the clicked element", parent);
+    // console.log("getting parent of the clicked element", parent);
     output.unshift(parent[0]);
     lastNode = parent[0];
   }

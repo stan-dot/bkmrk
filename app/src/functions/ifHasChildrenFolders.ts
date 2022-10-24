@@ -3,7 +3,7 @@ export function ifIsALeafNode(item: chrome.bookmarks.BookmarkTreeNode): boolean 
     return true;
   }
   const existingChildFolder: chrome.bookmarks.BookmarkTreeNode | undefined = item.children.find(v => isAFolder(v));
-  return existingChildFolder ? false:true;
+  return existingChildFolder ? true : false;
 }
 
 export function isAFolder(item: chrome.bookmarks.BookmarkTreeNode): boolean {
@@ -34,10 +34,10 @@ export async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode,
 
   const standard: boolean = (!newWindow && !incognito);
   const currentWindow: chrome.windows.Window = await chrome.windows.getCurrent();
-  // todo why is this possibly undefined?
   let finalId: number = currentWindow.id!;
   if (!standard) {
-    const createData: chrome.windows.CreateData = { 'incognito': incognito ?? false };
+    const incognitoStatus: boolean = incognito ?? false;
+    const createData: chrome.windows.CreateData = { incognito: incognitoStatus };
     const openedNewWindow: chrome.windows.Window = await chrome.windows.create(createData);
     finalId = openedNewWindow.id!;
   }

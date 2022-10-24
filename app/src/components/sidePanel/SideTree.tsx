@@ -1,4 +1,4 @@
-import React, { Dispatch } from "react";
+import React from "react";
 import { SideSubTree } from "./SideSubTree";
 
 const rootSideTreeStyles: React.CSSProperties = {

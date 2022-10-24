@@ -4,15 +4,16 @@ import { exportBookmarks } from "../../io/exportBookmarks";
 import { BookmarkImportWindow } from "../../io/importBookmarks";
 import { DotsSvg } from "./DotsSvg";
 
+enum OpenMenuStates {
+  IMPORT,
+  EXPORT,
+  NEW_FOLDER,
+  NEW_BOOKMARK,
+}
+
 export function ManipulationMenu(
   props: { sortCallback: Function; importCallback: Function },
 ): JSX.Element {
-  enum OpenMenuStates {
-    IMPORT,
-    EXPORT,
-    NEW_FOLDER,
-    NEW_BOOKMARK,
-  }
   const [showMenu, setShowMenu] = useState(false);
   const [openVariant, setOpenVariant] = useState(OpenMenuStates.NEW_BOOKMARK);
 

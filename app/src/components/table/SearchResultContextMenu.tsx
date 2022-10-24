@@ -1,25 +1,14 @@
-import { basicNodes } from "../../dataProcessing/basicNodes";
 import {
   getChildrenLinks,
   openAllChildren,
 } from "../../functions/ifHasChildrenFolders";
 
-function getStyles(position: number[]): React.CSSProperties {
-  return {
-    position: "absolute",
-    left: `${position[0]}px`,
-    right: `${position[1]}px`,
-    zIndex: 5,
-    fontSize: 10,
-    border: "1px solid",
-    borderColor: "#FF0000",
-    background: "solid",
-    backgroundColor: "coral",
-    width: "fit-content",
-  };
-}
-
-export function SidePanelContextMenu(
+/**
+ * todo the show in folder bit
+ * @param props
+ * @returns
+ */
+export function SearchResultContextMenu(
   props: {
     thing: chrome.bookmarks.BookmarkTreeNode;
     position: number[];
@@ -29,30 +18,28 @@ export function SidePanelContextMenu(
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
     props.thing,
   );
-  const isProtected: boolean = basicNodes.includes(props.thing.title);
   const hasChildrenLinks: boolean = childrenLinks.length > 0;
-
-  const styles = getStyles(props.position);
+  const tableContextMenuStyles: React.CSSProperties = {
+    position: "absolute",
+    left: `${props.position[0]}px`,
+    right: `${props.position[1]}px`,
+    zIndex: "40",
+  };
   return (
-    <div id="sidePanelContextMenu" className="contextMenu" style={styles}>
+    <div
+      id="searchResultContextMenu"
+      className="contextMenu"
+      style={tableContextMenuStyles}
+    >
       <div className="group1">
-        <button disabled={!isProtected}>
-          <p>rename button</p>
-        </button>
-        <button disabled={!isProtected}>
-          <p>delete button</p>
-        </button>
+        <p>rename button</p>
+        <p>show in folder</p>
+        <p>delete button</p>
       </div>
       <div className="group2">
-        <button disabled={!isProtected}>
-          <p>cut button</p>
-        </button>
-        <button disabled={!isProtected}>
-          <p>copy buton</p>
-        </button>
-        <button disabled={!isProtected}>
-          <p>paste buton</p>
-        </button>
+        <p>cut button</p>
+        <p>copy buton</p>
+        <p>paste buton</p>
       </div>
       <div className="group3">
         <button

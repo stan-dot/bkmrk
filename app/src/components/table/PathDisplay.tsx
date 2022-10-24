@@ -4,10 +4,10 @@ import { PathItem } from "./PathItem";
 const pathDisplayStyle: React.CSSProperties = {
   position: "fixed",
   display: "flex",
-  justifyContent: "space-between",
   top: "120px",
   left: "200px",
   border: "2px solid",
+  justifyContent: "space-between",
   borderColor: "#FF0000",
 };
 
@@ -64,7 +64,12 @@ export function PathDisplay(props: {
         }
       </div>
     </div>
-    <div id="buttonArea">
+    <div id="buttonArea" style={{
+      position: "fixed",
+      display: "flex",
+      top: "120px",
+      left: "200px",
+    }}>
       <button disabled={props.path.length < 2} onClick={upButtonHandler}>
         [..]
       </button>

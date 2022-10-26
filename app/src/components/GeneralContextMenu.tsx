@@ -1,6 +1,6 @@
 import { getChildrenLinks, openAllChildren } from "../functions/ifHasChildrenFolders";
 
-export function SidePanelContextMenu(props: { thing: chrome.bookmarks.BookmarkTreeNode, position: number[] }): JSX.Element {
+export function GeneralContextMenu(props: { thing: chrome.bookmarks.BookmarkTreeNode, position: number[] }): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(props.thing);
   const hasChildrenLinks: boolean = childrenLinks.length > 0;
   return <div id="sidePanelContextMenu" className="contextMenu" style={{

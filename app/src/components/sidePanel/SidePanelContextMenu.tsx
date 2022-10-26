@@ -3,6 +3,7 @@ import {
   getChildrenLinks,
   openAllChildren,
 } from "../../functions/ifHasChildrenFolders";
+import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 
 function getStyles(position: number[]): React.CSSProperties {
   return {
@@ -54,26 +55,7 @@ export function SidePanelContextMenu(
           <p>paste buton</p>
         </button>
       </div>
-      <div className="group3">
-        <button
-          onClick={(e) => openAllChildren(props.thing)}
-          disabled={!hasChildrenLinks}
-        >
-          <p>open all {childrenLinks.length}</p>
-        </button>
-        <button
-          onClick={(e) => openAllChildren(props.thing, true)}
-          disabled={!hasChildrenLinks}
-        >
-          <p>open all {childrenLinks.length} in new window</p>
-        </button>
-        <button
-          onClick={(e) => openAllChildren(props.thing, true, true)}
-          disabled={!hasChildrenLinks}
-        >
-          <p>open all {childrenLinks.length} in Incognito winow</p>
-        </button>
-      </div>
+      <OpenAllSection thing={props.thing} />
       <div className="group4">
         <button onClick={() => props.closeCallback()}>
           Close

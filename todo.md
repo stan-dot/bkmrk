@@ -6,7 +6,13 @@
 - [ ] lunr search to display, could be smart & advanced; still can search inside the results
 
 ## navigation and interactvity
-- [ ] context menus for
+- [ ] context menu refactor 
+  - [ ] need to be unified, almost the same functions tbh
+  - [ ] thing, position, closecallbacks are there for now. rename, delete, cut copy paste should work on all
+  - [ ] show in folder in only search result
+  - [ ] could extract button groups as diff modules, that better than some Map of name to config
+  - [ ] open all children, or the thing itself - should be dependent on ifLeaf
+- [ ] context menus - 
   - [x] side panel
   - [ ] path display
     - [ ] go to a sibling

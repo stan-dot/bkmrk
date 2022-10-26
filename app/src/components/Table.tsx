@@ -18,10 +18,12 @@ const navStyles: React.CSSProperties = {
   zIndex: 10,
 };
 
+// todo this might be better in some all-accessible context
 enum MainDisplayStates {
   LOADING,
   LOADED,
   RESULT_EMPTY,
+  SEARCH_RESULT
 }
 
 export function TableLoader(props: {}): JSX.Element {
@@ -101,6 +103,10 @@ export function TableLoader(props: {}): JSX.Element {
     }
   };
 
+  const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
+    setRows(nodes);
+  }
+
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
 
   return (
@@ -115,6 +121,7 @@ export function TableLoader(props: {}): JSX.Element {
           onEnter={undefined}
           onSearchClick={undefined}
           onBlur={undefined}
+          setDataCallback={dataCallback}
         />
         <ManipulationMenu
           sortCallback={() => console.log("should sort current location")}

@@ -1,7 +1,7 @@
 /**
  *
  */
-function draggingBehavior() {
+export function draggingBehavior() {
   // if from main panel into side ponel - changes place
   // if from side panel into main panel - changes place too
   // if from main panel AND is a bookmark, dragging onto the search panel, a new tab is opened - that's tablet behavior

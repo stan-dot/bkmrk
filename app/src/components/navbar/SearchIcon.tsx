@@ -1,10 +1,10 @@
 import React from 'react';
 import { SEARCH_BUTTON_EDGE } from "./navbarConst";
 
-export const SearchIcon = () => {
+export const SearchIcon = (props: { highlight: boolean }): JSX.Element => {
   const iconEdge = Math.ceil(SEARCH_BUTTON_EDGE * 0.60);
   const searchIconStyle = {
-    fill: '#727272',
+    fill: props.highlight ? '#727272' : '#722020',
   };
   return (
     <svg

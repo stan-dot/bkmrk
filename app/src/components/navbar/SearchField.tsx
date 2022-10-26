@@ -16,33 +16,49 @@ export function SearchField(props: {
   onEnter: any,
   onSearchClick: any,
   onBlur: any,
+  setDataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
 }) {
-  const [value, setValue] = useState(props.searchText);
+  const [value, setValue] = useState(props.searchText as string);
+  const [iconHighlight, setIconHighlight] = useState(false);
 
   useEffect(() => {
     setValue(props.searchText);
   }, [props.searchText, setValue]);
 
-  const onChangeHandler = useCallback((event: { target: { value: any; }; }) => {
+  const onChangeHandler = (event: { target: { value: any; }; }) => {
+    console.log('event:', event);
     setValue(event.target.value);
-    props.onChange(event.target.value, event);
-  }, [props.onChange, setValue]);
+    // props.onChange(event.target.value, event);
+    setIconHighlight(true);
+  };
 
-  const onEnterHandler = useCallback((event: any) => {
+  const onEnterHandler = async (event: any) => {
     const isEnterPressed = event.which === ENTER_KEY
       || event.keyCode === ENTER_KEY;
-    props.onEnter(event.target.value, event);
-  }, [props.onEnter]);
+    if (isEnterPressed) {
+      // props.onEnter(event.target.value, event);
+      await runSearch();
+    };
+  }
 
-  const onSearchClickHandler = useCallback(() => {
-    props.onSearchClick(value);
-  }, [props.onSearchClick, value]);
+  const onSearchClickHandler = async () => {
+    // props.onSearchClick(value);
+    await runSearch();
+  };
 
-  const onBlurHandler = useCallback((event: { target: { value: any; }; }) => {
-    props.onBlur(event.target.value, event);
-  }, [props.onBlur]);
+  const onBlurHandler = (event: { target: { value: any; }; }) => {
+    // props.onBlur(event.target.value, event);
+    setIconHighlight(false);
+  };
 
   const className = `react-search-field dev-test-outline ${props.classNames}`;
+
+  async function runSearch() {
+    console.log('search query', value);
+    const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks.search(value);
+    console.log('search results', searchResults);
+    props.setDataCallback(searchResults);
+  }
 
   const style: React.CSSProperties = searchFieldButtonStyle(props.disabled);
   return (
@@ -70,7 +86,7 @@ export function SearchField(props: {
         onClick={onSearchClickHandler}
         disabled={props.disabled}
       >
-        <SearchIcon />
+        <SearchIcon highlight={iconHighlight} />
       </button>
     </div>
   );

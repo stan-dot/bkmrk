@@ -1,14 +1,12 @@
 
 # MVP
-## core features
-- [x] the open in incognito doesn't work
-- [ ] lunr search to display, could be smart & advanced; still can search inside the results
-
-
 ## missing features
 - [ ] change should trigger a floating window with edit options
 - [ ] a click on the general panel should be handled
 - [ ] adding a new bookmark / folder should trigger a refresh chrome.bookmarks.BookmarkChangeEvent - there needs to be a listener
+- [ ] in Safari the number of items is instead of the url for folders - could join the 2 columns. there's also descriptions there.
+- [ ] sort by added to context menus
+- [ ] it's not scrollable
 
 ## navigation and interactvity
 - [ ] context menu refactor 
@@ -94,3 +92,7 @@
 - [x] this should be displayed - so instead of 'loaded' a general state - display table or not, and another state for the text to be shown (loading/ this:)    
 - [x] on click elsewhere any context menu should automatically change - CHANGED, just a 'close' button for now
 - [x] make some nodes impossible to delete, rename if it's a stuck variant
+
+## core features
+- [x] the open in incognito doesn't work
+- [x] chrome native search to display, could be smart & advanced; still can search inside the results

@@ -1,12 +1,11 @@
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useEffect, useState } from "react";
-import { getChildrenLinks } from "../functions/ifHasChildrenFolders";
+import { useState } from "react";
 import { BrandingSection } from "./navbar/BrandingSection";
 import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
+import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
-import { PathDisplay } from "./table/PathDisplay";
 
 const navStyles: React.CSSProperties = {
   justifyContent: "space-between",
@@ -79,17 +78,24 @@ export function TableLoader(props: {}): JSX.Element {
     const last: chrome.bookmarks.BookmarkTreeNode =
       nodesForNewPath[nodesForNewPath.length - 1];
     try {
-      chrome.bookmarks.getChildren(last.id).then((children: chrome.bookmarks.BookmarkTreeNode[]) => {
-        console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
-        if (children) {
-          // console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
-          console.log('changing rows');
-          setRows(children);
-        } else {
-          setLoaded(MainDisplayStates.RESULT_EMPTY);
-        }
-      })
-
+      chrome.bookmarks.getChildren(last.id).then(
+        (children: chrome.bookmarks.BookmarkTreeNode[]) => {
+          console.log(
+            "last element of the path is: ",
+            last,
+            "its children are:",
+            children,
+            " setting rows to that array",
+          );
+          if (children) {
+            // console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
+            console.log("changing rows");
+            setRows(children);
+          } else {
+            setLoaded(MainDisplayStates.RESULT_EMPTY);
+          }
+        },
+      );
     } catch (error) {
       console.error(error);
     }

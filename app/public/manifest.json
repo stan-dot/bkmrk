@@ -4,12 +4,13 @@
   "version": "0.1",
   "options_page": "index.html",
   "manifest_version": 3,
+  "incognito": "split",
   "permissions": [
+    "tabs",
     "storage",
     "activeTab",
     "bookmarks",
-    "scripting",
-    "incognito"
+    "scripting"
   ],
   "chrome_url_overrides": {
     "PAGE_TO_OVERRIDE": "bookmarks.html"

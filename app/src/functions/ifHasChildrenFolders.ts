@@ -31,25 +31,21 @@ export async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode,
   const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = parent.children;
   if (!children)
     return;
+  const urlsToSend: string[] = children.filter(v => v.url).map(v => v.url!);
 
-  const standard: boolean = (!newWindow && !incognito);
-  const currentWindow: chrome.windows.Window = await chrome.windows.getCurrent();
-  let finalId: number = currentWindow.id!;
-  if (!standard) {
-    const incognitoStatus: boolean = incognito ?? false;
-    const createData: chrome.windows.CreateData = { incognito: incognitoStatus };
-    const openedNewWindow: chrome.windows.Window = await chrome.windows.create(createData);
-    finalId = openedNewWindow.id!;
+  if (incognito) {
+    const createData: chrome.windows.CreateData = { incognito: true, url: urlsToSend };
+    await chrome.windows.create(createData);
+    return;
   }
 
-  const newTabPropertiesGenerator: (url: string) => chrome.tabs.CreateProperties = (url: string) => {
-    const props: chrome.tabs.CreateProperties = { windowId: finalId, url: url };
-    return props;
-  };
+  if (newWindow) {
+    const createData: chrome.windows.CreateData = { url: urlsToSend };
+    await chrome.windows.create(createData)
+    return;
+  }
 
-  children.forEach((b: chrome.bookmarks.BookmarkTreeNode) => {
-    if (!isAFolder(b)) {
-      chrome.tabs.create(newTabPropertiesGenerator(b.url!));
-    }
+  urlsToSend.forEach((urlToSend: string) => {
+    chrome.tabs.create({ url: urlToSend });
   });
 }

@@ -1,7 +1,5 @@
 import { getChildrenLinks, openAllChildren } from "../../functions/ifHasChildrenFolders";
 
-
-
 export function OpenAllSection(props: { thing: chrome.bookmarks.BookmarkTreeNode }): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
     props.thing,
@@ -15,7 +13,7 @@ export function OpenAllSection(props: { thing: chrome.bookmarks.BookmarkTreeNode
       <p>open all {childrenLinks.length} in new window</p>
     </button>
     <button onClick={e => openAllChildren(props.thing, true, true)} disabled={!hasChildrenLinks}>
-      <p>open all {childrenLinks.length} in Incognito winow</p>
+      <p>open all {childrenLinks.length} in Incognito window</p>
     </button>
   </div>
 }

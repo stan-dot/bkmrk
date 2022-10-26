@@ -1,7 +1,7 @@
 
 # MVP
 ## core features
-- [ ] the open in incognito doesn't work
+- [x] the open in incognito doesn't work
 - [ ] filtering with hooks for column header context menus
 - [ ] lunr search to display, could be smart & advanced; still can search inside the results
 
@@ -48,6 +48,10 @@
 - [ ] Clean your bookmarks by deleting empty folders.
 - [ ] automatic cutting of tracing links (need to read more about this one)
 - [ ] save into cookies which items on the side tree were open
+
+
+## expanded features
+- [ ] universal reader - reads text from any website, pure text, and presents it in 1 hour doses, aligns with topics, etc
 
 ### Keywords
 - [ ] keywords by areas inside the title that wouldn't be displayed

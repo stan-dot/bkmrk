@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ENTER_KEY, SEARCH_PLACEHOLDER } from './navbarConst';
 import { searchFieldButtonStyle, searchFieldInputStyle, searchFieldStyle } from './searchFieldButtonStyle';
 import { SearchIcon } from './SearchIcon';
@@ -26,9 +26,7 @@ export function SearchField(props: {
   }, [props.searchText, setValue]);
 
   const onChangeHandler = (event: { target: { value: any; }; }) => {
-    console.log('event:', event);
     setValue(event.target.value);
-    // props.onChange(event.target.value, event);
     setIconHighlight(true);
   };
 
@@ -36,7 +34,6 @@ export function SearchField(props: {
     const isEnterPressed = event.which === ENTER_KEY
       || event.keyCode === ENTER_KEY;
     if (isEnterPressed) {
-      // props.onEnter(event.target.value, event);
       await runSearch();
     };
   }
@@ -47,16 +44,13 @@ export function SearchField(props: {
   };
 
   const onBlurHandler = (event: { target: { value: any; }; }) => {
-    // props.onBlur(event.target.value, event);
     setIconHighlight(false);
   };
 
   const className = `react-search-field dev-test-outline ${props.classNames}`;
 
   async function runSearch() {
-    console.log('search query', value);
     const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks.search(value);
-    console.log('search results', searchResults);
     props.setDataCallback(searchResults);
   }
 

@@ -15,6 +15,7 @@ export function BookmarkTable(
     pathChangeHandler: (
       nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
     ) => void;
+    dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
   },
 ): JSX.Element {
   const [searchVisibility, setSearchVisibility] = useState(false);
@@ -61,13 +62,16 @@ export function BookmarkTable(
         <TableContextMenu
           thing={props.rows[lastInteractedItem[1]]}
           position={position}
-          closeCallback={() => setShowContextMenu(false)}
+          closeCallback={() => setSearchVisibility(false)}
+          setRowsCallback={props.dataCallback}
+          searchResults={true}
         />
       )}
       <DataEditor
         onCellClicked={globalClickHandler}
         onHeaderClicked={() => console.log("clicked header")}
         onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
+          event.preventDefault();
           setLastInteractedItem(cell);
           setShowContextMenu(true);
         }}

@@ -1,4 +1,3 @@
-import { OpenAllSection } from "./contextMenuComponents/OpenAllSection";
 import { CloseSection } from "./sidePanel/CloseSection";
 
 export function GeneralContextMenu(

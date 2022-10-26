@@ -147,6 +147,7 @@ export function TableLoader(props: {}): JSX.Element {
               <BookmarkTable
                 rows={rows}
                 pathChangeHandler={pathChangeHandler}
+                dataCallback={dataCallback}
               />
             </div>
           </>

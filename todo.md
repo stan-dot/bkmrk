@@ -1,38 +1,30 @@
 
 # MVP
-## missing features
+## missing features and bugs
 - [ ] change should trigger a floating window with edit options
 - [ ] a click on the general panel should be handled
 - [ ] adding a new bookmark / folder should trigger a refresh chrome.bookmarks.BookmarkChangeEvent - there needs to be a listener
 - [ ] in Safari the number of items is instead of the url for folders - could join the 2 columns. there's also descriptions there.
-- [ ] sort by added to context menus
 - [ ] it's not scrollable
 
-## navigation and interactvity
-- [ ] context menu refactor 
-  - [ ] need to be unified, almost the same functions tbh
-  - [ ] thing, position, closecallbacks are there for now. rename, delete, cut copy paste should work on all
-  - [ ] show in folder in only search result
-  - [ ] could extract button groups as diff modules, that better than some Map of name to config
-  - [ ] open all children, or the thing itself - should be dependent on ifLeaf
-- [ ] context menus - 
-  - [x] side panel
-  - [ ] path display
-    - [ ] go to a sibling
-    - [ ] copy the path
-  - [ ] any area (add new bookmark, add new folder)
-  - [ ] main table
-  - [ ] search results - navigate to parent folder
-- [ ] keyboard usage and selection
-  - [ ] info: https://developer.chrome.com/docs/extensions/reference/commands/
-  - [ ] multiple selection with `ctrl` clicked and/or shift
-  - [ ] react to `ctrl`+a clicks
+## context menu refactor 
+- [ ] draggableBehavior.tsx - has cut copy paste should work on all
+- [ ] show in folder in only search result
+- [ ] unify, using modules or even same elements
+- [ ] search results - navigate to parent folder - this crashes the app
+- [ ] sort by added to context menus - if not leaf
+
+## keyboard usage and selection
+- [ ] info: https://developer.chrome.com/docs/extensions/reference/commands/
+- [ ] multiple selection with `ctrl` clicked and/or shift
+- [ ] react to `ctrl`+a clicks
+
+## sorting
 - [ ] sorting
   - [ ]  A-Z
   - [ ]  by date
 
 # Cleanup
-
 ## bugs
 - [ ] crashes when some folders are reached
 
@@ -96,3 +88,5 @@
 ## core features
 - [x] the open in incognito doesn't work
 - [x] chrome native search to display, could be smart & advanced; still can search inside the results
+- [x] could extract button groups as diff modules, that better than some Map of name to config
+- [x] open all children, or the thing itself - should be dependent on ifLeaf

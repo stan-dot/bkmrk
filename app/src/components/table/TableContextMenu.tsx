@@ -3,31 +3,48 @@ import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "../sidePanel/CloseSection";
 
-const tableContextMenuStyles = (position: number[]): React.CSSProperties => {
+function getStyles(position: number[]): React.CSSProperties {
   return {
     position: "absolute",
     left: `${position[0]}px`,
     right: `${position[1]}px`,
-    zIndex: "40",
+    zIndex: 50,
+    fontSize: 10,
+    border: "1px solid",
+    borderColor: "#FF0000",
+    background: "solid",
+    backgroundColor: "coral",
+    width: "fit-content",
   };
-};
-/**
- * @param props
- * @returns
- */
+}
+
 export function TableContextMenu(
   props: {
     thing: chrome.bookmarks.BookmarkTreeNode;
     position: number[];
     closeCallback: () => void;
+    setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
+    searchResults: boolean;
   },
 ): JSX.Element {
   const isProtected: boolean = basicNodes.includes(props.thing.title);
+
+  const handleShowInFolder = async (_e: any) => {
+    const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
+      .get(props.thing.parentId!);
+    if (parent.length > 1) {
+      console.error("there is more than one parent for this id");
+      return;
+    }
+    const children: chrome.bookmarks.BookmarkTreeNode[] = parent[0].children!;
+    props.setRowsCallback(children);
+  };
+
   return (
     <div
-      id="tableContextMenu"
+      id="searchResultContextMenu"
       className="contextMenu"
-      style={tableContextMenuStyles(props.position)}
+      style={getStyles(props.position)}
     >
       <EditDeleteSection thing={props.thing} protected={isProtected} />
       <div className="group2">
@@ -35,6 +52,12 @@ export function TableContextMenu(
         <p>copy buton</p>
         <p>paste buton</p>
       </div>
+      <button
+        style={{ visibility: props.searchResults ? "visible" : "hidden" }}
+        onClick={handleShowInFolder}
+      >
+        <p>show in folder</p>
+      </button>
       <OpenAllSection thing={props.thing} />
       <CloseSection closeCallback={props.closeCallback} />
     </div>

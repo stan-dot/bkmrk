@@ -1,6 +1,6 @@
 import DataEditor, {
   CellClickedEventArgs,
-  Item,
+  Item
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
 import { isAFolder } from "../../functions/ifHasChildrenFolders";

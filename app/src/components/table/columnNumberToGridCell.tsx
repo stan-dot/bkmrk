@@ -43,13 +43,23 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
     };
     return cell;
   }],
-  // url
+  // old url 
+  // [1, (v) => {
+  //   return {
+  //     kind: GridCellKind.Text,
+  //     data: v.url ? v.url : '',
+  //     allowOverlay: false,
+  //     displayData: v.url ? v.url : '',
+  //   };
+  // }],
+  // url unified with number of children, like in Safari
   [1, (v) => {
+    const display: string = v.url ?? v.children?.length.toString() ?? 'unknown';
     return {
       kind: GridCellKind.Text,
       data: v.url ? v.url : '',
       allowOverlay: false,
-      displayData: v.url ? v.url : '',
+      displayData: display,
     };
   }],
   // title
@@ -62,14 +72,14 @@ export const columnNumberToGridCell: Map<number, (v: chrome.bookmarks.BookmarkTr
     };
   }],
   // number of Children
-  [3, (v) => {
-    return {
-      kind: GridCellKind.Text,
-      data: v.children ? v.children.length.toString() : '0',
-      allowOverlay: false,
-      displayData: v.children ? v.children.length.toString() : '0',
-    };
-  }],
+  // [3, (v) => {
+  //   return {
+  //     kind: GridCellKind.Text,
+  //     data: v.children ? v.children.length.toString() : '0',
+  //     allowOverlay: false,
+  //     displayData: v.children ? v.children.length.toString() : '0',
+  //   };
+  // }],
   // ID
   // [4, (v) => {
   //   return {

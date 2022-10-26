@@ -1,11 +1,12 @@
 
 # MVP
 ## missing features and bugs
+- [x] in Safari the number of items is instead of the url for folders - could join the 2 columns. there's also descriptions there.
 - [ ] change should trigger a floating window with edit options
-- [ ] a click on the general panel should be handled
+- [ ] handle clicks on the panel outside of the canvas containter - need to adjust the width of the container, deal with the absolute layout. click is not detected at all rn
 - [ ] adding a new bookmark / folder should trigger a refresh chrome.bookmarks.BookmarkChangeEvent - there needs to be a listener
-- [ ] in Safari the number of items is instead of the url for folders - could join the 2 columns. there's also descriptions there.
-- [ ] it's not scrollable
+- [ ] main table is not scrollable
+- [ ] main table crashes at high numbers of rows in search - maybe that just higher probability of encountering the bad apples that crash also other locations
 
 ## context menu refactor 
 - [ ] draggableBehavior.tsx - has cut copy paste should work on all

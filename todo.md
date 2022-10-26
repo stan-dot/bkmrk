@@ -45,6 +45,7 @@
 - [ ] add a folder icon
 - [ ] add shadow
 - [ ] mirror layout minutely, if there's grid, do grid
+- [ ] different color coding of cancel/save buttons
 
 # After MVP
 ## Development View

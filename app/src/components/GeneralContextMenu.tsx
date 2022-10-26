@@ -14,16 +14,64 @@ export function GeneralContextMenu(
         right: `${props.position[1]}px`,
       }}
     >
-      <div className="group2">
-        <p>cut button</p>
-        <p>copy buton</p>
-        <p>paste buton</p>
+      <div className="group5">
+        <p>create new bookmark</p>
+        <p> create new folder</p>
       </div>
-      <OpenAllSection thing={props.thing} />
       <CloseSection closeCallback={props.closeCallback} />
     </div >
   );
 }
 
 
+/**
+ * todo needed props: position to display, add handle, cancel handle
+ * todo add useref
+ * @returns 
+ */
+function AddBookmarkForm(): JSX.Element {
 
+  return <div id="addBookmarkForm" >
+    <h3>Add fodler</h3>
+    <label htmlFor='bookmarkName'>
+      Name
+    </label>
+    <input id="bookmarkName">
+    </input>
+    <label htmlFor='URL'>
+      URL
+    </label>
+    <input id="URL">
+    </input>
+    <button>
+      Cancel
+    </button>
+    <button>
+      Save
+    </button>
+  </div>
+}
+
+
+/**
+ * todo needed props: position to display, add handle, cancel handle
+ * todo add useref
+ * @returns 
+ */
+function AddFolderForm(): JSX.Element {
+
+  return <div id="addFolderForm" >
+    <h3>Add fodler</h3>
+    <label htmlFor='folderName'>
+      Name
+    </label>
+    <input id="folderName">
+    </input>
+    <button>
+      Cancel
+    </button>
+    <button>
+      Save
+    </button>
+  </div>
+}

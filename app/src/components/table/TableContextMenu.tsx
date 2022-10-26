@@ -1,6 +1,5 @@
 import {
-  getChildrenLinks,
-  openAllChildren,
+  getChildrenLinks
 } from "../../functions/ifHasChildrenFolders";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 
@@ -18,7 +17,6 @@ export function TableContextMenu(
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
     props.thing,
   );
-  const hasChildrenLinks: boolean = childrenLinks.length > 0;
   const tableContextMenuStyles: React.CSSProperties = {
     position: "absolute",
     left: `${props.position[0]}px`,

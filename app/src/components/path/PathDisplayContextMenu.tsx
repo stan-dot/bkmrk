@@ -1,7 +1,3 @@
-import {
-  getChildrenLinks,
-  openAllChildren,
-} from "../../functions/ifHasChildrenFolders";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../getPath";
 import { stringifyPath } from "./stringifyPath";
@@ -9,10 +5,6 @@ import { stringifyPath } from "./stringifyPath";
 export function PathDisplayContextMenu(
   props: { thing: chrome.bookmarks.BookmarkTreeNode; position: number[] },
 ): JSX.Element {
-  const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
-    props.thing,
-  );
-  const hasChildrenLinks: boolean = childrenLinks.length > 0;
   const handleCopyOption = () => {
     getPath(props.thing).then((path) => {
       const text: string = stringifyPath(path);

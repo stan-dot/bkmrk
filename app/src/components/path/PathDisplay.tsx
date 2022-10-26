@@ -1,26 +1,10 @@
-import React from "react";
 import { PathItem } from "./PathItem";
-
-const pathDisplayStyle: React.CSSProperties = {
-  position: "fixed",
-  border: "2px solid",
-  justifyContent: "space-between",
-  borderColor: "#FF0000",
-};
 
 export function PathDisplay(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
   pathChangeHandler: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }): JSX.Element {
-  /**
-   * goes backs, changes the current location, the current path
-   */
-  const handleClick = (
-    index: number,
-  ): void => {
-    /**
-     * cases when want to change to the root or to the last(current) element
-     */
+  const handleClick = (index: number) => {
     if (index !== 0 && index !== props.path.length - 1) {
       const newPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
         0,
@@ -53,6 +37,11 @@ export function PathDisplay(props: {
         display: "flex",
         justifyContent: "flex-start",
         minWidth: "200px",
+        position: "fixed",
+        left: "220px",
+        top: "110px",
+        border: "2px solid",
+        borderColor: "#FF0000",
       }}
     >
       <div id="buttonArea" style={{ position: "relative" }}>
@@ -66,17 +55,22 @@ export function PathDisplay(props: {
           [..]
         </button>
       </div>
-      <div style={pathDisplayStyle}>
-        <div style={{ display: "flex", justifyContent: "start" }}>
-          {props.path.map((n, i) => (
-            <PathItem
-              handleClick={handleClick}
-              index={i}
-              node={n}
-              contextMenuHandler={handleContextMenuClick}
-            />
-          ))}
-        </div>
+      <div
+        style={{
+          border: "2px solid",
+          justifyContent: "space-between",
+          borderColor: "#FF0000",
+          display: "flex",
+        }}
+      >
+        {props.path.map((n, i) => (
+          <PathItem
+            handleClick={handleClick}
+            index={i}
+            node={n}
+            contextMenuHandler={handleContextMenuClick}
+          />
+        ))}
       </div>
     </div>
   );

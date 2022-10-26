@@ -2,7 +2,6 @@
 # MVP
 ## core features
 - [x] the open in incognito doesn't work
-- [ ] filtering with hooks for column header context menus
 - [ ] lunr search to display, could be smart & advanced; still can search inside the results
 
 ## navigation and interactvity
@@ -29,6 +28,10 @@
   - [ ]  by date
 
 # Cleanup
+
+## bugs
+- [ ] crashes when some folders are reached
+
 ## appearance
 - [ ] different styles - darkmode, etc - with tailwind possibly
 - [ ] prettify the whole thing, make it nice colours and right sizes  
@@ -48,6 +51,10 @@
 - [ ] Clean your bookmarks by deleting empty folders.
 - [ ] automatic cutting of tracing links (need to read more about this one)
 - [ ] save into cookies which items on the side tree were open
+- [ ] filtering with hooks for column header context menus
+  - [ ] starting with something
+  - [ ] before and after date
+  - [ ] wrt keywords
 
 
 ## expanded features

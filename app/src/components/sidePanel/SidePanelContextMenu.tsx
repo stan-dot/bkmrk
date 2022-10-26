@@ -1,8 +1,4 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
-import {
-  getChildrenLinks,
-  openAllChildren,
-} from "../../functions/ifHasChildrenFolders";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 
 function getStyles(position: number[]): React.CSSProperties {
@@ -10,7 +6,7 @@ function getStyles(position: number[]): React.CSSProperties {
     position: "absolute",
     left: `${position[0]}px`,
     right: `${position[1]}px`,
-    zIndex: 5,
+    zIndex: 50,
     fontSize: 10,
     border: "1px solid",
     borderColor: "#FF0000",
@@ -27,12 +23,7 @@ export function SidePanelContextMenu(
     closeCallback: () => void;
   },
 ): JSX.Element {
-  const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
-    props.thing,
-  );
   const isProtected: boolean = basicNodes.includes(props.thing.title);
-  const hasChildrenLinks: boolean = childrenLinks.length > 0;
-
   const styles = getStyles(props.position);
   return (
     <div id="sidePanelContextMenu" className="contextMenu" style={styles}>

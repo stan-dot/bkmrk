@@ -5,7 +5,7 @@ import { GridCell, GridCellKind } from "@glideapps/glide-data-grid";
 export const columns: GridColumn[] = [
   // { title: "index", width: 40 },
   // { title: "ID", width: 400},
-  { title: "Date Added", width: 90 },
+  { title: "Date Added", width: 190 },
   { title: "URL", width: 100 },
   { title: "Title", width: 600 },
   { title: "Number of Children", width: 200 },

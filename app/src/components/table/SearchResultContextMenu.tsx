@@ -1,4 +1,5 @@
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
+import { CloseSection } from "../sidePanel/CloseSection";
 
 /**
  * todo the show in folder bit
@@ -35,11 +36,7 @@ export function SearchResultContextMenu(
         <p>paste buton</p>
       </div>
       <OpenAllSection thing={props.thing} />
-      <div className="group4">
-        <button onClick={() => props.closeCallback()}>
-          Close
-        </button>
-      </div>
+      <CloseSection closeCallback={props.closeCallback} />
     </div>
   );
 }

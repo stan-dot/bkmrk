@@ -1,8 +1,16 @@
-import {
-  getChildrenLinks
-} from "../../functions/ifHasChildrenFolders";
+import { basicNodes } from "../../dataProcessing/basicNodes";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
+import { EditDeleteSection } from "../EditDeleteSection";
+import { CloseSection } from "../sidePanel/CloseSection";
 
+const tableContextMenuStyles = (position: number[]): React.CSSProperties => {
+  return {
+    position: "absolute",
+    left: `${position[0]}px`,
+    right: `${position[1]}px`,
+    zIndex: "40",
+  };
+};
 /**
  * @param props
  * @returns
@@ -14,36 +22,21 @@ export function TableContextMenu(
     closeCallback: () => void;
   },
 ): JSX.Element {
-  const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(
-    props.thing,
-  );
-  const tableContextMenuStyles: React.CSSProperties = {
-    position: "absolute",
-    left: `${props.position[0]}px`,
-    right: `${props.position[1]}px`,
-    zIndex: "40",
-  };
+  const isProtected: boolean = basicNodes.includes(props.thing.title);
   return (
     <div
       id="tableContextMenu"
       className="contextMenu"
-      style={tableContextMenuStyles}
+      style={tableContextMenuStyles(props.position)}
     >
-      <div className="group1">
-        <p>rename button</p>
-        <p>delete button</p>
-      </div>
+      <EditDeleteSection thing={props.thing} protected={isProtected} />
       <div className="group2">
         <p>cut button</p>
         <p>copy buton</p>
         <p>paste buton</p>
       </div>
       <OpenAllSection thing={props.thing} />
-      <div className="group4">
-        <button onClick={() => props.closeCallback()}>
-          Close
-        </button>
-      </div>
+      <CloseSection closeCallback={props.closeCallback} />
     </div>
   );
 }

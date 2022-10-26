@@ -1,7 +1,8 @@
 import { OpenAllSection } from "./contextMenuComponents/OpenAllSection";
+import { CloseSection } from "./sidePanel/CloseSection";
 
 export function GeneralContextMenu(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode; position: number[] },
+  props: { thing: chrome.bookmarks.BookmarkTreeNode; position: number[], closeCallback: () => void },
 ): JSX.Element {
   return (
     <div
@@ -19,8 +20,10 @@ export function GeneralContextMenu(
         <p>paste buton</p>
       </div>
       <OpenAllSection thing={props.thing} />
+      <CloseSection closeCallback={props.closeCallback} />
     </div >
   );
 }
+
 
 

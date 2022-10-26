@@ -1,6 +1,7 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
+import { CloseSection } from "./CloseSection";
 
 function getStyles(position: number[]): React.CSSProperties {
   return {
@@ -41,11 +42,9 @@ export function SidePanelContextMenu(
         </button>
       </div>
       <OpenAllSection thing={props.thing} />
-      <div className="group4">
-        <button onClick={() => props.closeCallback()}>
-          Close
-        </button>
-      </div>
+      <CloseSection closeCallback={props.closeCallback} />
     </div>
   );
 }
+
+

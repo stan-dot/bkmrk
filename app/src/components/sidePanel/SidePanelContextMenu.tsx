@@ -1,5 +1,6 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
+import { EditDeleteSection } from "../EditDeleteSection";
 
 function getStyles(position: number[]): React.CSSProperties {
   return {
@@ -27,14 +28,7 @@ export function SidePanelContextMenu(
   const styles = getStyles(props.position);
   return (
     <div id="sidePanelContextMenu" className="contextMenu" style={styles}>
-      <div className="group1">
-        <button disabled={!isProtected}>
-          <p>rename button</p>
-        </button>
-        <button disabled={!isProtected}>
-          <p>delete button</p>
-        </button>
-      </div>
+      <EditDeleteSection thing={props.thing} protected={isProtected} />
       <div className="group2">
         <button disabled={!isProtected}>
           <p>cut button</p>

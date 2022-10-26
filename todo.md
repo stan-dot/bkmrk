@@ -4,6 +4,12 @@
 - [x] the open in incognito doesn't work
 - [ ] lunr search to display, could be smart & advanced; still can search inside the results
 
+
+## missing features
+- [ ] change should trigger a floating window with edit options
+- [ ] a click on the general panel should be handled
+- [ ] adding a new bookmark / folder should trigger a refresh chrome.bookmarks.BookmarkChangeEvent - there needs to be a listener
+
 ## navigation and interactvity
 - [ ] context menu refactor 
   - [ ] need to be unified, almost the same functions tbh

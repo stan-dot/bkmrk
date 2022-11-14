@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { makeBookmark, makeFolder } from "../../dataProcessing/interact";
 import { exportBookmarks } from "../../io/exportBookmarks";
 import { BookmarkImportWindow } from "../../io/importBookmarks";
+import { printCsv } from "../../utils/printCsv";
 import { DotsSvg } from "./DotsSvg";
 
 enum OpenMenuStates {
@@ -12,7 +13,7 @@ enum OpenMenuStates {
 }
 
 export function ManipulationMenu(
-  props: { sortCallback: Function; importCallback: Function },
+  props: { sortCallback: Function; importCallback: Function, rows: chrome.bookmarks.BookmarkTreeNode[] },
 ): JSX.Element {
   const [showMenu, setShowMenu] = useState(false);
   const [openVariant, setOpenVariant] = useState(OpenMenuStates.NEW_BOOKMARK);
@@ -65,8 +66,13 @@ export function ManipulationMenu(
                 </button>
               </li>
               <li>
+                <button onClick={(v) => printCsv(props.rows)}>
+                  download csv of current display (for Excel)
+                </button>
+              </li>
+              <li>
                 <svg href="chrome://favicon/chrome://settings" />
-                <button onClick={(v) =>console.log('should open some setting page?')}>
+                <button onClick={(v) => console.log('should open some setting page?')}>
                   settings
                 </button>
               </li>

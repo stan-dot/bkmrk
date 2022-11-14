@@ -1,4 +1,4 @@
-import { isAFolder } from "../../functions/ifHasChildrenFolders";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { SideTreeElement } from "./SideTreeElement";
 
 export function SideSubTree(props: {

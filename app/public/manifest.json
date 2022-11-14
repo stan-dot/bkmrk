@@ -10,7 +10,8 @@
     "storage",
     "activeTab",
     "bookmarks",
-    "scripting"
+    "scripting",
+    "omnibox"
   ],
   "chrome_url_overrides": {
     "PAGE_TO_OVERRIDE": "bookmarks.html"

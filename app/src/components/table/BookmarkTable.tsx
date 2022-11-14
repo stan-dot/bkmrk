@@ -3,7 +3,7 @@ import DataEditor, {
   Item
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
-import { isAFolder } from "../../functions/ifHasChildrenFolders";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { getPath } from "../getPath";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
@@ -16,7 +16,7 @@ export function BookmarkTable(
       nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
     ) => void;
     dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
-    searchResultsMode:boolean
+    searchResultsMode: boolean
   },
 ): JSX.Element {
   const [searchVisibility, setSearchVisibility] = useState(false);

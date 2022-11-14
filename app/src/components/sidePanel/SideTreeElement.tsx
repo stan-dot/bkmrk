@@ -1,5 +1,5 @@
 import { MouseEvent, useState } from "react";
-import { ifIsALeafNode } from "../../functions/ifHasChildrenFolders";
+import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
 import { BottomArrow } from "../../svgs/BottomArrow";
 import { RightArrow } from "../../svgs/RightArrow";
 import { getPath } from "../getPath";

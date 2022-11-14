@@ -133,6 +133,7 @@ export function TableLoader(props: {}): JSX.Element {
         <ManipulationMenu
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
+          rows={rows}
         />
       </nav>
       {loaded === MainDisplayStates.LOADED &&

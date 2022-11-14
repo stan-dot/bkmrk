@@ -1,4 +1,4 @@
-import { getChildrenLinks, openAllChildren } from "../../functions/ifHasChildrenFolders";
+import { getChildrenLinks, openAllChildren } from "../../utils/ifHasChildrenFolders";
 
 export function OpenAllSection(props: { thing: chrome.bookmarks.BookmarkTreeNode }): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(

@@ -169,7 +169,7 @@ export function TableLoader(props: {}): JSX.Element {
             />
             <div
               id="mainContainer"
-              style={{ position: "absolute", top: "150px", left: "220px", width: '1000px', height: '1000px' }}
+              style={{ position: "fixed", top: "150px", left: "220px", width: '1000px', height: '1000px', overflow: 'scroll' }}
               onClick={
                 (e) => {
                   e.preventDefault();

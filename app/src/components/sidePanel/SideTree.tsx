@@ -2,13 +2,12 @@ import React from "react";
 import { SideSubTree } from "./SideSubTree";
 
 const rootSideTreeStyles: React.CSSProperties = {
-  position: "absolute",
-  left: "20px",
-  top:"120px",
+  position: "fixed",
+  left: "10px",
+  top: "130px",
   overflow: 'scroll',
-  overflowX: 'scroll',
-  overflowY:'scroll',
-  minWidth: '200px'
+  height: ' 600px',
+  minWidth: '215px'
 };
 
 /**
@@ -26,16 +25,12 @@ export function SideTree(
   },
 ): JSX.Element {
   return (
-    <div
-      id="vericalHoriontalScrollArea"
-      style={rootSideTreeStyles}
-      className="dev-test-outline"
-    >
-      <SideSubTree
-        nodes={props.tree}
-        pathSetter={props.pathSetter}
-        path={props.tree}
-      />
-    </div>
+
+    <SideSubTree
+      nodes={props.tree}
+      pathSetter={props.pathSetter}
+      path={props.tree}
+      styles={rootSideTreeStyles}
+    />
   );
 }

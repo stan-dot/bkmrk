@@ -69,7 +69,7 @@ const myCols: ComprehensiveColDef[] = [
     columnGetter: (v) => {
       const cell: TextCell = {
         kind: GridCellKind.Text,
-        data: v.title,
+        data: v?.title ?? "empty",
         allowOverlay: false,
         displayData: v.title,
       };

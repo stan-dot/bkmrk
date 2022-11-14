@@ -3,6 +3,7 @@ import DataEditor, {
   Item
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
+import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { getPath } from "../getPath";
 import { columns } from "./columnNumberToGridCell";
@@ -52,6 +53,13 @@ export function BookmarkTable(
     }
   };
 
+  const contextMenuProps: ContextMenuProps = {
+    thing: props.rows[lastInteractedItem[1]],
+    position: position,
+    closeCallback: () => setSearchVisibility(false),
+    sortCallback: () => console.log("no sort here")
+  };
+
   return (
     <div
       onClick={contextClickHandler}
@@ -60,9 +68,7 @@ export function BookmarkTable(
     >
       {showContextMenu && (
         <TableContextMenu
-          thing={props.rows[lastInteractedItem[1]]}
-          position={position}
-          closeCallback={() => setSearchVisibility(false)}
+          contextMenuProps={ contextMenuProps}
           setRowsCallback={props.dataCallback}
           searchResults={props.searchResultsMode}
         />

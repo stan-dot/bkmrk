@@ -1,4 +1,5 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
+import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "../sidePanel/CloseSection";
@@ -20,18 +21,16 @@ function getStyles(position: number[]): React.CSSProperties {
 
 export function TableContextMenu(
   props: {
-    thing: chrome.bookmarks.BookmarkTreeNode;
-    position: number[];
-    closeCallback: () => void;
+    contextMenuProps: ContextMenuProps;
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
     searchResults: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = basicNodes.includes(props.thing.title);
+  const isProtected: boolean = basicNodes.includes(props.contextMenuProps.thing.title);
 
   const handleShowInFolder = async (_e: any) => {
     const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
-      .get(props.thing.parentId!);
+      .get(props.contextMenuProps.thing.parentId!);
     if (parent.length > 1) {
       console.error("there is more than one parent for this id");
       return;
@@ -44,9 +43,9 @@ export function TableContextMenu(
     <div
       id="searchResultContextMenu"
       className="contextMenu"
-      style={getStyles(props.position)}
+      style={getStyles(props.contextMenuProps.position)}
     >
-      <EditDeleteSection thing={props.thing} protected={isProtected} />
+      <EditDeleteSection thing={props.contextMenuProps.thing} protected={isProtected} />
       <div className="group2">
         <p>cut button</p>
         <p>copy buton</p>
@@ -58,8 +57,8 @@ export function TableContextMenu(
       >
         <p>show in folder</p>
       </button>
-      <OpenAllSection thing={props.thing} />
-      <CloseSection closeCallback={props.closeCallback} />
+      <OpenAllSection thing={props.contextMenuProps.thing} />
+      <CloseSection closeCallback={props.contextMenuProps.closeCallback} />
     </div>
   );
 }

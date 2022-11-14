@@ -10,11 +10,13 @@
     "storage",
     "activeTab",
     "bookmarks",
-    "scripting",
-    "omnibox"
+    "scripting"
   ],
   "chrome_url_overrides": {
     "PAGE_TO_OVERRIDE": "bookmarks.html"
+  },
+  "omnibox": {
+    "keyword": "bk/"
   },
   "short_name": "bkmrk",
   "author": "stan-dot",

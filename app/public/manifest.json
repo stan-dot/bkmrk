@@ -13,9 +13,6 @@
     "scripting",
     "omnibox"
   ],
-  "background":{
-    "service_worker": "background/background.js"
-  },
   "chrome_url_overrides": {
     "PAGE_TO_OVERRIDE": "bookmarks.html"
   },

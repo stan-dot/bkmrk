@@ -1,6 +1,10 @@
 /// <reference lib="webworker" />
 /* eslint-disable no-restricted-globals */
-
+import { clientsClaim } from 'workbox-core';
+import { ExpirationPlugin } from 'workbox-expiration';
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
+import { registerRoute } from 'workbox-routing';
+import { StaleWhileRevalidate } from 'workbox-strategies';
 // This service worker can be customized!
 // See https://developers.google.com/web/tools/workbox/modules
 // for the list of available Workbox modules, or add any other
@@ -8,17 +12,13 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-// const color = '#3aa757';
+const color = '#3aa757';
 
-// chrome.runtime.onInstalled.addListener(() => {
-//   chrome.storage.sync.set({ color });
-//   console.log('default background color set to %cgreen', `color:${color}`)
-// })
-import { clientsClaim } from 'workbox-core';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.storage.sync.set({ color });
+  console.log('default background color set to %cgreen', `color:${color}`)
+})
+
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -91,3 +91,63 @@ chrome.runtime.onInstalled.addListener((instalationDetails:chrome.runtime.Instal
     });
   }
 });
+
+
+const ownUrl = 'https://testurl';
+const defaultHost = 'http://localhost';
+
+chrome.runtime.onInstalled.addListener((details) =>{
+  if (details.reason === "install") {
+    //handle a first install
+    chrome.tabs.create({ url: `${ownUrl}/next.html` });
+  } else if (details.reason === "update") {
+    //handle an update
+    chrome.tabs.create({ url: `${ownUrl}/updates.html` });
+  }
+  chrome.storage.sync.set({ownApi: { host: defaultHost, isURL: true } });
+});
+
+const suggestion: chrome.omnibox.Suggestion = {
+  description: "Let's try this!"
+};
+chrome.omnibox.setDefaultSuggestion(suggestion)
+
+
+// here might need to get ready for the search operation
+chrome.omnibox.onInputStarted.addListener(() => {
+
+})
+
+chrome.omnibox.onInputChanged.addListener((text: string ) => {
+  const r1: chrome.omnibox.SuggestResult = {
+    content: "",
+    description: ""
+  };
+  const results: chrome.omnibox.SuggestResult[] = [r1];
+  return results;
+})
+
+
+// This event is fired with the user accepts the input in the omnibox.
+chrome.omnibox.onInputEntered.addListener((text:string) => {
+  // todo read this as a path and start it
+  // if special characters, might redirect to extension special page
+});
+
+chrome.runtime.onMessageExternal.addListener(
+  function (request, sender, sendResponse) {
+    chrome.storage.sync.get("ownApi", function (data) {
+      if (data.axapi.isURL) {
+        sendResponse({
+          message: "No API key",
+          success: false
+        });
+      } else {
+        sendResponse({
+          key: data.axapi.host,
+          message: "Found API key",
+          success: true
+        });
+      }
+    });
+  });

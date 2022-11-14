@@ -66,8 +66,6 @@ export function SideTreeElement(
     setContextMenuOpen(true);
   };
 
-  // https://www.svgrepo.com/svg/175769/down-arrow
-  // todo add this
   return (
     <div
       style={sideTreeElementContainerStyles}
@@ -83,6 +81,7 @@ export function SideTreeElement(
           style={{ visibility: isALeafNode ? "visible" : "hidden" }}
         >
           {unrolled ? <RightArrow /> : <BottomArrow />}
+          {props.thing.children?.length}
         </button>
         <button
           onClick={handleClick}

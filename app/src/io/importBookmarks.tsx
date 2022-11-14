@@ -31,8 +31,6 @@ function syncReadFile(filename: string): any[] {
   return arr;
 }
 
-
-
 export function BookmarkImportWindow(props: { callback: Function }): JSX.Element {
   const EMPTY_NAME = "";
   const [open, setOpen] = useState(true);

@@ -22,9 +22,7 @@ export function ManipulationMenu(
     setShowMenu(!showMenu)
   };
 
-  // sort by name, add new BookmarkTable, add new makeFolderimport bookmarks, export bookmarks, help center
   // todo there should be dialog popups for the new bookmark and new folder
-  // todo add a theme selection panel to the options
   return (
     <div style={{ zIndex: 4, position: "relative" }} className={'dev-test-outline'}>
       <button onClick={clickHandler} style={{ width: 'fit-content', padding: '20px' }} >
@@ -64,6 +62,12 @@ export function ManipulationMenu(
               <li>
                 <button onClick={(v) => exportBookmarks}>
                   export bookmarks{" "}
+                </button>
+              </li>
+              <li>
+                <svg href="chrome://favicon/chrome://settings" />
+                <button onClick={(v) =>console.log('should open some setting page?')}>
+                  settings
                 </button>
               </li>
               <li >

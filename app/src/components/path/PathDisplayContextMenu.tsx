@@ -9,7 +9,7 @@ export function PathDisplayContextMenu(
     getPath(props.thing).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
-      // todo some sweet alert to notify it's copied
+      // todo some sweet alert to notify it's copied. or a tooltip
     });
   };
 

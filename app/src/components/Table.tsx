@@ -59,7 +59,6 @@ export function TableLoader(props: {}): JSX.Element {
     () => reloadWithNode(currentPath)
   )
 
-
   // useEffect(() => {
   //   console.log("reacting to a change in path", currentPath);
   //   const last: chrome.bookmarks.BookmarkTreeNode =
@@ -162,6 +161,7 @@ export function TableLoader(props: {}): JSX.Element {
                 rows={rows}
                 pathChangeHandler={pathChangeHandler}
                 dataCallback={dataCallback}
+                searchResultsMode={loaded as MainDisplayStates === MainDisplayStates.SEARCH_RESULT}
               />
             </div>
           </>

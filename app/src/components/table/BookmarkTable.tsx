@@ -16,6 +16,7 @@ export function BookmarkTable(
       nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
     ) => void;
     dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
+    searchResultsMode:boolean
   },
 ): JSX.Element {
   const [searchVisibility, setSearchVisibility] = useState(false);
@@ -63,7 +64,7 @@ export function BookmarkTable(
           position={position}
           closeCallback={() => setSearchVisibility(false)}
           setRowsCallback={props.dataCallback}
-          searchResults={true}
+          searchResults={props.searchResultsMode}
         />
       )}
       <DataEditor

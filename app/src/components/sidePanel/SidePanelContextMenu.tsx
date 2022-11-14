@@ -1,4 +1,5 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
+import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "./CloseSection";
@@ -20,16 +21,19 @@ function getStyles(position: number[]): React.CSSProperties {
 
 export function SidePanelContextMenu(
   props: {
-    thing: chrome.bookmarks.BookmarkTreeNode;
-    position: number[];
-    closeCallback: () => void;
+    contextMenuProps: ContextMenuProps;
   },
 ): JSX.Element {
-  const isProtected: boolean = basicNodes.includes(props.thing.title);
-  const styles = getStyles(props.position);
+  const isProtected: boolean = basicNodes.includes(
+    props.contextMenuProps.thing.title,
+  );
+  const styles = getStyles(props.contextMenuProps.position);
   return (
     <div id="sidePanelContextMenu" className="contextMenu" style={styles}>
-      <EditDeleteSection thing={props.thing} protected={isProtected} />
+      <EditDeleteSection
+        thing={props.contextMenuProps.thing}
+        protected={isProtected}
+      />
       <div className="group2">
         <button disabled={!isProtected}>
           <p>cut button</p>
@@ -41,10 +45,8 @@ export function SidePanelContextMenu(
           <p>paste buton</p>
         </button>
       </div>
-      <OpenAllSection thing={props.thing} />
-      <CloseSection closeCallback={props.closeCallback} />
+      <OpenAllSection thing={props.contextMenuProps.thing} />
+      <CloseSection closeCallback={props.contextMenuProps.closeCallback} />
     </div>
   );
 }
-
-

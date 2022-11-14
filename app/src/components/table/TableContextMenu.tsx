@@ -27,7 +27,9 @@ export function TableContextMenu(
     searchResults: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = basicNodes.includes(props.contextMenuProps.thing.title);
+  const isProtected: boolean = basicNodes.includes(
+    props.contextMenuProps.thing.title,
+  );
 
   const handleShowInFolder = async (_e: any) => {
     const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
@@ -40,14 +42,18 @@ export function TableContextMenu(
     props.setRowsCallback(children);
   };
 
-  const sortable = isAFolder(props.contextMenuProps.thing) && ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
+  const sortable = isAFolder(props.contextMenuProps.thing) &&
+    ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
   return (
     <div
       id="searchResultContextMenu"
       className="contextMenu"
       style={getStyles(props.contextMenuProps.position)}
     >
-      <EditDeleteSection thing={props.contextMenuProps.thing} protected={isProtected} />
+      <EditDeleteSection
+        thing={props.contextMenuProps.thing}
+        protected={isProtected}
+      />
       <div className="group2">
         <p>cut button</p>
         <p>copy buton</p>
@@ -59,11 +65,25 @@ export function TableContextMenu(
       >
         <p>show in folder</p>
       </button>
-      <button onClick={() => props.contextMenuProps.sortCallback(props.contextMenuProps.thing, )} disabled={sortable}>
+      <button
+        onClick={() =>
+          props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
+            key: "title",
+            reverse: false,
+          })}
+        disabled={sortable}
+      >
         sort A-Z
       </button>
-      <button onClick={() => props.contextMenuProps.sortCallback(props.contextMenuProps.thing), SearchMode.Alphabetic} disabled={sortable}>
-        sort A-Z
+      <button
+        onClick={() =>
+          props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
+            key: "date",
+            reverse: false,
+          })}
+        disabled={sortable}
+      >
+        sort by date
       </button>
       <OpenAllSection thing={props.contextMenuProps.thing} />
       <CloseSection closeCallback={props.contextMenuProps.closeCallback} />

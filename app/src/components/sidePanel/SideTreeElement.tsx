@@ -5,6 +5,8 @@ import { RightArrow } from "../../svgs/RightArrow";
 import { getPath } from "../getPath";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
 import { SideSubTree } from "./SideSubTree";
+import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { SortOptions } from "../../utils/rowSorter";
 
 const WIDTH_OF_NODE = 120;
 const sideTreeElementContainerStyles: React.CSSProperties = {
@@ -66,6 +68,12 @@ export function SideTreeElement(
     setContextMenuOpen(true);
   };
 
+  const contextProps: ContextMenuProps = {
+    thing: props.thing,
+    position: position,
+    closeCallback: () => setContextMenuOpen(false),
+    sortCallback: () => console.log('should use some context for this, it is too bothersome now')
+  };
   return (
     <div
       style={sideTreeElementContainerStyles}
@@ -93,9 +101,7 @@ export function SideTreeElement(
         {contextMenuOpen &&
           (
             <SidePanelContextMenu
-              thing={props.thing}
-              position={position}
-              closeCallback={() => setContextMenuOpen(false)}
+              contextMenuProps={contextProps}
             />
           )}
       </div>

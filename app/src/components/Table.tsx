@@ -1,5 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
+import { rowSorter, SortOptions } from "../utils/rowSorter";
 import { BrandingSection } from "./navbar/BrandingSection";
 import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -73,6 +74,28 @@ export function TableLoader(props: {}): JSX.Element {
   //     setRows(children);
   //   }
   // }, [currentPath]);
+
+
+  // todo instructions how to sort given a node and props
+  // boils down to deleting all children of a node,
+  // then doing a quicksort algorithm by the given index to get the monoid,
+  // then pasting into the children,
+  // then reloading the current path
+
+  const sortHandler = (node: chrome.bookmarks.BookmarkTreeNode, config: SortOptions) => {
+    if (node.children?.length === 0) return;
+    const tmp: chrome.bookmarks.BookmarkTreeNode[] = node.children!;
+    const sorted: chrome.bookmarks.BookmarkTreeNode[] = rowSorter(tmp, config);
+    sorted.forEach((v, i) => {
+      const args: chrome.bookmarks.BookmarkCreateArg = {
+        parentId: v.parentId,
+        index: v.index,
+        title: v.title,
+        url: v.url,
+      };
+      chrome.bookmarks.create(args);
+    })
+  }
 
   const pathChangeHandler = (
     nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],

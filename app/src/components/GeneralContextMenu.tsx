@@ -22,7 +22,6 @@ export function GeneralContextMenu(
   );
 }
 
-
 /**
  * todo needed props: position to display, add handle, cancel handle
  * todo add useref

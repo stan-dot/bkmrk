@@ -1,5 +1,6 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "../sidePanel/CloseSection";
@@ -39,6 +40,7 @@ export function TableContextMenu(
     props.setRowsCallback(children);
   };
 
+  const sortable = isAFolder(props.contextMenuProps.thing) && ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
   return (
     <div
       id="searchResultContextMenu"
@@ -56,6 +58,12 @@ export function TableContextMenu(
         onClick={handleShowInFolder}
       >
         <p>show in folder</p>
+      </button>
+      <button onClick={() => props.contextMenuProps.sortCallback(props.contextMenuProps.thing, )} disabled={sortable}>
+        sort A-Z
+      </button>
+      <button onClick={() => props.contextMenuProps.sortCallback(props.contextMenuProps.thing), SearchMode.Alphabetic} disabled={sortable}>
+        sort A-Z
       </button>
       <OpenAllSection thing={props.contextMenuProps.thing} />
       <CloseSection closeCallback={props.contextMenuProps.closeCallback} />

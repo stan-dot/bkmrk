@@ -14,16 +14,31 @@ chrome.runtime.onInstalled.addListener((details) =>{
   chrome.storage.sync.set({ownApi: { host: defaultHost, isURL: true } });
 });
 
+const suggestion: chrome.omnibox.Suggestion = {
+  description: "Let's try this!"
+};
+chrome.omnibox.setDefaultSuggestion(suggestion)
+
+
+// here might need to get ready for the search operation
+chrome.omnibox.onInputStarted.addListener(() => {
+
+})
+
+chrome.omnibox.onInputChanged.addListener((text: string ) => {
+  const r1: chrome.omnibox.SuggestResult = {
+    content: "",
+    description: ""
+  };
+  const results: chrome.omnibox.SuggestResult[] = [r1];
+  return results;
+})
+
+
 // This event is fired with the user accepts the input in the omnibox.
-chrome.omnibox.onInputEntered.addListener((text) => {
-  // Encode user input for special characters , / ? : @ & = + $ #
-  chrome.storage.sync.get("ownApi", function (data) {
-    let newURL = `${ownUrl}/?q=${encodeURIComponent(text)}`;
-    if (data.axapi.isURL) {
-      newURL = `${data.axapi.host}?q=${encodeURIComponent(text)}`;
-    }
-    chrome.tabs.update({ url: newURL });
-  });
+chrome.omnibox.onInputEntered.addListener((text:string) => {
+  // todo read this as a path and start it
+  // if special characters, might redirect to extension special page
 });
 
 chrome.runtime.onMessageExternal.addListener(

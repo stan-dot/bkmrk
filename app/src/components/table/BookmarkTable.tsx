@@ -56,7 +56,7 @@ export function BookmarkTable(
   const contextMenuProps: ContextMenuProps = {
     thing: props.rows[lastInteractedItem[1]],
     position: position,
-    closeCallback: () => setSearchVisibility(false),
+    closeCallback: () => setShowContextMenu(false),
     sortCallback: () => console.log("no sort here")
   };
 
@@ -68,7 +68,7 @@ export function BookmarkTable(
     >
       {showContextMenu && (
         <TableContextMenu
-          contextMenuProps={ contextMenuProps}
+          contextMenuProps={contextMenuProps}
           setRowsCallback={props.dataCallback}
           searchResults={props.searchResultsMode}
         />

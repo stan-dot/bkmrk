@@ -3,7 +3,7 @@ import React from "react";
 
 export function PathItem(
   props: {
-    handleClick: (index: number) => void;
+    handleClick: (index: number, node:chrome.bookmarks.BookmarkTreeNode) => void;
     index: number;
     node: chrome.bookmarks.BookmarkTreeNode;
     contextMenuHandler: any;
@@ -14,7 +14,7 @@ export function PathItem(
   return (
     <div style={{ display: "flex", justifyContent: "start" }}>
       {"/"}
-      <button onClick={(v) => props.handleClick(props.index)}>
+      <button onClick={(v) => props.handleClick(props.index, props.node)}>
         {props.node.title}
       </button>
     </div>

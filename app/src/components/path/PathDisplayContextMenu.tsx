@@ -1,12 +1,13 @@
+import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../getPath";
 import { stringifyPath } from "./stringifyPath";
 
 export function PathDisplayContextMenu(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode; position: number[] },
+  props: { contextMenuProps: ContextMenuProps },
 ): JSX.Element {
   const handleCopyOption = () => {
-    getPath(props.thing).then((path) => {
+    getPath(props.contextMenuProps.thing).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
       // todo some sweet alert to notify it's copied. or a tooltip
@@ -19,8 +20,8 @@ export function PathDisplayContextMenu(
       className="contextMenu"
       style={{
         position: "absolute",
-        left: `${props.position[0]}px`,
-        right: `${props.position[1]}px`,
+        left: `${props.contextMenuProps.position[0]}px`,
+        right: `${props.contextMenuProps.position[1]}px`,
       }}
     >
       <div className="group1">
@@ -31,7 +32,7 @@ export function PathDisplayContextMenu(
         <p>copy path</p>
         <p>paste buton</p>
       </div>
-      <OpenAllSection thing={props.thing} />
+      <OpenAllSection thing={props.contextMenuProps.thing} />
       <div className="group4">
         <button onClick={(e) => handleCopyOption()}>
           Copy path

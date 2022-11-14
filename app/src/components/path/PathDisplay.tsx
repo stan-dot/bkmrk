@@ -1,10 +1,36 @@
+import { useState } from "react";
+import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { PathDisplayContextMenu } from "./PathDisplayContextMenu";
 import { PathItem } from "./PathItem";
 
 export function PathDisplay(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
   pathChangeHandler: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }): JSX.Element {
-  const handleClick = (index: number) => {
+  const [position, setPosition] = useState([0, 0]);
+  const [showContextMenu, setShowContextMenu] = useState(false);
+  const [lastIteracted, setLastInteracted] = useState(props.path[props.path.length - 1])
+
+  const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
+    e: React.MouseEvent<HTMLDivElement>,
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setPosition(
+      [
+        e.pageX,
+        e.pageY,
+      ],
+    );
+    if (showContextMenu) {
+      setShowContextMenu(false);
+    }
+  };
+
+
+
+  const handleClick = (index: number, node: chrome.bookmarks.BookmarkTreeNode) => {
+    setLastInteracted(node)
     if (index !== 0 && index !== props.path.length - 1) {
       const newPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
         0,
@@ -24,10 +50,11 @@ export function PathDisplay(props: {
     props.pathChangeHandler(newPath);
   };
 
-  const handleContextMenuClick = (
-    node: chrome.bookmarks.BookmarkTreeNode,
-  ): void => {
-    console.log("context menu click detected on the PathDisplay element");
+  const contextMenuProps: ContextMenuProps = {
+    thing: lastIteracted,
+    position: position,
+    closeCallback: () => setShowContextMenu(false),
+    sortCallback: () => console.log("no sort here")
   };
 
   return (
@@ -68,10 +95,15 @@ export function PathDisplay(props: {
             handleClick={handleClick}
             index={i}
             node={n}
-            contextMenuHandler={handleContextMenuClick}
+            contextMenuHandler={contextClickHandler}
           />
         ))}
       </div>
+      {showContextMenu && (
+        <PathDisplayContextMenu
+          contextMenuProps={contextMenuProps}
+        />
+      )}
     </div>
   );
 }

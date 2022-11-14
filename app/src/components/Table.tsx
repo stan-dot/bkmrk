@@ -36,6 +36,14 @@ export function TableLoader(props: {}): JSX.Element {
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
 
+  const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+    setLoaded(MainDisplayStates.LOADED);
+    setGlobalTree(root[0].children!);
+    const bookmarksBar = root[0].children![0];
+    setRows(bookmarksBar.children ?? []);
+    setCurrentPath([root[0], bookmarksBar]);
+  }
+
   if (!loaded) {
     /**
      * NOTE: the getTree method returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarks.
@@ -43,14 +51,14 @@ export function TableLoader(props: {}): JSX.Element {
      */
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-        setLoaded(MainDisplayStates.LOADED);
-        setGlobalTree(root[0].children!);
-        const bookmarksBar = root[0].children![0];
-        setRows(bookmarksBar.children ?? []);
-        setCurrentPath([root[0], bookmarksBar]);
+        reloadWithNode(root);
       },
     );
   }
+  chrome.bookmarks.onChanged.addListener(
+    () => reloadWithNode(currentPath)
+  )
+
 
   // useEffect(() => {
   //   console.log("reacting to a change in path", currentPath);
@@ -138,7 +146,7 @@ export function TableLoader(props: {}): JSX.Element {
             />
             <div
               id="mainContainer"
-              style={{ position: "absolute", top: "150px", left: "220px", width: '1000px', height:'1000px' }}
+              style={{ position: "absolute", top: "150px", left: "220px", width: '1000px', height: '1000px' }}
               onClick={
                 (e) => {
                   e.preventDefault();
@@ -186,4 +194,5 @@ export function TableLoader(props: {}): JSX.Element {
         )}
     </>
   );
+
 }

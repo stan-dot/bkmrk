@@ -40,7 +40,6 @@ export function BookmarkTable(
   };
 
   const globalClickHandler = (cell: Item, event: CellClickedEventArgs) => {
-    // check if it's folder or a bookmark
     const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
     if (isAFolder(bookmark)) {
       getPath(bookmark).then((path) => {

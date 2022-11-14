@@ -10,7 +10,9 @@ export function SideSubTree(props: {
   const overrideStyles: React.CSSProperties = { position: 'relative', left: '5%' };
   return (
     <div id="sidesubtree" style={props.styles ?? overrideStyles}>
+
       {
+        // todo here filter is running on undefined
         props.nodes.filter(isAFolder).map((n) => {
           const unrolled: boolean = props.path.includes(n);
           return < SideTreeElement

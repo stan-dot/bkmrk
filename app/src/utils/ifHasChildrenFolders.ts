@@ -17,7 +17,6 @@ export function getChildrenLinks(item: chrome.bookmarks.BookmarkTreeNode): chrom
   return item.children.filter(v => !isAFolder(v));
 }
 
-
 /**
  * 
  * this doesn't assume that children are present, but if no children, it shouldn't show as active when only folders

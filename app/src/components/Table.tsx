@@ -131,7 +131,7 @@ export function TableLoader(props: {}): JSX.Element {
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
-      <nav className="bg-teal-500 inline fixed l-0 border-solid border-2 border-red-500 z-10" >
+      <nav className="bg-teal-500 fixed w-full top-0 flex flex-row justify-evenly border-solid border-2 border-red-500 z-10" >
         <BrandingSection />
         <SearchField
           classNames={undefined}
@@ -159,7 +159,7 @@ export function TableLoader(props: {}): JSX.Element {
             />
             <div
               id="mainContainer"
-              className="t-1/6 l-1/6 w-2/5  overflow-scroll"
+              className="absolute top-[120]px left-[120]px  overflow-scroll"
               onClick={
                 (e) => {
                   e.preventDefault();

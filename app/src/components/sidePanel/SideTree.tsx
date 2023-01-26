@@ -9,7 +9,7 @@ export function SideTree(
   },
 ): JSX.Element {
   return (
-    <div className="left-10 t-120 over h-4 min-w-fit">
+    <div className="absolute top-[120]px overflow-scroll ml-10">
       <SideSubTree
         nodes={props.tree}
         pathSetter={props.pathSetter}

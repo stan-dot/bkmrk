@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { ENTER_KEY, SEARCH_PLACEHOLDER } from './navbarConst';
 import { SearchIcon } from './SearchIcon';
 
 /**
@@ -30,8 +29,8 @@ export function SearchField(props: {
   };
 
   const onEnterHandler = async (event: any) => {
-    const isEnterPressed = event.which === ENTER_KEY
-      || event.keyCode === ENTER_KEY;
+    const isEnterPressed = event.which === 13
+      || event.keyCode === 13;
     if (isEnterPressed) {
       await runSearch();
     };
@@ -54,21 +53,21 @@ export function SearchField(props: {
 
   return (
     <div
-      className={`react-search-field dev-test-outline ${props.classNames} border-1 boreder-solid inline-flex justify-between p-10 w-2/5 t-10`}
+      className={`react-search-field ${props.classNames} border-1 boreder-solid relative justify-between flex flex-row  w-2/5 `}
     >
       <input
-        className="react-search-field-input outline-none border-none text-xl p-8 flex text-slate-50 "
+        className="react-search-field-input outline-none border-none text-xl p-4 flex text-slate-50 "
         onChange={onChangeHandler}
         onKeyDown={onEnterHandler}
         onBlur={onBlurHandler}
-        placeholder={SEARCH_PLACEHOLDER}
+        placeholder={"Search bookmarks"}
         type="text"
         value={value}
         disabled={props.disabled}
         width={"40%"}
       />
       <button
-        className={`react-search-field-button h-10 w-40 outline-none bg-slate-50 cursor-pointer p-5 box-border appearance-none  b-l-2 border-color-white border-solid m-8 ${props.disabled && 'disabled:'}`}
+        className={`react-search-field-button h-10 w-40 outline-none bg-slate-50 cursor-pointer p-2 box-border appearance-none  b-l-2 border-color-white border-solid m-8 ${props.disabled && 'disabled:'}`}
         type="button"
         aria-label="search button"
         onClick={onSearchClickHandler}

@@ -1,6 +1,4 @@
 
-
-
 export type SortOptions = {
   key: string,
   reverse: boolean
@@ -18,5 +16,4 @@ export function rowSorter(rows: chrome.bookmarks.BookmarkTreeNode[], sortOpts?:S
   };
 
   return rows;
-
 }

@@ -31,7 +31,7 @@ export function ManipulationMenu(
       </button>
       {showMenu
         && (
-          <div id="manipulationMenuContainer" className="absolute left-1/3 t-1/10" >
+          <div id="manipulationMenuContainer" className="absolute right-1/3 top-1/10" >
             <ul className="list-none text-l" >
               <li>
                 <button onClick={(v) => props.sortCallback}>

@@ -10,7 +10,7 @@ import { TableLoader } from './components/Table';
 // options should go into settings
 export default function App() {
   return (
-    <div className="App" style={{ width: window.screen.availWidth, height: window.screen.availHeight }}>
+    <div className="App w-full h-full" >
       <TableLoader />
     </div>
   );

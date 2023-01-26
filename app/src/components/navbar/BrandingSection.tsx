@@ -6,7 +6,7 @@ export const BrandingSection = () => {
     fill: "#727272",
   };
   return (
-    <div id="brandingBit" style={{ display: "inline-flex" }}>
+    <div className="flex" id="brandingBit" >
       <svg
         version="1.1"
         x="0px"

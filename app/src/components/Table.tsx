@@ -131,7 +131,7 @@ export function TableLoader(props: {}): JSX.Element {
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
-      <nav className="bg-teal-500 ju inlin fixed w-full l-0 border-solid border-2 border-red-500 z-10" >
+      <nav className="bg-teal-500 inline fixed l-0 border-solid border-2 border-red-500 z-10" >
         <BrandingSection />
         <SearchField
           classNames={undefined}
@@ -159,7 +159,7 @@ export function TableLoader(props: {}): JSX.Element {
             />
             <div
               id="mainContainer"
-              style={{ position: "fixed", top: "150px", left: "220px", width: '1000px', height: '1000px', overflow: 'scroll' }}
+              className="t-1/6 l-1/6 w-2/5  overflow-scroll"
               onClick={
                 (e) => {
                   e.preventDefault();
@@ -182,27 +182,13 @@ export function TableLoader(props: {}): JSX.Element {
         )}
       {loaded === MainDisplayStates.LOADING &&
         (
-          <div
-            id="Loading status"
-            style={{
-              position: "absolute",
-              top: "120px",
-              left: "200px",
-            }}
-          >
+          <div id="Loading status" >
             <p>Loading...</p>
           </div>
         )}
       {loaded === MainDisplayStates.RESULT_EMPTY &&
         (
-          <div
-            id="Loading status"
-            style={{
-              position: "absolute",
-              top: "120px",
-              left: "200px",
-            }}
-          >
+          <div id="empty status" >
             <p>To bookmark pages, click the star in the address bar</p>
           </div>
         )}

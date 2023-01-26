@@ -64,7 +64,6 @@ export function BookmarkTable(
     <div
       onClick={contextClickHandler}
       className="dev-test-outline"
-      style={{ position: "fixed" }}
     >
       {showContextMenu && (
         <TableContextMenu

@@ -47,10 +47,7 @@ export function TableContextMenu(
         <p>copy buton</p>
         <p>paste buton</p>
       </div>
-      <button
-        style={{ visibility: props.searchResults ? "visible" : "hidden" }}
-        onClick={handleShowInFolder}
-      >
+      <button className={`${!props.searchResults && 'hidden'}`} onClick={handleShowInFolder} >
         <p>show in folder</p>
       </button>
       <button

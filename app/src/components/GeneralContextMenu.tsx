@@ -6,16 +6,11 @@ export function GeneralContextMenu(
   return (
     <div
       id="sidePanelContextMenu"
-      className="contextMenu"
-      style={{
-        position: "absolute",
-        left: `${props.position[0]}px`,
-        right: `${props.position[1]}px`,
-      }}
+      className={`contextMenu l-[${props.position[0]}px] t-[${props.position[1]}px] absolute`}
     >
       <div className="group5">
         <p>create new bookmark</p>
-        <p> create new folder</p>
+        <p>create new folder</p>
       </div>
       <CloseSection closeCallback={props.closeCallback} />
     </div >
@@ -28,7 +23,6 @@ export function GeneralContextMenu(
  * @returns 
  */
 function AddBookmarkForm(): JSX.Element {
-
   return <div id="addBookmarkForm" >
     <h3>Add fodler</h3>
     <label htmlFor='bookmarkName'>
@@ -57,7 +51,6 @@ function AddBookmarkForm(): JSX.Element {
  * @returns 
  */
 function AddFolderForm(): JSX.Element {
-
   return <div id="addFolderForm" >
     <h3>Add fodler</h3>
     <label htmlFor='folderName'>

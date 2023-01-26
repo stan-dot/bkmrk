@@ -24,7 +24,7 @@ export function OptionsField(): JSX.Element {
     <p>Choose a different background color!</p>
     {
       presetButtonColors.map((color: string, i: number) => {
-        return <button color={color} style={{ backgroundColor: color }} id={i.toString()} onClick={e => handleClick(e, i)} />;
+        return <button className={`${color}`} id={i.toString()} onClick={e => handleClick(e, i)} />;
       })
     }
   </div>

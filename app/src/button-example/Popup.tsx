@@ -33,7 +33,7 @@ export function PopupField(): JSX.Element {
     setButtonColor(color);
   });
   return <>
-    <button id="changeColor" style={{ backgroundColor: buttonColor }} onClick={handleButtonClick} >
+    <button id="changeColor" className={`${buttonColor}`} onClick={handleButtonClick} >
     </button>
     < script src="popup.js" > </script>
   </>

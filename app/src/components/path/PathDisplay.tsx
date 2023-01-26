@@ -60,18 +60,9 @@ export function PathDisplay(props: {
   return (
     <div
       id="taskbar"
-      style={{
-        display: "flex",
-        justifyContent: "flex-start",
-        minWidth: "200px",
-        position: "fixed",
-        left: "220px",
-        top: "110px",
-        border: "2px solid",
-        borderColor: "#FF0000",
-      }}
+      className="flex  justify-start min-w-min l-3 t-3 border-2 bg-rose-700 border-solid"
     >
-      <div id="buttonArea" style={{ position: "relative" }}>
+      <div id="buttonArea" className="relative">
         <button disabled={true} onClick={upButtonHandler}>
           {"<-"}
         </button>
@@ -82,14 +73,7 @@ export function PathDisplay(props: {
           [..]
         </button>
       </div>
-      <div
-        style={{
-          border: "2px solid",
-          justifyContent: "space-between",
-          borderColor: "#FF0000",
-          display: "flex",
-        }}
-      >
+      <div className="justify-between border-rose-600 flex border-2 border-solid" >
         {props.path.map((n, i) => (
           <PathItem
             handleClick={handleClick}

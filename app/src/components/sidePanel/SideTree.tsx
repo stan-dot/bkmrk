@@ -9,7 +9,7 @@ export function SideTree(
   },
 ): JSX.Element {
   return (
-    <div className="fixed left-10 t-120 over h-2/3 min-w-fit">
+    <div className="left-10 t-120 over h-4 min-w-fit">
       <SideSubTree
         nodes={props.tree}
         pathSetter={props.pathSetter}

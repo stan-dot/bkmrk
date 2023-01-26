@@ -25,14 +25,14 @@ export function ManipulationMenu(
 
   // todo there should be dialog popups for the new bookmark and new folder
   return (
-    <div style={{ zIndex: 4, position: "relative" }} className={'dev-test-outline'}>
-      <button onClick={clickHandler} style={{ width: 'fit-content', padding: '20px' }} >
+    <div className={'dev-test-outline z-40 relative'}>
+      <button onClick={clickHandler} className={"w-fit p-10"} >
         <DotsSvg />
       </button>
       {showMenu
         && (
-          <div id="manipulationMenuContainer" style={{ position: 'absolute', left: '-190%', top: '90%' }}>
-            <ul style={{ listStyle: "none", fontSize: "15px" }}>
+          <div id="manipulationMenuContainer" className="absolute left-1/3 t-1/10" >
+            <ul className="list-none text-l" >
               <li>
                 <button onClick={(v) => props.sortCallback}>
                   sort by name

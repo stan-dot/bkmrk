@@ -14,16 +14,9 @@ export function PathDisplayContextMenu(
     });
   };
 
+  const position = props.contextMenuProps.position;
   return (
-    <div
-      id="tableContextMenu"
-      className="contextMenu"
-      style={{
-        position: "absolute",
-        left: `${props.contextMenuProps.position[0]}px`,
-        right: `${props.contextMenuProps.position[1]}px`,
-      }}
-    >
+    <div id="tableContextMenu" className={`contextMenu absolute l-[${position[0]}px] t-[${position[1]}px]`} >
       <div className="group1">
         <p>rename button</p>
         <p>delete button</p>

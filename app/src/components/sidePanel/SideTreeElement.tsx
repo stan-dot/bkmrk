@@ -51,17 +51,17 @@ export function SideTreeElement(
   };
   return (
     <div
-      className="flex w-fit border-1 border-solid border-indigo-600 justify-between h-fit min-h-50 flex-col"
+      className="flex w-fit border-1 border-solid border-indigo-600 justify-between  min-h-50 flex-col"
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
-        className="flex min-w-fit w-fit border-1 border-solid border-indigo-500 h-fit min-h-fit flex-row"
+        className="flex min-w-fit  border-1 border-solid border-indigo-500 min-h-fit flex-row"
         id={`${props.thing.id}-side-tree-row`}
       >
         <button
           id={`${props.thing.id}-arrow`}
           onClick={(e) => setUnrolled(!unrolled)}
-          style={{ visibility: isALeafNode ? "visible" : "hidden" }}
+          className={`${!isALeafNode && 'hidden'}`}
         >
           {unrolled ? <RightArrow /> : <BottomArrow />}
           {props.thing.children?.length}
@@ -69,7 +69,7 @@ export function SideTreeElement(
         <button
           onClick={handleClick}
           onContextMenu={(e) => handleContextMenu(e)}
-          style={{ width: "80%", textAlign: "left" }}
+          className="w-10  text-left"
         >
           <p>{props.thing.title}</p>
         </button>

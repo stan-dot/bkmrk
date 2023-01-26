@@ -21,7 +21,7 @@ export default function EditAlert(
   };
 
   return (
-    <div className="z-20 fixed inset-0 border-solid border-gray-500  bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+    <div className="z-20 inset-0 border-solid border-gray-500  bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
       <form id="editform" action="" onSubmit={onSubmit}
       // onBlur={closeCallback}
       >

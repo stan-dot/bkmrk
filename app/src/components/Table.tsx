@@ -1,6 +1,7 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
 import { rowSorter, SortOptions } from "../utils/rowSorter";
+import EditAlert from "./alerts/EditAlert";
 import { BrandingSection } from "./navbar/BrandingSection";
 import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -141,7 +142,7 @@ export function TableLoader(props: {}): JSX.Element {
 
   return (
     <>
-      <nav style={navStyles}>
+      <nav className="bg-teal-500" style={navStyles}>
         <BrandingSection />
         <SearchField
           classNames={undefined}
@@ -157,6 +158,10 @@ export function TableLoader(props: {}): JSX.Element {
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
           rows={rows}
+        />
+        <EditAlert
+          submitCallback={(data) => console.log('data', data)}
+          closeCallback={() => console.log("closing edit window")}
         />
       </nav>
       {loaded === MainDisplayStates.LOADED &&

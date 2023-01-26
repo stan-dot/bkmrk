@@ -25,9 +25,7 @@ function handleCopy(things: chrome.bookmarks.BookmarkTreeNode[]) {
 // if detected same url as the meemory one, add with the old name in the new location
 // if a fresh install, have the same name as url
 // todo index should be found form the last clicked element, or selected one +1. always under, never into the folder. that could be changed
-/**
- * todo sweet alert on copy
- */
+
 function handlePaste() {
   const arg: chrome.bookmarks.BookmarkCreateArg = {
     // parentId: string | undefined,

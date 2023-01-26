@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { basicNodes } from "../../dataProcessing/basicNodes";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
@@ -27,6 +28,7 @@ export function TableContextMenu(
     searchResults: boolean;
   },
 ): JSX.Element {
+  const [editVisible, setEditVisible] = useState(false);
   const isProtected: boolean = basicNodes.includes(
     props.contextMenuProps.thing.title,
   );

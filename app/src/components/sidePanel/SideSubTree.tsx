@@ -5,12 +5,9 @@ export function SideSubTree(props: {
   nodes: chrome.bookmarks.BookmarkTreeNode[];
   pathSetter: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
   path: chrome.bookmarks.BookmarkTreeNode[];
-  styles?: React.CSSProperties
 }): JSX.Element {
-  const overrideStyles: React.CSSProperties = { position: 'relative', left: '5%' };
   return (
-    <div id="sidesubtree" style={props.styles ?? overrideStyles}>
-
+    <div id="sidesubtree relative l-5" >
       {
         // todo here filter is running on undefined
         props.nodes.filter(isAFolder).map((n) => {

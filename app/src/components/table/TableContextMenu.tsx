@@ -6,20 +6,7 @@ import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "../sidePanel/CloseSection";
 
-function getStyles(position: number[]): React.CSSProperties {
-  return {
-    position: "absolute",
-    left: `${position[0]}px`,
-    right: `${position[1]}px`,
-    zIndex: 50,
-    fontSize: 10,
-    border: "1px solid",
-    borderColor: "#FF0000",
-    background: "solid",
-    backgroundColor: "coral",
-    width: "fit-content",
-  };
-}
+
 
 export function TableContextMenu(
   props: {
@@ -28,7 +15,6 @@ export function TableContextMenu(
     searchResults: boolean;
   },
 ): JSX.Element {
-  const [editVisible, setEditVisible] = useState(false);
   const isProtected: boolean = basicNodes.includes(
     props.contextMenuProps.thing.title,
   );
@@ -46,11 +32,11 @@ export function TableContextMenu(
 
   const sortable = isAFolder(props.contextMenuProps.thing) &&
     ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
+  const position = props.contextMenuProps.position;
   return (
     <div
       id="searchResultContextMenu"
-      className="contextMenu"
-      style={getStyles(props.contextMenuProps.position)}
+      className={`contextMenu absolute z-50 text-l border-1 border-solid border-red-700 bg-cyan-600 l-[${position[0]}px] t-[${position[1]}px w-fit]`}
     >
       <EditDeleteSection
         thing={props.contextMenuProps.thing}

@@ -1,7 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
 import { rowSorter, SortOptions } from "../utils/rowSorter";
-import EditAlert from "./alerts/EditAlert";
 import { BrandingSection } from "./navbar/BrandingSection";
 import { ManipulationMenu } from "./navbar/ManipulationMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -9,16 +8,7 @@ import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-const navStyles: React.CSSProperties = {
-  justifyContent: "space-between",
-  display: "inline-flex",
-  position: "fixed",
-  width: "100%",
-  left: "0px",
-  border: "2px solid",
-  borderColor: "red",
-  zIndex: 10,
-};
+
 
 // todo this might be better in some all-accessible context
 enum MainDisplayStates {
@@ -139,10 +129,9 @@ export function TableLoader(props: {}): JSX.Element {
   }
 
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
-
   return (
     <>
-      <nav className="bg-teal-500" style={navStyles}>
+      <nav className="bg-teal-500 ju inlin fixed w-full l-0 border-solid border-2 border-red-500 z-10" >
         <BrandingSection />
         <SearchField
           classNames={undefined}
@@ -158,10 +147,6 @@ export function TableLoader(props: {}): JSX.Element {
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
           rows={rows}
-        />
-        <EditAlert
-          submitCallback={(data) => console.log('data', data)}
-          closeCallback={() => console.log("closing edit window")}
         />
       </nav>
       {loaded === MainDisplayStates.LOADED &&

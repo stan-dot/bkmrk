@@ -4,20 +4,6 @@ import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "./CloseSection";
 
-function getStyles(position: number[]): React.CSSProperties {
-  return {
-    position: "absolute",
-    left: `${position[0]}px`,
-    right: `${position[1]}px`,
-    zIndex: 50,
-    fontSize: 10,
-    border: "1px solid",
-    borderColor: "#FF0000",
-    background: "solid",
-    backgroundColor: "coral",
-    width: "fit-content",
-  };
-}
 
 export function SidePanelContextMenu(
   props: {
@@ -27,9 +13,9 @@ export function SidePanelContextMenu(
   const isProtected: boolean = basicNodes.includes(
     props.contextMenuProps.thing.title,
   );
-  const styles = getStyles(props.contextMenuProps.position);
+  const position = props.contextMenuProps.position;
   return (
-    <div id="sidePanelContextMenu" className="contextMenu" style={styles}>
+    <div id="sidePanelContextMenu" className={`contextMenu absolute left-[${position[0]}px] right-[${position[1]}px] z-50 text-l border-solid border-red-700 bg-cyan-600 w-fit`} >
       <EditDeleteSection
         thing={props.contextMenuProps.thing}
         protected={isProtected}

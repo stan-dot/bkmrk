@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { ENTER_KEY, SEARCH_PLACEHOLDER } from './navbarConst';
-import { searchFieldButtonStyle, searchFieldInputStyle, searchFieldStyle } from './searchFieldButtonStyle';
 import { SearchIcon } from './SearchIcon';
 
 /**
@@ -47,22 +46,19 @@ export function SearchField(props: {
     setIconHighlight(false);
   };
 
-  const className = `react-search-field dev-test-outline ${props.classNames}`;
 
   async function runSearch() {
     const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks.search(value);
     props.setDataCallback(searchResults);
   }
 
-  const style: React.CSSProperties = searchFieldButtonStyle(props.disabled);
   return (
     <div
-      className={className}
-      style={searchFieldStyle}
+      className={`react-search-field dev-test-outline ${props.classNames} border-1 boreder-solid inline-flex justify-between p-10 h-40 w-2/5 t-10`}
     >
       <input
-        className="react-search-field-input"
-        style={searchFieldInputStyle}
+        className="react-search-field-input outline-none border-none text-xl p-8 flex text-slate-50 h-40"
+
         onChange={onChangeHandler}
         onKeyDown={onEnterHandler}
         onBlur={onBlurHandler}
@@ -73,10 +69,9 @@ export function SearchField(props: {
         width={"40%"}
       />
       <button
-        className="react-search-field-button"
+        className={`react-search-field-button h-40 w-40 outline-none bg-slate-50 cursor-pointer p-5 box-border appearance-none border-none b-l-2 border-color-white border-solid m-8 ${props.disabled && 'disabled:'}`}
         type="button"
         aria-label="search button"
-        style={style}
         onClick={onSearchClickHandler}
         disabled={props.disabled}
       >

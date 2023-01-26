@@ -6,31 +6,6 @@ import { getPath } from "../getPath";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
-import { SortOptions } from "../../utils/rowSorter";
-
-const WIDTH_OF_NODE = 120;
-const sideTreeElementContainerStyles: React.CSSProperties = {
-  display: "flex",
-  width: WIDTH_OF_NODE,
-  border: "1px solid",
-  borderColor: "purple",
-  justifyContent: "space-between",
-  height: "fit-content",
-  minHeight: '50px',
-  flexDirection: "column",
-};
-
-const sideTreeElementStyles: React.CSSProperties = {
-  display: "flex",
-  minWidth: WIDTH_OF_NODE,
-  width: "fit-content",
-  border: "1px solid",
-  borderColor: "purple",
-  justifyContent: "space-between",
-  height: "fit-content",
-  minHeight: '50px',
-  flexDirection: "row",
-};
 
 /**
  * for side displaying FOLDERS ONLY
@@ -76,11 +51,11 @@ export function SideTreeElement(
   };
   return (
     <div
-      style={sideTreeElementContainerStyles}
+      className="flex w-fit border-1 border-solid border-indigo-600 justify-between h-fit min-h-50 flex-col"
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
-        style={sideTreeElementStyles}
+        className="flex min-w-fit w-fit border-1 border-solid border-indigo-500 h-fit min-h-fit flex-row"
         id={`${props.thing.id}-side-tree-row`}
       >
         <button

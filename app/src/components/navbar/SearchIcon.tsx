@@ -1,8 +1,6 @@
 import React from 'react';
-import { SEARCH_BUTTON_EDGE } from "./navbarConst";
 
 export const SearchIcon = (props: { highlight: boolean }): JSX.Element => {
-  const iconEdge = Math.ceil(SEARCH_BUTTON_EDGE * 0.60);
   const searchIconStyle = {
     fill: props.highlight ? '#727272' : '#202020',
   };
@@ -11,8 +9,8 @@ export const SearchIcon = (props: { highlight: boolean }): JSX.Element => {
       version="1.1"
       x="0px"
       y="0px"
-      width={iconEdge}
-      height={iconEdge}
+      width={21}
+      height={21}
       viewBox="0 0 635 635"
       style={searchIconStyle}
     >

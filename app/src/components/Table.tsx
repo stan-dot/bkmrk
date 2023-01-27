@@ -144,37 +144,34 @@ export function TableLoader(props: {}): JSX.Element {
           rows={rows}
         />
       </nav>
-      {/* {loaded === MainDisplayStates.LOADED &&
-        ( */}
-          <div id="lowerPanel" className={`flex absolute top-[68px] bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
-            <SideTree
-              tree={globalTree}
-              pathSetter={pathChangeHandler}
-              path={currentPath}
-            />
-            <div
-              id="mainContainer"
-              className=" overflow-scroll drop-shadow"
-              onClick={
-                (e) => {
-                  e.preventDefault();
-                  console.log('it was clicked on the outside');
-                }
-              }
-            >
-              <PathDisplay
-                path={currentPath}
-                pathChangeHandler={pathChangeHandler}
-              />
-              <BookmarkTable
-                rows={rows}
-                pathChangeHandler={pathChangeHandler}
-                dataCallback={dataCallback}
-                searchResultsMode={loaded as MainDisplayStates === MainDisplayStates.SEARCH_RESULT}
-              />
-            </div>
-          </div>
-        {/* )} */}
+      <div id="lowerPanel" className={`flex fixed top-[68px] w-full bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
+        <SideTree
+          tree={globalTree}
+          pathSetter={pathChangeHandler}
+          path={currentPath}
+        />
+        <div
+          id="mainContainer"
+          className=" overflow-scroll drop-shadow"
+          onClick={
+            (e) => {
+              e.preventDefault();
+              console.log('it was clicked on the outside');
+            }
+          }
+        >
+          <PathDisplay
+            path={currentPath}
+            pathChangeHandler={pathChangeHandler}
+          />
+          <BookmarkTable
+            rows={rows}
+            pathChangeHandler={pathChangeHandler}
+            dataCallback={dataCallback}
+            searchResultsMode={loaded as MainDisplayStates === MainDisplayStates.SEARCH_RESULT}
+          />
+        </div>
+      </div>
       {loaded === MainDisplayStates.LOADING &&
         (
           <div id="Loading status" >

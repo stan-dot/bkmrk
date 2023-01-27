@@ -33,7 +33,7 @@ export function TableContextMenu(
   return (
     <div
       id="searchResultContextMenu"
-      className={`contextMenu absolute z-50 text-l border-1 border-solid border-red-700 bg-cyan-600 l-[${position[0]}px] t-[${position[1]}px w-fit]`}
+      className={`contextMenu absolute z-50 text-l border-1 border-solid border-red-700 bg-cyan-600 l-[${position[0]}px] t-[${position[1]}px] w-fit]`}
     >
       <EditDeleteSection
         thing={props.contextMenuProps.thing}

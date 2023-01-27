@@ -12,7 +12,7 @@ export function PathItem(
   // const [position, setPosition] = useState([0, 0]);
   // const [contextMenuVisibility, setContextMenuVisibility] = useState(false);
   return (
-    <div className="flex justify-start" >
+    <div className="flex justify-start text-slate-50" >
       {"/"}
       <button onClick={(v) => props.handleClick(props.index, props.node)}>
         {props.node.title}

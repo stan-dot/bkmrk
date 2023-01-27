@@ -49,36 +49,37 @@ export function SideTreeElement(
   };
   return (
     <div
-      className="flex w-fit border-1 border-solid border-indigo-600 justify-between  min-h-50 flex-col bg-slate-700 hover:bg-slate-400  focus:bg-cyan-400 focus:border-white focus:border-2 rounded-r-sm"
+      className="flex w-fit border-1 border-solid border-indigo-600 justify-between overflow-auto min-h-50 flex-col bg-slate-700 hover:bg-slate-500  focus:bg-cyan-400 focus:border-white focus:border-2 rounded-r-sm"
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
-        className="flex min-w-fit  border-1 border-solid border-indigo-500 min-h-fit flex-row"
+        className="flex min-w-fit border-1 border-solid border-indigo-500 min-h-fit flex-row p-2"
         id={`${props.thing.id}-side-tree-row`}
       >
         <button
           id={`${props.thing.id}-arrow`}
           onClick={(e) => setUnrolled(!unrolled)}
-          className={`${!isALeafNode && 'hidden'} text-slate-50`}
-
+          className={`${!isALeafNode && 'hidden'} text-slate-50 text-xl mr-2`}
         >
           {unrolled ? <p> &#709; </p> : <p> &#707; </p>}
-          {props.thing.children?.length}
         </button>
+        <p className={` text-slate-50 text-xl mr-2`} >
+          {props.thing.children?.length}
+        </p>
         <button
           onClick={handleClick}
           onContextMenu={(e) => handleContextMenu(e)}
-          className="w-10  text-left"
+          className="w-fit  text-left mr-2"
         >
           <p className="text-slate-50">{props.thing.title}</p>
         </button>
-        {contextMenuOpen &&
-          (
-            <SidePanelContextMenu
-              contextMenuProps={contextProps}
-            />
-          )}
       </div>
+      {contextMenuOpen &&
+        (
+          <SidePanelContextMenu
+            contextMenuProps={contextProps}
+          />
+        )}
       {unrolled && (
         <SideSubTree
           nodes={props.thing.children!}

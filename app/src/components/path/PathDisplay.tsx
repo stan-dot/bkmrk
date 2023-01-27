@@ -27,8 +27,6 @@ export function PathDisplay(props: {
     }
   };
 
-
-
   const handleClick = (index: number, node: chrome.bookmarks.BookmarkTreeNode) => {
     setLastInteracted(node)
     if (index !== 0 && index !== props.path.length - 1) {
@@ -60,20 +58,20 @@ export function PathDisplay(props: {
   return (
     <div
       id="taskbar"
-      className="flex  justify-start min-w-min l-3 t-3 border-2 bg-rose-700 border-solid"
+      className="flex  justify-start min-w-min l-3 t-3 border-2 "
     >
-      <div id="buttonArea" className="relative">
-        <button disabled={true} onClick={upButtonHandler}>
+      <div id="buttonArea" className="relative bg-slate-700">
+        <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
           {"<-"}
         </button>
-        <button disabled={true} onClick={upButtonHandler}>
+        <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
           {"->"}
         </button>
-        <button disabled={props.path.length < 2} onClick={upButtonHandler}>
+        <button disabled={props.path.length < 2} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
           [..]
         </button>
       </div>
-      <div className="justify-between border-rose-600 flex border-2 border-solid" >
+      <div className="justify-between flex border-2 " >
         {props.path.map((n, i) => (
           <PathItem
             handleClick={handleClick}

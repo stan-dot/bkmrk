@@ -33,7 +33,7 @@ export function TableContextMenu(
   return (
     <div
       id="searchResultContextMenu"
-      className={`contextMenu absolute z-50 text-l w-32 border-1 border-solid bg-slate-700 w-fit]`}
+      className={`contextMenu absolute z-50 text-l w-32 border-1 border-solid bg-slate-700 ]`}
       style={{
         position: "absolute",
         left: `${position[0]}px`,
@@ -44,34 +44,39 @@ export function TableContextMenu(
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
-      <div className="group2 flex flex-col">
-        <p className={contextMenuButtonClass}>cut</p>
-        <p className={contextMenuButtonClass}>copy</p>
-        <p className={contextMenuButtonClass}>paste</p>
+      <div className="group2 flex flex-col align-middle">
+        <p className={contextMenuButtonClass}>Cut</p>
+        <p className={contextMenuButtonClass}>Copy</p>
+        <p className={contextMenuButtonClass}>Paste</p>
       </div>
-      <button className={`${!props.searchResults && 'hidden'}`} onClick={handleShowInFolder} >
-        <p>show in folder</p>
-      </button>
-      <button
-        onClick={() =>
-          props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
-            key: "title",
-            reverse: false,
-          })}
-        disabled={sortable}
-      >
-        sort A-Z
-      </button>
-      <button
-        onClick={() =>
-          props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
-            key: "date",
-            reverse: false,
-          })}
-        disabled={sortable}
-      >
-        sort by date
-      </button>
+      <div className="group-changing flex flex-col">
+        <button className={`${!props.searchResults && 'hidden'} ${contextMenuButtonClass}`} onClick={handleShowInFolder} >
+          <p>show in folder</p>
+        </button>
+        <button
+          onClick={() =>
+            props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
+              key: "title",
+              reverse: false,
+            })}
+          disabled={sortable}
+          className={contextMenuButtonClass}
+        >
+          Sort A-Z
+        </button>
+        <button
+          onClick={() =>
+            props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
+              key: "date",
+              reverse: false,
+            })}
+          disabled={sortable}
+          className={contextMenuButtonClass}
+        >
+          Sort by date
+        </button>
+
+      </div>
       <OpenAllSection thing={props.contextMenuProps.thing} />
     </div >
   );

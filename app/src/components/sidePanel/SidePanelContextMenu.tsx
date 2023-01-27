@@ -4,7 +4,7 @@ import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 
 
-export const contextMenuButtonClass = "hover:bg-slate-300 w-32 text-slate-50 p-4";
+export const contextMenuButtonClass = "hover:bg-slate-300 w-48 text-slate-50 p-2";
 export function SidePanelContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;

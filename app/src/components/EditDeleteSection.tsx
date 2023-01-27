@@ -7,10 +7,11 @@ export function EditDeleteSection(
 ) {
   const [editOpen, setEditOpen] = useState(false);
   return (
-    <div className="group1  flex flex-col">
+    <div className="group1 flex flex-col">
       <button
         disabled={props.protected}
-        onClick={(e) => setEditOpen(true)} className={contextMenuButtonClass}
+        onClick={(e) => setEditOpen(true)}
+        className={contextMenuButtonClass}
       >
         <p>Edit</p>
       </button>
@@ -26,7 +27,8 @@ export function EditDeleteSection(
         disabled={props.protected}
         onClick={(e) => {
           chrome.bookmarks.remove(props.thing.id);
-        }} className={contextMenuButtonClass}
+        }}
+        className={contextMenuButtonClass}
       >
         <p>Delete</p>
       </button>

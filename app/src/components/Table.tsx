@@ -1,8 +1,7 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useState } from "react";
 import { rowSorter, SortOptions } from "../utils/rowSorter";
-import { BrandingSection } from "./navbar/BrandingSection";
-import { ManipulationMenu } from "./navbar/ManipulationMenu";
+import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
 import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
@@ -131,27 +130,23 @@ export function TableLoader(props: {}): JSX.Element {
   const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
-      <nav className="bg-teal-500 fixed w-full top-0 flex flex-row justify-evenly border-solid border-2 border-red-500 z-10" >
-        <BrandingSection />
-        <SearchField
-          classNames={undefined}
-          searchText={undefined}
-          disabled={undefined}
-          onChange={undefined}
-          onEnter={undefined}
-          onSearchClick={undefined}
-          onBlur={undefined}
-          setDataCallback={dataCallback}
-        />
-        <ManipulationMenu
+      <nav className="fixed w-full h-[68px] top-0 flex justify-between bg-slate-700 z-10" >
+        <div className="flex align-middle" id="brandingBit" >
+          <p className="text-2xl mt-2 ml-2 text-white">
+            &#128366;
+            BOOKasta
+          </p>
+        </div>
+        <SearchField setDataCallback={dataCallback} />
+        <CornerMenu
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
           rows={rows}
         />
       </nav>
-      {loaded === MainDisplayStates.LOADED &&
-        (
-          <>
+      {/* {loaded === MainDisplayStates.LOADED &&
+        ( */}
+          <div id="lowerPanel" className={`flex absolute top-[68px] bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
             <SideTree
               tree={globalTree}
               pathSetter={pathChangeHandler}
@@ -159,7 +154,7 @@ export function TableLoader(props: {}): JSX.Element {
             />
             <div
               id="mainContainer"
-              className="absolute top-[120]px left-[120]px  overflow-scroll"
+              className=" overflow-scroll drop-shadow"
               onClick={
                 (e) => {
                   e.preventDefault();
@@ -178,8 +173,8 @@ export function TableLoader(props: {}): JSX.Element {
                 searchResultsMode={loaded as MainDisplayStates === MainDisplayStates.SEARCH_RESULT}
               />
             </div>
-          </>
-        )}
+          </div>
+        {/* )} */}
       {loaded === MainDisplayStates.LOADING &&
         (
           <div id="Loading status" >

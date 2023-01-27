@@ -1,7 +1,5 @@
 import { MouseEvent, useState } from "react";
 import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
-import { BottomArrow } from "../../svgs/BottomArrow";
-import { RightArrow } from "../../svgs/RightArrow";
 import { getPath } from "../getPath";
 import { SidePanelContextMenu } from "./SidePanelContextMenu";
 import { SideSubTree } from "./SideSubTree";
@@ -51,7 +49,7 @@ export function SideTreeElement(
   };
   return (
     <div
-      className="flex w-fit border-1 border-solid border-indigo-600 justify-between  min-h-50 flex-col"
+      className="flex w-fit border-1 border-solid border-indigo-600 justify-between  min-h-50 flex-col bg-slate-700 hover:bg-slate-400  focus:bg-cyan-400 focus:border-white focus:border-2 rounded-r-sm"
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
@@ -61,9 +59,10 @@ export function SideTreeElement(
         <button
           id={`${props.thing.id}-arrow`}
           onClick={(e) => setUnrolled(!unrolled)}
-          className={`${!isALeafNode && 'hidden'}`}
+          className={`${!isALeafNode && 'hidden'} text-slate-50`}
+
         >
-          {unrolled ? <RightArrow /> : <BottomArrow />}
+          {unrolled ? <p> &#709; </p> : <p> &#707; </p>}
           {props.thing.children?.length}
         </button>
         <button
@@ -71,7 +70,7 @@ export function SideTreeElement(
           onContextMenu={(e) => handleContextMenu(e)}
           className="w-10  text-left"
         >
-          <p>{props.thing.title}</p>
+          <p className="text-slate-50">{props.thing.title}</p>
         </button>
         {contextMenuOpen &&
           (

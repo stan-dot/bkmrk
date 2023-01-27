@@ -14,7 +14,7 @@ type ComprehensiveColDef = {
   columnGetter: (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell;
 };
 
-function getDisplayableData(d: Date): string {
+function getDisplayDate(d: Date): string {
   const hour: string = `${d.getHours()}:${d.getMinutes()}`;
   const day: string = `${d.getFullYear()}/${d.getMonth()}/${d.getDate()}`;
   return `${hour} - ${day}`;
@@ -37,21 +37,21 @@ const myCols: ComprehensiveColDef[] = [
     },
   },
   {
-    static: { title: "Date Added", width: 190 },
+    static: { title: "Date Added", width: 150 },
     columnGetter: (v) => {
       const date: Date = new Date(v.dateAdded || 0);
       const cell: GridCell = {
         kind: GridCellKind.Text,
         data: v.dateAdded?.toString() ?? "-1",
         allowOverlay: false,
-        displayData: getDisplayableData(date),
+        displayData: getDisplayDate(date),
       };
       return cell;
     },
   },
   {
     // url unified with number of children, like in Safari
-    static: { title: "URL", width: 100 },
+    static: { title: "URL", width: 150 },
     columnGetter: (v) => {
       const display: string = v.url ?? v.children?.length.toString() ??
         "unknown";

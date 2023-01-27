@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { basicNodes } from "../../dataProcessing/basicNodes";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
 import { CloseSection } from "../sidePanel/CloseSection";
-
-
 
 export function TableContextMenu(
   props: {

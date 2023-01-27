@@ -1,27 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { SearchIcon } from './SearchIcon';
+import { useState } from 'react';
 
-/**
- * todo chrome.bookmarks.search - it returns a list of objects
- * @param props 
- * @returns 
- */
 export function SearchField(props: {
-  classNames: any,
-  searchText: any,
-  disabled: any,
-  onChange: any,
-  onEnter: any,
-  onSearchClick: any,
-  onBlur: any,
   setDataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
 }) {
-  const [value, setValue] = useState(props.searchText as string);
+  const [value, setValue] = useState("");
   const [iconHighlight, setIconHighlight] = useState(false);
-
-  useEffect(() => {
-    setValue(props.searchText);
-  }, [props.searchText, setValue]);
 
   const onChangeHandler = (event: { target: { value: any; }; }) => {
     setValue(event.target.value);
@@ -37,7 +20,6 @@ export function SearchField(props: {
   }
 
   const onSearchClickHandler = async () => {
-    // props.onSearchClick(value);
     await runSearch();
   };
 
@@ -45,6 +27,7 @@ export function SearchField(props: {
     setIconHighlight(false);
   };
 
+  const isEmpty = value.length === 0;
 
   async function runSearch() {
     const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks.search(value);
@@ -52,28 +35,33 @@ export function SearchField(props: {
   }
 
   return (
-    <div
-      className={`react-search-field ${props.classNames} border-1 boreder-solid relative justify-between flex flex-row  w-2/5 `}
-    >
+    <div className={`react-search-field bg-slate-800 rounded-full w-3/5 m-2 align-middle border-solid relative justify-between flex flex-row`}>
+      <button
+        className={`search-field-button h-fit w-fit ${iconHighlight ? 'text-slate-50' : 'text-slate-400'} align-middle cursor-pointer p-2 text-xl border-color-white rounded-full}`}
+        type="button"
+        aria-label="search button"
+        onClick={onSearchClickHandler}
+        disabled={isEmpty}
+      >
+        &#128269;
+      </button>
       <input
-        className="react-search-field-input outline-none border-none text-xl p-4 flex text-slate-50 "
+        className="search-field-input h-4/6 w-1/2 outline-none text-left bg-slate-800 border-none text-sm p-4 text-slate-50 rounded-r-full "
         onChange={onChangeHandler}
         onKeyDown={onEnterHandler}
         onBlur={onBlurHandler}
         placeholder={"Search bookmarks"}
         type="text"
         value={value}
-        disabled={props.disabled}
-        width={"40%"}
       />
       <button
-        className={`react-search-field-button h-10 w-40 outline-none bg-slate-50 cursor-pointer p-2 box-border appearance-none  b-l-2 border-color-white border-solid m-8 ${props.disabled && 'disabled:'}`}
+        className={`search-field-button h-fit w-fit outline-none ${isEmpty && 'hidden'} ${iconHighlight ? 'text-slate-50' : 'text-slate-400'} cursor-pointer p-2 text-xl rounded-full`}
         type="button"
-        aria-label="search button"
-        onClick={onSearchClickHandler}
-        disabled={props.disabled}
+        aria-label="cancel button"
+        onClick={() => setValue("")}
+        disabled={isEmpty}
       >
-        <SearchIcon highlight={iconHighlight} />
+        &#11199;
       </button>
     </div>
   );

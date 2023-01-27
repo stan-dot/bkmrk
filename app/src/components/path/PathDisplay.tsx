@@ -67,7 +67,7 @@ export function PathDisplay(props: {
         <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
           {"->"}
         </button>
-        <button disabled={props.path.length < 2} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
+        <button disabled={props.path.length < 2} onClick={upButtonHandler} className={"text-xl text-slate-50 hover:bg-slate-300"}>
           [..]
         </button>
       </div>

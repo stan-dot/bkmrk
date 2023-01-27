@@ -152,7 +152,7 @@ export function TableLoader(props: {}): JSX.Element {
         />
         <div
           id="mainContainer"
-          className=" overflow-scroll drop-shadow"
+          className=" overflow-auto drop-shadow"
           onClick={
             (e) => {
               e.preventDefault();

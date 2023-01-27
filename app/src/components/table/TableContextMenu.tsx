@@ -33,14 +33,19 @@ export function TableContextMenu(
   return (
     <div
       id="searchResultContextMenu"
-      className={`contextMenu absolute z-50 text-l border-1 border-solid border-red-700 bg-cyan-600 l-[${position[0]}px] t-[${position[1]}px] w-fit]`}
+      className={`contextMenu absolute z-50 text-l border-1 border-solid border-red-700 bg-cyan-600 w-fit]`}
+      style={{
+        position: "absolute",
+        left: `${position[0]}px`,
+        right: `${position[1]}px`,
+      }}
     >
       <EditDeleteSection
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
       <div className="group2">
-        <p>cut button</p>
+        <p>cut</p>
         <p>copy buton</p>
         <p>paste buton</p>
       </div>
@@ -69,6 +74,6 @@ export function TableContextMenu(
       </button>
       <OpenAllSection thing={props.contextMenuProps.thing} />
       <CloseSection closeCallback={props.contextMenuProps.closeCallback} />
-    </div>
+    </div >
   );
 }

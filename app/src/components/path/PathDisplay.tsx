@@ -60,7 +60,7 @@ export function PathDisplay(props: {
       id="taskbar"
       className="flex  justify-start min-w-min l-3 t-3 border-2 "
     >
-      <div id="buttonArea" className="relative bg-slate-700">
+      <div id="buttonArea" className="relative bg-slate-600">
         <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
           {"<-"}
         </button>

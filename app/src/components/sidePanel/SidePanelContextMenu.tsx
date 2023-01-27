@@ -15,20 +15,26 @@ export function SidePanelContextMenu(
   );
   const position = props.contextMenuProps.position;
   return (
-    <div id="sidePanelContextMenu" className={`contextMenu absolute left-[${position[0]}px] top-[${position[1]}px] z-50 text-l border-solid border-red-700 bg-cyan-600 w-fit`} >
+    <div id="sidePanelContextMenu" className={`contextMenu absolute z-50 text-l border-solid border-red-700 bg-cyan-600 w-fit`}
+      style={{
+        position: "absolute",
+        left: `${position[0]}px`,
+        right: `${position[1]}px`,
+      }}
+    >
       <EditDeleteSection
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
       <div className="group2">
         <button disabled={!isProtected}>
-          <p>cut button</p>
+          <p>cut</p>
         </button>
         <button disabled={!isProtected}>
-          <p>copy buton</p>
+          <p>copy</p>
         </button>
         <button disabled={!isProtected}>
-          <p>paste buton</p>
+          <p>paste</p>
         </button>
       </div>
       <OpenAllSection thing={props.contextMenuProps.thing} />

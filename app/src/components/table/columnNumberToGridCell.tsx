@@ -77,13 +77,13 @@ const myCols: ComprehensiveColDef[] = [
     },
   },
   {
-    static: { title: "Button", width: 100 },
+    static: { title: "", width: 50},
     columnGetter: (v) => {
       const cell: GridCell = {
         kind: GridCellKind.Text,
-        data: v.index?.toString() ?? "-1",
+        data: "&#8942;",
         allowOverlay: false,
-        displayData: v.index?.toString() ?? "",
+        displayData: "&#8942;",
       };
       return cell;
     },

@@ -42,14 +42,19 @@ export function BookmarkTable(
   };
 
   const globalClickHandler = (cell: Item, event: CellClickedEventArgs) => {
-    const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
-    if (isAFolder(bookmark)) {
-      getPath(bookmark).then((path) => {
-        console.log("path:", path);
-        props.pathChangeHandler(path);
-      });
-    } else {
-      chrome.tabs.create({ url: bookmark.url });
+    // todo early handling if the row is 
+    if (cell[0] === 4) { setShowContextMenu(true) } else {
+
+      const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
+      if (isAFolder(bookmark)) {
+        getPath(bookmark).then((path) => {
+          console.log("path:", path);
+          props.pathChangeHandler(path);
+        });
+      }
+      // else {
+      //   chrome.tabs.create({ url: bookmark.url });
+      // }
     }
   };
 
@@ -63,7 +68,7 @@ export function BookmarkTable(
   return (
     <div
       onClick={contextClickHandler}
-      className="dev-test-outline"
+      className="table-container flex flex-grow "
     >
       {showContextMenu && (
         <TableContextMenu
@@ -73,7 +78,8 @@ export function BookmarkTable(
         />
       )}
       <DataEditor
-        // className="text-slate-50 bg-slate-800"
+
+        // className="text-slate-900 bg-slate-200"
         onCellClicked={globalClickHandler}
         onHeaderClicked={() => console.log("clicked header")}
         onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {

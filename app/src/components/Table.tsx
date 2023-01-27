@@ -7,8 +7,6 @@ import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-
-
 // todo this might be better in some all-accessible context
 enum MainDisplayStates {
   LOADING,
@@ -144,7 +142,7 @@ export function TableLoader(props: {}): JSX.Element {
           rows={rows}
         />
       </nav>
-      <div id="lowerPanel" className={`flex fixed top-[68px] w-full bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
+      <div id="lowerPanel" className={`flex flex-grow fixed top-[68px] w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
         <SideTree
           tree={globalTree}
           pathSetter={pathChangeHandler}

@@ -58,9 +58,9 @@ export function PathDisplay(props: {
   return (
     <div
       id="taskbar"
-      className="flex  justify-start min-w-min l-3 t-3 border-2 "
+      className="flex justify-start min-w-min l-3 t-3 hover:border-1 "
     >
-      <div id="buttonArea" className="relative bg-slate-600">
+      <div id="buttonArea" className="relative bg-slate-600 mr-4">
         <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
           {"<-"}
         </button>

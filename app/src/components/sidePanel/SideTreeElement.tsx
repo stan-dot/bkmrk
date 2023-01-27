@@ -49,17 +49,17 @@ export function SideTreeElement(
   };
   return (
     <div
-      className="flex w-fit border-1 border-solid border-indigo-600 justify-between overflow-auto min-h-50 flex-col bg-slate-700 hover:bg-slate-500  focus:bg-cyan-400 focus:border-white focus:border-2 rounded-r-sm"
+      className="flex w-fit  justify-between overflow-auto min-h-50 flex-col bg-slate-700  rounded-r-md"
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
-        className="flex min-w-fit border-1 border-solid border-indigo-500 min-h-fit flex-row p-2"
+        className="flex min-w-fit  min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"
         id={`${props.thing.id}-side-tree-row`}
       >
         <button
           id={`${props.thing.id}-arrow`}
           onClick={(e) => setUnrolled(!unrolled)}
-          className={`${!isALeafNode && 'hidden'} text-slate-50 text-xl mr-2`}
+          className={`${!isALeafNode && 'hidden'} hover:bg-slate-400 text-slate-50 text-xl mr-2 rounded-full`}
         >
           {unrolled ? <p> &#709; </p> : <p> &#707; </p>}
         </button>
@@ -70,6 +70,7 @@ export function SideTreeElement(
           onClick={handleClick}
           onContextMenu={(e) => handleContextMenu(e)}
           className="w-fit  text-left mr-2"
+          onDoubleClick={e => setUnrolled(!unrolled)}
         >
           <p className="text-slate-50">{props.thing.title}</p>
         </button>

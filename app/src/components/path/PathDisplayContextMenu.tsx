@@ -16,8 +16,9 @@ export function PathDisplayContextMenu(
 
   const position = props.contextMenuProps.position;
   return (
-    <div id="tableContextMenu" className={`contextMenu absolute`}
-
+    <div
+      id="tableContextMenu"
+      className={`contextMenu absolute`}
       style={{
         position: "absolute",
         left: `${position[0]}px`,

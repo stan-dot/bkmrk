@@ -2,9 +2,9 @@ import { basicNodes } from "../../dataProcessing/basicNodes";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
-import { CloseSection } from "./CloseSection";
 
 
+export const contextMenuButtonClass = "hover:bg-slate-300 w-32 text-slate-50 p-4";
 export function SidePanelContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;
@@ -15,7 +15,7 @@ export function SidePanelContextMenu(
   );
   const position = props.contextMenuProps.position;
   return (
-    <div id="sidePanelContextMenu" className={`contextMenu absolute z-50 text-l border-solid border-red-700 bg-cyan-600 w-fit`}
+    <div id="sidePanelContextMenu" className={`contextMenu absolute z-50 text-l border-solid  bg-slate-700 w-fit`}
       style={{
         position: "absolute",
         left: `${position[0]}px`,
@@ -26,19 +26,18 @@ export function SidePanelContextMenu(
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
-      <div className="group2">
-        <button disabled={!isProtected}>
-          <p>cut</p>
+      <div className="group2 border-t-solid border-b-solid border-slate-200 m-2">
+        <button disabled={!isProtected} className={contextMenuButtonClass}>
+          <p>Cut</p>
         </button>
-        <button disabled={!isProtected}>
-          <p>copy</p>
+        <button disabled={!isProtected}className={contextMenuButtonClass}>
+          <p>Copy</p>
         </button>
-        <button disabled={!isProtected}>
-          <p>paste</p>
+        <button disabled={!isProtected}className={contextMenuButtonClass}>
+          <p>Paste</p>
         </button>
       </div>
       <OpenAllSection thing={props.contextMenuProps.thing} />
-      <CloseSection closeCallback={props.contextMenuProps.closeCallback} />
     </div>
   );
 }

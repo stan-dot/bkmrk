@@ -1,4 +1,3 @@
-import { CloseSection } from "./sidePanel/CloseSection";
 
 export function GeneralContextMenu(
   props: { thing: chrome.bookmarks.BookmarkTreeNode; position: number[], closeCallback: () => void },
@@ -7,12 +6,12 @@ export function GeneralContextMenu(
     <div
       id="sidePanelContextMenu"
       className={`contextMenu l-[${props.position[0]}px] t-[${props.position[1]}px] absolute`}
+      onBlur={() => props.closeCallback()}
     >
       <div className="group5">
         <p>create new bookmark</p>
         <p>create new folder</p>
       </div>
-      <CloseSection closeCallback={props.closeCallback} />
     </div >
   );
 }

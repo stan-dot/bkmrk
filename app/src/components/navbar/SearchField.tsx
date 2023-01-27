@@ -39,7 +39,7 @@ export function SearchField(props: {
       <div id="left-side-items" className='justify-start'>
 
         <button
-          className={`search-field-button h-fit w-10 ${iconHighlight ? 'text-slate-50' : 'text-slate-400'} align-middle cursor-pointer p-2 text-xl border-color-white rounded-full}`}
+          className={`search-field-button w-10 ${iconHighlight ? 'text-slate-50' : 'text-slate-400'} align-middle cursor-pointer text-xl border-color-white rounded-full}`}
           type="button"
           aria-label="search button"
           onClick={onSearchClickHandler}
@@ -48,7 +48,7 @@ export function SearchField(props: {
           &#128269;
         </button>
         <input
-          className="search-field-input h-4/6  outline-none text-left bg-slate-800 border-none text-sm p-4 text-slate-50 rounded-r-full "
+          className="search-field-input outline-none text-left bg-slate-800 border-none text-sm p-4 text-slate-50 rounded-r-full "
           onChange={onChangeHandler}
           onKeyDown={onEnterHandler}
           onBlur={onBlurHandler}

@@ -3,7 +3,7 @@ import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
-import { CloseSection } from "../sidePanel/CloseSection";
+import { contextMenuButtonClass } from "../sidePanel/SidePanelContextMenu";
 
 export function TableContextMenu(
   props: {
@@ -33,7 +33,7 @@ export function TableContextMenu(
   return (
     <div
       id="searchResultContextMenu"
-      className={`contextMenu absolute z-50 text-l border-1 border-solid border-red-700 bg-cyan-600 w-fit]`}
+      className={`contextMenu absolute z-50 text-l w-32 border-1 border-solid bg-slate-700 w-fit]`}
       style={{
         position: "absolute",
         left: `${position[0]}px`,
@@ -44,10 +44,10 @@ export function TableContextMenu(
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
-      <div className="group2">
-        <p>cut</p>
-        <p>copy buton</p>
-        <p>paste buton</p>
+      <div className="group2 flex flex-col">
+        <p className={contextMenuButtonClass}>cut</p>
+        <p className={contextMenuButtonClass}>copy</p>
+        <p className={contextMenuButtonClass}>paste</p>
       </div>
       <button className={`${!props.searchResults && 'hidden'}`} onClick={handleShowInFolder} >
         <p>show in folder</p>
@@ -73,7 +73,6 @@ export function TableContextMenu(
         sort by date
       </button>
       <OpenAllSection thing={props.contextMenuProps.thing} />
-      <CloseSection closeCallback={props.contextMenuProps.closeCallback} />
     </div >
   );
 }

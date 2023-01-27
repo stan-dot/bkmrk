@@ -9,10 +9,8 @@ export function PathItem(
     contextMenuHandler: any;
   }
 ): JSX.Element {
-  // const [position, setPosition] = useState([0, 0]);
-  // const [contextMenuVisibility, setContextMenuVisibility] = useState(false);
   return (
-    <div className="flex justify-start text-slate-50" >
+    <div className="flex justify-start text-slate-50 m-2 border-1 border-solid hover:border-slate-400 focus:shadow hover:bg-slate-200" >
       {"/"}
       <button onClick={(v) => props.handleClick(props.index, props.node)}>
         {props.node.title}

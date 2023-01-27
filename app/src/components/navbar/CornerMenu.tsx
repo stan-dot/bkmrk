@@ -34,14 +34,14 @@ export function CornerMenu(
       <button
         onClick={clickHandler}
         id="dropdownDefaultButton"
-        className="text-white  hover:bg-slate-400 focus:ring-4 focus:outline-none focus:ring-slate-900 rounded-lg text-3xl p-4 text-center"
+        className="text-white  hover:bg-slate-400 focus:outline-none  rounded-lg text-3xl p-4 text-center"
         type="button"
         // todo this might not work
         onBlur={() => clickHandler()}
       >
         &#8942;
       </button>
-      <div id="dropdown" onBlur={() => clickHandler()} className={`absolute right-1/6 top-1/10 z-10 ${!showMenu && "hidden"} bg-white divide-y divide-gray-100 rounded-sm shadow w-44 dark:bg-gray-700`} >
+      <div id="dropdown" onBlur={() => clickHandler()} className={`absolute right-1/3 top-1/10 z-10 ${!showMenu && "hidden"} bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700`} >
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" >
           <li>
             <button className={linkClass} onClick={(v) => props.sortCallback}>

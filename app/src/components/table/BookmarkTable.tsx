@@ -68,7 +68,7 @@ export function BookmarkTable(
   return (
     <div
       onClick={contextClickHandler}
-      className="table-container flex flex-grow top-[68px]"
+      className="table-container flex flex-grow top-[104px]"
     >
       {showContextMenu && (
         <BookmarkContextMenu

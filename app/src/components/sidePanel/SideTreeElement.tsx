@@ -51,34 +51,43 @@ export function SideTreeElement(
       console.log("should use some context for this, it is too bothersome now"),
   };
   return (
-    <div
-      className={`flex w-fit l-20 pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
-        } overflow-auto min-h-50 flex-col bg-slate-700 rounded-r-md`}
-      id={`${props.thing.id}-side-tree-container`}
-    >
+    <>
       <div
-        className="flex min-w-fit  min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"
-        id={`${props.thing.id}-side-tree-row`}
+        className={`flex w-fit l-20 pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
+          } overflow-auto min-h-50 flex-col bg-slate-700 rounded-r-md`}
+        id={`${props.thing.id}-side-tree-container`}
       >
-        <button
-          id={`${props.thing.id}-arrow`}
-          onClick={(e) => setUnrolled(!unrolled)}
-          className={`${!isALeafNode && "hidden"
-            } hover:bg-slate-400 text-slate-50 text-xl mr-2 rounded-full`}
+        <div
+          className="flex min-w-fit  min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"
+          id={`${props.thing.id}-side-tree-row`}
         >
-          {unrolled ? <p>&#709;</p> : <p>&#707;</p>}
-        </button>
-        <p className={` text-slate-50 text-xl mr-2`}>
-          {props.thing.children?.length}
-        </p>
-        <button
-          onClick={handleClick}
-          onContextMenu={(e) => handleContextMenu(e)}
-          className="w-fit  text-left mr-2"
-          onDoubleClick={(e) => setUnrolled(!unrolled)}
-        >
-          <p className="text-slate-50">{props.thing.title}</p>
-        </button>
+          <button
+            id={`${props.thing.id}-arrow`}
+            onClick={(e) => setUnrolled(!unrolled)}
+            className={`${!isALeafNode && "hidden"
+              } hover:bg-slate-400 text-slate-50 text-xl mr-2 rounded-full`}
+          >
+            {unrolled ? <p>&#709;</p> : <p>&#707;</p>}
+          </button>
+          <p className={` text-slate-50 text-xl mr-2`}>
+            {props.thing.children?.length}
+          </p>
+          <button
+            onClick={handleClick}
+            onContextMenu={(e) => handleContextMenu(e)}
+            className="w-fit  text-left mr-2"
+            onDoubleClick={(e) => setUnrolled(!unrolled)}
+          >
+            <p className="text-slate-50">{props.thing.title}</p>
+          </button>
+        </div>
+        {unrolled && (
+          <SideSubTree
+            nodes={props.thing.children!}
+            pathSetter={props.pathSetter}
+            path={props.path}
+          />
+        )}
       </div>
       {contextMenuOpen &&
         (
@@ -86,13 +95,6 @@ export function SideTreeElement(
             contextMenuProps={contextProps}
           />
         )}
-      {unrolled && (
-        <SideSubTree
-          nodes={props.thing.children!}
-          pathSetter={props.pathSetter}
-          path={props.path}
-        />
-      )}
-    </div>
+    </>
   );
 }

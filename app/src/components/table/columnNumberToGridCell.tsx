@@ -17,7 +17,7 @@ type ComprehensiveColDef = {
 function getDisplayDate(d: Date): string {
   const hour: string = `${d.getHours()}:${d.getMinutes()}`;
   const day: string = `${d.getFullYear()}/${d.getMonth()}/${d.getDate()}`;
-  return `${day} - ${hour}`;
+  return `${day} ${hour}`;
 }
 
 function getImageCell(v: chrome.bookmarks.BookmarkTreeNode): UriCell {

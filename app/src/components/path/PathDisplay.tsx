@@ -58,16 +58,16 @@ export function PathDisplay(props: {
   return (
     <div
       id="path-display"
-      className="flex fixed justify-start min-w-min l-3 h-[44px] t-3 hover:border-1 bg-slate-700 "
+      className="flex fixed justify-start min-w-min l-3 h-36 t-3 mb-4 bg-slate-700 "
     >
       <div id="buttonArea" className="relative bg-slate-600 mr-4">
-        <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
+        <button disabled={true} onClick={upButtonHandler} className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}>
           {"<-"}
         </button>
-        <button disabled={true} onClick={upButtonHandler} className={"text-xl text-slate-50"}>
+        <button disabled={true} onClick={upButtonHandler} className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}>
           {"->"}
         </button>
-        <button disabled={props.path.length < 2} onClick={upButtonHandler} className={"text-xl text-slate-50 hover:bg-slate-300"}>
+        <button disabled={props.path.length < 2} onClick={upButtonHandler} className={"text-l text-slate-50 hover:bg-slate-300  p-2 m-0 hover:border-slate-400"}>
           [..]
         </button>
       </div>

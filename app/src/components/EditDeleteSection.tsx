@@ -1,6 +1,6 @@
 import { useState } from "react";
 import EditAlert from "./alerts/EditAlert";
-import { contextMenuButtonClass } from "./sidePanel/contextMenuButtonClass";
+import { contextMenuButtonClass } from "./contextMenuComponents/contextMenuButtonClass";
 
 export function EditDeleteSection(
   props: { thing: chrome.bookmarks.BookmarkTreeNode; protected: boolean },

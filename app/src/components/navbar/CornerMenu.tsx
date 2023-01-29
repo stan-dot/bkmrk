@@ -87,7 +87,7 @@ export function CornerMenu(
           </li>
           <li>
             <a className={linkClass} href="https://github.com/stan-dot/bkmrk">
-              <span id="help-question-mark" className="text-xl"> ?  </span> Help center
+              <span id="help-question-mark" className="text-l"> ?  </span> Help center
             </a>
           </li>
         </ul>

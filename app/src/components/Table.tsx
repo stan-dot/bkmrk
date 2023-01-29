@@ -157,6 +157,12 @@ export function TableLoader(props: {}): JSX.Element {
           pathSetter={pathChangeHandler}
           path={currentPath}
         />
+        <div className="fixed w-full h-24 bg-slate-700 border-1 border-solid border-slate-600">
+          <PathDisplay
+            path={currentPath}
+            pathChangeHandler={pathChangeHandler}
+          />
+        </div>
         <div
           id="mainContainer"
           className=" overflow-auto drop-shadow m-2 p-8 flex flex-col rounded-md"
@@ -179,10 +185,6 @@ export function TableLoader(props: {}): JSX.Element {
           }} >
             <p>To bookmark pages, click the star in the address bar</p>
           </div>
-          <PathDisplay
-            path={currentPath}
-            pathChangeHandler={pathChangeHandler}
-          />
           <BookmarkTable
             rows={rows}
             pathChangeHandler={pathChangeHandler}

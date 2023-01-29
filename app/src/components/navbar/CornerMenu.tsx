@@ -33,7 +33,7 @@ export function CornerMenu(
   return (
     <div className={"dev-test-outline z-40 relative"}>
       <button
-        onClick={() => setShowMenu(true)}
+        onClick={() => setShowMenu(!showMenu)}
         id="dropdownDefaultButton"
         className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-3xl p-4 text-center border-red-600"
         type="button"
@@ -45,52 +45,55 @@ export function CornerMenu(
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" >
           <li>
             <button className={linkClass} onClick={(v) => props.sortCallback}>
-              sort by name
+              <span className="italic text-l ">A-Z</span> Sort by name
             </button>
           </li>
           <li>
             <button className={linkClass} onClick={(v) => props.sortCallback}>
-              sort by date made
+              &#128197; Sort by date made
             </button>
           </li>
+          <hr />
           <li>
             <button className={linkClass} onClick={(v) => makeBookmark("someId")}>
-              add new bookmark{" "}
+              &#9734; Add new bookmark
             </button>
           </li>
           <li>
             <button className={linkClass} onClick={(v) => makeFolder("test", "someid")}>
-              add new folder{" "}
+              &#128448; Add new folder
             </button>
           </li>
+          <hr />
           <li>
             <button className={linkClass}
               onClick={(v) => setOpenVariant(OpenMenuStates.IMPORT)}
             >
-              import bookmarks
+              Import bookmarks
             </button>
           </li>
           <li>
             <button className={linkClass} onClick={(v) => exportBookmarks}>
-              export bookmarks{" "}
+              Export bookmarks{" "}
             </button>
           </li>
           <li>
             <button className={linkClass} onClick={(v) => printCsv(props.rows)}>
-              download csv of current display (for Excel)
+              Download CSV
             </button>
           </li>
+          <hr />
           <li>
             <button
               className={linkClass}
               onClick={(v) => console.log("should open some setting page?")}
             >
-              &#9881; settings
+              &#9881; Settings
             </button>
           </li>
           <li>
             <a className={linkClass} href="https://github.com/stan-dot/bkmrk">
-              help center
+              Help center - file an issue
             </a>
           </li>
         </ul>

@@ -29,6 +29,13 @@ function getImageCell(v: chrome.bookmarks.BookmarkTreeNode): UriCell {
   return cell;
 }
 
+const ErrorCell: TextCell = {
+  kind: GridCellKind.Text,
+  data: "error",
+  allowOverlay: false,
+  displayData: "error",
+};
+
 const myCols: ComprehensiveColDef[] = [
   // {
   //   static: { title: "Icon", width: 50 },
@@ -37,7 +44,7 @@ const myCols: ComprehensiveColDef[] = [
   //   },
   // },
   {
-    static: { title: "Date Added", width: 150 },
+    static: { title: "Date Added", width: 130 },
     columnGetter: (v) => {
       const date: Date = new Date(v.dateAdded || 0);
       const cell: GridCell = {
@@ -51,8 +58,9 @@ const myCols: ComprehensiveColDef[] = [
   },
   {
     // url unified with number of children, like in Safari
-    static: { title: "URL", width: 150 },
+    static: { title: "URL", width: 250 },
     columnGetter: (v) => {
+      if (v === undefined) return ErrorCell;
       const display: string = v.url ?? v.children?.length.toString() ??
         "folder";
       const cell: TextCell = {

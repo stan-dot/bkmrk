@@ -68,7 +68,7 @@ export function BookmarkTable(
   return (
     <div
       onClick={contextClickHandler}
-      className="table-container flex flex-grow "
+      className="table-container flex flex-grow t-[68px]"
     >
       {showContextMenu && (
         <TableContextMenu
@@ -91,6 +91,7 @@ export function BookmarkTable(
         getCellContent={getData(props.rows)}
         columns={columns}
         rows={props.rows.length}
+        theme={{ accentColor: '#CF9FFF' }}
       />
     </div>
   );

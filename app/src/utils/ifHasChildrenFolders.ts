@@ -17,6 +17,16 @@ export function getChildrenLinks(item: chrome.bookmarks.BookmarkTreeNode): chrom
   return item.children.filter(v => !isAFolder(v));
 }
 
+export type OpenAllOptions = {
+  newWindow: boolean;
+  incognito: boolean;
+}
+
+const defaultOptions:OpenAllOptions = {
+  newWindow: false,
+  incognito: false
+};
+
 /**
  * 
  * this doesn't assume that children are present, but if no children, it shouldn't show as active when only folders
@@ -24,9 +34,8 @@ export function getChildrenLinks(item: chrome.bookmarks.BookmarkTreeNode): chrom
  * @param newWindow
  * @param incognito
  */
-
-
-export async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode, newWindow?: boolean, incognito?: boolean): Promise<void> {
+export async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode, options?:OpenAllOptions): Promise<void> {
+  const { newWindow, incognito } = options || defaultOptions;
   const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = parent.children;
   if (!children)
     return;

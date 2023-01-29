@@ -35,7 +35,7 @@ export function BookmarkContextMenu(
   return (
     <div
       id="sidePanelContextMenu"
-      className={`contextMenu z-50 w-50 border-1 text-l border-solid bg-slate-700 `}
+      className={`contextMenu z-50 border-1 text-l rounded-md border-solid bg-slate-700 `}
       style={{
         position: "absolute",
         left: `${position[0]}px`,

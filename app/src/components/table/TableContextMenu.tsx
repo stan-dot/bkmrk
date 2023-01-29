@@ -33,18 +33,19 @@ export function TableContextMenu(
   return (
     <div
       id="searchResultContextMenu"
-      className={`contextMenu absolute z-50 text-l w-32 border-1 border-solid bg-slate-700 ]`}
       style={{
         position: "absolute",
         left: `${position[0]}px`,
         right: `${position[1]}px`,
+        zIndex: 20
       }}
+      // className={`contextMenu absolute z-50 text-l w-32 border-1 border-solid bg-slate-700 `}
     >
       <EditDeleteSection
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
-      <div className="group2 flex flex-col align-middle">
+      <div className="group2 flex w-32 flex-col align-middle">
         <p className={contextMenuButtonClass}>Cut</p>
         <p className={contextMenuButtonClass}>Copy</p>
         <p className={contextMenuButtonClass}>Paste</p>

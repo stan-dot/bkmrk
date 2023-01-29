@@ -7,7 +7,7 @@ export function SideSubTree(props: {
   path: chrome.bookmarks.BookmarkTreeNode[];
 }): JSX.Element {
   return (
-    <div id="sidesubtree" className="relative l-2 p-1 " >
+    <div id="sidesubtree" className="relative l-4 p-1 " >
       {
         // todo here filter is running on undefined
         props.nodes.filter(isAFolder).map((n) => {

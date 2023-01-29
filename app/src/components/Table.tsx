@@ -125,7 +125,7 @@ export function TableLoader(props: {}): JSX.Element {
     setRows(nodes);
   }
 
-  const [sideTreeWidth, setSideTreeWidth] = useState(240);
+  // const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
       <nav className="fixed w-full h-[68px] top-0 flex justify-between bg-slate-700 z-10" >
@@ -142,7 +142,7 @@ export function TableLoader(props: {}): JSX.Element {
           rows={rows}
         />
       </nav>
-      <div id="lowerPanel" className={`flex flex-grow fixed top-[68px] w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
+      <div id="lowerPanel" className={`flex flex-grow h-full fixed top-[68px] w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
         <SideTree
           tree={globalTree}
           pathSetter={pathChangeHandler}

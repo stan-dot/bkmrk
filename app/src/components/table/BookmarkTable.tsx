@@ -16,7 +16,7 @@ export function BookmarkTable(
     pathChangeHandler: (
       nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
     ) => void;
-    dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
+    setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
     searchResultsMode: boolean
   },
 ): JSX.Element {
@@ -68,12 +68,12 @@ export function BookmarkTable(
   return (
     <div
       onClick={contextClickHandler}
-      className="table-container flex flex-grow top-[104px]"
+      className="table-container flex flex-grow pb-4 mb-4 "
     >
       {showContextMenu && (
         <BookmarkContextMenu
           contextMenuProps={contextMenuProps}
-          setRowsCallback={props.dataCallback}
+          setRowsCallback={props.setRowsCallback}
           searchResults={props.searchResultsMode}
         />
       )}

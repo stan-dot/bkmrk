@@ -1,6 +1,8 @@
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import { ContextMenuProps } from "../types/ContextMenuProps";
 import { rowSorter, SortOptions } from "../utils/rowSorter";
+import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
 import { PathDisplay } from "./path/PathDisplay";
@@ -30,7 +32,19 @@ export function TableLoader(props: {}): JSX.Element {
   );
 
   const [historyVisible, setHistoryVisible] = useState(false);
+  const [miniMenuVisible, setMiniMenuVisible] = useState(false);
 
+  const [position, setPosition] = useState([0, 0]);
+
+  const getContextProps: () => ContextMenuProps = () => {
+    return {
+      thing: lastPathItem(),
+      position: position,
+      closeCallback: () => setMiniMenuVisible(false),
+      sortCallback: () =>
+        console.log("should use some context for this, it is too bothersome now"),
+    }
+  };
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
     setLoaded(MainDisplayStates.LOADED);
     setGlobalTree(root[0].children!);
@@ -130,7 +144,7 @@ export function TableLoader(props: {}): JSX.Element {
   // const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
-      <nav className="fixed w-full h-[68px] top-0 flex justify-between bg-slate-700 z-10" >
+      <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10" >
         <div className="flex align-middle" id="brandingBit" >
           <p className="text-2xl mt-2 ml-2 text-white">
             &#128366;
@@ -142,6 +156,7 @@ export function TableLoader(props: {}): JSX.Element {
           className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600"
           onClick={() => setHistoryVisible(!historyVisible)}
           onBlur={() => setHistoryVisible(false)}
+          disabled
         >
           &#11186; History
         </button>
@@ -151,21 +166,39 @@ export function TableLoader(props: {}): JSX.Element {
           rows={rows}
         />
       </nav>
-      <div id="lowerPanel" className={`flex flex-grow h-full fixed top-[68px] w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
+      <hr />
+
+      <div className="fixed w-full h-12 top-16 bg-slate-700 flex-row justify-evenly border-1 border-solid border-slate-600"
+        onPaste={(e: React.ClipboardEvent<Element>) => {
+          e.preventDefault();
+          console.log(e);
+          chrome.bookmarks.create({
+            parentId: lastPathItem().id,
+            title: "Extensions doc",
+            url: "https://developer.chrome.com/docs/extensions",
+          });
+        }}
+      >
+        <PathDisplay
+          path={currentPath}
+          pathChangeHandler={pathChangeHandler}
+        />
+      </div>
+      <div id="lowerPanel"
+
+        // onClick={e => {
+        // e.preventDefault();
+        // }}
+
+        className={`flex flex-grow h-full fixed top-28 w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
         <SideTree
           tree={globalTree}
           pathSetter={pathChangeHandler}
           path={currentPath}
         />
-        <div className="fixed w-full h-24 bg-slate-700 border-1 border-solid border-slate-600">
-          <PathDisplay
-            path={currentPath}
-            pathChangeHandler={pathChangeHandler}
-          />
-        </div>
         <div
           id="mainContainer"
-          className=" overflow-auto drop-shadow m-2 p-8 flex flex-col rounded-md"
+          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
           onClick={
             (e) => {
               e.preventDefault();
@@ -188,8 +221,8 @@ export function TableLoader(props: {}): JSX.Element {
           <BookmarkTable
             rows={rows}
             pathChangeHandler={pathChangeHandler}
-            dataCallback={dataCallback}
-            searchResultsMode={loaded as MainDisplayStates === MainDisplayStates.SEARCH_RESULT}
+            setRowsCallback={dataCallback}
+            searchResultsMode={loaded === MainDisplayStates.SEARCH_RESULT}
           />
         </div>
         <div id="rightPanel"
@@ -214,6 +247,7 @@ export function TableLoader(props: {}): JSX.Element {
             })}
         </div>
       </div>
+      {miniMenuVisible && <MiniContextMenu contextMenuProps={getContextProps()} />}
     </>
   );
 

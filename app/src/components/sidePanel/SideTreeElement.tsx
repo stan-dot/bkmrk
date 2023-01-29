@@ -17,6 +17,7 @@ export function SideTreeElement(
     pathSetter: (path: chrome.bookmarks.BookmarkTreeNode[]) => void;
     unrolled: boolean;
     path: chrome.bookmarks.BookmarkTreeNode[];
+    setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
   },
 ): JSX.Element {
   const [position, setPosition] = useState([0, 0]);
@@ -47,15 +48,20 @@ export function SideTreeElement(
     thing: props.thing,
     position: position,
     closeCallback: () => setContextMenuOpen(false),
-    sortCallback: () =>
-      console.log("should use some context for this, it is too bothersome now"),
+    sortCallback: props.setRowsCallback
   };
   return (
     <>
       <div
-        className={`flex w-fit l-20 pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
-          } overflow-auto min-h-50 flex-col bg-slate-700 rounded-r-md`}
+        className={`flex w-fit  pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
+          } overflow-auto min-h-30 flex-col cursor-pointer bg-slate-700 rounded-r-md`}
         id={`${props.thing.id}-side-tree-container`}
+        onClick={() =>
+          getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
+            console.log("path: ", path);
+            props.pathSetter(path);
+          })
+        }
       >
         <div
           className="flex min-w-fit  min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"
@@ -86,15 +92,18 @@ export function SideTreeElement(
             nodes={props.thing.children!}
             pathSetter={props.pathSetter}
             path={props.path}
+            setRowsCallback={props.setRowsCallback}
           />
         )}
       </div>
-      {contextMenuOpen &&
+      {
+        contextMenuOpen &&
         (
           <BookmarkContextMenu
             contextMenuProps={contextProps}
           />
-        )}
+        )
+      }
     </>
   );
 }

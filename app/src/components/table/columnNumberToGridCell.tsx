@@ -79,7 +79,7 @@ const myCols: ComprehensiveColDef[] = [
         kind: GridCellKind.Text,
         data: v?.title ?? "empty",
         allowOverlay: false,
-        displayData: v.title,
+        displayData: v?.title ?? 'empty',
       };
       return cell;
     },

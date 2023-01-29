@@ -2,7 +2,7 @@ import { basicNodes } from "../../dataProcessing/basicNodes";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "./OpenAllSection";
-import { EditDeleteSection } from "../EditDeleteSection";
+import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 
 export function BookmarkContextMenu(

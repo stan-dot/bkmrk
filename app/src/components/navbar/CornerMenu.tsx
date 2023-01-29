@@ -44,7 +44,7 @@ export function CornerMenu(
           </li>
           <li>
             <button className={linkClass} onClick={(v) => props.sortCallback}>
-              &#128197; Sort by date made
+              &#128197; Sort by date
             </button>
           </li>
           <hr />

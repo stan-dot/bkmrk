@@ -28,20 +28,20 @@ export function CornerMenu(
     setShowMenu(!showMenu);
   };
 
+
   // todo there should be dialog popups for the new bookmark and new folder
   return (
     <div className={"dev-test-outline z-40 relative"}>
       <button
-        onClick={clickHandler}
+        onClick={() => setShowMenu(true)}
         id="dropdownDefaultButton"
-        className="text-white  hover:bg-slate-400 focus:outline-none  rounded-lg text-3xl p-4 text-center"
+        className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-3xl p-4 text-center border-red-600"
         type="button"
-        // todo this might not work
-        onBlur={() => clickHandler()}
+        onBlur={() => setShowMenu(false)}
       >
         &#8942;
       </button>
-      <div id="dropdown" onBlur={() => showMenu && clickHandler()} className={`absolute right-1/3 top-1/10 z-10 ${!showMenu && "hidden"} bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700`} >
+      <div id="dropdown" onBlur={() => setShowMenu(false)} className={`absolute right-1/3 top-1/10 z-10 ${!showMenu && "hidden"} bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700`} >
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" >
           <li>
             <button className={linkClass} onClick={(v) => props.sortCallback}>

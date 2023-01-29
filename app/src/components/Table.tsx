@@ -151,12 +151,12 @@ export function TableLoader(props: {}): JSX.Element {
         <div
           id="mainContainer"
           className=" overflow-auto drop-shadow m-2 p-8 flex flex-col"
-          onClick={
-            (e) => {
-              e.preventDefault();
-              console.log('it was clicked on the outside');
-            }
-          }
+          // onClick={
+          //   (e) => {
+          //     e.preventDefault();
+          //     console.log('it was clicked on the outside');
+          //   }
+          // }
         >
           <PathDisplay
             path={currentPath}

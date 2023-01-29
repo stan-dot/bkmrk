@@ -30,12 +30,12 @@ function getImageCell(v: chrome.bookmarks.BookmarkTreeNode): UriCell {
 }
 
 const myCols: ComprehensiveColDef[] = [
-  {
-    static: { title: "Icon", width: 50 },
-    columnGetter: (v) => {
-      return getImageCell(v);
-    },
-  },
+  // {
+  //   static: { title: "Icon", width: 50 },
+  //   columnGetter: (v) => {
+  //     return getImageCell(v);
+  //   },
+  // },
   {
     static: { title: "Date Added", width: 150 },
     columnGetter: (v) => {
@@ -54,7 +54,7 @@ const myCols: ComprehensiveColDef[] = [
     static: { title: "URL", width: 150 },
     columnGetter: (v) => {
       const display: string = v.url ?? v.children?.length.toString() ??
-        "unknown";
+        "folder";
       const cell: TextCell = {
         kind: GridCellKind.Text,
         data: v.url ? v.url : "",
@@ -76,18 +76,18 @@ const myCols: ComprehensiveColDef[] = [
       return cell;
     },
   },
-  {
-    static: { title: "", width: 50},
-    columnGetter: (v) => {
-      const cell: GridCell = {
-        kind: GridCellKind.Text,
-        data: "&#8942;",
-        allowOverlay: false,
-        displayData: "&#8942;",
-      };
-      return cell;
-    },
-  },
+  // {
+  //   static: { title: "", width: 50},
+  //   columnGetter: (v) => {
+  //     const cell: GridCell = {
+  //       kind: GridCellKind.Text,
+  //       data: "&#8942;",
+  //       allowOverlay: false,
+  //       displayData: "&#8942;",
+  //     };
+  //     return cell;
+  //   },
+  // },
 ];
 
 const arr: [number, (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell][] = myCols.map((v, i) => [i, v.columnGetter])

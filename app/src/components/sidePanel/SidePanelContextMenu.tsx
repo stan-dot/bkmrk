@@ -15,7 +15,7 @@ export function SidePanelContextMenu(
   return (
     <div
       id="sidePanelContextMenu"
-      className={`contextMenu absolute z-50 text-l border-solid  bg-slate-700 w-fit`}
+      // className={`contextMenu absolute z-50 text-l border-solid  bg-slate-700 w-fit`}
       style={{
         position: "absolute",
         left: `${position[0]}px`,

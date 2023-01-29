@@ -78,8 +78,6 @@ export function BookmarkTable(
         />
       )}
       <DataEditor
-
-        // className="text-slate-900 bg-slate-200"
         onCellClicked={globalClickHandler}
         onHeaderClicked={() => console.log("clicked header")}
         onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {

@@ -49,7 +49,7 @@ export function SideTreeElement(
   };
   return (
     <div
-      className="flex w-fit  justify-between overflow-auto min-h-50 flex-col bg-slate-700  rounded-r-md"
+      className="flex w-fit l-20  justify-between overflow-auto min-h-50 flex-col bg-slate-700  rounded-r-md"
       id={`${props.thing.id}-side-tree-container`}
     >
       <div

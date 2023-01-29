@@ -6,9 +6,9 @@ import React, { useState } from "react";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { getPath } from "../getPath";
+import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
-import { TableContextMenu } from "./TableContextMenu";
 
 export function BookmarkTable(
   props: {
@@ -68,10 +68,10 @@ export function BookmarkTable(
   return (
     <div
       onClick={contextClickHandler}
-      className="table-container flex flex-grow t-[68px]"
+      className="table-container flex flex-grow top-[68px]"
     >
       {showContextMenu && (
-        <TableContextMenu
+        <BookmarkContextMenu
           contextMenuProps={contextMenuProps}
           setRowsCallback={props.dataCallback}
           searchResults={props.searchResultsMode}

@@ -1,5 +1,5 @@
 import { getChildrenLinks, openAllChildren } from "../../utils/ifHasChildrenFolders";
-import { contextMenuButtonClass } from "../sidePanel/SidePanelContextMenu";
+import { contextMenuButtonClass } from "../sidePanel/contextMenuButtonClass";
 
 export function OpenAllSection(props: { thing: chrome.bookmarks.BookmarkTreeNode }): JSX.Element {
   const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = getChildrenLinks(

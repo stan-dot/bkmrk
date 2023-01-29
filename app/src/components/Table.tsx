@@ -1,5 +1,5 @@
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { rowSorter, SortOptions } from "../utils/rowSorter";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -25,6 +25,12 @@ export function TableLoader(props: {}): JSX.Element {
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
 
+  const [history, setHistory] = useState(
+    [] as chrome.bookmarks.BookmarkTreeNode[],
+  );
+
+  const [historyVisible, setHistoryVisible] = useState(false);
+
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
     setLoaded(MainDisplayStates.LOADED);
     setGlobalTree(root[0].children!);
@@ -32,6 +38,8 @@ export function TableLoader(props: {}): JSX.Element {
     setRows(bookmarksBar.children ?? []);
     setCurrentPath([root[0], bookmarksBar]);
   }
+
+  const lastPathItem = useCallback(() => currentPath[currentPath.length - 1], [currentPath]);
 
   if (!loaded) {
     /**
@@ -48,20 +56,13 @@ export function TableLoader(props: {}): JSX.Element {
     () => reloadWithNode(currentPath)
   )
 
-  // useEffect(() => {
-  //   console.log("reacting to a change in path", currentPath);
-  //   const last: chrome.bookmarks.BookmarkTreeNode =
-  //     currentPath[currentPath.length - 1];
-  //   const children: chrome.bookmarks.BookmarkTreeNode[] | undefined =
-  //     last?.children ?? undefined;
-  //   console.log("last: ", last);
-  //   console.log("about to set path to children:", children);
-  //   if (children) {
-  //     console.log("last: ", last);
-  //     console.log("about to set path to children:", children);
-  //     setRows(children);
-  //   }
-  // }, [currentPath]);
+
+  useEffect(() => {
+    setHistory(previousHistory => [...previousHistory, lastPathItem()])
+
+    return () => { }
+  }, [currentPath, lastPathItem])
+
 
 
   // todo instructions how to sort given a node and props
@@ -121,6 +122,7 @@ export function TableLoader(props: {}): JSX.Element {
     }
   };
 
+
   const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
     setRows(nodes);
   }
@@ -136,6 +138,13 @@ export function TableLoader(props: {}): JSX.Element {
           </p>
         </div>
         <SearchField setDataCallback={dataCallback} />
+        <button id="history-button"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600"
+          onClick={() => setHistoryVisible(!historyVisible)}
+          onBlur={() => setHistoryVisible(false)}
+        >
+          &#11186; History
+        </button>
         <CornerMenu
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
@@ -150,14 +159,26 @@ export function TableLoader(props: {}): JSX.Element {
         />
         <div
           id="mainContainer"
-          className=" overflow-auto drop-shadow m-2 p-8 flex flex-col"
-          // onClick={
-          //   (e) => {
-          //     e.preventDefault();
-          //     console.log('it was clicked on the outside');
-          //   }
-          // }
+          className=" overflow-auto drop-shadow m-2 p-8 flex flex-col rounded-md"
+          onClick={
+            (e) => {
+              e.preventDefault();
+              console.log('it was clicked on the outside');
+            }
+          }
         >
+          <div id="loadingStatus" style={{
+            visibility: `${loaded === MainDisplayStates.LOADING ? 'visible' : 'hidden'
+              }`
+          }} >
+            <p>Loading...</p>
+          </div>
+          <div id="emptyStatus" style={{
+            visibility: `${loaded === MainDisplayStates.RESULT_EMPTY ? 'visible' : 'hidden'
+              }`
+          }} >
+            <p>To bookmark pages, click the star in the address bar</p>
+          </div>
           <PathDisplay
             path={currentPath}
             pathChangeHandler={pathChangeHandler}
@@ -169,19 +190,28 @@ export function TableLoader(props: {}): JSX.Element {
             searchResultsMode={loaded as MainDisplayStates === MainDisplayStates.SEARCH_RESULT}
           />
         </div>
+        <div id="rightPanel"
+          className="bg-slate-700 w-44 z-10 rounded-md shadow"
+          style={{ visibility: `${historyVisible ? 'visible' : 'hidden'}` }}>
+          {history.length === 0 ?
+            <p>No history found</p>
+            :
+            history.map(b => {
+              console.log(b);
+              // return "some item"
+              return <p
+                style={{
+                  // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
+                }}
+              >
+                <p>nothing</p>
+                {/* <a href={b.url} className="link">
+                  {b.title}
+                </a> */}
+              </p>
+            })}
+        </div>
       </div>
-      {loaded === MainDisplayStates.LOADING &&
-        (
-          <div id="Loading status" >
-            <p>Loading...</p>
-          </div>
-        )}
-      {loaded === MainDisplayStates.RESULT_EMPTY &&
-        (
-          <div id="empty status" >
-            <p>To bookmark pages, click the star in the address bar</p>
-          </div>
-        )}
     </>
   );
 

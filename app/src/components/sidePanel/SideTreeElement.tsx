@@ -1,7 +1,7 @@
 import { MouseEvent, useState } from "react";
 import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
 import { getPath } from "../getPath";
-import { SidePanelContextMenu } from "./SidePanelContextMenu";
+import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 
@@ -41,15 +41,19 @@ export function SideTreeElement(
     setContextMenuOpen(true);
   };
 
+  const lastPathItem = () => props.path[props.path.length - 1];
+
   const contextProps: ContextMenuProps = {
     thing: props.thing,
     position: position,
     closeCallback: () => setContextMenuOpen(false),
-    sortCallback: () => console.log('should use some context for this, it is too bothersome now')
+    sortCallback: () =>
+      console.log("should use some context for this, it is too bothersome now"),
   };
   return (
     <div
-      className="flex w-fit l-20 pt-2 justify-between overflow-auto min-h-50 flex-col bg-slate-700  rounded-r-md"
+      className={`flex w-fit l-20 pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
+        } overflow-auto min-h-50 flex-col bg-slate-700 rounded-r-md`}
       id={`${props.thing.id}-side-tree-container`}
     >
       <div
@@ -59,25 +63,26 @@ export function SideTreeElement(
         <button
           id={`${props.thing.id}-arrow`}
           onClick={(e) => setUnrolled(!unrolled)}
-          className={`${!isALeafNode && 'hidden'} hover:bg-slate-400 text-slate-50 text-xl mr-2 rounded-full`}
+          className={`${!isALeafNode && "hidden"
+            } hover:bg-slate-400 text-slate-50 text-xl mr-2 rounded-full`}
         >
-          {unrolled ? <p> &#709; </p> : <p> &#707; </p>}
+          {unrolled ? <p>&#709;</p> : <p>&#707;</p>}
         </button>
-        <p className={` text-slate-50 text-xl mr-2`} >
+        <p className={` text-slate-50 text-xl mr-2`}>
           {props.thing.children?.length}
         </p>
         <button
           onClick={handleClick}
           onContextMenu={(e) => handleContextMenu(e)}
           className="w-fit  text-left mr-2"
-          onDoubleClick={e => setUnrolled(!unrolled)}
+          onDoubleClick={(e) => setUnrolled(!unrolled)}
         >
           <p className="text-slate-50">{props.thing.title}</p>
         </button>
       </div>
       {contextMenuOpen &&
         (
-          <SidePanelContextMenu
+          <BookmarkContextMenu
             contextMenuProps={contextProps}
           />
         )}

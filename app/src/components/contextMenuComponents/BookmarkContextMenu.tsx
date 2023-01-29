@@ -1,15 +1,15 @@
 import { basicNodes } from "../../dataProcessing/basicNodes";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
+import { OpenAllSection } from "./OpenAllSection";
 import { EditDeleteSection } from "../EditDeleteSection";
-import { contextMenuButtonClass } from "../sidePanel/SidePanelContextMenu";
+import { contextMenuButtonClass } from "./contextMenuButtonClass";
 
-export function TableContextMenu(
+export function BookmarkContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;
-    setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
-    searchResults: boolean;
+    setRowsCallback?: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
+    searchResults?: boolean;
   },
 ): JSX.Element {
   const isProtected: boolean = basicNodes.includes(
@@ -17,6 +17,7 @@ export function TableContextMenu(
   );
 
   const handleShowInFolder = async (_e: any) => {
+    if (!props.setRowsCallback) return;
     const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
       .get(props.contextMenuProps.thing.parentId!);
     if (parent.length > 1) {
@@ -29,27 +30,37 @@ export function TableContextMenu(
 
   const sortable = isAFolder(props.contextMenuProps.thing) &&
     ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
+
   const position = props.contextMenuProps.position;
   return (
     <div
-      id="searchResultContextMenu"
+      id="sidePanelContextMenu"
+      className={`contextMenu z-50 w-50 border-1 text-l border-solid bg-slate-700 `}
       style={{
         position: "absolute",
         left: `${position[0]}px`,
         right: `${position[1]}px`,
-        zIndex: 20
       }}
-      className={`contextMenu text-l w-32 border-1 border-solid bg-slate-700 `}
+      onBlur={() => props.contextMenuProps.closeCallback()}
     >
+      <hr />
       <EditDeleteSection
         thing={props.contextMenuProps.thing}
         protected={isProtected}
       />
-      <div className="group2 flex w-32 flex-col align-middle">
-        <p className={contextMenuButtonClass}>Cut</p>
-        <p className={contextMenuButtonClass}>Copy</p>
-        <p className={contextMenuButtonClass}>Paste</p>
+      <hr />
+      <div className="group2 w-32 border-t-solid border-b-solid border-slate-200 m-2">
+        <button disabled={!isProtected} className={contextMenuButtonClass}>
+          <p>Cut</p>
+        </button>
+        <button disabled={!isProtected} className={contextMenuButtonClass}>
+          <p>Copy</p>
+        </button>
+        <button disabled={!isProtected} className={contextMenuButtonClass}>
+          <p>Paste</p>
+        </button>
       </div>
+      <hr />
       <div className="group-changing flex flex-col">
         <button className={`${!props.searchResults && 'hidden'} ${contextMenuButtonClass}`} onClick={handleShowInFolder} >
           <p>show in folder</p>
@@ -79,6 +90,6 @@ export function TableContextMenu(
 
       </div>
       <OpenAllSection thing={props.contextMenuProps.thing} />
-    </div >
+    </div>
   );
 }

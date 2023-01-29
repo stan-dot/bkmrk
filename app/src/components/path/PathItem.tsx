@@ -15,15 +15,16 @@ export function PathItem(
 ): JSX.Element {
   const [siblingsVisible, setSiblingsVisible] = useState(false);
   return (
-    <div className="flex justify-start text-slate-50 m-2 border-1 border-solid hover:border-slate-400 focus:shadow hover:bg-slate-200">
+    <div className="flex justify-start text-slate-50 m-1 z-20 border-1 border-solid hover:border-slate-400 focus:shadow hover:bg-slate-200">
       <button onClick={(v) => setSiblingsVisible(true)}
         onBlur={e => setSiblingsVisible(false)}
       >
         {"/"}
       </button>
+      {"  "}
       <div
         id="siblings"
-        className="bg-slate-800 text-slate-50 z-20"
+        className="bg-slate-800 text-slate-50 "
         style={{
           visibility: `${siblingsVisible ? "visible" : "hidden"}`,
           width: `${siblingsVisible ? "40" : "0"}`,

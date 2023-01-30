@@ -4,6 +4,7 @@ import { getPath } from "../getPath";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { codeBookmarkToUriList } from "../../utils/dragProcessing";
 
 /**
  * for side displaying FOLDERS ONLY
@@ -62,6 +63,16 @@ export function SideTreeElement(
             props.pathSetter(path);
           })
         }
+        onDragStart={e => {
+          const stringified: string = codeBookmarkToUriList([props.thing], true);
+          e.dataTransfer.setData("text/uri-list", stringified);
+          e.dataTransfer.setData("text/plain", codeBookmarkToUriList([props.thing], false));
+          // NOTE - the text/plain is a fallback if uri-list fails
+          // https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API/Recommended_drag_types#:~:text=As%20usual%2C%20set%20the%20text/plain%20type%20last%2C%20as%20a%20fallback%20for%20the%20text/uri%2Dlist%20type.
+          e.dataTransfer.dropEffect = "move";
+          console.log('dragging the side element', e);
+        }}
+        draggable
       >
         <div
           className="flex min-w-fit  min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"

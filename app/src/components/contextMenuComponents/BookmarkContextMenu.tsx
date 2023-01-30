@@ -66,28 +66,26 @@ export function BookmarkContextMenu(
           <p>show in folder</p>
         </button>
         <button
-          onClick={() =>
-            props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
-              key: "title",
-              reverse: false,
-            })}
+          // onClick={() =>
+          //   props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
+          //     key: "title",
+          //     reverse: false,
+          //   })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
           Sort A-Z
         </button>
         <button
-          onClick={() =>
-            props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
-              key: "date",
-              reverse: false,
-            })}
+          // onClick={() => props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
+          //     key: "date",
+          //     reverse: false,
+          //   })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
           Sort by date
         </button>
-
       </div>
       <OpenAllSection thing={props.contextMenuProps.thing} />
     </div>

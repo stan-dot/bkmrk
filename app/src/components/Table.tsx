@@ -14,7 +14,7 @@ enum MainDisplayStates {
   LOADING,
   LOADED,
   RESULT_EMPTY,
-  SEARCH_RESULT
+  SEARCH_RESULT,
 }
 
 export function TableLoader(props: {}): JSX.Element {
@@ -42,18 +42,23 @@ export function TableLoader(props: {}): JSX.Element {
       position: position,
       closeCallback: () => setMiniMenuVisible(false),
       sortCallback: () =>
-        console.log("should use some context for this, it is too bothersome now"),
-    }
+        console.log(
+          "should use some context for this, it is too bothersome now",
+        ),
+    };
   };
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
     setLoaded(MainDisplayStates.LOADED);
     setGlobalTree(root[0].children!);
-    const bookmarksBar = root[0].children![0];
+    const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
+      root[0].children![0];
     setRows(bookmarksBar.children ?? []);
     setCurrentPath([root[0], bookmarksBar]);
-  }
+  };
 
-  const lastPathItem = useCallback(() => currentPath[currentPath.length - 1], [currentPath]);
+  const lastPathItem = useCallback(() => currentPath[currentPath.length - 1], [
+    currentPath,
+  ]);
 
   if (!loaded) {
     /**
@@ -66,18 +71,22 @@ export function TableLoader(props: {}): JSX.Element {
       },
     );
   }
-  chrome.bookmarks.onChanged.addListener(
-    () => reloadWithNode(currentPath)
-  )
 
+  const deltaListener = (e: string): void => {
+    console.log("the bookmarks have changed...", e);
+    reloadWithNode(currentPath);
+  };
+  // todo here change for the definite update processing
+  chrome.bookmarks.onChanged.addListener(deltaListener);
+  chrome.bookmarks.onMoved.addListener(deltaListener);
+  chrome.bookmarks.onRemoved.addListener(deltaListener);
+  chrome.bookmarks.onImportEnded.addListener(() => reloadWithNode(currentPath));
 
   useEffect(() => {
-    setHistory(previousHistory => [...previousHistory, lastPathItem()])
+    setHistory((previousHistory) => [...previousHistory, lastPathItem()]);
 
-    return () => { }
-  }, [currentPath, lastPathItem])
-
-
+    return () => { };
+  }, [currentPath, lastPathItem]);
 
   // todo instructions how to sort given a node and props
   // boils down to deleting all children of a node,
@@ -85,7 +94,10 @@ export function TableLoader(props: {}): JSX.Element {
   // then pasting into the children,
   // then reloading the current path
 
-  const sortHandler = (node: chrome.bookmarks.BookmarkTreeNode, config: SortOptions) => {
+  const sortHandler = (
+    node: chrome.bookmarks.BookmarkTreeNode,
+    config: SortOptions,
+  ) => {
     if (node.children?.length === 0) return;
     const tmp: chrome.bookmarks.BookmarkTreeNode[] = node.children!;
     const sorted: chrome.bookmarks.BookmarkTreeNode[] = rowSorter(tmp, config);
@@ -97,8 +109,8 @@ export function TableLoader(props: {}): JSX.Element {
         url: v.url,
       };
       chrome.bookmarks.create(args);
-    })
-  }
+    });
+  };
 
   const pathChangeHandler = (
     nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
@@ -136,23 +148,22 @@ export function TableLoader(props: {}): JSX.Element {
     }
   };
 
-
   const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
     setRows(nodes);
-  }
+  };
 
   // const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
-      <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10" >
-        <div className="flex align-middle" id="brandingBit" >
+      <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
+        <div className="flex align-middle" id="brandingBit">
           <p className="text-2xl mt-2 ml-2 text-white">
-            &#128366;
-            BOOKasta
+            &#128366; BOOKasta
           </p>
         </div>
         <SearchField setDataCallback={dataCallback} />
-        <button id="history-button"
+        <button
+          id="history-button"
           className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600"
           onClick={() => setHistoryVisible(!historyVisible)}
           onBlur={() => setHistoryVisible(false)}
@@ -168,7 +179,8 @@ export function TableLoader(props: {}): JSX.Element {
       </nav>
       <hr />
 
-      <div className="fixed w-full h-12 top-16 bg-slate-700 flex-row justify-evenly border-1 border-solid border-slate-600"
+      <div
+        className="fixed w-full h-12 top-16 bg-slate-700 flex-row justify-evenly border-1 border-solid border-slate-600"
         onPaste={(e: React.ClipboardEvent<Element>) => {
           e.preventDefault();
           console.log(e);
@@ -184,13 +196,15 @@ export function TableLoader(props: {}): JSX.Element {
           pathChangeHandler={pathChangeHandler}
         />
       </div>
-      <div id="lowerPanel"
-
+      <div
+        id="lowerPanel"
         // onClick={e => {
         // e.preventDefault();
         // }}
 
-        className={`flex flex-grow h-full fixed top-28 w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && 'hidden'}`}>
+        className={`flex flex-grow h-full fixed top-28 w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && "hidden"
+          }`}
+      >
         <SideTree
           tree={globalTree}
           pathSetter={pathChangeHandler}
@@ -199,23 +213,27 @@ export function TableLoader(props: {}): JSX.Element {
         <div
           id="mainContainer"
           className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-          onClick={
-            (e) => {
-              e.preventDefault();
-              console.log('it was clicked on the outside');
-            }
-          }
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("it was clicked on the outside");
+          }}
         >
-          <div id="loadingStatus" style={{
-            visibility: `${loaded === MainDisplayStates.LOADING ? 'visible' : 'hidden'
-              }`
-          }} >
+          <div
+            id="loadingStatus"
+            style={{
+              visibility: `${loaded === MainDisplayStates.LOADING ? "visible" : "hidden"
+                }`,
+            }}
+          >
             <p>Loading...</p>
           </div>
-          <div id="emptyStatus" style={{
-            visibility: `${loaded === MainDisplayStates.RESULT_EMPTY ? 'visible' : 'hidden'
-              }`
-          }} >
+          <div
+            id="emptyStatus"
+            style={{
+              visibility: `${loaded === MainDisplayStates.RESULT_EMPTY ? "visible" : "hidden"
+                }`,
+            }}
+          >
             <p>To bookmark pages, click the star in the address bar</p>
           </div>
           <BookmarkTable
@@ -223,32 +241,37 @@ export function TableLoader(props: {}): JSX.Element {
             pathChangeHandler={pathChangeHandler}
             setRowsCallback={dataCallback}
             searchResultsMode={loaded === MainDisplayStates.SEARCH_RESULT}
+            path={currentPath}
           />
         </div>
-        <div id="rightPanel"
+        <div
+          id="rightPanel"
           className="bg-slate-700 w-44 z-10 rounded-md shadow"
-          style={{ visibility: `${historyVisible ? 'visible' : 'hidden'}` }}>
-          {history.length === 0 ?
-            <p>No history found</p>
-            :
-            history.map(b => {
-              console.log(b);
-              // return "some item"
-              return <p
+          style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
+        >
+          {history.length === 0 ? <p>No history found</p> : history.map((b) => {
+            console.log(b);
+            // return "some item"
+            return (
+              <p
                 style={{
                   // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
                 }}
               >
                 <p>nothing</p>
-                {/* <a href={b.url} className="link">
+                {
+                  /* <a href={b.url} className="link">
                   {b.title}
-                </a> */}
+                </a> */
+                }
               </p>
-            })}
+            );
+          })}
         </div>
       </div>
-      {miniMenuVisible && <MiniContextMenu contextMenuProps={getContextProps()} />}
+      {miniMenuVisible && (
+        <MiniContextMenu contextMenuProps={getContextProps()} />
+      )}
     </>
   );
-
 }

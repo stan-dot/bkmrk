@@ -16,5 +16,12 @@ export function OpenAllSection(props: { thing: chrome.bookmarks.BookmarkTreeNode
     <button onClick={e => openAllChildren(props.thing, { newWindow: true, incognito: true })} disabled={!hasChildrenLinks} className={contextMenuButtonClass}>
       <p>Open all &#40;{childrenLinks.length}&#41; in Incognito window</p>
     </button>
+    <button onClick={e => {
+      const index: number = Math.floor(Math.random() * childrenLinks.length);
+      chrome.tabs.create({ url: childrenLinks[index].url });
+
+    }} disabled={!hasChildrenLinks} className={contextMenuButtonClass}>
+      <p>Open 1 random from &#40;{childrenLinks.length}&#41; selected</p>
+    </button>
   </div>
 }

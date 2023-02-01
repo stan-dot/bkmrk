@@ -6,12 +6,7 @@ import { printCsv } from "../../utils/ioOperations";
 
 const linkClass = "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
 
-enum OpenMenuStates {
-  IMPORT,
-  EXPORT,
-  NEW_FOLDER,
-  NEW_BOOKMARK,
-}
+type OpenMenuStates = "IMPORT" | "EXPORT" | "NEW_FOLDER" | "NEW_BOOKMARK";
 
 export function CornerMenu(
   props: {
@@ -21,7 +16,7 @@ export function CornerMenu(
   },
 ): JSX.Element {
   const [showMenu, setShowMenu] = useState(false);
-  const [openVariant, setOpenVariant] = useState(OpenMenuStates.NEW_BOOKMARK);
+  const [openVariant, setOpenVariant] = useState<OpenMenuStates>("NEW_BOOKMARK");
 
   // todo there should be dialog popups for the new bookmark and new folder
   return (
@@ -61,7 +56,7 @@ export function CornerMenu(
           <hr />
           <li>
             <button className={linkClass}
-              onClick={(v) => setOpenVariant(OpenMenuStates.IMPORT)}
+              onClick={(v) => setOpenVariant("IMPORT")}
             >
               Import bookmarks
             </button>
@@ -93,12 +88,12 @@ export function CornerMenu(
         </ul>
       </div>
       {
-        openVariant === OpenMenuStates.IMPORT && (
+        openVariant === "IMPORT" && (
           <BookmarkImportWindow callback={props.importCallback} />
         )
       }
-      {openVariant === OpenMenuStates.NEW_BOOKMARK && <NewBookmarkWindow />}
-      {openVariant === OpenMenuStates.NEW_FOLDER && <NewFolderWindow />}
+      {openVariant === "NEW_BOOKMARK" && <NewBookmarkWindow />}
+      {openVariant === "NEW_FOLDER" && <NewFolderWindow />}
     </div >
   );
 }

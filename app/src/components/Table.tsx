@@ -11,15 +11,11 @@ import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
 // todo this might be better in some all-accessible context
-enum MainDisplayStates {
-  LOADING,
-  LOADED,
-  RESULT_EMPTY,
-  SEARCH_RESULT,
-}
+type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
+
 
 export function TableLoader(props: {}): JSX.Element {
-  const [loaded, setLoaded] = useState(MainDisplayStates.LOADING);
+  const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
   const [globalTree, setGlobalTree] = useState(
     [] as chrome.bookmarks.BookmarkTreeNode[],
@@ -49,7 +45,7 @@ export function TableLoader(props: {}): JSX.Element {
     };
   };
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-    setLoaded(MainDisplayStates.LOADED);
+    setLoaded("LOADED");
     setGlobalTree(root[0].children!);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
       root[0].children![0];
@@ -140,7 +136,7 @@ export function TableLoader(props: {}): JSX.Element {
             console.log("changing rows");
             setRows(children);
           } else {
-            setLoaded(MainDisplayStates.RESULT_EMPTY);
+            setLoaded("RESULT_EMPTY");
           }
         },
       );
@@ -212,7 +208,7 @@ export function TableLoader(props: {}): JSX.Element {
         // e.preventDefault();
         // }}
 
-        className={`flex flex-grow h-full fixed top-28 w-full  bg-slate-800 ${loaded !== MainDisplayStates.LOADED && "hidden"
+        className={`flex flex-grow h-full fixed top-28 w-full  bg-slate-800 ${loaded !== "LOADED" && "hidden"
           }`}
       >
         <SideTree
@@ -232,8 +228,7 @@ export function TableLoader(props: {}): JSX.Element {
           <div
             id="loadingStatus"
             style={{
-              visibility: `${loaded === MainDisplayStates.LOADING ? "visible" : "hidden"
-                }`,
+              visibility: `${loaded === "LOADING" ? "visible" : "hidden"}`,
             }}
           >
             <p>Loading...</p>
@@ -241,8 +236,7 @@ export function TableLoader(props: {}): JSX.Element {
           <div
             id="emptyStatus"
             style={{
-              visibility: `${loaded === MainDisplayStates.RESULT_EMPTY ? "visible" : "hidden"
-                }`,
+              visibility: `${loaded === "RESULT_EMPTY" ? "visible" : "hidden"}`,
             }}
           >
             <p>To bookmark pages, click the star in the address bar</p>
@@ -251,7 +245,7 @@ export function TableLoader(props: {}): JSX.Element {
             rows={rows}
             pathChangeHandler={pathChangeHandler}
             setRowsCallback={dataCallback}
-            searchResultsMode={loaded === MainDisplayStates.SEARCH_RESULT}
+            searchResultsMode={loaded === "SEARCH_RESULT"}
             path={currentPath}
           />
         </div>

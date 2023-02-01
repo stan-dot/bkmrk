@@ -1,9 +1,8 @@
 import { FormEvent, useState } from "react";
 import { CancelSaveGroup } from "./CancelSaveGroup";
-import { RenameGroup } from "./RenameGroup";
 import { UrlEditGroup } from "./UrlEditGroup";
 
-type EditAlertProps = {
+type RenameFolderAlertProps = {
   submitCallback: (data: chrome.bookmarks.BookmarkChangesArg) => void;
   closeCallback: () => void;
   visible: boolean
@@ -11,11 +10,11 @@ type EditAlertProps = {
 
 const initialData: chrome.bookmarks.BookmarkChangesArg = {
   title: "",
-  url: "",
 };
 
-export default function EditAlert(
-  { submitCallback, closeCallback, visible }: EditAlertProps,
+
+export default function RenameFolderAlert(
+  { submitCallback, closeCallback, visible }: RenameFolderAlertProps,
 ) {
   const [data, setData] = useState(initialData);
   const onSubmit = (e: FormEvent) => {
@@ -34,8 +33,8 @@ export default function EditAlert(
       z-60 inset-0 border-solid border-gray-500 h-60 w-96  bg-slate-800 overflow-y-auto rounded  " id="editAlertForm" onSubmit={onSubmit}
       // onBlur={closeCallback}
       >
-        <h2 id="title" className="text-xl text-slate-50 m-4">Edit bookmark</h2>
-        <RenameGroup dataCallback={setData} />
+        <h2 id="title" className="text-xl text-slate-50 m-4">Rename folder</h2>
+
         <UrlEditGroup dataCallback={setData} />
         <CancelSaveGroup closeCallback={closeCallback} />
       </form>

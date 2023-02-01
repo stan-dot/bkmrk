@@ -153,7 +153,6 @@ export function TableLoader(props: {}): JSX.Element {
     setRows(nodes);
   };
 
-  // const [sideTreeWidth, setSideTreeWidth] = useState(240);
   return (
     <>
       <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
@@ -181,11 +180,7 @@ export function TableLoader(props: {}): JSX.Element {
         >
           &#128276; Notifications
         </button>
-        <EditAlert submitCallback={function (data: chrome.bookmarks.BookmarkChangesArg): void {
-          throw new Error("Function not implemented.");
-        }} closeCallback={function (): void {
-          throw new Error("Function not implemented.");
-        }} visible={true} />
+
         <CornerMenu
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}

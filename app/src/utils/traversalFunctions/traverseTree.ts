@@ -1,33 +1,41 @@
-// todo also callback on each if not final
-// maybe a separate increase callback?
 
-type TraverseOptions = {
-  callbackOnEachLeaf?: (node: chrome.bookmarks.BookmarkTreeNode) => void;
-  callbackOnEachNode?: (node: chrome.bookmarks.BookmarkTreeNode) => void;
+export type TraverseArgs = {
+  callbackOnEachLeaf?: (
+    node: chrome.bookmarks.BookmarkTreeNode,
+  ) => void | ((node: chrome.bookmarks.BookmarkTreeNode) => Promise<void>);
+  callbackOnEachNode?: (
+    node: chrome.bookmarks.BookmarkTreeNode,
+  ) => void | ((node: chrome.bookmarks.BookmarkTreeNode) => Promise<void>);
   callbackOnNumber?: (n: number) => void;
 };
 
-export function traverseTree(
-  root: chrome.bookmarks.BookmarkTreeNode,
-  options: TraverseOptions,
-): void {
-  
+export async function traverseTree(
+  args: TraverseArgs,
+  root?: chrome.bookmarks.BookmarkTreeNode,
+): Promise<void> {
+  if (root === undefined) {
+    globalTraverse(args);
+    return;
+  }
+  const children: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
+    .getChildren(root.id);
 
+  if (children.length === 0) {
+    args.callbackOnEachNode && args.callbackOnEachNode(root);
+    args.callbackOnEachLeaf && args.callbackOnEachLeaf(root);
+    args.callbackOnNumber && args.callbackOnNumber(1);
+  }
+
+  children.forEach((node) => {
+    args.callbackOnEachNode && args.callbackOnEachNode!(node);
+    args.callbackOnNumber && args.callbackOnNumber(1);
+  });
 }
 
-function createBookmarkNodes(
-  parentid: string,
-  bookmarks: chrome.bookmarks.BookmarkTreeNode[],
-) {
-  bookmarks.forEach(function (bm) {
-    chrome.bookmarks.create({
-      parentId: parentid,
-      title: bm.title,
-      url: bm.url,
-    }, function (result) {
-      if (bm.submenu && bm.submenu.length > 0) {
-        createBookmarkNodes(result.id, bm.submenu);
-      }
-    });
+async function globalTraverse(args: TraverseArgs): Promise<void> {
+  const root: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
+    .getTree();
+  root.forEach((folder) => {
+    traverseTree( args, folder);
   });
 }

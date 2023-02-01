@@ -1,39 +1,28 @@
-// todo consider refactoring to have all traversals use one traverse function, with a callback parameter
+import { TraverseArgs, traverseTree } from "./traverseTree";
+
+type CopyData = {
+  sameTitles: chrome.bookmarks.BookmarkTreeNode[][],
+  sameUrls: chrome.bookmarks.BookmarkTreeNode[][],
+  sameBoth: chrome.bookmarks.BookmarkTreeNode[][],
+}
 
 
+export async function getCopies(): Promise<number> {
+  const uniqueUrlsSet = new Set();
+  const addToCopiesCallback = (node: chrome.bookmarks.BookmarkTreeNode) => {
+    const url = node.url;
+    // todo complete this
+  };
 
-/**
- * returns a list of usuaully pairs, but can be more copies
- */
-export async function getCopies(): Promise<chrome.bookmarks.BookmarkTreeNode[]>{
+  let count = 0;
 
-  let count = 0
-  chrome.bookmarks.getTree((results:chrome.bookmarks.BookmarkTreeNode[]) => {
-    count = results.reduce(async (prev, current) => (await deleteAllInSubtree(current)) + prev, 0);
-  })
+  const countCallback = (n: number) => count += n;
+  const args: TraverseArgs = {
+    //@ts-ignore line because it's union type of 2 functions, should be fine
+    callbackOnEachNode: addToCopiesCallback,
+  };
+  await traverseTree(args)
   return count;
-
-
-  return [];
-
 }
 
 
-
-export async function deleteAllEmpty():Promise<number> {
-  let count = 0
-  chrome.bookmarks.getTree((results:chrome.bookmarks.BookmarkTreeNode[]) => {
-    count = results.reduce(async (prev, current) => (await deleteAllInSubtree(current)) + prev, 0);
-  })
-  return count;
-
-}
-
-async function deleteAllInSubtree(treeRoot: chrome.bookmarks.BookmarkTreeNode): Promise<number>{
-  const children: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks.getChildren(treeRoot.id);
-  if (children.length === 0) {
-    chrome.bookmarks.remove(treeRoot.id);
-    return 1;
-  }
-return children.reduce(async (prev, current) => await deleteAllInSubtree(current) + prev, 0);
-}

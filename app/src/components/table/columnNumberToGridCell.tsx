@@ -3,15 +3,14 @@ import {
   TextCell,
   UriCell
 } from "@glideapps/glide-data-grid";
+import { ButtonCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/button-cell";
+import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-cell";
 
-function getFaviconUrl(url?: string): string {
-  if (url) return `chrome://favicon/${url}`;
-  return "chrome://bookmarks/images/folder_open.svg";
-}
+type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell;
 
 type ComprehensiveColDef = {
   static: GridColumn;
-  columnGetter: (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell;
+  columnGetter: CellGetter;
 };
 
 function getDisplayDate(d: Date): string {
@@ -20,14 +19,6 @@ function getDisplayDate(d: Date): string {
   return `${day} ${hour}`;
 }
 
-function getImageCell(v: chrome.bookmarks.BookmarkTreeNode): UriCell {
-  const cell: UriCell = {
-    kind: GridCellKind.Uri,
-    data: getFaviconUrl(v.url ?? undefined),
-    allowOverlay: false,
-  };
-  return cell;
-}
 
 const ErrorCell: TextCell = {
   kind: GridCellKind.Text,
@@ -37,12 +28,6 @@ const ErrorCell: TextCell = {
 };
 
 const myCols: ComprehensiveColDef[] = [
-  // {
-  //   static: { title: "Icon", width: 50 },
-  //   columnGetter: (v) => {
-  //     return getImageCell(v);
-  //   },
-  // },
   {
     static: { title: "Date Added", width: 130 },
     columnGetter: (v) => {
@@ -61,15 +46,36 @@ const myCols: ComprehensiveColDef[] = [
     static: { title: "URL", width: 250 },
     columnGetter: (v) => {
       if (v === undefined) return ErrorCell;
-      const display: string = v.url ?? v.children?.length.toString() ??
-        "folder";
-      const cell: TextCell = {
-        kind: GridCellKind.Text,
-        data: v.url ? v.url : "",
-        allowOverlay: false,
-        displayData: display,
+      const isRealLink = v.url !== undefined;
+      const display: string = (isRealLink ? v.url : v.children?.length.toString()) ?? 'folder';
+
+      const d: LinksCell = {
+        kind: GridCellKind.Custom,
+        allowOverlay: true,
+        copyData: "4",
+        data: {
+          kind: "links-cell",
+          underlineOffset: 6,
+          links: [
+            {
+              title: display,
+              href: isRealLink ? display : undefined,
+              onClick: () => {
+                console.log(' if want to do soemthing else')
+                // if (isRealLink) window.open(display);
+                // alert("Click 1");
+                // todo should redirect to the children
+              },
+            },
+            // {
+            //   title: "Click the linky dinky",
+            //   onClick: () => alert("Click 2"),
+            // },
+          ],
+        },
       };
-      return cell;
+
+      return d;
     },
   },
   {
@@ -84,26 +90,39 @@ const myCols: ComprehensiveColDef[] = [
       return cell;
     },
   },
-  // {
-  //   static: { title: "", width: 50},
-  //   columnGetter: (v) => {
-  //     const cell: GridCell = {
-  //       kind: GridCellKind.Text,
-  //       data: "&#8942;",
-  //       allowOverlay: false,
-  //       displayData: "&#8942;",
-  //     };
-  //     return cell;
-  //   },
-  // },
+  {
+    static: { title: "", width: 50 },
+    columnGetter: (v) => {
+      const d: ButtonCell = {
+        kind: GridCellKind.Custom,
+        cursor: "pointer",
+        allowOverlay: true,
+        copyData: "4",
+        readonly: true,
+        data: {
+          kind: "button-cell",
+          backgroundColor: ["transparent", "#6572ffee"],
+          color: ["accentColor", "accentFg"],
+          borderColor: "#6572ffa0",
+          borderRadius: 9,
+          title: "View Details",
+          onClick: () => {
+            window.alert("Button clicked");
+            console.log('should show context here')
+          },
+        },
+        themeOverride: {
+          baseFontStyle: "700 12px",
+        },
+      };
+      return d;
+    },
+  },
 ];
 
-const arr: [number, (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell][] = myCols.map((v, i) => [i, v.columnGetter])
 
-export const columnNumberToGridCell: Map<
-  number,
-  (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell
-> = new Map(arr);
+export const columnNumberToGridCell: Map<number, CellGetter> = new Map(myCols.map((v, i) => [i, v.columnGetter]));
+
 export const DEFAULT_GRID_CELL: LoadingCell = {
   kind: GridCellKind.Loading,
   allowOverlay: false,

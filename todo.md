@@ -2,7 +2,10 @@
 
 ### MVP
 - [ ] working paste and copy
-- [ ] 
+- [ ] add table context menu not only on left click, but also button - need to simplify the getData and column creation utilities
+
+
+
 
 
 https://www.w3schools.com/html/html5_draganddrop.asp
@@ -15,7 +18,6 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 
 ### refactor
-
 
 - [ ] solve the recursive refactor of subtree
 

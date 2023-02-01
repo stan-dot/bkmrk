@@ -1,5 +1,6 @@
 import DataEditor, {
   CellClickedEventArgs,
+  GridColumnIcon,
   GridDragEventArgs,
   Item,
 } from "@glideapps/glide-data-grid";
@@ -14,6 +15,8 @@ import {
   readRawTextAsBookmarks,
   unpackBookmarks,
 } from "../../utils/dragProcessing";
+
+import { useExtraCells } from "@glideapps/glide-data-grid-cells";
 
 export function BookmarkTable(
   props: {
@@ -146,7 +149,13 @@ export function BookmarkTable(
         columns={columns}
         getCellContent={getData(props.rows)}
         isDraggable="cell"
-        keybindings={{ "search": true }}
+        keybindings={{
+          search: true,
+          selectAll: true,
+          selectRow: true,
+          copy: true,
+          paste: true,
+        }}
         onCellClicked={tableClickHandler}
         onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
           event.preventDefault();
@@ -160,7 +169,6 @@ export function BookmarkTable(
         rows={props.rows.length}
         showSearch={searchVisibility}
         theme={{ accentColor: "#CF9FFF" }}
-        onPaste={false}
       />
     </div>
   );

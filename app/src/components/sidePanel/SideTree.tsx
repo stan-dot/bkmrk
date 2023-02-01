@@ -6,6 +6,7 @@ export function SideTree(
     tree: chrome.bookmarks.BookmarkTreeNode[];
     pathSetter: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
     path: chrome.bookmarks.BookmarkTreeNode[];
+    dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
   },
 ): JSX.Element {
   return (
@@ -15,6 +16,7 @@ export function SideTree(
         nodes={props.tree}
         pathSetter={props.pathSetter}
         path={props.tree}
+        setRowsCallback={props.dataCallback}
       />
     </div>
   );

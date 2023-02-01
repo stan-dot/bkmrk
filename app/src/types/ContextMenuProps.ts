@@ -1,4 +1,4 @@
-import { SortOptions } from "../utils/rowSorter";
+import { SortOptions } from "../utils/sortRows";
 
 export type ContextMenuProps = {
     thing: chrome.bookmarks.BookmarkTreeNode;

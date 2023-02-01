@@ -10,7 +10,7 @@ const DEFAULT_SORT_OPTIONS: SortOptions = {
   reverse: false,
 };
 
-export function rowSorter(
+export function sortRows(
   rows: chrome.bookmarks.BookmarkTreeNode[],
   sortOptions?: SortOptions,
 ): chrome.bookmarks.BookmarkTreeNode[] {

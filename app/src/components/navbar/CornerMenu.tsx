@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { makeBookmark, makeFolder } from "../../dataProcessing/interact";
 import { exportBookmarks } from "../../io/exportBookmarks";
 import { BookmarkImportWindow } from "../../io/importBookmarks";
-import { printCsv } from "../../utils/printCsv";
+import { printCsv } from "../../utils/ioOperations";
 
 const linkClass = "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
 

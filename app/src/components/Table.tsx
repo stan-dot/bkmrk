@@ -1,7 +1,7 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { ContextMenuProps } from "../types/ContextMenuProps";
-import { rowSorter, SortOptions } from "../utils/rowSorter";
+import { sortRows, SortOptions } from "../utils/sortRows";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -100,7 +100,7 @@ export function TableLoader(props: {}): JSX.Element {
   ) => {
     if (node.children?.length === 0) return;
     const tmp: chrome.bookmarks.BookmarkTreeNode[] = node.children!;
-    const sorted: chrome.bookmarks.BookmarkTreeNode[] = rowSorter(tmp, config);
+    const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(tmp, config);
     sorted.forEach((v, i) => {
       const args: chrome.bookmarks.BookmarkCreateArg = {
         parentId: v.parentId,
@@ -209,6 +209,7 @@ export function TableLoader(props: {}): JSX.Element {
           tree={globalTree}
           pathSetter={pathChangeHandler}
           path={currentPath}
+          dataCallback={dataCallback}
         />
         <div
           id="mainContainer"

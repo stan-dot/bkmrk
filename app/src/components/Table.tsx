@@ -1,9 +1,7 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { ContextMenuProps } from "../types/ContextMenuProps";
-import { sortRows, SortOptions } from "../utils/sortRows";
-import EditAlert from "./alerts/EditAlert";
-import OpenSelectedAlert from "./alerts/OpenSelected";
+import { SortOptions, sortRows } from "../utils/sortRows";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -11,9 +9,14 @@ import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-// todo this might be better in some all-accessible context
-type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
+// essentialy, we read each location, that is PATH as a different ID.
+// that's where they store the bookmark. here perhaps need to store ids as a path
+// that would be dynamic nested routing, not sure how to do that
+// but it's used for history https://stackoverflow.com/questions/25806608/how-to-detect-browser-back-button-event-cross-browser
+// and can go back. so in the end no react router, maybe. will need to think about this
+// but that is not main functionality tbf, might skip that
 
+type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
 
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");

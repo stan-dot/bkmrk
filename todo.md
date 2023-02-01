@@ -17,6 +17,13 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [ ]  add proper menus on context
 
 
+- [ ] automatic addition of a ;source website column', sortable
+
+
+### maybe
+- [ ] a tags column
+
+
 ### refactor
 
 - [ ] solve the recursive refactor of subtree

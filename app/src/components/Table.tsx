@@ -68,6 +68,7 @@ export function TableLoader(props: {}): JSX.Element {
      */
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+        console.log('loaded!');
         reloadWithNode(root);
       },
     );
@@ -164,7 +165,7 @@ export function TableLoader(props: {}): JSX.Element {
         <SearchField setDataCallback={dataCallback} />
         <button
           id="history-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600 cursor-pointer"
           onClick={() => setHistoryVisible(!historyVisible)}
           onBlur={() => setHistoryVisible(false)}
           disabled
@@ -173,14 +174,13 @@ export function TableLoader(props: {}): JSX.Element {
         </button>
         <button
           id="notifications-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600 cursor-pointer"
           onClick={() => console.log(' activated notifications button')}
           onBlur={() => console.log(' lost focus on notifications button')}
           disabled
         >
           &#128276; Notifications
         </button>
-
         <CornerMenu
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
@@ -211,9 +211,9 @@ export function TableLoader(props: {}): JSX.Element {
         // onClick={e => {
         // e.preventDefault();
         // }}
+        style={{ visibility: loaded === "LOADED" ? "hidden" : "visible" }}
 
-        className={`flex flex-grow h-full fixed top-28 w-full  bg-slate-800 ${loaded !== "LOADED" && "hidden"
-          }`}
+        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
       >
         <SideTree
           tree={globalTree}

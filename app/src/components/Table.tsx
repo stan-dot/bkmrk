@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { ContextMenuProps } from "../types/ContextMenuProps";
 import { sortRows, SortOptions } from "../utils/sortRows";
 import EditAlert from "./alerts/EditAlert";
+import OpenSelectedAlert from "./alerts/OpenSelected";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";

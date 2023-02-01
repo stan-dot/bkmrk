@@ -10,19 +10,20 @@ export function EditDeleteSection(
     <div className="group1 flex flex-col">
       <button
         disabled={props.protected}
-        onClick={(e) => setEditOpen(true)}
+        onClick={(e) => {
+          console.log('clicked the edit button, opening the edit menu');
+          setEditOpen(true);
+        }}
         className={contextMenuButtonClass}
       >
         <p>Edit</p>
       </button>
-      {editOpen &&
-        (
-          <EditAlert
-            submitCallback={(data) =>
-              chrome.bookmarks.update(props.thing.id, data)}
-            closeCallback={() => setEditOpen(false)}
-          />
-        )}
+      <EditAlert
+        submitCallback={(data) =>
+          chrome.bookmarks.update(props.thing.id, data)}
+        closeCallback={() => setEditOpen(false)}
+        visible={editOpen}
+      />
       <button
         disabled={props.protected}
         onClick={(e) => {

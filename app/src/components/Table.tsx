@@ -2,6 +2,7 @@ import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { ContextMenuProps } from "../types/ContextMenuProps";
 import { sortRows, SortOptions } from "../utils/sortRows";
+import EditAlert from "./alerts/EditAlert";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
@@ -171,6 +172,20 @@ export function TableLoader(props: {}): JSX.Element {
         >
           &#11186; History
         </button>
+        <button
+          id="notifications-button"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600"
+          onClick={() => console.log(' activated notifications button')}
+          onBlur={() => console.log(' lost focus on notifications button')}
+          disabled
+        >
+          &#128276; Notifications
+        </button>
+        <EditAlert submitCallback={function (data: chrome.bookmarks.BookmarkChangesArg): void {
+          throw new Error("Function not implemented.");
+        }} closeCallback={function (): void {
+          throw new Error("Function not implemented.");
+        }} visible={true} />
         <CornerMenu
           sortCallback={() => console.log("should sort current location")}
           importCallback={() => console.log("should load the datastructure")}
@@ -270,9 +285,11 @@ export function TableLoader(props: {}): JSX.Element {
           })}
         </div>
       </div>
-      {miniMenuVisible && (
-        <MiniContextMenu contextMenuProps={getContextProps()} />
-      )}
+      {
+        miniMenuVisible && (
+          <MiniContextMenu contextMenuProps={getContextProps()} />
+        )
+      }
     </>
   );
 }

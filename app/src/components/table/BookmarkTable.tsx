@@ -111,7 +111,7 @@ export function BookmarkTable(
   return (
     <div
       onClick={contextClickHandler}
-      className="table-container flex flex-grow pb-4 mb-4 "
+      className="table-container flex flex-grow pb-4 mb-40 "
       onDragOver={(e) => {
         e.preventDefault();
         e.dataTransfer.dropEffect = "move";

@@ -14,7 +14,7 @@ export function EditDeleteSection(
           console.log('clicked the edit button, opening the edit menu');
           setEditOpen(true);
         }}
-        className={contextMenuButtonClass}
+        className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
       >
         <p>Edit</p>
       </button>
@@ -29,7 +29,7 @@ export function EditDeleteSection(
         onClick={(e) => {
           chrome.bookmarks.remove(props.thing.id);
         }}
-        className={contextMenuButtonClass}
+        className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
       >
         <p>Delete</p>
       </button>

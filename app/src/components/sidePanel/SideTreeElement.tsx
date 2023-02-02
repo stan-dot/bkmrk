@@ -63,6 +63,7 @@ export function SideTreeElement(
             props.pathSetter(path);
           })
         }
+        style={{ border: lastPathItem() === props.thing ? '1rem solid red' : 'none' }}
         onContextMenu={e => handleContextMenu(e)}
         onDragStart={e => {
           const stringified: string = codeBookmarkToUriList([props.thing], true);

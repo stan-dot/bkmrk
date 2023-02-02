@@ -4,6 +4,8 @@ import { exportBookmarks } from "../../io/exportBookmarks";
 import { BookmarkImportWindow } from "../../io/importBookmarks";
 import { printCsv } from "../../utils/ioOperations";
 import { SortOptions } from "../../utils/sortRows";
+import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
+import { getCopies } from "../../utils/traversalFunctions/getCopies";
 
 const linkClass =
   "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
@@ -108,11 +110,23 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) => console.log("should open some setting page?")}
+              onClick={(v) => deleteAllEmpty()}
             >
-              &#9881; Settings
+              &#128465; Delete empty folders
             </button>
           </li>
+          <li>
+            <button
+              className={linkClass}
+              onClick={(v) => {
+                const copiesNumber = getCopies();
+                console.log(copiesNumber);
+              }}
+            >
+              &#129694; Delete duplicates
+            </button>
+          </li>
+          <hr />
           <li>
             <a className={linkClass} href="https://github.com/stan-dot/bkmrk">
               <span id="help-question-mark" className="text-l">?</span>{" "}

@@ -58,7 +58,7 @@ export function BookmarkContextMenu(
         protected={isProtected}
       />
       <hr />
-      <div className="group2 w-32 border-t-solid border-b-solid border-slate-200 m-2">
+      <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2">
         <button disabled={!isProtected} className={contextMenuButtonClass}>
           <p>Cut</p>
         </button>

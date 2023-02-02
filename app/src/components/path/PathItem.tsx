@@ -23,7 +23,7 @@ export function PathItem(
       </button>
       <div
         id="siblings"
-        className="bg-slate-700 z-20 overflow-visible min-h-fit mb-4 text-slate-50 "
+        className="bg-slate-700 z-20 h-40 overflow-visible min-h-fit mb-2 text-slate-50 "
         style={{
           visibility: `${siblingsVisible ? "visible" : "hidden"}`,
           width: `${siblingsVisible ? 40 : 0}`,

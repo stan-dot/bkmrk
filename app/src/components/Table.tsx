@@ -49,6 +49,7 @@ export function TableLoader(props: {}): JSX.Element {
     };
   };
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+    console.log('realoded with node')
     setLoaded("LOADED");
     setGlobalTree(root[0].children!);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
@@ -61,11 +62,12 @@ export function TableLoader(props: {}): JSX.Element {
     currentPath,
   ]);
 
-  if (!loaded) {
+  if (loaded === "LOADING") {
     /**
      * NOTE: the getTree method returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarks.
      * these only show up if not empty
      */
+    console.log('loading the bookmarks tree')
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
         console.log('loaded!');
@@ -165,7 +167,7 @@ export function TableLoader(props: {}): JSX.Element {
         <SearchField setDataCallback={dataCallback} />
         <button
           id="history-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600 cursor-pointer"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
           onClick={() => setHistoryVisible(!historyVisible)}
           onBlur={() => setHistoryVisible(false)}
           disabled
@@ -174,7 +176,7 @@ export function TableLoader(props: {}): JSX.Element {
         </button>
         <button
           id="notifications-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-2xl p-4 text-center border-red-600 cursor-pointer"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
           onClick={() => console.log(' activated notifications button')}
           onBlur={() => console.log(' lost focus on notifications button')}
           disabled
@@ -190,7 +192,7 @@ export function TableLoader(props: {}): JSX.Element {
       <hr />
 
       <div
-        className="fixed w-full h-12 top-16 bg-slate-700 flex-row justify-evenly border-1 border-solid border-slate-600"
+        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
         onPaste={(e: React.ClipboardEvent<Element>) => {
           e.preventDefault();
           console.log(e);
@@ -205,14 +207,28 @@ export function TableLoader(props: {}): JSX.Element {
           path={currentPath}
           pathChangeHandler={pathChangeHandler}
         />
+        <div id="loadingStatus"
+          className="text-slate-50"
+          style={{
+            visibility: `${loaded === "LOADING" ? "visible" : "hidden"}`,
+          }}
+        >
+          <p>Loading...</p>
+        </div>
+        <div id="emptyStatus"
+          className="text-slate-50"
+          style={{
+            visibility: `${loaded === "RESULT_EMPTY" ? "visible" : "hidden"}`,
+          }}
+        >
+          <p>To bookmark pages, click the star in the address bar</p>
+        </div>
       </div>
-      <div
-        id="lowerPanel"
+      <div id="lowerPanel"
         // onClick={e => {
         // e.preventDefault();
         // }}
         style={{ visibility: loaded === "LOADED" ? "hidden" : "visible" }}
-
         className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
       >
         <SideTree
@@ -221,30 +237,14 @@ export function TableLoader(props: {}): JSX.Element {
           path={currentPath}
           dataCallback={dataCallback}
         />
-        <div
-          id="mainContainer"
+        <div id="mainContainer"
           className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
           onClick={(e) => {
             e.preventDefault();
             console.log("it was clicked on the outside");
           }}
         >
-          <div
-            id="loadingStatus"
-            style={{
-              visibility: `${loaded === "LOADING" ? "visible" : "hidden"}`,
-            }}
-          >
-            <p>Loading...</p>
-          </div>
-          <div
-            id="emptyStatus"
-            style={{
-              visibility: `${loaded === "RESULT_EMPTY" ? "visible" : "hidden"}`,
-            }}
-          >
-            <p>To bookmark pages, click the star in the address bar</p>
-          </div>
+
           <BookmarkTable
             rows={rows}
             pathChangeHandler={pathChangeHandler}
@@ -259,7 +259,7 @@ export function TableLoader(props: {}): JSX.Element {
           style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
         >
           {history.length === 0 ? <p>No history found</p> : history.map((b) => {
-            console.log(b);
+            console.log('history: ', b);
             // return "some item"
             return (
               <p
@@ -278,11 +278,7 @@ export function TableLoader(props: {}): JSX.Element {
           })}
         </div>
       </div>
-      {
-        miniMenuVisible && (
-          <MiniContextMenu contextMenuProps={getContextProps()} />
-        )
-      }
+      <MiniContextMenu contextMenuProps={getContextProps()} visible={miniMenuVisible} />
     </>
   );
 }

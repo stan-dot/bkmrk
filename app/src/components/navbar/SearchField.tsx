@@ -47,7 +47,7 @@ export function SearchField(props: {
           &#128269;
         </button>
         <input
-          className="search-field-input h-4/6 lg:w-[300px] outline-none text-left bg-slate-800 border-none text-sm p-4 text-slate-50 rounded-r-full "
+          className="search-field-input h-4/6 lg:w-[300px] outline-none text-left bg-slate-800 border-none text-sm pb-6 text-slate-50 rounded-r-full "
           onChange={onChangeHandler}
           onKeyDown={onEnterHandler}
           onBlur={onBlurHandler}

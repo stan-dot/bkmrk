@@ -16,7 +16,7 @@ export function BookmarkContextMenu(
     props.contextMenuProps.thing.title,
   );
 
-  const handleShowInFolder = async (_e: any) => {
+  const handleShowInFolder = async (_e: React.MouseEvent<HTMLButtonElement>) => {
     if (!props.setRowsCallback) return;
     const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
       .get(props.contextMenuProps.thing.parentId!);

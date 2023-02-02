@@ -1,44 +1,44 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 
 export function SearchField(props: {
-  setDataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
+  setDataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }) {
   const [value, setValue] = useState("");
   const [iconHighlight, setIconHighlight] = useState(false);
 
-  const onChangeHandler = (event: { target: { value: any; }; }) => {
+  const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
     setIconHighlight(true);
   };
 
-  const onEnterHandler = async (event: any) => {
-    const isEnterPressed = event.which === 13
-      || event.keyCode === 13;
-    if (isEnterPressed) {
-      await runSearch();
-    };
-  }
-
-  const onSearchClickHandler = async () => {
-    await runSearch();
+  const onEnterHandler = async (
+    event: React.KeyboardEvent<HTMLInputElement>,
+  ) => {
+    if (event.key === "enter") await runSearch();
   };
 
-  const onBlurHandler = (event: { target: { value: any; }; }) => {
+  const onSearchClickHandler = async () => await runSearch();
+
+  const onBlurHandler = (event: React.FocusEvent<HTMLInputElement>) => {
     setIconHighlight(false);
   };
 
   const isEmpty = value.length === 0;
 
   async function runSearch() {
-    const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks.search(value);
+    const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome
+      .bookmarks.search(value);
     props.setDataCallback(searchResults);
   }
 
   return (
-    <div className={`react-search-field bg-slate-800 rounded-full w-3/5 m-2 align-middle border-solid relative justify-between flex flex-row`}>
-      <div id="left-side-items" className='justify-start'>
+    <div
+      className={`react-search-field bg-slate-800 rounded-full w-3/5 m-2 align-middle border-solid relative justify-between flex flex-row`}
+    >
+      <div id="left-side-items" className="justify-start">
         <button
-          className={`search-field-button h-fit w-10 ${iconHighlight ? 'text-slate-50' : 'text-slate-400'} align-middle cursor-pointer p-2 text-xl border-color-white rounded-full}`}
+          className={`search-field-button h-fit w-10 ${iconHighlight ? "text-slate-50" : "text-slate-400"
+            } align-middle cursor-pointer p-2 text-xl border-color-white rounded-full}`}
           type="button"
           aria-label="search button"
           onClick={onSearchClickHandler}
@@ -57,7 +57,9 @@ export function SearchField(props: {
         />
       </div>
       <button
-        className={`search-field-button h-fit w-fit outline-none ${isEmpty && 'hidden'} ${iconHighlight ? 'text-slate-50' : 'text-slate-400'} cursor-pointer p-2 text-xl rounded-full`}
+        className={`search-field-button h-fit w-fit outline-none ${isEmpty && "hidden"
+          } ${iconHighlight ? "text-slate-50" : "text-slate-400"
+          } cursor-pointer p-2 text-xl rounded-full`}
         type="button"
         aria-label="cancel button"
         onClick={() => setValue("")}
@@ -67,4 +69,4 @@ export function SearchField(props: {
       </button>
     </div>
   );
-};
+}

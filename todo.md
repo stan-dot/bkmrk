@@ -5,7 +5,7 @@
 - [ ] add table context menu not only on left click, but also button - need to simplify the getData and column creation utilities
 
 
-
+- [ ] add checkbox column for precision marking
 
 
 https://www.w3schools.com/html/html5_draganddrop.asp
@@ -22,6 +22,9 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 ### maybe
 - [ ] a tags column
+
+
+seettings only after request
 
 
 ### refactor

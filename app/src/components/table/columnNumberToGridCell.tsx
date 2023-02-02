@@ -14,11 +14,12 @@ type ComprehensiveColDef = {
 };
 
 function getDisplayDate(d: Date): string {
-  const hour: string = `${d.getHours()}:${d.getMinutes()}`;
-  const day: string = `${d.getFullYear()}/${d.getMonth()}/${d.getDate()}`;
+  const mins = d.getMinutes();
+
+  const hour: string = `${d.getHours()}:${mins < 10 ? `0${mins}` : mins}`;
+  const day: string = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
   return `${day} ${hour}`;
 }
-
 
 const ErrorCell: TextCell = {
   kind: GridCellKind.Text,
@@ -48,14 +49,14 @@ const myCols: ComprehensiveColDef[] = [
       if (v === undefined) return ErrorCell;
       const isRealLink = v.url !== undefined;
       const display: string = (isRealLink ? v.url : v.children?.length.toString()) ?? 'folder';
-
+      console.log('display:', display);
       const d: LinksCell = {
         kind: GridCellKind.Custom,
         allowOverlay: true,
         copyData: "4",
         data: {
           kind: "links-cell",
-          underlineOffset: 6,
+          underlineOffset: 1,
           links: [
             {
               title: display,

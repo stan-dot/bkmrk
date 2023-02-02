@@ -34,7 +34,7 @@ export function SideTreeElement(
   };
 
   const handleContextMenu = (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
   ) => {
     console.log("summoned the context menu on", props.thing.title);
     e.preventDefault();
@@ -63,6 +63,7 @@ export function SideTreeElement(
             props.pathSetter(path);
           })
         }
+        onContextMenu={e => handleContextMenu(e)}
         onDragStart={e => {
           const stringified: string = codeBookmarkToUriList([props.thing], true);
           e.dataTransfer.setData("text/uri-list", stringified);

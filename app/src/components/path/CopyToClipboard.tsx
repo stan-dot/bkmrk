@@ -17,9 +17,7 @@ export function CopyToClipboard(props: { text: string, children?: React.ReactNod
       title={`${props.text}Copied to clipboard!`}
       onClose={() => setShowTooltip(false)}
     >
-      <button
-        onClick={() => onCopy("testing tooltip")}
-      >
+      <button onClick={() => onCopy("testing tooltip")} >
         Copy
       </button>
     </dialog>

@@ -4,7 +4,9 @@ import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "./OpenAllSection";
 import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
+import { useEffect } from "react";
 
+// todo this should support many items too
 export function BookmarkContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;
@@ -30,6 +32,13 @@ export function BookmarkContextMenu(
 
   const sortable = isAFolder(props.contextMenuProps.thing) &&
     ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
+
+  useEffect(() => {
+    setTimeout(() => {
+      props.contextMenuProps.closeCallback();
+    }, 3000);
+  }, [props.contextMenuProps])
+
 
   const position = props.contextMenuProps.position;
   return (
@@ -66,27 +75,28 @@ export function BookmarkContextMenu(
           <p>show in folder</p>
         </button>
         <button
-          // onClick={() =>
-          //   props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
-          //     key: "title",
-          //     reverse: false,
-          //   })}
+          onClick={() =>
+            props.contextMenuProps.sortCallback([props.contextMenuProps.thing], {
+              key: "title",
+              reverse: false,
+            })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
           Sort A-Z
         </button>
         <button
-          // onClick={() => props.contextMenuProps.sortCallback(props.contextMenuProps.thing, {
-          //     key: "date",
-          //     reverse: false,
-          //   })}
+          onClick={() => props.contextMenuProps.sortCallback([props.contextMenuProps.thing], {
+            key: "date",
+            reverse: false,
+          })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
           Sort by date
         </button>
       </div>
+      <hr />
       <OpenAllSection thing={props.contextMenuProps.thing} />
     </div>
   );

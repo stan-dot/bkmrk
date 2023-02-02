@@ -260,7 +260,7 @@ export function TableLoader(props: {}): JSX.Element {
         })}
       </div>
     </div>
-    {/* <MiniContextMenu contextMenuProps={getContextProps()} visible={miniMenuVisible} /> */}
+    <MiniContextMenu contextMenuProps={getContextProps()} visible={miniMenuVisible} />
   </>
 }
 

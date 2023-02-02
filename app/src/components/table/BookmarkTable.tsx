@@ -1,22 +1,19 @@
 import DataEditor, {
   CellClickedEventArgs,
-  GridColumnIcon,
   GridDragEventArgs,
   Item,
 } from "@glideapps/glide-data-grid";
 import React, { useCallback, useState } from "react";
 import { ContextMenuProps } from "../../types/ContextMenuProps";
-import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { getPath } from "../getPath";
-import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
-import { columns } from "./columnNumberToGridCell";
-import { getData } from "./getData";
 import {
   readRawTextAsBookmarks,
   unpackBookmarks,
 } from "../../utils/dragProcessing";
-
-import { useExtraCells } from "@glideapps/glide-data-grid-cells";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
+import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
+import { getPath } from "../getPath";
+import { columns } from "./columnNumberToGridCell";
+import { getData } from "./getData";
 
 export function BookmarkTable(
   props: {

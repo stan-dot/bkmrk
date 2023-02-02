@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { presetButtonColors } from "./presetButtonColors";
 
-function setPageBackgroundColor(): any {
+function setPageBackgroundColor(): void {
   console.log("trying to get the color");
   chrome.storage.sync.get('color', ({ color }) => {
     console.log(color);

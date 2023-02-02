@@ -54,7 +54,7 @@ export function SideTreeElement(
   return (
     <>
       <div
-        className={`flex w-fit  pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
+        className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
           } overflow-auto min-h-30 flex-col cursor-pointer bg-slate-700 rounded-r-md`}
         id={`${props.thing.id}-side-tree-container`}
         onClick={() =>

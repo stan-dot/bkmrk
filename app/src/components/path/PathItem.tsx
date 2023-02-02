@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
-// todo here also siblings
 export function PathItem(
   props: {
     handleClick: (
@@ -9,22 +8,22 @@ export function PathItem(
     ) => void;
     index: number;
     node: chrome.bookmarks.BookmarkTreeNode;
-    contextMenuHandler: any;
+    contextMenuHandler: React.MouseEventHandler<HTMLDivElement>;
     siblings?: chrome.bookmarks.BookmarkTreeNode[];
   },
 ): JSX.Element {
   const [siblingsVisible, setSiblingsVisible] = useState(false);
   return (
-    <div className="flex justify-start text-slate-50 m-1 z-20 rounded-sm border-1 border-solid hover:border-slate-400 focus:shadow hover:bg-slate-400">
+    <div className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid  focus:shadow ">
       <button onClick={(v) => setSiblingsVisible(true)}
         onBlur={e => setSiblingsVisible(false)}
-        className={"ml-2 hover:bg-slate-400 rounded-sm"}
+        className={"ml-2 mr-1 text-md h-fit hover:bg-slate-400 rounded-sm"}
       >
         {"/"}
       </button>
       <div
         id="siblings"
-        className="bg-slate-800 text-slate-50 "
+        className="bg-slate-700 z-20 overflow-visible min-h-fit mb-4 text-slate-50 "
         style={{
           visibility: `${siblingsVisible ? "visible" : "hidden"}`,
           width: `${siblingsVisible ? 40 : 0}`,

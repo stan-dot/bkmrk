@@ -1,4 +1,9 @@
 
+## refactor
+- [ ] split global tree into context, with callbacks
+- [ ] do rows as lower level container
+- [ ] history, and minimenu visible as smaller wrappers
+
 ### MVP
 - [ ] working paste and copy
 - [ ] add table context menu not only on left click, but also button - need to simplify the getData and column creation utilities

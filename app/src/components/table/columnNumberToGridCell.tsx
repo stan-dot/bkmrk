@@ -50,7 +50,7 @@ const myCols: ComprehensiveColDef[] = [
       if (v === undefined) return ErrorCell;
       const isRealLink = v.url !== undefined;
       const display: string = (isRealLink ? v.url : v.children?.length.toString()) ?? 'folder';
-      console.log('display:', display);
+      // console.log('display:', display);
 
       // todo or maybe just a button cell?
       const d: TextCell = {
@@ -101,7 +101,7 @@ const myCols: ComprehensiveColDef[] = [
     },
   },
   {
-    static: { title: "", width: 50 },
+    static: { title: "buttonCol", width: 50 },
     columnGetter: (v) => {
       const d: ButtonCell = {
         kind: GridCellKind.Custom,

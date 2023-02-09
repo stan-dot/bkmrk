@@ -10,12 +10,6 @@ import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-// essentialy, we read each location, that is PATH as a different ID.
-// that's where they store the bookmark. here perhaps need to store ids as a path
-// that would be dynamic nested routing, not sure how to do that
-// but it's used for history https://stackoverflow.com/questions/25806608/how-to-detect-browser-back-button-event-cross-browser
-// and can go back. so in the end no react router, maybe. will need to think about this
-// but that is not main functionality tbf, might skip that
 
 type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
 
@@ -49,8 +43,9 @@ export function TableLoader(props: {}): JSX.Element {
         ),
     };
   };
+
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-    console.log('realoded with node')
+    console.log('reloaded with node')
     setLoaded("LOADED");
     setGlobalTree(root[0].children!);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =

@@ -5,6 +5,7 @@ import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMen
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { codeBookmarkToUriList } from "../../utils/dragProcessing";
+import { usePatchDispatch, usePath } from "../../contexts/PathContext";
 
 /**
  * for side displaying FOLDERS ONLY
@@ -15,9 +16,7 @@ import { codeBookmarkToUriList } from "../../utils/dragProcessing";
 export function SideTreeElement(
   props: {
     thing: chrome.bookmarks.BookmarkTreeNode;
-    pathSetter: (path: chrome.bookmarks.BookmarkTreeNode[]) => void;
     unrolled: boolean;
-    path: chrome.bookmarks.BookmarkTreeNode[];
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void
   },
 ): JSX.Element {
@@ -25,11 +24,16 @@ export function SideTreeElement(
   const [unrolled, setUnrolled] = useState(props.unrolled);
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const isALeafNode: boolean = ifIsALeafNode(props.thing);
+  const path = usePath();
+  const dispatch = usePatchDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
       console.log("path: ", path);
-      props.pathSetter(path);
+      dispatch({
+        type: 'changed',
+        node: props.thing
+      })
     });
   };
 
@@ -43,7 +47,7 @@ export function SideTreeElement(
     setContextMenuOpen(true);
   };
 
-  const lastPathItem = () => props.path[props.path.length - 1];
+  const lastPathItem = () => path.items[path.items.length - 1];
 
   const contextProps: ContextMenuProps = {
     thing: props.thing,
@@ -60,7 +64,9 @@ export function SideTreeElement(
         onClick={() =>
           getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
             console.log("path: ", path);
-            props.pathSetter(path);
+            dispatch({
+              
+            })
           })
         }
         style={{ border: lastPathItem() === props.thing ? '1rem solid red' : 'none' }}
@@ -103,8 +109,6 @@ export function SideTreeElement(
         {unrolled && (
           <SideSubTree
             nodes={props.thing.children!}
-            pathSetter={props.pathSetter}
-            path={props.path}
             setRowsCallback={props.setRowsCallback}
           />
         )}

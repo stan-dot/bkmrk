@@ -36,6 +36,7 @@ export function PathProvider({ children }: any) {
 
 
 // todo add reset to higher up, as it's a stack
+// todo also change all action
 export function pathReducer(path: Path, action: PathAction): Path {
   switch (action.type) {
     case 'added': {

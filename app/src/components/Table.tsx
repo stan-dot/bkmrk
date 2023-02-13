@@ -1,5 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
+import { PathProvider } from "../contexts/PathContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
@@ -23,9 +24,6 @@ export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
   const [globalTree, setGlobalTree] = useState(
-    [] as chrome.bookmarks.BookmarkTreeNode[],
-  );
-  const [currentPath, setCurrentPath] = useState(
     [] as chrome.bookmarks.BookmarkTreeNode[],
   );
 
@@ -199,78 +197,81 @@ export function TableLoader(props: {}): JSX.Element {
       />
     </nav>
     <hr />
-    <div
-      className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-      onPaste={(e: React.ClipboardEvent<Element>) => {
-        e.preventDefault();
-        console.log(e);
-        chrome.bookmarks.create({
-          parentId: lastPathItem().id,
-          title: "Extensions doc",
-          url: "https://developer.chrome.com/docs/extensions",
-        });
-      }}
-    >
-      <PathDisplay
-        path={currentPath}
-        pathChangeHandler={pathChangeHandler}
-      />
-    </div>
-    <LoadingScreen loading={loaded === "LOADING"} />
-    <div id="lowerPanel"
-      // onClick={e => {
-      // e.preventDefault();
-      // }}
-      style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-      className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-    >
-      <SideTree
-        tree={globalTree}
-        pathSetter={pathChangeHandler}
-        path={currentPath}
-        dataCallback={dataCallback}
-      />
-      <div id="mainContainer"
-        className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-        onClick={(e) => {
+    <PathProvider>
+
+      <div
+        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+        onPaste={(e: React.ClipboardEvent<Element>) => {
           e.preventDefault();
-          console.log("it was clicked on the outside");
+          console.log(e);
+          chrome.bookmarks.create({
+            parentId: lastPathItem().id,
+            title: "Extensions doc",
+            url: "https://developer.chrome.com/docs/extensions",
+          });
         }}
       >
-        <BookmarkTable
-          rows={rows}
-          pathChangeHandler={pathChangeHandler}
-          setRowsCallback={dataCallback}
-          searchResultsMode={loaded === "SEARCH_RESULT"}
+        <PathDisplay
           path={currentPath}
+          pathChangeHandler={pathChangeHandler}
         />
       </div>
-      <div
-        id="rightPanel"
-        className="bg-slate-700 w-44 z-10 rounded-md shadow"
-        style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
+      <LoadingScreen loading={loaded === "LOADING"} />
+      <div id="lowerPanel"
+        // onClick={e => {
+        // e.preventDefault();
+        // }}
+        style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
       >
-        {history.length === 0 ? <p>No history found</p> : history.map((b) => {
-          // console.log('history: ', b);
-          // return "some item"
-          return (
-            <p
-              style={{
-                // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
-              }}
-            >
-              <p>nothing</p>
-              {
-                /* <a href={b.url} className="link">
-                {b.title}
-              </a> */
-              }
-            </p>
-          );
-        })}
+        <SideTree
+          tree={globalTree}
+          pathSetter={pathChangeHandler}
+          path={currentPath}
+          dataCallback={dataCallback}
+        />
+        <div id="mainContainer"
+          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+          onClick={(e) => {
+            e.preventDefault();
+            console.log("it was clicked on the outside");
+          }}
+        >
+          <BookmarkTable
+            rows={rows}
+            pathChangeHandler={pathChangeHandler}
+            setRowsCallback={dataCallback}
+            searchResultsMode={loaded === "SEARCH_RESULT"}
+            path={currentPath}
+          />
+        </div>
+        <div
+          id="rightPanel"
+          className="bg-slate-700 w-44 z-10 rounded-md shadow"
+          style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
+        >
+          {history.length === 0 ? <p>No history found</p> : history.map((b) => {
+            // console.log('history: ', b);
+            // return "some item"
+            return (
+              <p
+                style={{
+                  // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
+                }}
+              >
+                <p>nothing</p>
+                {
+                  /* <a href={b.url} className="link">
+                  {b.title}
+                </a> */
+                }
+              </p>
+            );
+          })}
+        </div>
       </div>
-    </div>
-    <MiniContextMenu contextMenuProps={getContextProps()} visible={miniMenuVisible} />
+      <MiniContextMenu contextMenuProps={getContextProps()} visible={miniMenuVisible} />
+    </PathProvider>
   </>
 }
 

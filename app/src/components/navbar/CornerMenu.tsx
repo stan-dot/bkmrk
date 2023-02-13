@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { makeBookmark, makeFolder } from "../../dataProcessing/interact";
-import { exportBookmarks } from "../../io/exportBookmarks";
-import { BookmarkImportWindow } from "../../io/importBookmarks";
+import { makeBookmark, makeFolder } from "../../utils/dataProcessing/interact";
+import { exportBookmarks } from "../../utils/io/exportBookmarks";
+import { BookmarkImportWindow } from "../../utils/io/importBookmarks";
 import { printCsv } from "../../utils/ioOperations";
 import { SortOptions } from "../../utils/sortRows";
 import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";

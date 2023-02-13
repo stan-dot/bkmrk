@@ -1,5 +1,5 @@
-import { basicNodes } from "../../dataProcessing/basicNodes";
-import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { basicNodes } from "../../utils/dataProcessing/basicNodes";
+import { ContextMenuProps } from "./ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "./OpenAllSection";
 import { EditDeleteSection } from "./EditDeleteSection";

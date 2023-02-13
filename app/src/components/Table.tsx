@@ -1,6 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { ContextMenuProps } from "../types/ContextMenuProps";
+import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { SortOptions, sortRows } from "../utils/sortRows";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { LoadingScreen } from "./LoadingScreen";
@@ -94,12 +94,13 @@ export function TableLoader(props: {}): JSX.Element {
   // then reloading the current path
 
   const sortHandler = (
-    node: chrome.bookmarks.BookmarkTreeNode,
+    nodes: chrome.bookmarks.BookmarkTreeNode[],
     config: SortOptions,
   ) => {
-    if (node.children?.length === 0) return;
-    const tmp: chrome.bookmarks.BookmarkTreeNode[] = node.children!;
-    const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(tmp, config);
+    // if (node.children?.length === 0) return;
+    // const tmp: chrome.bookmarks.BookmarkTreeNode[] = node.children!;
+    // const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(tmp, config);
+    const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(nodes, config);
     sorted.forEach((v, i) => {
       const args: chrome.bookmarks.BookmarkCreateArg = {
         parentId: v.parentId,
@@ -160,6 +161,14 @@ export function TableLoader(props: {}): JSX.Element {
       </div>
       <SearchField setDataCallback={dataCallback} />
       <button
+        id="refresh-button"
+        className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
+        onClick={() => reloadWithNode([lastPathItem()])}
+        disabled
+      >
+        &#128472; refresh
+      </button>
+      <button
         id="history-button"
         className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
         onClick={() => setHistoryVisible(!historyVisible)}
@@ -178,7 +187,7 @@ export function TableLoader(props: {}): JSX.Element {
         &#128276; Notifications
       </button>
       <CornerMenu
-        sortCallback={() => console.log("should sort current location")}
+        sortCallback={sortHandler}
         importCallback={() => console.log("should load the datastructure")}
         rows={rows}
       />

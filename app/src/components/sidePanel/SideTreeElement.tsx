@@ -3,7 +3,7 @@ import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
 import { getPath } from "../getPath";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { SideSubTree } from "./SideSubTree";
-import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { codeBookmarkToUriList } from "../../utils/dragProcessing";
 
 /**

@@ -1,4 +1,4 @@
-import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { ContextMenuProps } from "./ContextMenuProps";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 
 export function MiniContextMenu(

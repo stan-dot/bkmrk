@@ -4,7 +4,7 @@ import DataEditor, {
   Item,
 } from "@glideapps/glide-data-grid";
 import React, { useCallback, useState } from "react";
-import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import {
   readRawTextAsBookmarks,
   unpackBookmarks,

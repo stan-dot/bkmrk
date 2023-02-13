@@ -1,4 +1,4 @@
-import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../getPath";
 import { stringifyPath } from "./stringifyPath";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ContextMenuProps } from "../../types/ContextMenuProps";
+import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { PathDisplayContextMenu } from "./PathDisplayContextMenu";
 import { PathItem } from "./PathItem";
 

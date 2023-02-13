@@ -13,12 +13,12 @@ import { BookmarkTable } from "./table/BookmarkTable";
 
 type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
 
-// RootContext - loaded
 // data context - rows, global tree
 // pathContext 
 // historyContext
-// 
 
+
+// loaded does not require context
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);

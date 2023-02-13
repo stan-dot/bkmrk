@@ -1,7 +1,7 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { SortOptions, sortRows } from "../utils/sortRows";
+import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { LoadingScreen } from "./LoadingScreen";
 import { CornerMenu } from "./navbar/CornerMenu";
@@ -12,6 +12,12 @@ import { BookmarkTable } from "./table/BookmarkTable";
 
 
 type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
+
+// RootContext - loaded
+// data context - rows, global tree
+// pathContext 
+// historyContext
+// 
 
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");

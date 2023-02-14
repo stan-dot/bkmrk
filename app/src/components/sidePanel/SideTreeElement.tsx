@@ -76,7 +76,7 @@ export function SideTreeElement(
             })
           })
         }
-        style={{ border: isDisplayedNow() ? '0.5rem solid red' : 'none' }}
+        style={{ border: isDisplayedNow() ? '0.25rem solid red' : 'none' }}
         onContextMenu={e => handleContextMenu(e)}
         onDragStart={e => {
           const stringified: string = codeBookmarkToUriList([props.thing], true);

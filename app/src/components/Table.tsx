@@ -7,7 +7,6 @@ import {
 } from "../contexts/PathContext";
 import { PopupProvider } from "../contexts/PopupContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
-import EditBookmarkAlert from "./alerts/EditAlert";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { HistoryPanel } from "./HistoryPanel";

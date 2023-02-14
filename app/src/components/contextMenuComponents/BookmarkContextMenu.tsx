@@ -6,7 +6,6 @@ import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { useEffect } from "react";
 
-// todo this should support many items too
 export function BookmarkContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;

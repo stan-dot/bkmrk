@@ -12,12 +12,12 @@ type PopupContext = {
 
 type PopupAction = {
   type: 'add-new-bookmark' | 'add-new-folder' | 'edit-bookmark' | 'edit-folder' | 'open-15-plus' | 'full';
-  direction: 'open' | 'close'
+  direction: 'open' | 'close',
+  nodeId?: string;
 };
 
 const PopupContect = createContext<PopupContext>(initialPopup);
 const PopupDispatchContext = createContext<React.Dispatch<PopupAction>>(null as unknown as React.Dispatch<PopupAction>);
-
 
 export function usePopup() {
   return useContext(PopupContect);
@@ -40,9 +40,7 @@ export function popupReducer(popup: PopupContext, action: PopupAction): PopupCon
   switch (action.type) {
     case "edit-folder": {
       return {
-        component: <EditBookmarkAlert id={""} closeCallback={function (): void {
-          throw new Error("Function not implemented.");
-        }} visible={false} />
+        component: <EditBookmarkAlert id={action.nodeId!}  />
       }
     }
 

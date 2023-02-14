@@ -6,7 +6,6 @@ import { UrlEditGroup } from "./groups/UrlEditGroup";
 
 type EditAlertProps = {
   id: string;
-  visible: boolean;
 };
 
 const initialData: chrome.bookmarks.BookmarkChangesArg = {
@@ -15,7 +14,7 @@ const initialData: chrome.bookmarks.BookmarkChangesArg = {
 };
 
 export default function EditBookmarkAlert(
-  { id, visible }: EditAlertProps,
+  { id }: EditAlertProps,
 ) {
 
   const dispatch = usePopupDispatch();
@@ -39,7 +38,8 @@ export default function EditBookmarkAlert(
   return <div
     className="fixed backdrop-blur-md w-full h-full grid grid-cols-2 gap-4 place-content-center z-50"
     id="alertBackground"
-    style={{ display: `${visible ? "absolute" : "none"}` }}
+    // style={{ display: `${visible ? "absolute" : "none"}` }}
+    style={{ display: "absolute"  }}
   >
     <form
       className="

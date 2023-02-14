@@ -1,11 +1,11 @@
 
 
 
-import React from 'react'
-import { usePopup, usePopupDispatch } from '../contexts/PopupContext'
+import { usePopup } from '../contexts/PopupContext';
 
 export default function Popup() {
   const popup = usePopup();
+  console.log('current component', popup.component)
   return (
     <div>
       <h2 className='text-xl text-red-800'>

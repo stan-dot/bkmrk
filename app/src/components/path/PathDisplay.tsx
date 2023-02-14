@@ -1,30 +1,29 @@
 import { useState } from "react";
-import { usePathDispatch, usePath } from "../../contexts/PathContext";
-import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
-import { PathDisplayContextMenu } from "./PathDisplayContextMenu";
+import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { PathItem } from "./PathItem";
 
 export function PathDisplay(): JSX.Element {
-  const [position, setPosition] = useState([0, 0]);
-  const [showContextMenu, setShowContextMenu] = useState(false);
   const path = usePath();
   const pathDispatch = usePathDispatch()
   const [lastIteracted, setLastInteracted] = useState(path.items[path.items.length - 1])
+
+  const contextMenuDispatch = useContextMenuDispatch();
 
   const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
     e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    setPosition(
-      [
+    contextMenuDispatch({
+      type: 'bookmark',
+      things: [lastIteracted],
+      direction: 'open',
+      position: [
         e.pageX,
         e.pageY,
       ],
-    );
-    if (showContextMenu) {
-      setShowContextMenu(false);
-    }
+    })
   };
 
   const handleClick = (index: number, node: chrome.bookmarks.BookmarkTreeNode) => {
@@ -52,19 +51,8 @@ export function PathDisplay(): JSX.Element {
     })
   };
 
-  const contextMenuProps: ContextMenuProps = {
-    thing: lastIteracted,
-    position: position,
-    closeCallback: () => setShowContextMenu(false),
-    sortCallback: () => console.log("no sort here")
-  };
-  // todo make the arrow buttons use history
-
   return (
-    <div
-      id="path-display"
-      className="flex fixed h-12 justify-start bg-slate-700 ml-4 "
-    >
+    <div id="path-display" className="flex fixed h-12 justify-start bg-slate-700 ml-4 " >
       <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
         <button disabled={true} onClick={upButtonHandler} className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}>
           {"<-"}
@@ -87,11 +75,6 @@ export function PathDisplay(): JSX.Element {
           />
         ))}
       </div>
-      {showContextMenu && (
-        <PathDisplayContextMenu
-          contextMenuProps={contextMenuProps}
-        />
-      )}
     </div>
   );
 }

@@ -5,8 +5,9 @@ import {
   useContextMenu,
   useContextMenuDispatch
 } from "../../contexts/ContextMenuContext";
-import { SortOptions, sortRows } from "../../utils/sortRows";
 
+// todo maybe all context menus in here? that'd be smart, wouldn't it be
+// and the branches would be subsections of the whole component, not switch cases
 export default function ContextMenu() {
   const contextMenu = useContextMenu();
   const dispatch = useContextMenuDispatch();
@@ -18,12 +19,6 @@ export default function ContextMenu() {
         <MiniContextMenu
           contextMenuProps={{
             things: contextMenu.things!,
-            sortCallback: function (
-              node: chrome.bookmarks.BookmarkTreeNode[],
-              config: SortOptions,
-            ): void {
-              throw new Error("Function not implemented.");
-            },
           }}
         />
       )}
@@ -32,7 +27,14 @@ export default function ContextMenu() {
           contextMenuProps={{
             things: contextMenu.things!,
             // position: contextMenu.position,
-            sortCallback: sortRows
+          }}
+        />
+      )}
+      {contextMenu.componentId === "s" && (
+        <BookmarkContextMenu
+          contextMenuProps={{
+            things: contextMenu.things!,
+            // position: contextMenu.position,
           }}
         />
       )}
@@ -40,12 +42,6 @@ export default function ContextMenu() {
         <PathDisplayContextMenu
           contextMenuProps={{
             things: contextMenu.things!,
-            sortCallback: function (
-              node: chrome.bookmarks.BookmarkTreeNode[],
-              config: SortOptions,
-            ): void {
-              throw new Error("Function not implemented.");
-            },
           }}
         />
       )}

@@ -27,9 +27,6 @@ export function TableLoader(): JSX.Element {
   const [globalTree, setGlobalTree] = useState<
     chrome.bookmarks.BookmarkTreeNode[]
   >([]);
-  const [history, setHistory] = useState<chrome.bookmarks.BookmarkTreeNode[]>(
-    [],
-  );
 
   const [historyVisible, setHistoryVisible] = useState(false);
 
@@ -39,8 +36,6 @@ export function TableLoader(): JSX.Element {
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
     setLoaded("LOADED");
     setGlobalTree(root[0].children!);
-    // const currentNodeChildren: chrome.bookmarks.BookmarkTreeNode[] =
-    //   chrome.bookmarks.getChildren(lastPathItem().id);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
       root[0].children![0];
     setRows(bookmarksBar.children ?? []);
@@ -82,7 +77,6 @@ export function TableLoader(): JSX.Element {
   useEffect(() => {
     const currentLast = lastPathItem();
     console.log("current last:", currentLast);
-    setHistory((previousHistory) => [...previousHistory, currentLast]);
     if (currentLast) {
       chrome.bookmarks.getChildren(currentLast.id).then((children) => {
         setRows(children);
@@ -140,7 +134,6 @@ export function TableLoader(): JSX.Element {
                 searchResultsMode={loaded === "SEARCH_RESULT"}
               />
             </div>
-            <HistoryPanel history={history} historyVisible={historyVisible} />
           </div>
           <Popup />
         </PopupProvider>

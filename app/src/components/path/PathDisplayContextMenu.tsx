@@ -1,8 +1,12 @@
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../../utils/getPath";
-import { stringifyPath } from "./stringifyPath";
 import { useContextMenu } from "../../contexts/ContextMenuContext";
+import { EditDeleteSection } from "../contextMenuComponents/EditDeleteSection";
+
+function stringifyPath(nodes: chrome.bookmarks.BookmarkTreeNode[]): string {
+  return nodes.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join("/");
+}
 
 export function PathDisplayContextMenu(
   props: { contextMenuProps: ContextMenuProps },
@@ -28,10 +32,7 @@ export function PathDisplayContextMenu(
         right: `${position[1]}px`,
       }}
     >
-      <div className="group1">
-        <p>rename</p>
-        <p>delete</p>
-      </div>
+      <EditDeleteSection thing={props.contextMenuProps.things[0]} protected={false} />
       <div className="group2">
         <p>copy path</p>
         <p>paste buton</p>

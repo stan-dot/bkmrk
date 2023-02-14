@@ -1,11 +1,8 @@
 
 - [ ] if more than 1 selected, only delete, no edit - instead 'move to common folder' 
 
-
 ## refactor
-- [ ] split global tree into context, with callbacks
-- [ ] do rows as lower level container
-- [ ] history, and minimenu visible as smaller wrappers
+- [x] split global tree into context, with callbacks
 
 ### MVP
 - [ ] working paste and copy
@@ -31,3 +28,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [ ] alternating table styles
 - [ ] settings menu
 - [ ] colors
+- [ ] history, and minimenu visible as smaller wrappers
+
+### decided against
+- [ ] do rows as lower level container

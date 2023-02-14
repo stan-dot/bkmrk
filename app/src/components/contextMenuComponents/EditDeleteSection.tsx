@@ -19,11 +19,9 @@ export function EditDeleteSection(
         <p>Edit</p>
       </button>
       <EditAlert
-        submitCallback={(data) =>
-          chrome.bookmarks.update(props.thing.id, data)}
         closeCallback={() => setEditOpen(false)}
         visible={editOpen}
-      />
+        id={props.thing.id} />
       <button
         disabled={props.protected}
         onClick={(e) => {

@@ -1,52 +1,50 @@
 import React, { createContext, useContext, useReducer } from "react";
-import { initialTasks } from "../data/initialTasks";
-import { Task } from "../types/Task";
-import { Action } from "../types/Action";
+import EditAlert from "../components/alerts/EditAlert";
 
+const initialPopup: PopupContext = {
+  component: <></>
+};
 
-const TasksContext = createContext<Task[]>([]);
-const TasksDispatchContext = createContext<React.Dispatch<Action>>(null as unknown as React.Dispatch<Action>);
-
-
-export function useTasks() {
-  return useContext(TasksContext);
+type PopupContext = {
+  component: JSX.Element
 }
 
-export function useTasksDispatch() {
-  return useContext(TasksDispatchContext);
+type PopupAction = {
+  type: 'add-new-bookmark' | 'add-new-folder' | 'edit-bookmark' | 'edit-folder' | 'open-15-plus' | 'full';
+  direction: 'open' | 'close'
+};
+
+const PopupContect = createContext<PopupContext>(initialPopup);
+const PopupDispatchContext = createContext<React.Dispatch<PopupAction>>(null as unknown as React.Dispatch<PopupAction>);
+
+
+export function usePopup() {
+  return useContext(PopupContect);
 }
 
-export function TasksProvider({ children }: any) {
-  const [tasks, dispatch] = useReducer(tasksReducer, initialTasks);
-  return <TasksContext.Provider value={tasks}>
-    <TasksDispatchContext.Provider value={dispatch}>
+export function usePopupDispatch() {
+  return useContext(PopupDispatchContext);
+}
+
+export function PathProvider({ children }: any) {
+  const [popup, dispatch] = useReducer(popupReducer, initialPopup);
+  return <PopupContect.Provider value={popup}>
+    <PopupDispatchContext.Provider value={dispatch}>
       {children}
-    </TasksDispatchContext.Provider>
-  </TasksContext.Provider>
+    </PopupDispatchContext.Provider>
+  </PopupContect.Provider>
 }
 
-
-export function tasksReducer(tasks: Task[], action: Action): Task[] {
+export function popupReducer(popup: PopupContext, action: PopupAction): PopupContext {
   switch (action.type) {
-    case 'added': {
-      return [...tasks, {
-        id: action.id!,
-        text: action.text,
-        done: false
-      }];
+    case "edit-folder": {
+      return {
+        component: <EditAlert id={""} closeCallback={function (): void {
+          throw new Error("Function not implemented.");
+        }} visible={false} />
+      }
     }
-    case 'changed': {
-      return tasks.map((t: Task) => {
-        const newTask = action.task;
-        if (!newTask) {
-          throw Error('this action should carry a task ' + action.id ?? action.type)
-        }
-        return t.id === newTask.id ? newTask : t;
-      });
-    }
-    case 'deleted': {
-      return tasks.filter(t => t.id !== action.id);
-    }
+
     default: {
       throw Error('Unknown action: ' + action.type);
     }

@@ -5,6 +5,7 @@ import {
 } from "@glideapps/glide-data-grid";
 import { ButtonCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/button-cell";
 import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-cell";
+import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-cell";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@glideapps/glide-data-grid/dist/index.css";
 
@@ -12,7 +13,7 @@ import "@glideapps/glide-data-grid/dist/index.css";
 
 const keywords: string[] = [];
 
-type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell;
+type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
 
 type ComprehensiveColDef = {
   static: GridColumn;
@@ -45,6 +46,13 @@ const myCols: ComprehensiveColDef[] = [
         allowOverlay: false,
         displayData: getDisplayDate(date),
       };
+      return cell;
+    },
+  },
+  {
+    static: { title: "Tags", width: 130 },
+    columnGetter: (v) => {
+      const cell: TagsCell = { };
       return cell;
     },
   },

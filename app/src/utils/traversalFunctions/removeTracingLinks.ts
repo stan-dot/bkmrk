@@ -10,7 +10,10 @@ const removableLinks:RegExp[] = [
 
 
 
+// todo integrate this, should be fairly easy
+// the list of removable links as a thing from storage, with the option to restore defaults
 export async function removeAllTracingLinks(): Promise<number> {
+
   const sanitizeCallback = (node: chrome.bookmarks.BookmarkTreeNode) => removeTracingLinks(node);
 
   let count = 0;

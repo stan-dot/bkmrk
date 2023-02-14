@@ -145,6 +145,7 @@ export function BookmarkTable(
       onDrop={dropHandler}
       onHeaderClicked={() => console.log("clicked header")}
       rows={props.rows.length}
+      
     />
   </div>
 }

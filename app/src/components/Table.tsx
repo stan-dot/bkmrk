@@ -3,15 +3,14 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   PathProvider,
   usePath,
-  usePathDispatch,
+  usePathDispatch
 } from "../contexts/PathContext";
 import { PopupProvider } from "../contexts/PopupContext";
 import { createBookmarksFromPaste } from "../utils/createBookmarksFromPaste";
-import { HistoryPanel } from "./navbar/HistoryPanel";
 import { LoadingScreen } from "./LoadingScreen";
+import Popup from "./multi-displayers/Popup";
 import { Navbar } from "./navbar/Navbar";
 import { PathDisplay } from "./path/PathDisplay";
-import Popup from "./multi-displayers/Popup";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
@@ -28,7 +27,6 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.BookmarkTreeNode[]
   >([]);
 
-  const [historyVisible, setHistoryVisible] = useState(false);
 
   const path = usePath();
   const pathDispatch = usePathDispatch();
@@ -51,11 +49,6 @@ export function TableLoader(): JSX.Element {
   );
 
   if (loaded === "LOADING") {
-    /**
-     * NOTE: the getTree method returns the ROOT node
-     * it has 3 children: bookmarks bar, other bookmarks, mobile bookmarks.
-     * these only show up if not empty
-     */
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
         console.log("loaded!");
@@ -68,7 +61,6 @@ export function TableLoader(): JSX.Element {
     console.log("the bookmarks have changed...", e);
     reloadWithNode(path.items);
   };
-  // todo here change for the definite update processing
   chrome.bookmarks.onChanged.addListener(deltaListener);
   chrome.bookmarks.onMoved.addListener(deltaListener);
   chrome.bookmarks.onRemoved.addListener(deltaListener);
@@ -104,8 +96,6 @@ export function TableLoader(): JSX.Element {
             dataCallback={dataCallback}
             reloadWithNode={reloadWithNode}
             lastPathItem={lastPathItem}
-            setHistoryVisible={setHistoryVisible}
-            historyVisible={historyVisible}
             rows={rows}
           />
           <hr />

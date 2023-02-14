@@ -1,6 +1,6 @@
 import { FormEvent, useState } from "react";
-import { CancelSaveGroup } from "./CancelSaveGroup";
-import { UrlEditGroup } from "./UrlEditGroup";
+import { CancelSaveGroup } from "./groups/CancelSaveGroup";
+import { UrlEditGroup } from "./groups/UrlEditGroup";
 
 type RenameFolderAlertProps = {
   submitCallback: (data: chrome.bookmarks.BookmarkChangesArg) => void;

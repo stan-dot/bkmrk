@@ -26,7 +26,7 @@ export function usePopupDispatch() {
   return useContext(PopupDispatchContext);
 }
 
-export function PathProvider({ children }: any) {
+export function PopupProvider({ children }: any) {
   const [popup, dispatch] = useReducer(popupReducer, initialPopup);
   return <PopupContect.Provider value={popup}>
     <PopupDispatchContext.Provider value={dispatch}>

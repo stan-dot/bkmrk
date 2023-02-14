@@ -3,17 +3,22 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   PathProvider,
   usePath,
-  usePathDispatch,
+  usePathDispatch
 } from "../contexts/PathContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { LoadingScreen } from "./LoadingScreen";
-import { CornerMenu } from "./navbar/CornerMenu";
-import { SearchField } from "./navbar/SearchField";
+import { Navbar } from "./Navbar";
 import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
+
+  // todo instructions how to sort given a node and props
+  // boils down to deleting all children of a node,
+  // then doing a quicksort algorithm by the given index to get the monoid,
+  // then pasting into the children,
+  // then reloading the current path
 
 type MainDisplayStates =
   | "LOADING"
@@ -21,11 +26,6 @@ type MainDisplayStates =
   | "RESULT_EMPTY"
   | "SEARCH_RESULT";
 
-// data context - rows, global tree
-// pathContext
-// historyContext
-
-// loaded does not require context
 export function TableLoader(props: {}): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
   const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
@@ -65,10 +65,9 @@ export function TableLoader(props: {}): JSX.Element {
       root[0].children![0];
     setRows(bookmarksBar.children ?? []);
     pathDispatch({
-      type: "changed",
-      node: root[0],
+      type: "full",
+      nodes: [...root, bookmarksBar],
     });
-    // setCurrentPath([root[0], bookmarksBar]);
   };
 
   const lastPathItem: () => chrome.bookmarks.BookmarkTreeNode = useCallback(
@@ -105,12 +104,6 @@ export function TableLoader(props: {}): JSX.Element {
     return () => { };
   }, [path, lastPathItem]);
 
-  // todo instructions how to sort given a node and props
-  // boils down to deleting all children of a node,
-  // then doing a quicksort algorithm by the given index to get the monoid,
-  // then pasting into the children,
-  // then reloading the current path
-
   const sortHandler = (
     nodes: chrome.bookmarks.BookmarkTreeNode[],
     config: SortOptions,
@@ -134,122 +127,92 @@ export function TableLoader(props: {}): JSX.Element {
     setRows(nodes);
   };
 
-  return (
-    <>
-      <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
-        <div className="flex align-middle" id="brandingBit">
-          <p className="text-2xl mt-2 ml-2 text-white">
-            &#128366; BOOKasta
-          </p>
-        </div>
-        <SearchField setDataCallback={dataCallback} />
-        <button
-          id="refresh-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
-          onClick={() => reloadWithNode([lastPathItem()])}
-          disabled
-        >
-          &#128472; refresh
-        </button>
-        <button
-          id="history-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
-          onClick={() => setHistoryVisible(!historyVisible)}
-          onBlur={() => setHistoryVisible(false)}
-          disabled
-        >
-          &#11186; History
-        </button>
-        <button
-          id="notifications-button"
-          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
-          onClick={() => console.log(" activated notifications button")}
-          onBlur={() => console.log(" lost focus on notifications button")}
-          disabled
-        >
-          &#128276; Notifications
-        </button>
-        <CornerMenu
-          sortCallback={sortHandler}
-          importCallback={() => console.log("should load the datastructure")}
-          rows={rows}
+  return <>
+    <Navbar
+      dataCallback={dataCallback}
+      reloadWithNode={reloadWithNode}
+      lastPathItem={lastPathItem}
+      setHistoryVisible={setHistoryVisible}
+      historyVisible={historyVisible}
+      sortHandler={sortHandler}
+      rows={rows}
+    />
+    <hr />
+    <PathProvider>
+      <div
+        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+        onPaste={(e: React.ClipboardEvent<Element>) => {
+          e.preventDefault();
+          console.log(e);
+          chrome.bookmarks.create({
+            parentId: lastPathItem().id,
+            title: "Extensions doc",
+            url: "https://developer.chrome.com/docs/extensions",
+          });
+        }}
+      >
+        <PathDisplay />
+      </div>
+      <LoadingScreen loading={loaded === "LOADING"} />
+      <div
+        id="lowerPanel"
+        // onClick={e => {
+        // e.preventDefault();
+        // }}
+        style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
+      >
+        <SideTree
+          tree={globalTree}
+          dataCallback={dataCallback}
         />
-      </nav>
-      <hr />
-      <PathProvider>
         <div
-          className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-          onPaste={(e: React.ClipboardEvent<Element>) => {
+          id="mainContainer"
+          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+          onClick={(e) => {
             e.preventDefault();
-            console.log(e);
-            chrome.bookmarks.create({
-              parentId: lastPathItem().id,
-              title: "Extensions doc",
-              url: "https://developer.chrome.com/docs/extensions",
-            });
+            console.log("it was clicked on the outside");
           }}
         >
-          <PathDisplay />
-        </div>
-        <LoadingScreen loading={loaded === "LOADING"} />
-        <div
-          id="lowerPanel"
-          // onClick={e => {
-          // e.preventDefault();
-          // }}
-          style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-          className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-        >
-          <SideTree
-            tree={globalTree}
-            dataCallback={dataCallback}
+          <BookmarkTable
+            rows={rows}
+            setRowsCallback={dataCallback}
+            searchResultsMode={loaded === "SEARCH_RESULT"}
           />
-          <div
-            id="mainContainer"
-            className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("it was clicked on the outside");
-            }}
-          >
-            <BookmarkTable
-              rows={rows}
-              setRowsCallback={dataCallback}
-              searchResultsMode={loaded === "SEARCH_RESULT"}
-            />
-          </div>
-          <div
-            id="rightPanel"
-            className="bg-slate-700 w-44 z-10 rounded-md shadow"
-            style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
-          >
-            {history.length === 0
-              ? <p>No history found</p>
-              : history.map((b) => {
-                // console.log('history: ', b);
-                // return "some item"
-                return (
-                  <p
-                    style={{
-                      // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
-                    }}
-                  >
-                    <p>nothing</p>
-                    {
-                      /* <a href={b.url} className="link">
-                  {b.title}
-                </a> */
-                    }
-                  </p>
-                );
-              })}
-          </div>
         </div>
-        <MiniContextMenu
-          contextMenuProps={getContextProps()}
-          visible={miniMenuVisible}
-        />
-      </PathProvider>
-    </>
-  );
+        <div
+          id="rightPanel"
+          className="bg-slate-700 w-44 z-10 rounded-md shadow"
+          style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
+        >
+          {history.length === 0
+            ? <p>No history found</p>
+            : history.map((b) => {
+              // console.log('history: ', b);
+              // return "some item"
+              return (
+                <p
+                  style={{
+                    // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
+                  }}
+                >
+                  <p>nothing</p>
+                  {
+                    /* <a href={b.url} className="link">
+                {b.title}
+              </a> */
+                  }
+                </p>
+              );
+            })}
+        </div>
+      </div>
+      <MiniContextMenu
+        contextMenuProps={getContextProps()}
+        visible={miniMenuVisible}
+      />
+    </PathProvider>
+  </>
 }
+
+

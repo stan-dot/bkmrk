@@ -34,10 +34,9 @@ export function PathDisplay(): JSX.Element {
         0,
         index,
       );
-      console.log("new path: ", newPath);
       pathDispatch({
-        type: 'changed',
-        node: node
+        type: 'full',
+        nodes: newPath
       })
     }
   };
@@ -47,10 +46,9 @@ export function PathDisplay(): JSX.Element {
       0,
       path.items.length - 1,
     );
-    console.log("button up, new path: ", newPath);
     pathDispatch({
-      type: 'changed',
-      node: newPath[0]
+      type: 'full',
+      nodes: newPath
     })
   };
 
@@ -60,13 +58,14 @@ export function PathDisplay(): JSX.Element {
     closeCallback: () => setShowContextMenu(false),
     sortCallback: () => console.log("no sort here")
   };
+  // todo make the arrow buttons use history
 
   return (
     <div
       id="path-display"
       className="flex fixed h-12 justify-start bg-slate-700 ml-4 "
     >
-      <div id="buttonArea" className="relative bg-slate-600 mr-4">
+      <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
         <button disabled={true} onClick={upButtonHandler} className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}>
           {"<-"}
         </button>

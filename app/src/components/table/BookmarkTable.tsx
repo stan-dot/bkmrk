@@ -11,7 +11,7 @@ import {
 } from "../../utils/dragProcessing";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
-import { getPath } from "../getPath";
+import { getPath } from "../../utils/getPath";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
@@ -66,7 +66,7 @@ export function BookmarkTable(
           console.log("path:", newPath);
           pathDispatch({
             type: 'full',
-            node: newPath[0]
+            nodes: newPath
           })
         });
       }

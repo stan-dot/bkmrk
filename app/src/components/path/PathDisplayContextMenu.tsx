@@ -1,6 +1,6 @@
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
-import { getPath } from "../getPath";
+import { getPath } from "../../utils/getPath";
 import { stringifyPath } from "./stringifyPath";
 
 export function PathDisplayContextMenu(

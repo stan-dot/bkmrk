@@ -9,8 +9,8 @@ type Path = {
 }
 
 type PathAction = {
-  type: 'changed' | 'deleted' | 'added' | 'up' | 'branch' | 'full';
-  node?: chrome.bookmarks.BookmarkTreeNode;
+  type: 'changed' | 'added' | 'up' | 'branch' | 'full';
+  nodes?: chrome.bookmarks.BookmarkTreeNode[];
 };
 
 const PathContext = createContext<Path>(initialPath);
@@ -34,39 +34,39 @@ export function PathProvider({ children }: any) {
   </PathContext.Provider>
 }
 
-
-// todo add reset to higher up, as it's a stack
-// todo also change all action
 export function pathReducer(path: Path, action: PathAction): Path {
   switch (action.type) {
     case 'added': {
       return {
-        items: [...path.items, action.node!]
+        items: [...path.items, ...action.nodes!]
       }
     }
     case 'full': {
+      if (!action.nodes) {
+        throw Error('this action should carry a node' + action.nodes ?? action.type)
+      }
       return {
-        items: [...path.items, action.node!]
+        items: action.nodes
       }
     }
     case 'changed': {
       return {
         items: path.items.map((node) => {
-          const newNode = action.node!;
+          const newNode = action.nodes![0];
           if (!newNode) {
-            throw Error('this action should carry a node' + action.node ?? action.type)
+            throw Error('this action should carry only 1 node' + action.nodes ?? action.type)
           }
           return node.id === newNode.id ? newNode : node;
         })
       }
     }
-    case 'deleted': {
-      const deletedNode = action.node!;
-      if (!deletedNode) {
-        throw Error('this action should carry a node' + action.node ?? action.type)
+    case 'up': {
+      const deletedNodes = action.nodes!;
+      if (!deletedNodes) {
+        throw Error('this action should carry a node' + action.nodes ?? action.type)
       }
       return {
-        items: path.items.filter(t => t.id !== deletedNode.id)
+        items: path.items.filter(t => !deletedNodes.includes(t))
       }
     }
     default: {

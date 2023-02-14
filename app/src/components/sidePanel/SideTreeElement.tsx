@@ -1,12 +1,13 @@
 import { MouseEvent, useCallback, useState } from "react";
 import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
-import { getPath } from "../getPath";
+import { getPath } from "../../utils/getPath";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { codeBookmarkToUriList } from "../../utils/dragProcessing";
 import { usePathDispatch, usePath } from "../../contexts/PathContext";
 
+// todo need to find the path and highlight it, not passively
 /**
  * for side displaying FOLDERS ONLY
  * need to display with some offset to the fight
@@ -28,11 +29,11 @@ export function SideTreeElement(
   const dispatch = usePathDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
-      console.log("path: ", path);
+    if (isDisplayedNow()) return;
+    getPath(props.thing).then(newPath => {
       dispatch({
-        type: 'changed',
-        node: props.thing
+        type: 'full',
+        nodes: newPath
       })
     });
   };
@@ -51,7 +52,7 @@ export function SideTreeElement(
     () => {
       return path.items.at(-1) === props.thing
     },
-    [path.items, props.thing],
+    [path, props.thing],
   );
 
   const contextProps: ContextMenuProps = {
@@ -60,6 +61,7 @@ export function SideTreeElement(
     closeCallback: () => setContextMenuOpen(false),
     sortCallback: props.setRowsCallback
   };
+
   return (
     <>
       <div
@@ -67,15 +69,14 @@ export function SideTreeElement(
           } overflow-auto min-h-30 flex-col cursor-pointer bg-slate-700 rounded-r-md`}
         id={`${props.thing.id}-side-tree-container`}
         onClick={() =>
-          getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
-            console.log("path: ", path);
+          getPath(props.thing).then(newPath => {
             dispatch({
-              type: 'added',
-              node: props.thing
+              type: 'full',
+              nodes: newPath
             })
           })
         }
-        style={{ border: isDisplayedNow() ? '1rem solid red' : 'none' }}
+        style={{ border: isDisplayedNow() ? '0.5rem solid red' : 'none' }}
         onContextMenu={e => handleContextMenu(e)}
         onDragStart={e => {
           const stringified: string = codeBookmarkToUriList([props.thing], true);

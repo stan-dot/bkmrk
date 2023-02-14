@@ -2,19 +2,22 @@ import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../../utils/getPath";
 import { stringifyPath } from "./stringifyPath";
+import { useContextMenu } from "../../contexts/ContextMenuContext";
 
 export function PathDisplayContextMenu(
   props: { contextMenuProps: ContextMenuProps },
 ): JSX.Element {
   const handleCopyOption = () => {
-    getPath(props.contextMenuProps.thing).then((path) => {
+    // todo change this
+    getPath(props.contextMenuProps.things[0]).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
       // todo some sweet alert to notify it's copied. or a tooltip
     });
   };
 
-  const position = props.contextMenuProps.position;
+  const contextMenu = useContextMenu()
+  const position = contextMenu.position;
   return (
     <div
       id="tableContextMenu"
@@ -33,7 +36,7 @@ export function PathDisplayContextMenu(
         <p>copy path</p>
         <p>paste buton</p>
       </div>
-      <OpenAllSection thing={props.contextMenuProps.thing} />
+      <OpenAllSection things={props.contextMenuProps.things} />
       <div className="group4">
         <button onClick={(e) => handleCopyOption()}>
           Copy path

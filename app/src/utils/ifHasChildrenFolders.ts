@@ -10,6 +10,7 @@ export function isAFolder(item: chrome.bookmarks.BookmarkTreeNode): boolean {
   return !item.url;
 }
 
+// todo make this support many items
 export function getChildrenLinks(item: chrome.bookmarks.BookmarkTreeNode): chrome.bookmarks.BookmarkTreeNode[] {
   if (!item.children) {
     return [];
@@ -34,7 +35,7 @@ const defaultOptions:OpenAllOptions = {
  * @param newWindow
  * @param incognito
  */
-export async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode, options?:OpenAllOptions): Promise<void> {
+export async function openAllChildren(parent: chrome.bookmarks.BookmarkTreeNode | chrome.bookmarks.BookmarkTreeNode[], options?:OpenAllOptions): Promise<void> {
   const { newWindow, incognito } = options || defaultOptions;
   const children: chrome.bookmarks.BookmarkTreeNode[] | undefined = parent.children;
   if (!children)

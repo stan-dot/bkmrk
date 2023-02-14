@@ -4,6 +4,7 @@ import DataEditor, {
   Item
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
+import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import {
   readRawTextAsBookmarks,
@@ -13,6 +14,7 @@ import { getPath } from "../../utils/getPath";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
+import { createBookmarksFromPaste } from "../createBookmarksFromPaste";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
 
@@ -23,31 +25,29 @@ export function BookmarkTable(
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
   },
 ): JSX.Element {
-  const [searchVisibility, setSearchVisibility] = useState(false);
-  const [position, setPosition] = useState([0, 0]);
-  const [showContextMenu, setShowContextMenu] = useState(false);
-  const [lastInteractedItem, setLastInteractedItem] = useState({} as Item);
+  const [lastInteractedItem, setLastInteractedItem] = useState<Item>({});
   // todo maybe have the number of those selected? then it would simply increase with ctrl or shift. shift adding also those between tbf
 
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
+  const contextMenuDispatch = useContextMenuDispatch();
   const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
     e: React.MouseEvent<HTMLDivElement>,
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    setPosition(
-      [
+    contextMenuDispatch({
+      type: 'position-update',
+      position: [
         e.pageX,
         e.pageY,
       ],
-    );
-    if (showContextMenu) {
-      setShowContextMenu(false);
-    }
-  };
+      direction: 'open'
+    })
+  }
 
+  // todo srsly consider just ignoring this. another button to open, another for details. keep the native package handling of this
   const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
     console.log('in tble click handler');
     if (event.ctrlKey) {
@@ -78,7 +78,6 @@ export function BookmarkTable(
 
   const contextMenuProps: ContextMenuProps = {
     thing: props.rows[lastInteractedItem[1]],
-    position: position,
     closeCallback: () => setShowContextMenu(false),
     sortCallback: () => console.log("no sort here"),
   };
@@ -115,14 +114,9 @@ export function BookmarkTable(
 
   const containerDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    console.log("ondrop triggered");
-    const data: DataTransfer = e.dataTransfer;
-    const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(data);
     const parentId = path.items.at(-1)!.id;
-    const withParent = items.map((i) => {
-      return { ...i, parentId: parentId };
-    });
-    withParent.forEach((i) => chrome.bookmarks.create(i));
+    console.log("ondrop triggered");
+    createBookmarksFromPaste(e, parentId);
   };
 
   return <div
@@ -135,13 +129,13 @@ export function BookmarkTable(
     onDrop={containerDropHandler}
     onPaste={pasteHandler}
   >
-    {showContextMenu && (
+    {/* {showContextMenu && (
       <BookmarkContextMenu
         contextMenuProps={contextMenuProps}
         searchResults={props.searchResultsMode}
         setRowsCallback={props.setRowsCallback}
       />
-    )}
+    )} */}
     <DataEditor
       columns={columns}
       getCellContent={getData(props.rows)}
@@ -157,15 +151,12 @@ export function BookmarkTable(
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         event.preventDefault();
         setLastInteractedItem(cell);
-        setShowContextMenu(true);
+        // todo here there might be a problem
       }}
       onDragStart={dragHandler}
       onDrop={dropHandler}
       onHeaderClicked={() => console.log("clicked header")}
-      onSearchClose={() => setSearchVisibility(false)}
       rows={props.rows.length}
-      showSearch={searchVisibility}
-    // theme={{ accentColor: "#CF9FFF" }}
     />
   </div>
 }

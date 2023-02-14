@@ -1,8 +1,7 @@
 import {
   useContextMenu,
-  useContextMenuDispatch,
+  useContextMenuDispatch
 } from "../contexts/ContextMenuContext";
-import { usePopup } from "../contexts/PopupContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
 import { BookmarkContextMenu } from "./contextMenuComponents/BookmarkContextMenu";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
@@ -19,7 +18,6 @@ export default function ContextMenu() {
         <MiniContextMenu
           contextMenuProps={{
             things: contextMenu.things!,
-            position: contextMenu.position,
             sortCallback: function (
               node: chrome.bookmarks.BookmarkTreeNode[],
               config: SortOptions,
@@ -27,7 +25,6 @@ export default function ContextMenu() {
               throw new Error("Function not implemented.");
             },
           }}
-          visible={false}
         />
       )}
       {contextMenu.componentId === "b" && (
@@ -43,10 +40,6 @@ export default function ContextMenu() {
         <PathDisplayContextMenu
           contextMenuProps={{
             things: contextMenu.things!,
-            position: [],
-            closeCallback: function (): void {
-              throw new Error("Function not implemented.");
-            },
             sortCallback: function (
               node: chrome.bookmarks.BookmarkTreeNode[],
               config: SortOptions,

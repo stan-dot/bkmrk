@@ -6,8 +6,9 @@ import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { useEffect } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import { sortRows } from "../../utils/sortRows";
 
-// todo maybe separate for many selected items?
+// todo maybe separate for many selected items? or proceeding from different places here?, as redirection?
 export function BookmarkContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;
@@ -15,11 +16,22 @@ export function BookmarkContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = props.contextMenuProps.things.length > 1 || basicNodes.includes(
-    props.contextMenuProps.things[0].title,
-  );
+  const isProtected: boolean = props.contextMenuProps.things.length > 1 ||
+    basicNodes.includes(
+      props.contextMenuProps.things[0].title,
+    );
 
-  const handleShowInFolder = async (_e: React.MouseEvent<HTMLButtonElement>) => {
+  const close = () => {
+    dispatch({
+      type: "bookmark",
+      direction: "close",
+      position: position,
+    });
+  }
+
+  const handleShowInFolder = async (
+    _e: React.MouseEvent<HTMLButtonElement>,
+  ) => {
     if (!props.setRowsCallback) return;
     const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
       .get(props.contextMenuProps.thing.parentId!);
@@ -41,25 +53,20 @@ export function BookmarkContextMenu(
   useEffect(() => {
     setTimeout(() => {
       // props.contextMenuProps.closeCallback();
-      dispatch({
-        type: "bookmark",
-        direction: "close",
-        position: position
-      })
+      close();
     }, 3000);
-  }, [dispatch, position, props.contextMenuProps])
-
+  }, [dispatch, position, props.contextMenuProps]);
 
   return (
     <div
-      id="sidePanelContextMenu"
+      id="bookmarkContextMenu"
       className={`contextMenu w-36 z-50 border-1 text-l rounded-md border-solid bg-slate-700 `}
       style={{
         position: "absolute",
         left: `${position[0]}px`,
         right: `${position[1]}px`,
       }}
-      onBlur={() => props.contextMenuProps.closeCallback()}
+      onBlur={close}
     >
       <hr />
       <EditDeleteSection
@@ -80,12 +87,16 @@ export function BookmarkContextMenu(
       </div>
       <hr />
       <div className="group-changing flex flex-col">
-        <button className={`${!props.searchResults && 'hidden'} ${contextMenuButtonClass}`} onClick={handleShowInFolder} >
+        <button
+          className={`${!props.searchResults && "hidden"
+            } ${contextMenuButtonClass}`}
+          onClick={handleShowInFolder}
+        >
           <p>show in folder</p>
         </button>
         <button
           onClick={() =>
-            props.contextMenuProps.sortCallback([props.contextMenuProps.thing], {
+            sortRows(props.contextMenuProps.things, {
               key: "title",
               reverse: false,
             })}
@@ -95,10 +106,11 @@ export function BookmarkContextMenu(
           Sort A-Z
         </button>
         <button
-          onClick={() => props.contextMenuProps.sortCallback([props.contextMenuProps.thing], {
-            key: "date",
-            reverse: false,
-          })}
+          onClick={() =>
+            sortRows(props.contextMenuProps.things, {
+              key: "date",
+              reverse: false,
+            })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
@@ -106,7 +118,7 @@ export function BookmarkContextMenu(
         </button>
       </div>
       <hr />
-      <OpenAllSection thing={props.contextMenuProps.thing} />
+      <OpenAllSection things={props.contextMenuProps.things} />
     </div>
   );
 }

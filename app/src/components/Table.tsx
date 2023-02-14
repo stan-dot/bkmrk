@@ -117,9 +117,6 @@ export function TableLoader(props: {}): JSX.Element {
     nodes: chrome.bookmarks.BookmarkTreeNode[],
     config: SortOptions,
   ) => {
-    // if (node.children?.length === 0) return;
-    // const tmp: chrome.bookmarks.BookmarkTreeNode[] = node.children!;
-    // const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(tmp, config);
     const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(nodes, config);
     sorted.forEach((v, i) => {
       const args: chrome.bookmarks.BookmarkCreateArg = {
@@ -137,64 +134,64 @@ export function TableLoader(props: {}): JSX.Element {
   };
 
   return <>
-    <Navbar
-      dataCallback={dataCallback}
-      reloadWithNode={reloadWithNode}
-      lastPathItem={lastPathItem}
-      setHistoryVisible={setHistoryVisible}
-      historyVisible={historyVisible}
-      sortHandler={sortHandler}
-      rows={rows}
-    />
-    <hr />
     <PathProvider>
-      <div
-        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-        onPaste={(e: React.ClipboardEvent<Element>) => {
-          e.preventDefault();
-          console.log(e);
-          chrome.bookmarks.create({
-            parentId: lastPathItem().id,
-            title: "Extensions doc",
-            url: "https://developer.chrome.com/docs/extensions",
-          });
-        }}
-      >
-        <PathDisplay />
-      </div>
-      <LoadingScreen loading={loaded === "LOADING"} />
-      <div
-        id="lowerPanel"
-        style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-      >
-        <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
-          <SideSubTree
-            nodes={globalTree}
-            setRowsCallback={dataCallback}
-          />
-        </div>
+      <PopupProvider>
+        <Navbar
+          dataCallback={dataCallback}
+          reloadWithNode={reloadWithNode}
+          lastPathItem={lastPathItem}
+          setHistoryVisible={setHistoryVisible}
+          historyVisible={historyVisible}
+          sortHandler={sortHandler}
+          rows={rows}
+        />
+        <hr />
         <div
-          id="mainContainer"
-          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-          onClick={(e) => {
+          className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+          onPaste={(e: React.ClipboardEvent<Element>) => {
             e.preventDefault();
-            console.log("it was clicked on the outside");
+            console.log(e);
+            chrome.bookmarks.create({
+              parentId: lastPathItem().id,
+              title: "Extensions doc",
+              url: "https://developer.chrome.com/docs/extensions",
+            });
           }}
         >
-          <BookmarkTable
-            rows={rows}
-            setRowsCallback={dataCallback}
-            searchResultsMode={loaded === "SEARCH_RESULT"}
-          />
+          <PathDisplay />
         </div>
-        <HistoryPanel history={history} historyVisible={historyVisible} />
-      </div>
-      <MiniContextMenu
-        contextMenuProps={getContextProps()}
-        visible={miniMenuVisible}
-      />
-      <PopupProvider>
+        <LoadingScreen loading={loaded === "LOADING"} />
+        <div
+          id="lowerPanel"
+          style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+          className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
+        >
+          <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
+            <SideSubTree
+              nodes={globalTree}
+              setRowsCallback={dataCallback}
+            />
+          </div>
+          <div
+            id="mainContainer"
+            className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("it was clicked on the outside");
+            }}
+          >
+            <BookmarkTable
+              rows={rows}
+              setRowsCallback={dataCallback}
+              searchResultsMode={loaded === "SEARCH_RESULT"}
+            />
+          </div>
+          <HistoryPanel history={history} historyVisible={historyVisible} />
+        </div>
+        <MiniContextMenu
+          contextMenuProps={getContextProps()}
+          visible={miniMenuVisible}
+        />
         <Popup />
       </PopupProvider>
     </PathProvider>

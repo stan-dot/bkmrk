@@ -1,4 +1,4 @@
-import { usePopupDispatch } from "../../contexts/PopupContext";
+import { PopupAction, usePopupDispatch } from "../../contexts/PopupContext";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 
 export function EditDeleteSection(
@@ -11,12 +11,15 @@ export function EditDeleteSection(
       <button
         disabled={props.protected}
         onClick={(e) => {
+          // todo this does not even work! on the main dirs
           console.log('clicked the edit button, opening the edit menu');
-          // setEditOpen(true);
-          dispatch({
+          const changes: PopupAction = {
             type: 'edit-bookmark',
             direction: 'open',
-          })
+          };
+          // setEditOpen(true);
+          // todo not a function error for the dispatch ?!
+          dispatch(changes)
         }}
         className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
       >
@@ -31,7 +34,7 @@ export function EditDeleteSection(
           chrome.bookmarks.remove(props.thing.id);
         }}
         className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
-        // todo this needs a 'undo' popup in the left bottom corner
+      // todo this needs a 'undo' popup in the left bottom corner
       >
         <p>Delete</p>
       </button>

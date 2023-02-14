@@ -1,16 +1,18 @@
 import React, { createContext, useContext, useReducer } from "react";
-import EditBookmarkAlert from "../components/alerts/EditAlert";
+import EditBookmarkAlert from "../components/alerts/EditBookmarkAlert";
 
 const emptyComponent = <></>;
 const initialPopup: PopupContext = {
   component: emptyComponent
 };
 
-type PopupContext = {
+export type PopupContext = {
   component: JSX.Element
+  componentId?: string,
+  args?: any
 }
 
-type PopupAction = {
+export type PopupAction = {
   type: 'add-new-bookmark' | 'add-new-folder' | 'edit-bookmark' | 'edit-folder' | 'open-15-plus' | 'full';
   direction: 'open' | 'close',
   nodeId?: string;
@@ -37,10 +39,14 @@ export function PopupProvider({ children }: any) {
 }
 
 export function popupReducer(popup: PopupContext, action: PopupAction): PopupContext {
+  console.log('action', action);
   switch (action.type) {
-    case "edit-folder": {
+    case "edit-bookmark": {
+      console.log('inside edit bookmark reducer');
       return {
-        component: <EditBookmarkAlert id={action.nodeId!}  />
+        component: <EditBookmarkAlert id={action.nodeId!} />,
+        componentId: 'eba',
+        args: action.nodeId!
       }
     }
 

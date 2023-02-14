@@ -6,19 +6,21 @@ import {
   usePathDispatch
 } from "../contexts/PathContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
+import EditAlert from "./alerts/EditAlert";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
+import { HistoryPanel } from "./HistoryPanel";
 import { LoadingScreen } from "./LoadingScreen";
 import { Navbar } from "./Navbar";
 import { PathDisplay } from "./path/PathDisplay";
-import { SideTree } from "./sidePanel/SideTree";
+import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-  // todo instructions how to sort given a node and props
-  // boils down to deleting all children of a node,
-  // then doing a quicksort algorithm by the given index to get the monoid,
-  // then pasting into the children,
-  // then reloading the current path
+// todo instructions how to sort given a node and props
+// boils down to deleting all children of a node,
+// then doing a quicksort algorithm by the given index to get the monoid,
+// then pasting into the children,
+// then reloading the current path
 
 type MainDisplayStates =
   | "LOADING"
@@ -71,8 +73,8 @@ export function TableLoader(props: {}): JSX.Element {
   };
 
   const lastPathItem: () => chrome.bookmarks.BookmarkTreeNode = useCallback(
-    () => path.items.at(-1)!,
-    [path],
+    () => path.items.at(-1) ?? globalTree[0],
+    [globalTree, path.items],
   );
 
   if (loaded === "LOADING") {
@@ -99,8 +101,14 @@ export function TableLoader(props: {}): JSX.Element {
   chrome.bookmarks.onImportEnded.addListener(() => reloadWithNode(path.items));
 
   useEffect(() => {
-    setHistory((previousHistory) => [...previousHistory, lastPathItem()]);
-
+    const currentLast = lastPathItem();
+    console.log('current last:', currentLast);
+    setHistory((previousHistory) => [...previousHistory, currentLast]);
+    if (currentLast) {
+      chrome.bookmarks.getChildren(currentLast.id).then((children) => {
+        setRows(children);
+      });
+    }
     return () => { };
   }, [path, lastPathItem]);
 
@@ -156,16 +164,15 @@ export function TableLoader(props: {}): JSX.Element {
       <LoadingScreen loading={loaded === "LOADING"} />
       <div
         id="lowerPanel"
-        // onClick={e => {
-        // e.preventDefault();
-        // }}
         style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
         className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
       >
-        <SideTree
-          tree={globalTree}
-          dataCallback={dataCallback}
-        />
+        <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
+          <SideSubTree
+            nodes={globalTree}
+            setRowsCallback={dataCallback}
+          />
+        </div>
         <div
           id="mainContainer"
           className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
@@ -180,32 +187,7 @@ export function TableLoader(props: {}): JSX.Element {
             searchResultsMode={loaded === "SEARCH_RESULT"}
           />
         </div>
-        <div
-          id="rightPanel"
-          className="bg-slate-700 w-44 z-10 rounded-md shadow"
-          style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
-        >
-          {history.length === 0
-            ? <p>No history found</p>
-            : history.map((b) => {
-              // console.log('history: ', b);
-              // return "some item"
-              return (
-                <p
-                  style={{
-                    // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
-                  }}
-                >
-                  <p>nothing</p>
-                  {
-                    /* <a href={b.url} className="link">
-                {b.title}
-              </a> */
-                  }
-                </p>
-              );
-            })}
-        </div>
+        <HistoryPanel history={history} historyVisible={historyVisible} />
       </div>
       <MiniContextMenu
         contextMenuProps={getContextProps()}
@@ -214,5 +196,6 @@ export function TableLoader(props: {}): JSX.Element {
     </PathProvider>
   </>
 }
+
 
 

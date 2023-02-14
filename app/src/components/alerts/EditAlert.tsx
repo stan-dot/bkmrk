@@ -17,6 +17,7 @@ const initialData: chrome.bookmarks.BookmarkChangesArg = {
 export default function EditAlert(
   { submitCallback, closeCallback, visible }: EditAlertProps,
 ) {
+  console.log('created the edit alert');
   const [data, setData] = useState(initialData);
   const onSubmit = (e: FormEvent) => {
     console.log('submitting the form');

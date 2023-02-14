@@ -68,8 +68,8 @@ export function TableLoader(props: {}): JSX.Element {
 
 
 
-    const currentNodeChildren: chrome.bookmarks.BookmarkTreeNode[] =
-      chrome.bookmarks.getChildren(lastPathItem().id);
+    // const currentNodeChildren: chrome.bookmarks.BookmarkTreeNode[] =
+    //   chrome.bookmarks.getChildren(lastPathItem().id);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
       root[0].children![0];
     setRows(bookmarksBar.children ?? []);
@@ -181,8 +181,8 @@ export function TableLoader(props: {}): JSX.Element {
         >
           <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
             <SideSubTree
-              // nodes={globalTree}
-              nodes={path.items.at(0)?.children!}
+              nodes={globalTree}
+              // nodes={path.items.at(0)?.children!}
               setRowsCallback={dataCallback}
             />
           </div>
@@ -211,6 +211,3 @@ export function TableLoader(props: {}): JSX.Element {
     </PathProvider>
   </>
 }
-
-
-

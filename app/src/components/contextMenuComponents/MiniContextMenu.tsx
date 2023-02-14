@@ -2,19 +2,15 @@ import { ContextMenuProps } from "./ContextMenuProps";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 
 export function MiniContextMenu(
-  props: {
-    contextMenuProps: ContextMenuProps;
-    visible: boolean
-  },
+  props: { contextMenuProps: ContextMenuProps },
 ): JSX.Element {
-
   const position = props.contextMenuProps.position;
   return (
     <div
       id="sidePanelContextMenu"
       className={`contextMenu w-36 z-50 border-1 text-l rounded-md border-solid bg-slate-700 `}
       style={{
-        display: props.visible ? 'flex' : 'none',
+        display: "flex",
         position: "absolute",
         left: `${position[0]}px`,
         right: `${position[1]}px`,

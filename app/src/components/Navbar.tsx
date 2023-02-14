@@ -43,7 +43,7 @@ export function Navbar(
       >
         &#128472; refresh
       </button> */}
-      <button
+      {/* <button
         id="history-button"
         className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-md p-4 text-center border-red-600 cursor-pointer"
         onClick={() => setHistoryVisible(!historyVisible)}
@@ -60,7 +60,7 @@ export function Navbar(
         disabled
       >
         &#128276; Notifications
-      </button>
+      </button> */}
       <CornerMenu
         sortCallback={sortHandler}
         importCallback={() => console.log("should load the datastructure")}

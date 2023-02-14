@@ -13,7 +13,7 @@ const initialData: chrome.bookmarks.BookmarkChangesArg = {
 };
 
 
-export default function RenameFolderAlert(
+export default function EditFolderAlert(
   { submitCallback, closeCallback, visible }: RenameFolderAlertProps,
 ) {
   const [data, setData] = useState(initialData);

@@ -5,14 +5,16 @@ import {
   usePath,
   usePathDispatch
 } from "../contexts/PathContext";
+import { PopupProvider } from "../contexts/PopupContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
-import EditAlert from "./alerts/EditAlert";
+import EditBookmarkAlert from "./alerts/EditAlert";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { HistoryPanel } from "./HistoryPanel";
 import { LoadingScreen } from "./LoadingScreen";
 import { Navbar } from "./Navbar";
 import { PathDisplay } from "./path/PathDisplay";
+import Popup from "./Popup";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
@@ -193,6 +195,9 @@ export function TableLoader(props: {}): JSX.Element {
         contextMenuProps={getContextProps()}
         visible={miniMenuVisible}
       />
+      <PopupProvider>
+        <Popup />
+      </PopupProvider>
     </PathProvider>
   </>
 }

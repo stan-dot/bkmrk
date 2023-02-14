@@ -1,5 +1,5 @@
 import { useState } from "react";
-import EditAlert from "../alerts/EditAlert";
+import EditBookmarkAlert from "../alerts/EditAlert";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 
 export function EditDeleteSection(
@@ -18,7 +18,7 @@ export function EditDeleteSection(
       >
         <p>Edit</p>
       </button>
-      <EditAlert
+      <EditBookmarkAlert
         closeCallback={() => setEditOpen(false)}
         visible={editOpen}
         id={props.thing.id} />

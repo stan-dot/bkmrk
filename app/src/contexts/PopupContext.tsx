@@ -1,8 +1,9 @@
 import React, { createContext, useContext, useReducer } from "react";
-import EditAlert from "../components/alerts/EditAlert";
+import EditBookmarkAlert from "../components/alerts/EditAlert";
 
+const emptyComponent = <></>;
 const initialPopup: PopupContext = {
-  component: <></>
+  component: emptyComponent
 };
 
 type PopupContext = {
@@ -39,7 +40,7 @@ export function popupReducer(popup: PopupContext, action: PopupAction): PopupCon
   switch (action.type) {
     case "edit-folder": {
       return {
-        component: <EditAlert id={""} closeCallback={function (): void {
+        component: <EditBookmarkAlert id={""} closeCallback={function (): void {
           throw new Error("Function not implemented.");
         }} visible={false} />
       }

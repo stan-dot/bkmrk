@@ -1,11 +1,11 @@
 import { FormEvent, useState } from "react";
+import { usePopupDispatch } from "../../contexts/PopupContext";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
 import { RenameGroup } from "./groups/RenameGroup";
 import { UrlEditGroup } from "./groups/UrlEditGroup";
 
 type EditAlertProps = {
   id: string;
-  closeCallback: () => void;
   visible: boolean;
 };
 
@@ -14,17 +14,27 @@ const initialData: chrome.bookmarks.BookmarkChangesArg = {
   url: "",
 };
 
-export default function EditAlert(
-  { id, closeCallback, visible }: EditAlertProps,
+export default function EditBookmarkAlert(
+  { id, visible }: EditAlertProps,
 ) {
+
+  const dispatch = usePopupDispatch();
   console.log("created the edit alert");
   const [data, setData] = useState(initialData);
+
   const onSubmit = (e: FormEvent) => {
     console.log("submitting the form");
     e.preventDefault();
     chrome.bookmarks.update(id, data)
-    closeCallback();
+    close();
   };
+
+  const close = () => {
+    dispatch({
+      type: 'edit-bookmark',
+      direction: 'close'
+    });
+  }
 
   return <div
     className="fixed backdrop-blur-md w-full h-full grid grid-cols-2 gap-4 place-content-center z-50"
@@ -43,7 +53,7 @@ export default function EditAlert(
       <h2 id="title" className="text-xl text-slate-50 m-4">Edit bookmark</h2>
       <RenameGroup dataCallback={setData} />
       <UrlEditGroup dataCallback={setData} />
-      <CancelSaveGroup closeCallback={closeCallback} />
+      <CancelSaveGroup closeCallback={close} />
     </form>
   </div >
 }

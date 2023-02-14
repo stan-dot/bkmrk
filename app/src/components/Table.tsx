@@ -6,6 +6,7 @@ import {
   usePathDispatch
 } from "../contexts/PathContext";
 import { PopupProvider } from "../contexts/PopupContext";
+import { readRawTextAsBookmarks } from "../utils/dragProcessing";
 import { SortOptions, sortRows } from "../utils/sortRows";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
@@ -64,6 +65,11 @@ export function TableLoader(props: {}): JSX.Element {
     console.log("reloaded with node");
     setLoaded("LOADED");
     setGlobalTree(root[0].children!);
+
+
+
+    const currentNodeChildren: chrome.bookmarks.BookmarkTreeNode[] =
+      chrome.bookmarks.getChildren(lastPathItem().id);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
       root[0].children![0];
     setRows(bookmarksBar.children ?? []);
@@ -80,7 +86,8 @@ export function TableLoader(props: {}): JSX.Element {
 
   if (loaded === "LOADING") {
     /**
-     * NOTE: the getTree method returns the ROOT node, which has 3 children: bookmarks bar, other bookmarks, mobile bookmarks.
+     * NOTE: the getTree method returns the ROOT node
+     * it has 3 children: bookmarks bar, other bookmarks, mobile bookmarks.
      * these only show up if not empty
      */
     chrome.bookmarks.getTree().then(
@@ -133,6 +140,20 @@ export function TableLoader(props: {}): JSX.Element {
     setRows(nodes);
   };
 
+  const pasteHandler = (e: React.ClipboardEvent<Element>) => {
+    e.preventDefault();
+    console.log(e);
+    const bookmarkChangeArg: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(e.clipboardData);
+    const parentId = lastPathItem().id;
+    bookmarkChangeArg.forEach((args: chrome.bookmarks.BookmarkChangesArg) => {
+      chrome.bookmarks.create({
+        parentId: parentId,
+        title: args.title,
+        url: args.url,
+      });
+    })
+  };
+
   return <>
     <PathProvider>
       <PopupProvider>
@@ -148,15 +169,7 @@ export function TableLoader(props: {}): JSX.Element {
         <hr />
         <div
           className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-          onPaste={(e: React.ClipboardEvent<Element>) => {
-            e.preventDefault();
-            console.log(e);
-            chrome.bookmarks.create({
-              parentId: lastPathItem().id,
-              title: "Extensions doc",
-              url: "https://developer.chrome.com/docs/extensions",
-            });
-          }}
+          onPaste={pasteHandler}
         >
           <PathDisplay />
         </div>
@@ -168,7 +181,8 @@ export function TableLoader(props: {}): JSX.Element {
         >
           <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
             <SideSubTree
-              nodes={globalTree}
+              // nodes={globalTree}
+              nodes={path.items.at(0)?.children!}
               setRowsCallback={dataCallback}
             />
           </div>

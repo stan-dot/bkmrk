@@ -4,7 +4,7 @@ import { getPath } from "../../utils/getPath";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
-import { codeBookmarkToUriList } from "../../utils/dragProcessing";
+import { codeBookmarkToUriList, readRawTextAsBookmarks } from "../../utils/dragProcessing";
 import { usePathDispatch, usePath } from "../../contexts/PathContext";
 
 // todo need to find the path and highlight it, not passively
@@ -41,7 +41,6 @@ export function SideTreeElement(
   const handleContextMenu = (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent> | React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
   ) => {
-    console.log("summoned the context menu on", props.thing.title);
     e.preventDefault();
     e.stopPropagation();
     setPosition([e.pageX, e.pageY]);
@@ -78,6 +77,18 @@ export function SideTreeElement(
         }
         style={{ border: isDisplayedNow() ? '0.25rem solid red' : 'none' }}
         onContextMenu={e => handleContextMenu(e)}
+        onDrop={e => {
+          e.preventDefault();
+          console.log("ondrop triggered");
+          const data: DataTransfer = e.dataTransfer;
+          const items: chrome.bookmarks.BookmarkChangesArg[] =
+            readRawTextAsBookmarks(data);
+          const parentId = props.thing.id;
+          const withParent = items.map((i) => {
+            return { ...i, parentId: parentId };
+          });
+          withParent.forEach((i) => chrome.bookmarks.create(i));
+        }}
         onDragStart={e => {
           const stringified: string = codeBookmarkToUriList([props.thing], true);
           e.dataTransfer.setData("text/uri-list", stringified);

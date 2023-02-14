@@ -1,20 +1,16 @@
-
-import { usePopup } from '../contexts/PopupContext';
-import EditBookmarkAlert from './alerts/EditBookmarkAlert';
+import { usePopup } from "../contexts/PopupContext";
+import EditBookmarkAlert from "./alerts/EditBookmarkAlert";
+import EditFolderAlert from "./alerts/EditFolderAlert";
 
 export default function Popup() {
   const popup = usePopup();
-  console.log('current component', popup.component)
-  console.log('current componentId', popup.componentId)
+  console.log("current component", popup.component);
+  console.log("current componentId", popup.componentId);
   return (
     <div>
-      <h2 className='text-xl text-red-800'>
-        Popup
-      </h2>
-      {popup.component}
-      {
-        popup.componentId === 'eba' ?? <EditBookmarkAlert id={popup.args} />
-      }
+      {/* {popup.component} */}
+      {popup.componentId === "eba" && <EditBookmarkAlert id={popup.args} />}
+      {popup.componentId === "efa" && <EditFolderAlert id={popup.args} />}
     </div>
-  )
+  );
 }

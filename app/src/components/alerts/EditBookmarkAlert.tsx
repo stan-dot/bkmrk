@@ -24,8 +24,9 @@ export default function EditBookmarkAlert(
   const onSubmit = (e: FormEvent) => {
     console.log("submitting the form");
     e.preventDefault();
-    chrome.bookmarks.update(id, data)
-    close();
+    chrome.bookmarks.update(id, data).then(r => {
+      close();
+    });
   };
 
   const close = () => {
@@ -36,14 +37,15 @@ export default function EditBookmarkAlert(
   }
 
   return <div
-    className="fixed backdrop-blur-md w-full h-full grid grid-cols-2 gap-4 place-content-center z-50"
+    className="fixed backdrop-blur-md w-full h-full z-50"
     id="alertBackground"
     // style={{ display: `${visible ? "absolute" : "none"}` }}
-    style={{ display: "absolute"  }}
+    style={{ display: "absolute" }}
   >
     <form
       className="
-      fixed top-1/3 left-1/3
+      fixed 
+      top-1/3 left-1/3
       flex flex-col px-6 py-2
       m-auto
       z-60 inset-0 border-solid border-gray-500 h-60 w-96  bg-slate-800 overflow-y-auto rounded  "

@@ -14,7 +14,8 @@ export function EditDeleteSection(
           // todo this does not even work! on the main dirs
           console.log('clicked the edit button, opening the edit menu');
           const changes: PopupAction = {
-            type: 'edit-bookmark',
+            // todo that will need to change
+            type: 'edit-folder',
             direction: 'open',
           };
           // setEditOpen(true);

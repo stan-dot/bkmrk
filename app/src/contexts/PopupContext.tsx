@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 import EditBookmarkAlert from "../components/alerts/EditBookmarkAlert";
+import EditFolderAlert from "../components/alerts/EditFolderAlert";
 
 const emptyComponent = <></>;
 const initialPopup: PopupContext = {
@@ -13,7 +14,7 @@ export type PopupContext = {
 }
 
 export type PopupAction = {
-  type: 'add-new-bookmark' | 'add-new-folder' | 'edit-bookmark' | 'edit-folder' | 'open-15-plus' | 'full';
+  type: 'add-new-bookmark' | 'add-new-folder' | 'edit-bookmark' | 'edit-folder' | 'open-15-plus' | 'none';
   direction: 'open' | 'close',
   nodeId?: string;
 };
@@ -40,6 +41,12 @@ export function PopupProvider({ children }: any) {
 
 export function popupReducer(popup: PopupContext, action: PopupAction): PopupContext {
   console.log('action', action);
+  if (action.direction === 'close') {
+    return {
+      component: emptyComponent,
+      componentId: 'none',
+    }
+  }
   switch (action.type) {
     case "edit-bookmark": {
       console.log('inside edit bookmark reducer');
@@ -50,6 +57,14 @@ export function popupReducer(popup: PopupContext, action: PopupAction): PopupCon
       }
     }
 
+    case "edit-folder": {
+      console.log('inside edit folder reducer');
+      return {
+        component: <EditFolderAlert id={action.nodeId!} />,
+        componentId: 'efa',
+        args: action.nodeId!
+      }
+    }
     default: {
       throw Error('Unknown action: ' + action.type);
     }

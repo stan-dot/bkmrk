@@ -49,6 +49,7 @@ export function BookmarkTable(
   };
 
   const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
+    console.log('in tble click handler');
     if (event.ctrlKey) {
       console.log(" pressed ctrl button");
     }
@@ -57,10 +58,12 @@ export function BookmarkTable(
     }
 
     // todo early handling if the row is
+    // todo that executes actually instead of the onclick of the grid thing
     if (cell[0] === 4) {
       setShowContextMenu(true);
     } else {
       const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
+      console.log('in tble click handler on bookmark', bookmark);
       if (isAFolder(bookmark)) {
         getPath(bookmark).then((newPath) => {
           console.log("path:", newPath);
@@ -70,9 +73,6 @@ export function BookmarkTable(
           })
         });
       }
-      // else {
-      //   chrome.tabs.create({ url: bookmark.url });
-      // }
     }
   };
 
@@ -107,6 +107,24 @@ export function BookmarkTable(
     });
   };
 
+  const pasteHandler = (v: React.ClipboardEvent<HTMLDivElement>) => {
+    const data: DataTransfer = v.clipboardData;
+    const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(data);
+    items.forEach((i) => chrome.bookmarks.create(i));
+  };
+
+  const containerDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    console.log("ondrop triggered");
+    const data: DataTransfer = e.dataTransfer;
+    const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(data);
+    const parentId = path.items.at(-1)!.id;
+    const withParent = items.map((i) => {
+      return { ...i, parentId: parentId };
+    });
+    withParent.forEach((i) => chrome.bookmarks.create(i));
+  };
+
   return <div
     onClick={contextClickHandler}
     className="table-container flex flex-grow pb-4 mb-40 "
@@ -114,24 +132,8 @@ export function BookmarkTable(
       e.preventDefault();
       e.dataTransfer.dropEffect = "move";
     }}
-    onDrop={(e) => {
-      e.preventDefault();
-      console.log("ondrop triggered");
-      const data: DataTransfer = e.dataTransfer;
-      const items: chrome.bookmarks.BookmarkChangesArg[] =
-        readRawTextAsBookmarks(data);
-      const parentId = path.items.at(-1)!.id;
-      const withParent = items.map((i) => {
-        return { ...i, parentId: parentId };
-      });
-      withParent.forEach((i) => chrome.bookmarks.create(i));
-    }}
-    onPaste={(v: React.ClipboardEvent<HTMLDivElement>) => {
-      const data: DataTransfer = v.clipboardData;
-      const items: chrome.bookmarks.BookmarkChangesArg[] =
-        readRawTextAsBookmarks(data);
-      items.forEach((i) => chrome.bookmarks.create(i));
-    }}
+    onDrop={containerDropHandler}
+    onPaste={pasteHandler}
   >
     {showContextMenu && (
       <BookmarkContextMenu
@@ -163,7 +165,7 @@ export function BookmarkTable(
       onSearchClose={() => setSearchVisibility(false)}
       rows={props.rows.length}
       showSearch={searchVisibility}
-      theme={{ accentColor: "#CF9FFF" }}
+    // theme={{ accentColor: "#CF9FFF" }}
     />
   </div>
 }

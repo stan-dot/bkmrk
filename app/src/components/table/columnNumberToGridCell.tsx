@@ -1,10 +1,12 @@
 import {
   GridCell, GridCellKind, GridColumn, LoadingCell,
   TextCell,
-  UriCell
+  UriCell,
 } from "@glideapps/glide-data-grid";
 import { ButtonCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/button-cell";
 import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-cell";
+import "@toast-ui/editor/dist/toastui-editor.css";
+import "@glideapps/glide-data-grid/dist/index.css";
 
 type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell;
 
@@ -103,29 +105,37 @@ const myCols: ComprehensiveColDef[] = [
   {
     static: { title: "buttonCol", width: 50 },
     columnGetter: (v) => {
-      const d: ButtonCell = {
-        kind: GridCellKind.Custom,
-        cursor: "pointer",
+      const cell: TextCell = {
+        kind: GridCellKind.Text,
+        // data: v?.title ?? "empty",
+        data: 'View details',
         allowOverlay: false,
-        copyData: "4",
-        readonly: true,
-        data: {
-          kind: "button-cell",
-          backgroundColor: ["transparent", "#6572ffee"],
-          color: ["accentColor", "accentFg"],
-          borderColor: "#6572ffa0",
-          borderRadius: 9,
-          title: "View Details",
-          onClick: () => {
-            window.alert("Button clicked");
-            console.log('should show context here')
-          },
-        },
-        themeOverride: {
-          baseFontStyle: "700 12px",
-        },
+        displayData: 'View details',
       };
-      return d;
+      return cell;
+      // const d: ButtonCell = {
+      //   kind: GridCellKind.Custom,
+      //   cursor: "pointer",
+      //   allowOverlay: false,
+      //   copyData: "4",
+      //   readonly: true,
+      //   data: {
+      //     kind: "button-cell",
+      //     backgroundColor: ["transparent", "#6572ffee"],
+      //     // color: ["accentColor", "accentFg"],
+      //     // borderColor: "#6572ffa0",
+      //     // borderRadius: 9,
+      //     title: "View Details",
+      //     onClick: () => {
+      //       window.alert("Button clicked");
+      //       console.log('should show context here')
+      //     },
+      //   },
+      //   // themeOverride: {
+      //   //   baseFontStyle: "700 12px",
+      //   // },
+      // };
+      // return d;
     },
   },
 ];

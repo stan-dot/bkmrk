@@ -1,31 +1,39 @@
 import { FormEvent, useState } from "react";
+import { usePopupDispatch } from "../../contexts/PopupContext";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
-import { UrlEditGroup } from "./groups/UrlEditGroup";
+import { RenameGroup } from "./groups/RenameGroup";
 
 type RenameFolderAlertProps = {
-  submitCallback: (data: chrome.bookmarks.BookmarkChangesArg) => void;
-  closeCallback: () => void;
-  visible: boolean
+  id: string
 };
 
 const initialData: chrome.bookmarks.BookmarkChangesArg = {
   title: "",
 };
 
-
-export default function EditFolderAlert(
-  { submitCallback, closeCallback, visible }: RenameFolderAlertProps,
-) {
+export default function EditFolderAlert({ id }: RenameFolderAlertProps,) {
   const [data, setData] = useState(initialData);
+  const dispatch = usePopupDispatch();
   const onSubmit = (e: FormEvent) => {
-    console.log('submitting the form');
+    console.log('submitting the form for edit folder');
     e.preventDefault();
-    submitCallback(data);
-    closeCallback();
+    chrome.bookmarks.update(id, data).then(r => {
+      close();
+    });
   };
 
+  const close = () => {
+    dispatch({
+      type: 'edit-folder',
+      direction: 'close'
+    });
+  }
+
   return (
-    <div className="fixed backdrop-blur-md w-full h-full grid grid-cols-2 gap-4 place-content-center z-50" id="alertBackground" style={{ display: `${visible ? 'absolute' : 'none'}` }}>
+    <div className="fixed backdrop-blur-md w-full h-full grid grid-cols-2 gap-4 place-content-center z-50" id="alertBackground"
+      // style={{ display: `${visible ? 'absolute' : 'none'}` }}
+      style={{ display: "absolute" }}
+    >
       <form className="
       fixed top-1/3 left-1/3
       flex flex-col px-6 py-2
@@ -34,9 +42,8 @@ export default function EditFolderAlert(
       // onBlur={closeCallback}
       >
         <h2 id="title" className="text-xl text-slate-50 m-4">Rename folder</h2>
-
-        <UrlEditGroup dataCallback={setData} />
-        <CancelSaveGroup closeCallback={closeCallback} />
+        <RenameGroup dataCallback={setData} />
+        <CancelSaveGroup closeCallback={close} />
       </form>
     </div>
   );

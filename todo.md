@@ -1,4 +1,7 @@
 
+- [ ] if more than 1 selected, only delete, no edit - instead 'move to common folder' 
+
+
 ## refactor
 - [ ] split global tree into context, with callbacks
 - [ ] do rows as lower level container

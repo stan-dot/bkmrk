@@ -3,7 +3,7 @@ import { makeBookmark, makeFolder } from "../../utils/dataProcessing/interact";
 import { exportBookmarks } from "../../utils/io/exportBookmarks";
 import { BookmarkImportWindow } from "../../utils/io/importBookmarks";
 import { printCsv } from "../../utils/ioOperations";
-import { SortOptions } from "../../utils/sortRows";
+import { SortOptions, sortRows } from "../../utils/sortRows";
 import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
 import { getCopies } from "../../utils/traversalFunctions/getCopies";
 
@@ -14,10 +14,6 @@ type OpenMenuStates = "IMPORT" | "EXPORT" | "NEW_FOLDER" | "NEW_BOOKMARK";
 
 export function CornerMenu(
   props: {
-    sortCallback: (
-      node: chrome.bookmarks.BookmarkTreeNode[],
-      config: SortOptions,
-    ) => void;
     importCallback: Function;
     rows: chrome.bookmarks.BookmarkTreeNode[];
   },
@@ -50,10 +46,13 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) =>
-                props.sortCallback(props.rows, {
-                  key: "title",
-                  reverse: false,
-                })}
+                sortRows(
+                  props.rows,
+                  {
+                    key: "title",
+                    reverse: false,
+                  },
+                )}
             >
               <span className="italic text-l ">A-Z</span> Sort by name
             </button>
@@ -62,7 +61,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) =>
-                props.sortCallback(props.rows, {
+                sortRows(props.rows, {
                   key: "title",
                   reverse: false,
                 })}

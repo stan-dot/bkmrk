@@ -3,13 +3,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   PathProvider,
   usePath,
-  usePathDispatch
+  usePathDispatch,
 } from "../contexts/PathContext";
 import { PopupProvider } from "../contexts/PopupContext";
-import { readRawTextAsBookmarks } from "../utils/dragProcessing";
-import { SortOptions, sortRows } from "../utils/sortRows";
-import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
-import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
+import { createBookmarksFromPaste } from "./createBookmarksFromPaste";
 import { HistoryPanel } from "./HistoryPanel";
 import { LoadingScreen } from "./LoadingScreen";
 import { Navbar } from "./Navbar";
@@ -18,56 +15,30 @@ import Popup from "./Popup";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-// todo instructions how to sort given a node and props
-// boils down to deleting all children of a node,
-// then doing a quicksort algorithm by the given index to get the monoid,
-// then pasting into the children,
-// then reloading the current path
-
 type MainDisplayStates =
   | "LOADING"
   | "LOADED"
   | "RESULT_EMPTY"
   | "SEARCH_RESULT";
 
-export function TableLoader(props: {}): JSX.Element {
+export function TableLoader(): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
-  const [rows, setRows] = useState([] as chrome.bookmarks.BookmarkTreeNode[]);
-  const [globalTree, setGlobalTree] = useState(
-    [] as chrome.bookmarks.BookmarkTreeNode[],
-  );
-
-  const [history, setHistory] = useState(
-    [] as chrome.bookmarks.BookmarkTreeNode[],
+  const [rows, setRows] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
+  const [globalTree, setGlobalTree] = useState<
+    chrome.bookmarks.BookmarkTreeNode[]
+  >([]);
+  const [history, setHistory] = useState<chrome.bookmarks.BookmarkTreeNode[]>(
+    [],
   );
 
   const [historyVisible, setHistoryVisible] = useState(false);
-  const [miniMenuVisible, setMiniMenuVisible] = useState(false);
-
-  const [position, setPosition] = useState([0, 0]);
 
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
-  const getContextProps: () => ContextMenuProps = () => {
-    return {
-      thing: lastPathItem(),
-      position: position,
-      closeCallback: () => setMiniMenuVisible(false),
-      sortCallback: () =>
-        console.log(
-          "should use some context for this, it is too bothersome now",
-        ),
-    };
-  };
-
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-    console.log("reloaded with node");
     setLoaded("LOADED");
     setGlobalTree(root[0].children!);
-
-
-
     // const currentNodeChildren: chrome.bookmarks.BookmarkTreeNode[] =
     //   chrome.bookmarks.getChildren(lastPathItem().id);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
@@ -110,7 +81,7 @@ export function TableLoader(props: {}): JSX.Element {
 
   useEffect(() => {
     const currentLast = lastPathItem();
-    console.log('current last:', currentLast);
+    console.log("current last:", currentLast);
     setHistory((previousHistory) => [...previousHistory, currentLast]);
     if (currentLast) {
       chrome.bookmarks.getChildren(currentLast.id).then((children) => {
@@ -120,94 +91,60 @@ export function TableLoader(props: {}): JSX.Element {
     return () => { };
   }, [path, lastPathItem]);
 
-  const sortHandler = (
-    nodes: chrome.bookmarks.BookmarkTreeNode[],
-    config: SortOptions,
-  ) => {
-    const sorted: chrome.bookmarks.BookmarkTreeNode[] = sortRows(nodes, config);
-    sorted.forEach((v, i) => {
-      const args: chrome.bookmarks.BookmarkCreateArg = {
-        parentId: v.parentId,
-        index: v.index,
-        title: v.title,
-        url: v.url,
-      };
-      chrome.bookmarks.create(args);
-    });
-  };
-
   const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
     setRows(nodes);
   };
 
   const pasteHandler = (e: React.ClipboardEvent<Element>) => {
+    const parentId = lastPathItem().id;
     e.preventDefault();
     console.log(e);
-    const bookmarkChangeArg: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(e.clipboardData);
-    const parentId = lastPathItem().id;
-    bookmarkChangeArg.forEach((args: chrome.bookmarks.BookmarkChangesArg) => {
-      chrome.bookmarks.create({
-        parentId: parentId,
-        title: args.title,
-        url: args.url,
-      });
-    })
+    createBookmarksFromPaste(e, parentId);
   };
 
-  return <>
-    <PathProvider>
-      <PopupProvider>
-        <Navbar
-          dataCallback={dataCallback}
-          reloadWithNode={reloadWithNode}
-          lastPathItem={lastPathItem}
-          setHistoryVisible={setHistoryVisible}
-          historyVisible={historyVisible}
-          sortHandler={sortHandler}
-          rows={rows}
-        />
-        <hr />
-        <div
-          className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-          onPaste={pasteHandler}
-        >
-          <PathDisplay />
-        </div>
-        <LoadingScreen loading={loaded === "LOADING"} />
-        <div
-          id="lowerPanel"
-          style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-          className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-        >
-          <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
-            <SideSubTree
-              nodes={globalTree}
-              // nodes={path.items.at(0)?.children!}
-              setRowsCallback={dataCallback}
-            />
-          </div>
+  return (
+    <>
+      <PathProvider>
+        <PopupProvider>
+          <Navbar
+            dataCallback={dataCallback}
+            reloadWithNode={reloadWithNode}
+            lastPathItem={lastPathItem}
+            setHistoryVisible={setHistoryVisible}
+            historyVisible={historyVisible}
+            rows={rows}
+          />
+          <hr />
           <div
-            id="mainContainer"
-            className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-            onClick={(e) => {
-              e.preventDefault();
-              console.log("it was clicked on the outside");
-            }}
+            className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+            onPaste={pasteHandler}
           >
-            <BookmarkTable
-              rows={rows}
-              setRowsCallback={dataCallback}
-              searchResultsMode={loaded === "SEARCH_RESULT"}
-            />
+            <PathDisplay />
           </div>
-          <HistoryPanel history={history} historyVisible={historyVisible} />
-        </div>
-        <MiniContextMenu
-          contextMenuProps={getContextProps()}
-          visible={miniMenuVisible}
-        />
-        <Popup />
-      </PopupProvider>
-    </PathProvider>
-  </>
+          <LoadingScreen loading={loaded === "LOADING"} />
+          <div
+            id="lowerPanel"
+            className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
+            style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+          >
+            <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
+              <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
+            </div>
+            <div
+              id="mainContainer"
+              className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+            >
+              <BookmarkTable
+                rows={rows}
+                setRowsCallback={dataCallback}
+                searchResultsMode={loaded === "SEARCH_RESULT"}
+              />
+            </div>
+            <HistoryPanel history={history} historyVisible={historyVisible} />
+          </div>
+          <Popup />
+        </PopupProvider>
+      </PathProvider>
+    </>
+  );
 }

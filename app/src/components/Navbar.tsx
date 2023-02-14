@@ -1,5 +1,4 @@
 import React from "react";
-import { SortOptions } from "../utils/sortRows";
 import { CornerMenu } from "./navbar/CornerMenu";
 import { SearchField } from "./navbar/SearchField";
 
@@ -9,10 +8,6 @@ type NavbarProps = {
   lastPathItem: () => chrome.bookmarks.BookmarkTreeNode;
   setHistoryVisible: React.Dispatch<React.SetStateAction<boolean>>;
   historyVisible: boolean;
-  sortHandler: (
-    nodes: chrome.bookmarks.BookmarkTreeNode[],
-    config: SortOptions,
-  ) => void;
   rows: chrome.bookmarks.BookmarkTreeNode[];
 };
 
@@ -23,7 +18,6 @@ export function Navbar(
     lastPathItem,
     setHistoryVisible,
     historyVisible,
-    sortHandler,
     rows,
   }: NavbarProps,
 ) {
@@ -62,7 +56,6 @@ export function Navbar(
         &#128276; Notifications
       </button> */}
       <CornerMenu
-        sortCallback={sortHandler}
         importCallback={() => console.log("should load the datastructure")}
         rows={rows}
       />

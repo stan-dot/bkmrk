@@ -5,7 +5,9 @@ import { OpenAllSection } from "./OpenAllSection";
 import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { useEffect } from "react";
+import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 
+// todo maybe separate for many selected items?
 export function BookmarkContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;
@@ -13,8 +15,8 @@ export function BookmarkContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = basicNodes.includes(
-    props.contextMenuProps.thing.title,
+  const isProtected: boolean = props.contextMenuProps.things.length > 1 || basicNodes.includes(
+    props.contextMenuProps.things[0].title,
   );
 
   const handleShowInFolder = async (_e: React.MouseEvent<HTMLButtonElement>) => {
@@ -32,14 +34,22 @@ export function BookmarkContextMenu(
   const sortable = isAFolder(props.contextMenuProps.thing) &&
     ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
 
-  useEffect(() => {
-    setTimeout(() => {
-      props.contextMenuProps.closeCallback();
-    }, 3000);
-  }, [props.contextMenuProps])
-
+  const dispatch = useContextMenuDispatch();
 
   const position = props.contextMenuProps.position;
+
+  useEffect(() => {
+    setTimeout(() => {
+      // props.contextMenuProps.closeCallback();
+      dispatch({
+        type: "bookmark",
+        direction: "close",
+        position: position
+      })
+    }, 3000);
+  }, [dispatch, position, props.contextMenuProps])
+
+
   return (
     <div
       id="sidePanelContextMenu"

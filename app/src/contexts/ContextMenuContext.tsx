@@ -8,13 +8,15 @@ export type ContextMenuContext = {
   position: [number, number],
   componentId?: string,
   args?: any
+  things?: chrome.bookmarks.BookmarkTreeNode[]
 }
 
 export type ContextMenuContextAction = {
-  type: 'bookmark' | 'folder' | 'general' | 'search-result' | 'none';
+  type: 'bookmark' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update';
   direction: 'open' | 'close',
   position: [number, number],
   nodeId?: string;
+  things?: chrome.bookmarks.BookmarkTreeNode[]
 };
 
 const ContextMenuContext = createContext<ContextMenuContext>(initialContextMenu);
@@ -52,6 +54,7 @@ export function contextMenuReducer(popup: ContextMenuContext, action: ContextMen
         componentId: "b",
         args: action.nodeId!,
         position: action.position,
+        things: action.things!
       }
     }
     default: {

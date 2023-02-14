@@ -3,7 +3,7 @@ export type SortOptions = {
   reverse: boolean;
 };
 
-export type PossibleKeys = "date" | "title"; //| 'childrenNum';
+type PossibleKeys = "date" | "title"; //| 'childrenNum';
 
 const DEFAULT_SORT_OPTIONS: SortOptions = {
   key: "title",
@@ -13,19 +13,40 @@ const DEFAULT_SORT_OPTIONS: SortOptions = {
 export function sortRows(
   rows: chrome.bookmarks.BookmarkTreeNode[],
   sortOptions?: SortOptions,
-): chrome.bookmarks.BookmarkTreeNode[] {
+):void {
   const { key, reverse } = sortOptions ?? DEFAULT_SORT_OPTIONS;
+  const sorted = sorting(key, rows, reverse);
+    callToBookmarksApi(sorted);
+}
+
+function callToBookmarksApi(sorted: chrome.bookmarks.BookmarkTreeNode[]) {
+  sorted.forEach((v, i) => {
+    const args: chrome.bookmarks.BookmarkCreateArg = {
+      parentId: v.parentId,
+      index: v.index,
+      title: v.title,
+      url: v.url,
+    };
+    chrome.bookmarks.create(args);
+  });
+}
+
+function sorting(key:PossibleKeys,  rows: chrome.bookmarks.BookmarkTreeNode[], reverse: boolean): chrome.bookmarks.BookmarkTreeNode[] {
   if (key === "title") {
-    return rows.sort((a, b) =>
-      ("" + a.title).localeCompare(b.title) * (reverse ? -1 : 1)
+    return rows.sort((a, b) => ("" + a.title).localeCompare(b.title) * (reverse ? -1 : 1)
     );
   }
 
   if (key === "date") {
-    return rows.sort((a, b) =>
-      (a.dateAdded ?? 0 - (b.dateAdded ?? 0)) * (reverse ? -1 : 1)
+    return rows.sort((a, b) => (a.dateAdded ?? 0 - (b.dateAdded ?? 0)) * (reverse ? -1 : 1)
     );
   }
-  console.error("unknown sort key", key);
-  return rows;
+  throw Error('unknown sorting key');
+  // return rows;
 }
+
+// todo instructions how to sort given a node and props
+// boils down to deleting all children of a node,
+// then doing a quicksort algorithm by the given index to get the monoid,
+// then pasting into the children,
+// then reloading the current path

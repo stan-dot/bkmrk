@@ -1,6 +1,9 @@
-import { useContextMenu, useContextMenuDispatch } from "../contexts/ContextMenuContext";
+import {
+  useContextMenu,
+  useContextMenuDispatch,
+} from "../contexts/ContextMenuContext";
 import { usePopup } from "../contexts/PopupContext";
-import { SortOptions } from "../utils/sortRows";
+import { SortOptions, sortRows } from "../utils/sortRows";
 import { BookmarkContextMenu } from "./contextMenuComponents/BookmarkContextMenu";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
 import { PathDisplayContextMenu } from "./path/PathDisplayContextMenu";
@@ -15,7 +18,7 @@ export default function ContextMenu() {
       {contextMenu.componentId === "m" && (
         <MiniContextMenu
           contextMenuProps={{
-            thing: undefined,
+            things: contextMenu.things!,
             position: contextMenu.position,
             sortCallback: function (
               node: chrome.bookmarks.BookmarkTreeNode[],
@@ -27,8 +30,32 @@ export default function ContextMenu() {
           visible={false}
         />
       )}
-      {contextMenu.componentId === "b" && <BookmarkContextMenu />}
-      {contextMenu.componentId === "p" && <PathDisplayContextMenu />}
+      {contextMenu.componentId === "b" && (
+        <BookmarkContextMenu
+          contextMenuProps={{
+            things: contextMenu.things!,
+            // position: contextMenu.position,
+            sortCallback: sortRows
+          }}
+        />
+      )}
+      {contextMenu.componentId === "p" && (
+        <PathDisplayContextMenu
+          contextMenuProps={{
+            things: contextMenu.things!,
+            position: [],
+            closeCallback: function (): void {
+              throw new Error("Function not implemented.");
+            },
+            sortCallback: function (
+              node: chrome.bookmarks.BookmarkTreeNode[],
+              config: SortOptions,
+            ): void {
+              throw new Error("Function not implemented.");
+            },
+          }}
+        />
+      )}
     </div>
   );
 }

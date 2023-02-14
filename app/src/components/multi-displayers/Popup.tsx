@@ -1,6 +1,6 @@
-import { usePopup } from "../contexts/PopupContext";
-import EditBookmarkAlert from "./alerts/EditBookmarkAlert";
-import EditFolderAlert from "./alerts/EditFolderAlert";
+import { usePopup } from "../../contexts/PopupContext";
+import EditBookmarkAlert from "../alerts/EditBookmarkAlert";
+import EditFolderAlert from "../alerts/EditFolderAlert";
 
 export default function Popup() {
   const popup = usePopup();

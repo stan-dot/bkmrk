@@ -2,7 +2,7 @@
 // Are you sure you want to open 24 tabs?
 // NOTE the critical number is 16
 import { FormEvent } from "react";
-import { CancelSaveGroup } from "./groups/CancelSaveGroup";
+import { CancelSaveGroup } from "./CancelSaveGroup";
 
 type OpenSelectedAlertProps = {
   submitCallback: () => void;

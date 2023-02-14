@@ -1,5 +1,5 @@
 import React from "react";
-import { readRawTextAsBookmarks } from "../utils/dragProcessing";
+import { readRawTextAsBookmarks } from "./dragProcessing";
 
 export function createBookmarksFromPaste(e: React.ClipboardEvent<Element>, parentId: string) {
   const bookmarkChangeArg: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(e.clipboardData);

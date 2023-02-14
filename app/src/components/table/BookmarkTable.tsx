@@ -3,18 +3,13 @@ import DataEditor, {
   GridDragEventArgs,
   Item
 } from "@glideapps/glide-data-grid";
-import React, { useState } from "react";
+import React from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
-import {
-  readRawTextAsBookmarks,
-  unpackBookmarks
-} from "../../utils/dragProcessing";
+import { readRawTextAsBookmarks, unpackBookmarks } from "../../utils/dragProcessing";
 import { getPath } from "../../utils/getPath";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
-import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
-import { createBookmarksFromPaste } from "../createBookmarksFromPaste";
+import { createBookmarksFromPaste } from "../../utils/createBookmarksFromPaste";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
 
@@ -25,7 +20,6 @@ export function BookmarkTable(
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
   },
 ): JSX.Element {
-  const [lastInteractedItem, setLastInteractedItem] = useState<Item>({});
   // todo maybe have the number of those selected? then it would simply increase with ctrl or shift. shift adding also those between tbf
 
   const path = usePath();
@@ -76,20 +70,14 @@ export function BookmarkTable(
     }
   };
 
-  const contextMenuProps: ContextMenuProps = {
-    thing: props.rows[lastInteractedItem[1]],
-    closeCallback: () => setShowContextMenu(false),
-    sortCallback: () => console.log("no sort here"),
-  };
-
   const dragHandler = (e: GridDragEventArgs) => {
+    e.preventDefault();
     const x = e.location[0];
     // const y = e.location[1];
     const data: chrome.bookmarks.BookmarkChangesArg = {
       title: props.rows[x].title,
       url: props.rows[x].url,
     };
-    e.preventDefault();
     const stringified = JSON.stringify(data);
     e.setData("text/uri-list", stringified);
   };
@@ -119,6 +107,7 @@ export function BookmarkTable(
     createBookmarksFromPaste(e, parentId);
   };
 
+  // todo figure out the difference between container on drop and inner onDrop
   return <div
     onClick={contextClickHandler}
     className="table-container flex flex-grow pb-4 mb-40 "
@@ -150,7 +139,6 @@ export function BookmarkTable(
       onCellClicked={tableClickHandler}
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         event.preventDefault();
-        setLastInteractedItem(cell);
         // todo here there might be a problem
       }}
       onDragStart={dragHandler}

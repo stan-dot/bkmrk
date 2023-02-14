@@ -6,12 +6,12 @@ import {
   usePathDispatch,
 } from "../contexts/PathContext";
 import { PopupProvider } from "../contexts/PopupContext";
-import { createBookmarksFromPaste } from "./createBookmarksFromPaste";
-import { HistoryPanel } from "./HistoryPanel";
+import { createBookmarksFromPaste } from "../utils/createBookmarksFromPaste";
+import { HistoryPanel } from "./navbar/HistoryPanel";
 import { LoadingScreen } from "./LoadingScreen";
-import { Navbar } from "./Navbar";
+import { Navbar } from "./navbar/Navbar";
 import { PathDisplay } from "./path/PathDisplay";
-import Popup from "./Popup";
+import Popup from "./multi-displayers/Popup";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 

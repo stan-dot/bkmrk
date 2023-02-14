@@ -1,6 +1,6 @@
 import React from "react";
-import { CornerMenu } from "./navbar/CornerMenu";
-import { SearchField } from "./navbar/SearchField";
+import { CornerMenu } from "./CornerMenu";
+import { SearchField } from "./SearchField";
 
 type NavbarProps = {
   dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;

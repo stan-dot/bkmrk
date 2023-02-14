@@ -1,11 +1,11 @@
+import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
+import { MiniContextMenu } from "../contextMenuComponents/MiniContextMenu";
+import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 import {
   useContextMenu,
   useContextMenuDispatch
-} from "../contexts/ContextMenuContext";
-import { SortOptions, sortRows } from "../utils/sortRows";
-import { BookmarkContextMenu } from "./contextMenuComponents/BookmarkContextMenu";
-import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
-import { PathDisplayContextMenu } from "./path/PathDisplayContextMenu";
+} from "../../contexts/ContextMenuContext";
+import { SortOptions, sortRows } from "../../utils/sortRows";
 
 export default function ContextMenu() {
   const contextMenu = useContextMenu();

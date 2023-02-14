@@ -1,11 +1,11 @@
-import { MouseEvent, useState } from "react";
+import { MouseEvent, useCallback, useState } from "react";
 import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
 import { getPath } from "../getPath";
 import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
 import { SideSubTree } from "./SideSubTree";
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { codeBookmarkToUriList } from "../../utils/dragProcessing";
-import { usePatchDispatch, usePath } from "../../contexts/PathContext";
+import { usePathDispatch, usePath } from "../../contexts/PathContext";
 
 /**
  * for side displaying FOLDERS ONLY
@@ -25,7 +25,7 @@ export function SideTreeElement(
   const [contextMenuOpen, setContextMenuOpen] = useState(false);
   const isALeafNode: boolean = ifIsALeafNode(props.thing);
   const path = usePath();
-  const dispatch = usePatchDispatch();
+  const dispatch = usePathDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
@@ -47,7 +47,12 @@ export function SideTreeElement(
     setContextMenuOpen(true);
   };
 
-  const lastPathItem = () => path.items[path.items.length - 1];
+  const isDisplayedNow = useCallback(
+    () => {
+      return path.items.at(-1) === props.thing
+    },
+    [path.items, props.thing],
+  );
 
   const contextProps: ContextMenuProps = {
     thing: props.thing,
@@ -58,18 +63,19 @@ export function SideTreeElement(
   return (
     <>
       <div
-        className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${lastPathItem() === props.thing ? "ring-cyan-300" : ""
+        className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${isDisplayedNow() ? "ring-cyan-300" : ""
           } overflow-auto min-h-30 flex-col cursor-pointer bg-slate-700 rounded-r-md`}
         id={`${props.thing.id}-side-tree-container`}
         onClick={() =>
           getPath(props.thing).then((path: chrome.bookmarks.BookmarkTreeNode[]) => {
             console.log("path: ", path);
             dispatch({
-              
+              type: 'added',
+              node: props.thing
             })
           })
         }
-        style={{ border: lastPathItem() === props.thing ? '1rem solid red' : 'none' }}
+        style={{ border: isDisplayedNow() ? '1rem solid red' : 'none' }}
         onContextMenu={e => handleContextMenu(e)}
         onDragStart={e => {
           const stringified: string = codeBookmarkToUriList([props.thing], true);

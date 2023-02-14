@@ -14,13 +14,10 @@ import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMen
 import { getPath } from "../getPath";
 import { columns } from "./columnNumberToGridCell";
 import { getData } from "./getData";
+import { usePath, usePathDispatch } from "../../contexts/PathContext";
 
 export function BookmarkTable(
   props: {
-    path: chrome.bookmarks.BookmarkTreeNode[];
-    pathChangeHandler: (
-      nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
-    ) => void;
     rows: chrome.bookmarks.BookmarkTreeNode[];
     searchResultsMode: boolean;
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
@@ -31,6 +28,9 @@ export function BookmarkTable(
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [lastInteractedItem, setLastInteractedItem] = useState({} as Item);
   // todo maybe have the number of those selected? then it would simply increase with ctrl or shift. shift adding also those between tbf
+
+  const path = usePath();
+  const pathDispatch = usePathDispatch();
 
   const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -62,9 +62,12 @@ export function BookmarkTable(
     } else {
       const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
       if (isAFolder(bookmark)) {
-        getPath(bookmark).then((path) => {
-          console.log("path:", path);
-          props.pathChangeHandler(path);
+        getPath(bookmark).then((newPath) => {
+          console.log("path:", newPath);
+          pathDispatch({
+            type: 'full',
+            node: newPath[0]
+          })
         });
       }
       // else {
@@ -104,69 +107,63 @@ export function BookmarkTable(
     });
   };
 
-  const lastPathItem = useCallback(() => props.path[props.path.length - 1], [
-    props.path,
-  ]);
-
-  return (
-    <div
-      onClick={contextClickHandler}
-      className="table-container flex flex-grow pb-4 mb-40 "
-      onDragOver={(e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-      }}
-      onDrop={(e) => {
-        e.preventDefault();
-        console.log("ondrop triggered");
-        const data: DataTransfer = e.dataTransfer;
-        const items: chrome.bookmarks.BookmarkChangesArg[] =
-          readRawTextAsBookmarks(data);
-        const parentId = lastPathItem().id;
-        const withParent = items.map((i) => {
-          return { ...i, parentId: parentId };
-        });
-        withParent.forEach((i) => chrome.bookmarks.create(i));
-      }}
-      onPaste={(v: React.ClipboardEvent<HTMLDivElement>) => {
-        const data: DataTransfer = v.clipboardData;
-        const items: chrome.bookmarks.BookmarkChangesArg[] =
-          readRawTextAsBookmarks(data);
-        items.forEach((i) => chrome.bookmarks.create(i));
-      }}
-    >
-      {showContextMenu && (
-        <BookmarkContextMenu
-          contextMenuProps={contextMenuProps}
-          searchResults={props.searchResultsMode}
-          setRowsCallback={props.setRowsCallback}
-        />
-      )}
-      <DataEditor
-        columns={columns}
-        getCellContent={getData(props.rows)}
-        isDraggable="cell"
-        keybindings={{
-          search: true,
-          selectAll: true,
-          selectRow: true,
-          copy: true,
-          paste: true,
-        }}
-        onCellClicked={tableClickHandler}
-        onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
-          event.preventDefault();
-          setLastInteractedItem(cell);
-          setShowContextMenu(true);
-        }}
-        onDragStart={dragHandler}
-        onDrop={dropHandler}
-        onHeaderClicked={() => console.log("clicked header")}
-        onSearchClose={() => setSearchVisibility(false)}
-        rows={props.rows.length}
-        showSearch={searchVisibility}
-        theme={{ accentColor: "#CF9FFF" }}
+  return <div
+    onClick={contextClickHandler}
+    className="table-container flex flex-grow pb-4 mb-40 "
+    onDragOver={(e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+    }}
+    onDrop={(e) => {
+      e.preventDefault();
+      console.log("ondrop triggered");
+      const data: DataTransfer = e.dataTransfer;
+      const items: chrome.bookmarks.BookmarkChangesArg[] =
+        readRawTextAsBookmarks(data);
+      const parentId = path.items.at(-1)!.id;
+      const withParent = items.map((i) => {
+        return { ...i, parentId: parentId };
+      });
+      withParent.forEach((i) => chrome.bookmarks.create(i));
+    }}
+    onPaste={(v: React.ClipboardEvent<HTMLDivElement>) => {
+      const data: DataTransfer = v.clipboardData;
+      const items: chrome.bookmarks.BookmarkChangesArg[] =
+        readRawTextAsBookmarks(data);
+      items.forEach((i) => chrome.bookmarks.create(i));
+    }}
+  >
+    {showContextMenu && (
+      <BookmarkContextMenu
+        contextMenuProps={contextMenuProps}
+        searchResults={props.searchResultsMode}
+        setRowsCallback={props.setRowsCallback}
       />
-    </div>
-  );
+    )}
+    <DataEditor
+      columns={columns}
+      getCellContent={getData(props.rows)}
+      isDraggable="cell"
+      keybindings={{
+        search: true,
+        selectAll: true,
+        selectRow: true,
+        copy: true,
+        paste: true,
+      }}
+      onCellClicked={tableClickHandler}
+      onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
+        event.preventDefault();
+        setLastInteractedItem(cell);
+        setShowContextMenu(true);
+      }}
+      onDragStart={dragHandler}
+      onDrop={dropHandler}
+      onHeaderClicked={() => console.log("clicked header")}
+      onSearchClose={() => setSearchVisibility(false)}
+      rows={props.rows.length}
+      showSearch={searchVisibility}
+      theme={{ accentColor: "#CF9FFF" }}
+    />
+  </div>
 }

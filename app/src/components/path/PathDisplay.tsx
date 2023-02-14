@@ -1,15 +1,15 @@
 import { useState } from "react";
+import { usePathDispatch, usePath } from "../../contexts/PathContext";
 import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { PathDisplayContextMenu } from "./PathDisplayContextMenu";
 import { PathItem } from "./PathItem";
 
-export function PathDisplay(props: {
-  path: chrome.bookmarks.BookmarkTreeNode[];
-  pathChangeHandler: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
-}): JSX.Element {
+export function PathDisplay(): JSX.Element {
   const [position, setPosition] = useState([0, 0]);
   const [showContextMenu, setShowContextMenu] = useState(false);
-  const [lastIteracted, setLastInteracted] = useState(props.path[props.path.length - 1])
+  const path = usePath();
+  const pathDispatch = usePathDispatch()
+  const [lastIteracted, setLastInteracted] = useState(path.items[path.items.length - 1])
 
   const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
     e: React.MouseEvent<HTMLDivElement>,
@@ -29,23 +29,29 @@ export function PathDisplay(props: {
 
   const handleClick = (index: number, node: chrome.bookmarks.BookmarkTreeNode) => {
     setLastInteracted(node)
-    if (index !== 0 && index !== props.path.length - 1) {
-      const newPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
+    if (index !== 0 && index !== path.items.length - 1) {
+      const newPath: chrome.bookmarks.BookmarkTreeNode[] = path.items.slice(
         0,
         index,
       );
       console.log("new path: ", newPath);
-      props.pathChangeHandler(newPath);
+      pathDispatch({
+        type: 'changed',
+        node: node
+      })
     }
   };
 
   const upButtonHandler = () => {
-    const newPath: chrome.bookmarks.BookmarkTreeNode[] = props.path.slice(
+    const newPath: chrome.bookmarks.BookmarkTreeNode[] = path.items.slice(
       0,
-      props.path.length - 1,
+      path.items.length - 1,
     );
     console.log("button up, new path: ", newPath);
-    props.pathChangeHandler(newPath);
+    pathDispatch({
+      type: 'changed',
+      node: newPath[0]
+    })
   };
 
   const contextMenuProps: ContextMenuProps = {
@@ -67,18 +73,18 @@ export function PathDisplay(props: {
         <button disabled={true} onClick={upButtonHandler} className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}>
           {"->"}
         </button>
-        <button disabled={props.path.length < 2} onClick={upButtonHandler} className={"text-l text-slate-50 hover:bg-slate-300  p-2 m-0 hover:border-slate-400"}>
+        <button disabled={path.items.length < 2} onClick={upButtonHandler} className={"text-l text-slate-50 hover:bg-slate-300  p-2 m-0 hover:border-slate-400"}>
           [..]
         </button>
       </div>
       <div className="justify-between flex border-2 " >
-        {props.path.map((n, i) => (
+        {path.items.map((n, i) => (
           <PathItem
             handleClick={handleClick}
             index={i}
             node={n}
             contextMenuHandler={contextClickHandler}
-            siblings={i > 0 ? props.path[i - 1].children : []}
+            siblings={i > 0 ? path.items[i - 1].children : []}
           />
         ))}
       </div>

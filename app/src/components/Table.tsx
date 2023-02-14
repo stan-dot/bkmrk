@@ -1,6 +1,10 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { PathProvider } from "../contexts/PathContext";
+import {
+  PathProvider,
+  usePath,
+  usePathDispatch,
+} from "../contexts/PathContext";
 import { SortOptions, sortRows } from "../utils/sortRows";
 import { ContextMenuProps } from "./contextMenuComponents/ContextMenuProps";
 import { MiniContextMenu } from "./contextMenuComponents/MiniContextMenu";
@@ -11,13 +15,15 @@ import { PathDisplay } from "./path/PathDisplay";
 import { SideTree } from "./sidePanel/SideTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 
-
-type MainDisplayStates = "LOADING" | "LOADED" | "RESULT_EMPTY" | "SEARCH_RESULT";
+type MainDisplayStates =
+  | "LOADING"
+  | "LOADED"
+  | "RESULT_EMPTY"
+  | "SEARCH_RESULT";
 
 // data context - rows, global tree
-// pathContext 
+// pathContext
 // historyContext
-
 
 // loaded does not require context
 export function TableLoader(props: {}): JSX.Element {
@@ -36,6 +42,9 @@ export function TableLoader(props: {}): JSX.Element {
 
   const [position, setPosition] = useState([0, 0]);
 
+  const path = usePath();
+  const pathDispatch = usePathDispatch();
+
   const getContextProps: () => ContextMenuProps = () => {
     return {
       thing: lastPathItem(),
@@ -49,18 +58,23 @@ export function TableLoader(props: {}): JSX.Element {
   };
 
   const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-    console.log('reloaded with node')
+    console.log("reloaded with node");
     setLoaded("LOADED");
     setGlobalTree(root[0].children!);
     const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
       root[0].children![0];
     setRows(bookmarksBar.children ?? []);
-    setCurrentPath([root[0], bookmarksBar]);
+    pathDispatch({
+      type: "changed",
+      node: root[0],
+    });
+    // setCurrentPath([root[0], bookmarksBar]);
   };
 
-  const lastPathItem = useCallback(() => currentPath[currentPath.length - 1], [
-    currentPath,
-  ]);
+  const lastPathItem: () => chrome.bookmarks.BookmarkTreeNode = useCallback(
+    () => path.items.at(-1)!,
+    [path],
+  );
 
   if (loaded === "LOADING") {
     /**
@@ -69,7 +83,7 @@ export function TableLoader(props: {}): JSX.Element {
      */
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-        console.log('loaded!');
+        console.log("loaded!");
         reloadWithNode(root);
       },
     );
@@ -77,19 +91,19 @@ export function TableLoader(props: {}): JSX.Element {
 
   const deltaListener = (e: string): void => {
     console.log("the bookmarks have changed...", e);
-    reloadWithNode(currentPath);
+    reloadWithNode(path.items);
   };
   // todo here change for the definite update processing
   chrome.bookmarks.onChanged.addListener(deltaListener);
   chrome.bookmarks.onMoved.addListener(deltaListener);
   chrome.bookmarks.onRemoved.addListener(deltaListener);
-  chrome.bookmarks.onImportEnded.addListener(() => reloadWithNode(currentPath));
+  chrome.bookmarks.onImportEnded.addListener(() => reloadWithNode(path.items));
 
   useEffect(() => {
     setHistory((previousHistory) => [...previousHistory, lastPathItem()]);
 
     return () => { };
-  }, [currentPath, lastPathItem]);
+  }, [path, lastPathItem]);
 
   // todo instructions how to sort given a node and props
   // boils down to deleting all children of a node,
@@ -116,163 +130,126 @@ export function TableLoader(props: {}): JSX.Element {
     });
   };
 
-  const pathChangeHandler = (
-    nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
-  ): void => {
-    setCurrentPath(nodesForNewPath);
-    console.log(
-      "reacting to a change in path",
-      currentPath,
-      " new path: ",
-      nodesForNewPath,
-    );
-    const last: chrome.bookmarks.BookmarkTreeNode =
-      nodesForNewPath[nodesForNewPath.length - 1];
-    try {
-      chrome.bookmarks.getChildren(last.id).then(
-        (children: chrome.bookmarks.BookmarkTreeNode[]) => {
-          console.log(
-            "last element of the path is: ",
-            last,
-            "its children are:",
-            children,
-            " setting rows to that array",
-          );
-          if (children) {
-            // console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
-            console.log("changing rows");
-            setRows(children);
-          } else {
-            setLoaded("RESULT_EMPTY");
-          }
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
   const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
     setRows(nodes);
   };
 
-  return <>
-    <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
-      <div className="flex align-middle" id="brandingBit">
-        <p className="text-2xl mt-2 ml-2 text-white">
-          &#128366; BOOKasta
-        </p>
-      </div>
-      <SearchField setDataCallback={dataCallback} />
-      <button
-        id="refresh-button"
-        className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
-        onClick={() => reloadWithNode([lastPathItem()])}
-        disabled
-      >
-        &#128472; refresh
-      </button>
-      <button
-        id="history-button"
-        className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
-        onClick={() => setHistoryVisible(!historyVisible)}
-        onBlur={() => setHistoryVisible(false)}
-        disabled
-      >
-        &#11186; History
-      </button>
-      <button
-        id="notifications-button"
-        className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
-        onClick={() => console.log(' activated notifications button')}
-        onBlur={() => console.log(' lost focus on notifications button')}
-        disabled
-      >
-        &#128276; Notifications
-      </button>
-      <CornerMenu
-        sortCallback={sortHandler}
-        importCallback={() => console.log("should load the datastructure")}
-        rows={rows}
-      />
-    </nav>
-    <hr />
-    <PathProvider>
-
-      <div
-        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-        onPaste={(e: React.ClipboardEvent<Element>) => {
-          e.preventDefault();
-          console.log(e);
-          chrome.bookmarks.create({
-            parentId: lastPathItem().id,
-            title: "Extensions doc",
-            url: "https://developer.chrome.com/docs/extensions",
-          });
-        }}
-      >
-        <PathDisplay
-          path={currentPath}
-          pathChangeHandler={pathChangeHandler}
+  return (
+    <>
+      <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
+        <div className="flex align-middle" id="brandingBit">
+          <p className="text-2xl mt-2 ml-2 text-white">
+            &#128366; BOOKasta
+          </p>
+        </div>
+        <SearchField setDataCallback={dataCallback} />
+        <button
+          id="refresh-button"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
+          onClick={() => reloadWithNode([lastPathItem()])}
+          disabled
+        >
+          &#128472; refresh
+        </button>
+        <button
+          id="history-button"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
+          onClick={() => setHistoryVisible(!historyVisible)}
+          onBlur={() => setHistoryVisible(false)}
+          disabled
+        >
+          &#11186; History
+        </button>
+        <button
+          id="notifications-button"
+          className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-xl p-4 text-center border-red-600 cursor-pointer"
+          onClick={() => console.log(" activated notifications button")}
+          onBlur={() => console.log(" lost focus on notifications button")}
+          disabled
+        >
+          &#128276; Notifications
+        </button>
+        <CornerMenu
+          sortCallback={sortHandler}
+          importCallback={() => console.log("should load the datastructure")}
+          rows={rows}
         />
-      </div>
-      <LoadingScreen loading={loaded === "LOADING"} />
-      <div id="lowerPanel"
-        // onClick={e => {
-        // e.preventDefault();
-        // }}
-        style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-      >
-        <SideTree
-          tree={globalTree}
-          pathSetter={pathChangeHandler}
-          path={currentPath}
-          dataCallback={dataCallback}
-        />
-        <div id="mainContainer"
-          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-          onClick={(e) => {
+      </nav>
+      <hr />
+      <PathProvider>
+        <div
+          className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+          onPaste={(e: React.ClipboardEvent<Element>) => {
             e.preventDefault();
-            console.log("it was clicked on the outside");
+            console.log(e);
+            chrome.bookmarks.create({
+              parentId: lastPathItem().id,
+              title: "Extensions doc",
+              url: "https://developer.chrome.com/docs/extensions",
+            });
           }}
         >
-          <BookmarkTable
-            rows={rows}
-            pathChangeHandler={pathChangeHandler}
-            setRowsCallback={dataCallback}
-            searchResultsMode={loaded === "SEARCH_RESULT"}
-            path={currentPath}
-          />
+          <PathDisplay />
         </div>
+        <LoadingScreen loading={loaded === "LOADING"} />
         <div
-          id="rightPanel"
-          className="bg-slate-700 w-44 z-10 rounded-md shadow"
-          style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
+          id="lowerPanel"
+          // onClick={e => {
+          // e.preventDefault();
+          // }}
+          style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+          className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
         >
-          {history.length === 0 ? <p>No history found</p> : history.map((b) => {
-            // console.log('history: ', b);
-            // return "some item"
-            return (
-              <p
-                style={{
-                  // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
-                }}
-              >
-                <p>nothing</p>
-                {
-                  /* <a href={b.url} className="link">
+          <SideTree
+            tree={globalTree}
+            dataCallback={dataCallback}
+          />
+          <div
+            id="mainContainer"
+            className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+            onClick={(e) => {
+              e.preventDefault();
+              console.log("it was clicked on the outside");
+            }}
+          >
+            <BookmarkTable
+              rows={rows}
+              setRowsCallback={dataCallback}
+              searchResultsMode={loaded === "SEARCH_RESULT"}
+            />
+          </div>
+          <div
+            id="rightPanel"
+            className="bg-slate-700 w-44 z-10 rounded-md shadow"
+            style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
+          >
+            {history.length === 0
+              ? <p>No history found</p>
+              : history.map((b) => {
+                // console.log('history: ', b);
+                // return "some item"
+                return (
+                  <p
+                    style={{
+                      // fontWeight: `${b?.title === lastPathItem().title ? "bold" : "normal" }`,
+                    }}
+                  >
+                    <p>nothing</p>
+                    {
+                      /* <a href={b.url} className="link">
                   {b.title}
                 </a> */
-                }
-              </p>
-            );
-          })}
+                    }
+                  </p>
+                );
+              })}
+          </div>
         </div>
-      </div>
-      <MiniContextMenu contextMenuProps={getContextProps()} visible={miniMenuVisible} />
-    </PathProvider>
-  </>
+        <MiniContextMenu
+          contextMenuProps={getContextProps()}
+          visible={miniMenuVisible}
+        />
+      </PathProvider>
+    </>
+  );
 }
-
-

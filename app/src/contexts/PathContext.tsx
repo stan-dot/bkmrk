@@ -9,7 +9,7 @@ type Path = {
 }
 
 type PathAction = {
-  type: 'changed' | 'deleted' | 'added';
+  type: 'changed' | 'deleted' | 'added' | 'up' | 'branch' | 'full';
   node?: chrome.bookmarks.BookmarkTreeNode;
 };
 
@@ -21,7 +21,7 @@ export function usePath() {
   return useContext(PathContext);
 }
 
-export function usePatchDispatch() {
+export function usePathDispatch() {
   return useContext(PathDispatchContext);
 }
 
@@ -40,6 +40,11 @@ export function PathProvider({ children }: any) {
 export function pathReducer(path: Path, action: PathAction): Path {
   switch (action.type) {
     case 'added': {
+      return {
+        items: [...path.items, action.node!]
+      }
+    }
+    case 'full': {
       return {
         items: [...path.items, action.node!]
       }
@@ -69,3 +74,42 @@ export function pathReducer(path: Path, action: PathAction): Path {
     }
   }
 }
+
+// const pathChangeHandler = (
+//   nodesForNewPath: chrome.bookmarks.BookmarkTreeNode[],
+// ): void => {
+//   pathDispatch({
+//     type: 'changed',
+//     node: nodesForNewPath[0]
+//   })
+//   console.log(
+//     "reacting to a change in path",
+//     path,
+//     " new path: ",
+//     nodesForNewPath,
+//   );
+//   const last: chrome.bookmarks.BookmarkTreeNode =
+//     nodesForNewPath[nodesForNewPath.length - 1];
+//   try {
+//     chrome.bookmarks.getChildren(last.id).then(
+//       (children: chrome.bookmarks.BookmarkTreeNode[]) => {
+//         console.log(
+//           "last element of the path is: ",
+//           last,
+//           "its children are:",
+//           children,
+//           " setting rows to that array",
+//         );
+//         if (children) {
+//           // console.log("last element of the path is: ", last, "its children are:", children, " setting rows to that array");
+//           console.log("changing rows");
+//           setRows(children);
+//         } else {
+//           setLoaded("RESULT_EMPTY");
+//         }
+//       },
+//     );
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };

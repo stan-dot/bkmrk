@@ -8,6 +8,10 @@ import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@glideapps/glide-data-grid/dist/index.css";
 
+// todo use tagcell after filtering for keywords
+
+const keywords: string[] = [];
+
 type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell;
 
 type ComprehensiveColDef = {

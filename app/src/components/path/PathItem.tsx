@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+// todo the siblings need to be done better
 export function PathItem(
   props: {
     handleClick: (
@@ -15,7 +16,8 @@ export function PathItem(
   const [siblingsVisible, setSiblingsVisible] = useState(false);
   return (
     <div className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid  focus:shadow ">
-      <button onClick={(v) => setSiblingsVisible(true)}
+      <button
+        // onClick={(v) => setSiblingsVisible(true)}
         onBlur={e => setSiblingsVisible(false)}
         className={"ml-2 mr-1 text-md h-fit hover:bg-slate-400 rounded-sm"}
       >
@@ -29,7 +31,7 @@ export function PathItem(
           width: `${siblingsVisible ? 40 : 0}`,
         }}
       >
-        {props.siblings
+        {/* {props.siblings
           ? props.siblings.map((s) => {
             return (
               <p
@@ -42,7 +44,7 @@ export function PathItem(
               </p>
             );
           })
-          : props.node.title}
+          : props.node.title} */}
       </div>
       <button onClick={(v) => props.handleClick(props.index, props.node)}>
         {props.node.title}

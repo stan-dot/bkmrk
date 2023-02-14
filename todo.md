@@ -1,11 +1,10 @@
 
-- [ ] if more than 1 selected, only delete, no edit - instead 'move to common folder' 
 
 ## refactor
 
 ### MVP
 ## drag and drop
-- [ ] done API
+- [x] done API
 https://www.w3schools.com/html/html5_draganddrop.asp
 browser provides the image for dragging
 https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
@@ -16,10 +15,11 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 - [ ] fix search bookmarks field positioning
 - [ ] add proper menus on context
-- [ ] add checkbox column for precision marking
 
 ### power user expansions
 - [ ] automatic addition of a 'source website column', sortable
+- [ ] add checkbox column for precision marking
+- [ ] if more than 1 selected, only delete, no edit - instead 'move to common folder' 
 
 ### customization options
 - [ ] dynamically load number of contents of the page

@@ -2,8 +2,7 @@
 
 ## refactor
 
-### MVP
-## drag and drop
+# MVP
 - [x] done API
 https://www.w3schools.com/html/html5_draganddrop.asp
 browser provides the image for dragging
@@ -15,7 +14,9 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 - [ ] fix search bookmarks field positioning
 - [ ] add proper menus on context
+- [ ] a 'undo' popup in the left bottom corner
 
+# after mvp
 ### power user expansions
 - [ ] automatic addition of a 'source website column', sortable
 - [ ] add checkbox column for precision marking

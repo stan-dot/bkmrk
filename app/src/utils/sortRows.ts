@@ -1,3 +1,9 @@
+// INSTRUCTIONS HOW TO SORT GIVEN A NODE AND PROPS
+// boils down to deleting all children of a node,
+// then doing a quicksort algorithm by the given index to get the monoid,
+// then pasting into the children,
+// then reloading the current path
+
 export type SortOptions = {
   key: PossibleKeys;
   reverse: boolean;
@@ -44,9 +50,3 @@ function sorting(key:PossibleKeys,  rows: chrome.bookmarks.BookmarkTreeNode[], r
   throw Error('unknown sorting key');
   // return rows;
 }
-
-// todo instructions how to sort given a node and props
-// boils down to deleting all children of a node,
-// then doing a quicksort algorithm by the given index to get the monoid,
-// then pasting into the children,
-// then reloading the current path

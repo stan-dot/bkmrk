@@ -12,11 +12,10 @@ export function PathDisplayContextMenu(
   props: { contextMenuProps: ContextMenuProps },
 ): JSX.Element {
   const handleCopyOption = () => {
-    // todo change this
     getPath(props.contextMenuProps.things[0]).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
-      // todo some sweet alert to notify it's copied. or a tooltip
+      // todo alert to notify it's copied
     });
   };
 

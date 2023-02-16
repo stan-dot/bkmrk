@@ -20,8 +20,6 @@ export function BookmarkTable(
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
   },
 ): JSX.Element {
-  // todo maybe have the number of those selected? then it would simply increase with ctrl or shift. shift adding also those between tbf
-
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
@@ -41,7 +39,9 @@ export function BookmarkTable(
     })
   }
 
-  // todo srsly consider just ignoring this. another button to open, another for details. keep the native package handling of this
+  // todo delete this, just use the glide api bindings  another button to open, another for details. keep the native package handling of this
+  // early handling if the row is
+  // that executes actually instead of the onclick of the grid thing
   const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
     console.log('in tble click handler');
     if (event.ctrlKey) {
@@ -51,10 +51,8 @@ export function BookmarkTable(
       console.log(" pressed shift button");
     }
 
-    // todo early handling if the row is
-    // todo that executes actually instead of the onclick of the grid thing
     if (cell[0] === 4) {
-      setShowContextMenu(true);
+      setShowContextMenus(true);
     } else {
       const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
       console.log('in tble click handler on bookmark', bookmark);
@@ -118,13 +116,6 @@ export function BookmarkTable(
     onDrop={containerDropHandler}
     onPaste={pasteHandler}
   >
-    {/* {showContextMenu && (
-      <BookmarkContextMenu
-        contextMenuProps={contextMenuProps}
-        searchResults={props.searchResultsMode}
-        setRowsCallback={props.setRowsCallback}
-      />
-    )} */}
     <DataEditor
       columns={columns}
       getCellContent={getData(props.rows)}
@@ -139,13 +130,17 @@ export function BookmarkTable(
       onCellClicked={tableClickHandler}
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         event.preventDefault();
-        // todo here there might be a problem
+        contextMenuDispatch({
+          type: 'bookmark',
+          direction: 'open',
+          position: [event.localEventX, event.localEventY]
+        })
       }}
       onDragStart={dragHandler}
       onDrop={dropHandler}
       onHeaderClicked={() => console.log("clicked header")}
       rows={props.rows.length}
-      
+
     />
   </div>
 }

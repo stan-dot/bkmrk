@@ -26,7 +26,11 @@ export function Navbar(
       </div>
       <SearchField setDataCallback={dataCallback} />
       <CornerMenu
-        importCallback={() => console.log("should load the datastructure")}
+        importCallback={() => {
+          console.log("should load the datastructure");
+      
+          
+        }}
         rows={rows}
       />
     </nav>

@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-// todo the siblings need to be done better
 export function PathItem(
   props: {
     handleClick: (

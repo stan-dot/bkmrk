@@ -128,10 +128,16 @@ chrome.omnibox.onInputChanged.addListener((text: string ) => {
 })
 
 
+const specialStartingChraracters = '!!';
 // This event is fired with the user accepts the input in the omnibox.
 chrome.omnibox.onInputEntered.addListener((text:string) => {
-  // todo read this as a path and start it
-  // if special characters, might redirect to extension special page
+  if (text.substring(0, 1) !== specialStartingChraracters) return;
+
+  // case 1 - a folder is las on the path
+  // case 2 a bookmark is the last on the path
+  // case 3 the path only matches some keywords
+  // case 4 the path is invalid
+
 });
 
 chrome.runtime.onMessageExternal.addListener(

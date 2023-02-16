@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { makeBookmark, makeFolder } from "../../utils/dataProcessing/interact";
+import { useState } from "react";
+import { usePopupDispatch } from "../../contexts/PopupContext";
 import { exportBookmarks } from "../../utils/io/exportBookmarks";
 import { BookmarkImportWindow } from "../../utils/io/importBookmarks";
 import { printCsv } from "../../utils/ioOperations";
-import { SortOptions, sortRows } from "../../utils/sortRows";
+import { sortRows } from "../../utils/sortRows";
 import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
-import { getCopies } from "../../utils/traversalFunctions/getCopies";
+import { recognizeDuplicates } from "../../utils/traversalFunctions/getCopies";
 
 const linkClass =
   "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
 
 type OpenMenuStates = "IMPORT" | "EXPORT" | "NEW_FOLDER" | "NEW_BOOKMARK";
 
+// todo the advanced should have a separate alert window
 export function CornerMenu(
   props: {
     importCallback: Function;
@@ -22,10 +23,16 @@ export function CornerMenu(
   const [openVariant, setOpenVariant] = useState<OpenMenuStates>(
     "NEW_BOOKMARK",
   );
+  const dispatch = usePopupDispatch()
 
-  // todo there should be dialog popups for the new bookmark and new folder
   return (
-    <div className={"conrner-menu-button z-40 relative"}>
+    <div className={"conrner-menu-button z-40 relative"}
+      onBlur={() => {
+        dispatch({
+          direction: 'close',
+          type: 'none'
+        })
+      }}>
       <button
         onClick={() => setShowMenu(!showMenu)}
         id="dropdownDefaultButton"
@@ -73,7 +80,12 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) => makeBookmark("someId")}
+              onClick={(v) => {
+                dispatch({
+                  type: 'add-new-bookmark',
+                  direction: 'open'
+                })
+              }}
             >
               &#9734; Add new bookmark
             </button>
@@ -81,7 +93,12 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) => makeFolder("test", "someid")}
+              onClick={(v) => {
+                dispatch({
+                  type: 'add-new-folder',
+                  direction: 'open'
+                })
+              }}
             >
               &#128448; Add new folder
             </button>
@@ -118,7 +135,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                const copiesNumber = getCopies();
+                const copiesNumber = recognizeDuplicates();
                 console.log(copiesNumber);
               }}
             >

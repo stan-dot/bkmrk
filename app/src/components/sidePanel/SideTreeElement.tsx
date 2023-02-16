@@ -6,13 +6,6 @@ import { getPath } from "../../utils/getPath";
 import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
 import { SideSubTree } from "./SideSubTree";
 
-// todo need to find the path and highlight it, not passively
-/**
- * for side displaying FOLDERS ONLY
- * need to display with some offset to the fight
- * @param props
- * @returns
- */
 export function SideTreeElement(
   props: {
     thing: chrome.bookmarks.BookmarkTreeNode;
@@ -26,7 +19,7 @@ export function SideTreeElement(
   const dispatch = usePathDispatch();
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
-    if (isDisplayedNow()) return;
+    if (isInPath()) return;
     getPath(props.thing).then(newPath => {
       dispatch({
         type: 'full',
@@ -48,9 +41,9 @@ export function SideTreeElement(
     })
   };
 
-  const isDisplayedNow = useCallback(
+  const isInPath = useCallback(
     () => {
-      return path.items.at(-1) === props.thing
+      return path.items.includes(props.thing)
     },
     [path, props.thing],
   );
@@ -76,7 +69,7 @@ export function SideTreeElement(
   };
 
   return <div
-    className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${isDisplayedNow() ? "ring-cyan-300" : ""
+    className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${isInPath() ? "ring-cyan-300" : ""
       } overflow-auto min-h-30 flex-col cursor-pointer bg-slate-700 rounded-r-md`}
     id={`${props.thing.id}-side-tree-container`}
     onClick={() =>
@@ -87,7 +80,7 @@ export function SideTreeElement(
         })
       })
     }
-    style={{ border: isDisplayedNow() ? '0.25rem solid red' : 'none' }}
+    style={{ border: isInPath() ? '0.25rem solid red' : 'none' }}
     onContextMenu={e => handleContextMenu(e)}
     onDrop={dropHandler}
     onDragStart={dragHandler}

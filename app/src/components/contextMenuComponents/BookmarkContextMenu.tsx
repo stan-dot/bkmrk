@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { sortRows } from "../../utils/sortRows";
 
-// todo maybe separate for many selected items? or proceeding from different places here?, as redirection?
+// todo noe types of div for many selected items and separate for just one? 
 export function BookmarkContextMenu(
   props: {
     contextMenuProps: ContextMenuProps;

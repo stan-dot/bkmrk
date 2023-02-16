@@ -1,9 +1,6 @@
 import * as React from "react";
 
-/**
- * Render prop component that wraps element in a Tooltip that shows "Copied to clipboard!" when the
- * copy function is invoked
- */
+// todo that's not used anywhere right now
 export function CopyToClipboard(props: { text: string, children?: React.ReactNode }) {
   const [showTooltip, setShowTooltip] = React.useState(false);
 

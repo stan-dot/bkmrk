@@ -7,16 +7,19 @@ type CopyData = {
 }
 
 
-export async function getCopies(): Promise<number> {
+// todo that is not finished, need to count each separately
+export async function recognizeDuplicates(): Promise<number> {
+  let count = 0;
   const uniqueUrlsSet = new Set();
   const addToCopiesCallback = (node: chrome.bookmarks.BookmarkTreeNode) => {
     const url = node.url;
-    // todo complete this
+    if (uniqueUrlsSet.has(url)) {
+      count++;
+    }
+    uniqueUrlsSet.add(url);
   };
 
-  let count = 0;
 
-  const countCallback = (n: number) => count += n;
   const args: TraverseArgs = {
     //@ts-ignore line because it's union type of 2 functions, should be fine
     callbackOnEachNode: addToCopiesCallback,

@@ -9,10 +9,6 @@ import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-ce
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@glideapps/glide-data-grid/dist/index.css";
 
-// todo use tagcell after filtering for keywords
-
-const keywords: string[] = [];
-
 type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
 
 type ComprehensiveColDef = {
@@ -52,52 +48,24 @@ const myCols: ComprehensiveColDef[] = [
   {
     static: { title: "Tags", width: 130 },
     columnGetter: (v) => {
-      const cell: TagsCell = { };
+      const cell: TagsCell = {};
       return cell;
     },
   },
   {
     // url unified with number of children, like in Safari
-    // todo might need to cancel the links cell after all https://glideapps.github.io/glide-data-grid/?path=/story/extra-packages-cells--custom-cells
+    // LinksCell does not quite work as expected https://glideapps.github.io/glide-data-grid/?path=/story/extra-packages-cells--custom-cells
     static: { title: "URL", width: 250 },
     columnGetter: (v) => {
       if (v === undefined) return ErrorCell;
       const isRealLink = v.url !== undefined;
       const display: string = (isRealLink ? v.url : v.children?.length.toString()) ?? 'folder';
-      // console.log('display:', display);
-
-      // todo or maybe just a button cell?
       const d: TextCell = {
         kind: GridCellKind.Text,
         displayData: display,
         data: "",
-        allowOverlay: false
+        allowOverlay: false,
       };
-      // const d: LinksCell = {
-      //   kind: GridCellKind.Custom,
-      //   allowOverlay: true,
-      //   copyData: "4",
-      //   data: {
-      //     kind: "links-cell",
-      //     underlineOffset: 1,
-      //     links: [
-      //       {
-      //         title: display,
-      //         href: isRealLink ? display : undefined,
-      //         onClick: () => {
-      //           console.log(' if want to do soemthing else')
-      //           // if (isRealLink) window.open(display);
-      //           // alert("Click 1");
-      //           // todo should redirect to the children
-      //         },
-      //       },
-      //       // {
-      //       //   title: "Click the linky dinky",
-      //       //   onClick: () => alert("Click 2"),
-      //       // },
-      //     ],
-      //   },
-      // };
 
       return d;
     },

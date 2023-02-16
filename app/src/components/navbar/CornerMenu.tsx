@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { usePopupDispatch } from "../../contexts/PopupContext";
+import { sortRows } from "../../utils/interactivity/sortRows";
 import { exportBookmarks } from "../../utils/io/exportBookmarks";
 import { BookmarkImportWindow } from "../../utils/io/importBookmarks";
-import { printCsv } from "../../utils/ioOperations";
-import { sortRows } from "../../utils/sortRows";
+import { printCsv } from "../../utils/io/printCsv";
 import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
 import { recognizeDuplicates } from "../../utils/traversalFunctions/getCopies";
 

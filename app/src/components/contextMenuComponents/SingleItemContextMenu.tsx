@@ -1,65 +1,65 @@
 import { basicNodes } from "../../utils/dataProcessing/basicNodes";
-import { ContextMenuProps } from "./ContextMenuProps";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { OpenAllSection } from "./OpenAllSection";
 import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
-import { useEffect } from "react";
-import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
-import { sortRows } from "../../utils/sortRows";
+import { useCallback, useEffect, useState } from "react";
+import { useContextMenu, useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import { sortRows } from "../../utils/interactivity/sortRows";
 
-// todo noe types of div for many selected items and separate for just one? 
-export function BookmarkContextMenu(
+export function SingleItemContextMenu(
   props: {
-    contextMenuProps: ContextMenuProps;
+    thing: chrome.bookmarks.BookmarkTreeNode
     setRowsCallback?: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
     searchResults?: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = props.contextMenuProps.things.length > 1 ||
-    basicNodes.includes(
-      props.contextMenuProps.things[0].title,
-    );
-
-  const close = () => {
-    dispatch({
-      type: "bookmark",
-      direction: "close",
-      position: position,
-    });
-  }
+  const isProtected: boolean = basicNodes.includes(props.thing.title);
+  const [children, setChildren] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
 
   const handleShowInFolder = async (
     _e: React.MouseEvent<HTMLButtonElement>,
   ) => {
     if (!props.setRowsCallback) return;
     const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
-      .get(props.contextMenuProps.thing.parentId!);
+      .get(props.thing.parentId!);
+
     if (parent.length > 1) {
       console.error("there is more than one parent for this id");
       return;
     }
     const children: chrome.bookmarks.BookmarkTreeNode[] = parent[0].children!;
+    setChildren(children);
     props.setRowsCallback(children);
   };
 
-  const sortable = isAFolder(props.contextMenuProps.thing) &&
-    ((props.contextMenuProps.thing.children?.length ?? -1) > 0);
+  // it's sortable when either just 1 thing is selected, or are all 
+  const sortable = isAFolder(props.thing) && ((props.thing.children?.length ?? -1) > 0);
 
   const dispatch = useContextMenuDispatch();
 
-  const position = props.contextMenuProps.position;
+  const contextMenu = useContextMenu();
+  const position = contextMenu.position;
+
+
+  const close = useCallback(() => {
+    dispatch({
+      type: "bookmark",
+      direction: "close",
+      position: position,
+    });
+  }, [dispatch, position])
 
   useEffect(() => {
     setTimeout(() => {
       // props.contextMenuProps.closeCallback();
       close();
     }, 3000);
-  }, [dispatch, position, props.contextMenuProps]);
+  }, [close]);
 
   return (
     <div
-      id="bookmarkContextMenu"
+      id="singleItemContextMenu"
       className={`contextMenu w-36 z-50 border-1 text-l rounded-md border-solid bg-slate-700 `}
       style={{
         position: "absolute",
@@ -70,7 +70,7 @@ export function BookmarkContextMenu(
     >
       <hr />
       <EditDeleteSection
-        thing={props.contextMenuProps.thing}
+        thing={props.thing}
         protected={isProtected}
       />
       <hr />
@@ -96,29 +96,29 @@ export function BookmarkContextMenu(
         </button>
         <button
           onClick={() =>
-            sortRows(props.contextMenuProps.things, {
+            sortRows(children, {
               key: "title",
               reverse: false,
             })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
-          Sort A-Z
+          Sort contents A-Z
         </button>
         <button
           onClick={() =>
-            sortRows(props.contextMenuProps.things, {
+            sortRows(children, {
               key: "date",
               reverse: false,
             })}
           disabled={sortable}
           className={contextMenuButtonClass}
         >
-          Sort by date
+          Sort contents by date
         </button>
       </div>
       <hr />
-      <OpenAllSection things={props.contextMenuProps.things} />
+      <OpenAllSection things={children} />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import {
   usePathDispatch
 } from "../contexts/PathContext";
 import { PopupProvider } from "../contexts/PopupContext";
-import { createBookmarksFromPaste } from "../utils/createBookmarksFromPaste";
+import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
 import Popup from "./multi-displayers/Popup";
 import { Navbar } from "./navbar/Navbar";

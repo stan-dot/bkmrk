@@ -1,4 +1,4 @@
-import { BookmarkContextMenu } from "../contextMenuComponents/BookmarkContextMenu";
+import { ManySelectedContextMenu } from "../contextMenuComponents/ManySelectedContextMenu";
 import { MiniContextMenu } from "../contextMenuComponents/MiniContextMenu";
 import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 import {
@@ -23,7 +23,7 @@ export default function ContextMenu() {
         />
       )}
       {contextMenu.componentId === "b" && (
-        <BookmarkContextMenu
+        <ManySelectedContextMenu
           contextMenuProps={{
             things: contextMenu.things!,
             // position: contextMenu.position,
@@ -31,7 +31,7 @@ export default function ContextMenu() {
         />
       )}
       {contextMenu.componentId === "s" && (
-        <BookmarkContextMenu
+        <ManySelectedContextMenu
           contextMenuProps={{
             things: contextMenu.things!,
             // position: contextMenu.position,

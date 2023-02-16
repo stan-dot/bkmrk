@@ -1,6 +1,5 @@
-import { ContextMenuProps } from "../contextMenuComponents/ContextMenuProps";
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
-import { getPath } from "../../utils/getPath";
+import { getPath } from "../../utils/interactivity/getPath";
 import { useContextMenu } from "../../contexts/ContextMenuContext";
 import { EditDeleteSection } from "../contextMenuComponents/EditDeleteSection";
 
@@ -9,10 +8,10 @@ function stringifyPath(nodes: chrome.bookmarks.BookmarkTreeNode[]): string {
 }
 
 export function PathDisplayContextMenu(
-  props: { contextMenuProps: ContextMenuProps },
+  props: { thing: chrome.bookmarks.BookmarkTreeNode },
 ): JSX.Element {
   const handleCopyOption = () => {
-    getPath(props.contextMenuProps.things[0]).then((path) => {
+    getPath(props.thing).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
       // todo alert to notify it's copied
@@ -31,12 +30,12 @@ export function PathDisplayContextMenu(
         right: `${position[1]}px`,
       }}
     >
-      <EditDeleteSection thing={props.contextMenuProps.things[0]} protected={false} />
+      <EditDeleteSection thing={props.thing} protected={false} />
       <div className="group2">
         <p>copy path</p>
         <p>paste buton</p>
       </div>
-      <OpenAllSection things={props.contextMenuProps.things} />
+      <OpenAllSection things={[props.thing]} />
       <div className="group4">
         <button onClick={(e) => handleCopyOption()}>
           Copy path

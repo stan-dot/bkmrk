@@ -6,12 +6,11 @@ import DataEditor, {
 import React from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
-import { readRawTextAsBookmarks, unpackBookmarks } from "../../utils/dragProcessing";
-import { getPath } from "../../utils/getPath";
+import { getPath } from "../../utils/interactivity/getPath";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { createBookmarksFromPaste } from "../../utils/createBookmarksFromPaste";
-import { columns } from "./columnNumberToGridCell";
-import { getData } from "./getData";
+import { columns, getData } from "./columnNumberToGridCell";
+import { createBookmarksFromPaste } from "../../utils/interactivity/createBookmarksFromPaste";
+import { unpackBookmarks, readRawTextAsBookmarks } from "../../utils/interactivity/dragProcessing";
 
 export function BookmarkTable(
   props: {
@@ -39,34 +38,34 @@ export function BookmarkTable(
     })
   }
 
-  // todo delete this, just use the glide api bindings  another button to open, another for details. keep the native package handling of this
-  // early handling if the row is
-  // that executes actually instead of the onclick of the grid thing
-  const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
-    console.log('in tble click handler');
-    if (event.ctrlKey) {
-      console.log(" pressed ctrl button");
-    }
-    if (event.shiftKey) {
-      console.log(" pressed shift button");
-    }
+  // // todo delete this, just use the glide api bindings  another button to open, another for details. keep the native package handling of this
+  // // early handling if the row is
+  // // that executes actually instead of the onclick of the grid thing
+  // const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
+  //   console.log('in tble click handler');
+  //   if (event.ctrlKey) {
+  //     console.log(" pressed ctrl button");
+  //   }
+  //   if (event.shiftKey) {
+  //     console.log(" pressed shift button");
+  //   }
 
-    if (cell[0] === 4) {
-      setShowContextMenus(true);
-    } else {
-      const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
-      console.log('in tble click handler on bookmark', bookmark);
-      if (isAFolder(bookmark)) {
-        getPath(bookmark).then((newPath) => {
-          console.log("path:", newPath);
-          pathDispatch({
-            type: 'full',
-            nodes: newPath
-          })
-        });
-      }
-    }
-  };
+  //   if (cell[0] === 4) {
+  //     // setShowContextMenus(true);
+  //   } else {
+  //     const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
+  //     console.log('in tble click handler on bookmark', bookmark);
+  //     if (isAFolder(bookmark)) {
+  //       getPath(bookmark).then((newPath) => {
+  //         console.log("path:", newPath);
+  //         pathDispatch({
+  //           type: 'full',
+  //           nodes: newPath
+  //         })
+  //       });
+  //     }
+  //   }
+  // };
 
   const dragHandler = (e: GridDragEventArgs) => {
     e.preventDefault();
@@ -127,7 +126,7 @@ export function BookmarkTable(
         copy: true,
         paste: true,
       }}
-      onCellClicked={tableClickHandler}
+      // onCellClicked={tableClickHandler}
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         event.preventDefault();
         contextMenuDispatch({

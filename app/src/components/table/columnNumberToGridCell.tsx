@@ -1,13 +1,13 @@
 import {
-  GridCell, GridCellKind, GridColumn, LoadingCell,
+  GridCell, GridCellKind, GridColumn, Item, LoadingCell,
   TextCell,
-  UriCell,
+  UriCell
 } from "@glideapps/glide-data-grid";
 import { ButtonCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/button-cell";
 import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-cell";
 import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-cell";
-import "@toast-ui/editor/dist/toastui-editor.css";
 import "@glideapps/glide-data-grid/dist/index.css";
+import "@toast-ui/editor/dist/toastui-editor.css";
 
 type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
 
@@ -45,13 +45,18 @@ const myCols: ComprehensiveColDef[] = [
       return cell;
     },
   },
-  {
-    static: { title: "Tags", width: 130 },
-    columnGetter: (v) => {
-      const cell: TagsCell = {};
-      return cell;
-    },
-  },
+  // {
+  //   static: { title: "Tags", width: 130 },
+  //   columnGetter: (v) => {
+  //     const cell: TagsCell = {
+  //       kind: GridCellKind.Custom,
+  //       data: {},
+  //       copyData: "",
+  //       allowOverlay: false
+  //     };
+  //     return cell;
+  //   },
+  // },
   {
     // url unified with number of children, like in Safari
     // LinksCell does not quite work as expected https://glideapps.github.io/glide-data-grid/?path=/story/extra-packages-cells--custom-cells
@@ -121,11 +126,35 @@ const myCols: ComprehensiveColDef[] = [
 ];
 
 
-export const columnNumberToGridCell: Map<number, CellGetter> = new Map(myCols.map((v, i) => [i, v.columnGetter]));
+const columnNumberToGridCell: Map<number, CellGetter> = new Map(myCols.map((v, i) => [i, v.columnGetter]));
 
-export const DEFAULT_GRID_CELL: LoadingCell = {
+const DEFAULT_GRID_CELL: LoadingCell = {
   kind: GridCellKind.Loading,
   allowOverlay: false,
 };
+
+
+// If fetching data is slow you can use the DataEditor ref to send updates for cells
+// once data is loaded.
+export function getData(
+  bookmarksArr: chrome.bookmarks.BookmarkTreeNode[],
+): ([col, row]: Item) => GridCell {
+
+  const curriedFunction: ([col, row]: Item) => GridCell = (
+    coordinates: Item,
+  ) => {
+    const col = coordinates[0];
+    const row = coordinates[1];
+
+    const columnSpecificFunction = columnNumberToGridCell.get(col);
+
+    if (columnSpecificFunction === undefined) {
+      return DEFAULT_GRID_CELL as GridCell;
+    }
+    const bookmark: chrome.bookmarks.BookmarkTreeNode = bookmarksArr[row];
+    return columnSpecificFunction(bookmark);
+  };
+  return curriedFunction;
+}
 
 export const columns: GridColumn[] = myCols.map((c) => c.static);

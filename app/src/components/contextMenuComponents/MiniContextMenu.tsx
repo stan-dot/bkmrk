@@ -1,14 +1,15 @@
-import { ContextMenuProps } from "./ContextMenuProps";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
-import { useContextMenu, useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import {
+  useContextMenu,
+  useContextMenuDispatch,
+} from "../../contexts/ContextMenuContext";
+import { usePopupDispatch } from "../../contexts/PopupContext";
 
-export function MiniContextMenu(
-  props: { contextMenuProps: ContextMenuProps },
-): JSX.Element {
-  // const position = props.contextMenuProps.position;
+export function MiniContextMenu(props: {}): JSX.Element {
   const context = useContextMenu();
   const position = context.position;
   const dispatch = useContextMenuDispatch();
+  const popupDispatch = usePopupDispatch();
   return (
     <div
       id="sidePanelContextMenu"
@@ -22,19 +23,34 @@ export function MiniContextMenu(
       // onBlur={() => props.contextMenuProps.closeCallback()}
       onBlur={() => {
         dispatch({
-          type: 'general',
-          things: props.contextMenuProps.things,
+          type: "general",
           position: context.position,
-          direction: 'close'
-        })
+          direction: "close",
+        });
       }}
     >
       <div className="group2 w-32 border-t-solid border-b-solid border-slate-200 m-2">
-        <button className={contextMenuButtonClass}>
-          <p>Add new bookmark</p>
+        <button
+          className={contextMenuButtonClass}
+          onClick={(v) => {
+            popupDispatch({
+              type: 'add-new-bookmark',
+              direction: 'open'
+            })
+          }}
+        >
+          &#9734; Add new bookmark
         </button>
-        <button className={contextMenuButtonClass}>
-          <p>Add new folder</p>
+        <button
+          className={contextMenuButtonClass}
+          onClick={(v) => {
+            popupDispatch({
+              type: 'add-new-folder',
+              direction: 'open'
+            })
+          }}
+        >
+          &#128448; Add new folder
         </button>
       </div>
     </div>

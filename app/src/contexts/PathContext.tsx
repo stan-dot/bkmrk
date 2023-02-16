@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useReducer } from "react";
 
+
 const initialPath: Path = {
   items: []
 };
@@ -27,6 +28,9 @@ export function usePathDispatch() {
 
 export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
+  chrome.storage.local.set({ 'path': path }).then(() => {
+    console.log('value is set to:', path);
+  });
   return <PathContext.Provider value={path}>
     <PathDispatchContext.Provider value={dispatch}>
       {children}
@@ -34,7 +38,7 @@ export function PathProvider({ children }: any) {
   </PathContext.Provider>
 }
 
-export function pathReducer(path: Path, action: PathAction): Path {
+function pathReducer(path: Path, action: PathAction): Path {
   switch (action.type) {
     case 'added': {
       return {

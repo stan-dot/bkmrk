@@ -26,11 +26,12 @@ export function ManySelectedContextMenu(
 
   const close = useCallback(() => {
     dispatch({
-      type: "single-bookmark",
+      type: "mixed",
       direction: "close",
       position: position,
+      things: props.things,
     });
-  }, [dispatch, position]);
+  }, [dispatch, position, props.things]);
 
 
   useEffect(() => {

@@ -30,6 +30,7 @@ export function TableLoader(): JSX.Element {
   >([]);
 
 
+  // todo that gives error, as this component does not have a providerg
   const path = usePath();
   const pathDispatch = usePathDispatch();
 

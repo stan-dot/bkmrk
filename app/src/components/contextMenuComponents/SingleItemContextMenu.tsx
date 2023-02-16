@@ -47,8 +47,9 @@ export function SingleItemContextMenu(
       type: "single-bookmark",
       direction: "close",
       position: position,
+      things: [props.thing]
     });
-  }, [dispatch, position])
+  }, [dispatch, position, props.thing])
 
   useEffect(() => {
     setTimeout(() => {

@@ -11,6 +11,7 @@ import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 export default function ContextMenu() {
   const contextMenu = useContextMenu();
   console.log("current componentId", contextMenu.componentId);
+  console.log('full context menu', contextMenu);
   return (
     <div>
       {/* {popup.component} */}

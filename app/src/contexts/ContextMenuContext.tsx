@@ -11,7 +11,7 @@ export type ContextMenuContextType = {
   things?: chrome.bookmarks.BookmarkTreeNode[]
 }
 
-type ContextMenuActionTypes = 'single-bookmark' | 'mixed' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update' | "many-folders-or-bookmarks";
+type ContextMenuActionTypes = 'single-bookmark' | 'mixed' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update';
 
 export type ContextMenuContextAction = {
   type: ContextMenuActionTypes;
@@ -59,10 +59,10 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
         things: action.things!
       }
     }
-    case "many-folders-or-bookmarks": {
+    case "mixed": {
       console.log('inside edit bookmark reducer');
       return {
-        componentId: "b",
+        componentId: "s",
         args: action.nodeId!,
         position: action.position,
         things: action.things!
@@ -73,6 +73,7 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
       return {
         ...contextMenu,
         position: action.position,
+        things: action.things!
       }
     }
     case "position-update": {

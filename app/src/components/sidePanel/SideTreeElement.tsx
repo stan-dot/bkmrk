@@ -40,9 +40,10 @@ export function SideTreeElement(
     e.preventDefault();
     e.stopPropagation();
     contextMenuDispatch({
-      type: "single-bookmark",
+      type: "folder",
       position: [e.pageX, e.pageY],
       direction: "open",
+      things: [props.thing]
     });
   };
 

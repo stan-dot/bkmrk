@@ -1,9 +1,11 @@
 import DataEditor, {
   CellClickedEventArgs,
   GridDragEventArgs,
+  GridSelection,
+  gridSelectionHasItem,
   Item
 } from "@glideapps/glide-data-grid";
-import React from "react";
+import React, { useState } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { getPath } from "../../utils/interactivity/getPath";
@@ -23,49 +25,53 @@ export function BookmarkTable(
   const pathDispatch = usePathDispatch();
 
   const contextMenuDispatch = useContextMenuDispatch();
-  const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
-    e: React.MouseEvent<HTMLDivElement>,
-  ) => {
-    e.preventDefault();
-    e.stopPropagation();
-    contextMenuDispatch({
-      type: 'position-update',
-      position: [
-        e.pageX,
-        e.pageY,
-      ],
-      direction: 'open'
-    })
+  // const contextClickHandler: React.MouseEventHandler<HTMLDivElement> = (
+  //   e: React.MouseEvent<HTMLDivElement>,
+  // ) => {
+  //   e.preventDefault();
+  //   e.stopPropagation();
+  //   contextMenuDispatch({
+  //     type: 'position-update',
+  //     position: [
+  //       e.pageX,
+  //       e.pageY,
+  //     ],
+  //     direction: 'open',
+
+  //   })
+  // }
+
+  const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
+    console.log('in table click handler');
+    if (event.ctrlKey) {
+      console.log(" pressed ctrl button");
+    }
+    if (event.shiftKey) {
+      console.log(" pressed shift button");
+    }
+
+    const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
+    console.log('in table click handler on bookmark', bookmark);
+    // checking col number for the cell with the button
+    const folder = isAFolder(bookmark);
+    if (cell[0] === 4) {
+      contextMenuDispatch({
+        type: folder ? 'folder' : 'single-bookmark',
+        direction: 'open',
+        position: [event.localEventX, event.localEventY],
+        things: [bookmark]
+        
+      })
+    } else {
+      getPath(bookmark).then((newPath) => {
+        console.log("path:", newPath);
+        pathDispatch({
+          type: 'full',
+          nodes: newPath
+        })
+      });
+    }
   }
-
-  // // todo delete this, just use the glide api bindings  another button to open, another for details. keep the native package handling of this
-  // // early handling if the row is
-  // // that executes actually instead of the onclick of the grid thing
-  // const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
-  //   console.log('in tble click handler');
-  //   if (event.ctrlKey) {
-  //     console.log(" pressed ctrl button");
-  //   }
-  //   if (event.shiftKey) {
-  //     console.log(" pressed shift button");
-  //   }
-
-  //   if (cell[0] === 4) {
-  //     // setShowContextMenus(true);
-  //   } else {
-  //     const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
-  //     console.log('in tble click handler on bookmark', bookmark);
-  //     if (isAFolder(bookmark)) {
-  //       getPath(bookmark).then((newPath) => {
-  //         console.log("path:", newPath);
-  //         pathDispatch({
-  //           type: 'full',
-  //           nodes: newPath
-  //         })
-  //       });
-  //     }
-  //   }
-  // };
 
   const dragHandler = (e: GridDragEventArgs) => {
     e.preventDefault();
@@ -104,9 +110,22 @@ export function BookmarkTable(
     createBookmarksFromPaste(e, parentId);
   };
 
-  // todo figure out the difference between container on drop and inner onDrop
+  const [currentSelection, setCurrentSelection] = useState({} as GridSelection);
+  const doubleClickHandler = (cell: Item) => {
+    console.log(cell);
+    const b = props.rows[cell[0]];
+    const isFolder = isAFolder(b);
+    if (isFolder) {
+      pathDispatch({
+        type: 'added',
+        nodes: [b]
+      });
+    } else {
+      chrome.tabs.create({ url: b.url });
+    }
+  };
   return <div
-    onClick={contextClickHandler}
+    // onClick={contextClickHandler}
     className="table-container flex flex-grow pb-4 mb-40 "
     onDragOver={(e) => {
       e.preventDefault();
@@ -116,9 +135,11 @@ export function BookmarkTable(
     onPaste={pasteHandler}
   >
     <DataEditor
+      // contents
+      rows={props.rows.length}
       columns={columns}
       getCellContent={getData(props.rows)}
-      isDraggable="cell"
+      // click interactivity
       keybindings={{
         search: true,
         selectAll: true,
@@ -126,20 +147,31 @@ export function BookmarkTable(
         copy: true,
         paste: true,
       }}
-      // onCellClicked={tableClickHandler}
+      onCellClicked={tableClickHandler}
+      onCellActivated={doubleClickHandler}
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         event.preventDefault();
-        contextMenuDispatch({
-          type: 'single-bookmark',
-          direction: 'open',
-          position: [event.localEventX, event.localEventY]
-        })
+        console.log('on cell context in cell', cell);
+        const includes = gridSelectionHasItem(currentSelection, cell);
+        if (includes) {
+          const rowIndexes = currentSelection.rows.toArray();
+          const selectedBookmarks = rowIndexes.map(i => props.rows[i]);
+          contextMenuDispatch({
+            type: 'single-bookmark',
+            direction: 'open',
+            position: [event.localEventX, event.localEventY],
+            things: selectedBookmarks
+          })
+        }
       }}
+      rowSelect={'single'}
+      onGridSelectionChange={(newSelection: GridSelection) => {
+        setCurrentSelection(newSelection);
+      }}
+      // drag and drop interactivity
+      // isDraggable="cell" //this might be dragging the whole thing, experimental
       onDragStart={dragHandler}
       onDrop={dropHandler}
-      onHeaderClicked={() => console.log("clicked header")}
-      rows={props.rows.length}
-
     />
   </div>
 }

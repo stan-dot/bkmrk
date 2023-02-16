@@ -51,7 +51,7 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
   }
   switch (action.type) {
     case "single-bookmark": {
-      console.log('inside edit bookmark reducer');
+      console.log('inside edit single bookmark reducer');
       return {
         componentId: "b",
         args: action.nodeId!,
@@ -60,7 +60,7 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
       }
     }
     case "mixed": {
-      console.log('inside edit bookmark reducer');
+      console.log('inside edit mixed bookmarks reducer');
       return {
         componentId: "s",
         args: action.nodeId!,
@@ -69,7 +69,7 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
       }
     }
     case "folder": {
-      console.log('inside edit bookmark reducer');
+      console.log('inside edit folder reducer');
       return {
         ...contextMenu,
         position: action.position,
@@ -77,7 +77,7 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
       }
     }
     case "position-update": {
-      console.log('inside edit bookmark reducer');
+      console.log('inside position update reducer');
       return {
         ...contextMenu,
         position: action.position,

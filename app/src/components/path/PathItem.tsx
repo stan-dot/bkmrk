@@ -14,7 +14,10 @@ export function PathItem(
 ): JSX.Element {
   const [siblingsVisible, setSiblingsVisible] = useState(false);
   return (
-    <div className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid  focus:shadow ">
+    <div
+      className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid  focus:shadow "
+      onContextMenu={props.contextMenuHandler}
+    >
       <button
         // onClick={(v) => setSiblingsVisible(true)}
         onBlur={e => setSiblingsVisible(false)}
@@ -45,7 +48,8 @@ export function PathItem(
           })
           : props.node.title} */}
       </div>
-      <button onClick={(v) => props.handleClick(props.index, props.node)}>
+      <button onClick={(v) => props.handleClick(props.index, props.node)}
+      >
         {props.node.title}
       </button>
     </div>

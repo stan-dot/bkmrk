@@ -130,7 +130,7 @@ export function BookmarkTable(
       onCellContextMenu={(cell: Item, event: CellClickedEventArgs) => {
         event.preventDefault();
         contextMenuDispatch({
-          type: 'bookmark',
+          type: 'single-bookmark',
           direction: 'open',
           position: [event.localEventX, event.localEventY]
         })

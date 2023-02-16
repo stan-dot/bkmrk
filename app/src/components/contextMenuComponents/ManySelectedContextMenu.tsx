@@ -26,7 +26,7 @@ export function ManySelectedContextMenu(
 
   const close = useCallback(() => {
     dispatch({
-      type: "bookmark",
+      type: "single-bookmark",
       direction: "close",
       position: position,
     });

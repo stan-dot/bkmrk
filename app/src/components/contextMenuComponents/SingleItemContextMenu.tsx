@@ -44,7 +44,7 @@ export function SingleItemContextMenu(
 
   const close = useCallback(() => {
     dispatch({
-      type: "bookmark",
+      type: "single-bookmark",
       direction: "close",
       position: position,
     });

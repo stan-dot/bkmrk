@@ -1,5 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
+import { ContextMenuProvider } from "../contexts/ContextMenuContext";
 import {
   PathProvider,
   usePath,
@@ -8,6 +9,7 @@ import {
 import { PopupProvider } from "../contexts/PopupContext";
 import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
+import ContextMenu from "./multi-displayers/ContextMenu";
 import Popup from "./multi-displayers/Popup";
 import { Navbar } from "./navbar/Navbar";
 import { PathDisplay } from "./path/PathDisplay";
@@ -92,40 +94,45 @@ export function TableLoader(): JSX.Element {
     <>
       <PathProvider>
         <PopupProvider>
-          <Navbar
-            dataCallback={dataCallback}
-            reloadWithNode={reloadWithNode}
-            lastPathItem={lastPathItem}
-            rows={rows}
-          />
-          <hr />
-          <div
-            className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-            onPaste={pasteHandler}
-          >
-            <PathDisplay />
-          </div>
-          <LoadingScreen loading={loaded === "LOADING"} />
-          <div
-            id="lowerPanel"
-            className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-            style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-          >
-            <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
-              <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
-            </div>
+          <ContextMenuProvider>
+
+            <Navbar
+              dataCallback={dataCallback}
+              reloadWithNode={reloadWithNode}
+              lastPathItem={lastPathItem}
+              rows={rows}
+            />
+            <hr />
             <div
-              id="mainContainer"
-              className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+              className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+              onPaste={pasteHandler}
             >
-              <BookmarkTable
-                rows={rows}
-                setRowsCallback={dataCallback}
-                searchResultsMode={loaded === "SEARCH_RESULT"}
-              />
+              <PathDisplay />
             </div>
-          </div>
-          <Popup />
+            <LoadingScreen loading={loaded === "LOADING"} />
+            <div
+              id="lowerPanel"
+              className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
+              style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+            >
+              <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
+                <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
+              </div>
+              <div
+                id="mainContainer"
+                className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+              >
+                <BookmarkTable
+                  rows={rows}
+                  setRowsCallback={dataCallback}
+                  searchResultsMode={loaded === "SEARCH_RESULT"}
+                />
+              </div>
+            </div>
+            {/**the multidiplayers */}
+            <Popup />
+            <ContextMenu />
+          </ContextMenuProvider>
         </PopupProvider>
       </PathProvider>
     </>

@@ -16,7 +16,7 @@ export function PathDisplay(): JSX.Element {
     e.preventDefault();
     e.stopPropagation();
     contextMenuDispatch({
-      type: 'bookmark',
+      type: 'single-bookmark',
       things: [lastIteracted],
       direction: 'open',
       position: [

@@ -11,7 +11,7 @@ export type ContextMenuContextType = {
   things?: chrome.bookmarks.BookmarkTreeNode[]
 }
 
-type ContextMenuActionTypes = 'bookmark' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update' | "many-folders-or-bookmarks";
+type ContextMenuActionTypes = 'single-bookmark' | 'mixed' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update' | "many-folders-or-bookmarks";
 
 export type ContextMenuContextAction = {
   type: ContextMenuActionTypes;
@@ -50,7 +50,7 @@ export function contextMenuReducer(contextMenu: ContextMenuContextType, action: 
     }
   }
   switch (action.type) {
-    case "bookmark": {
+    case "single-bookmark": {
       console.log('inside edit bookmark reducer');
       return {
         componentId: "b",

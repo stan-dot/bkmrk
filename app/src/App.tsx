@@ -1,4 +1,7 @@
-import { TableLoader } from './components/Table';
+import { TableLoader } from "./components/Table";
+import { ContextMenuProvider } from "./contexts/ContextMenuContext";
+import { PathProvider } from "./contexts/PathContext";
+import { PopupProvider } from "./contexts/PopupContext";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change
@@ -10,8 +13,14 @@ import { TableLoader } from './components/Table';
 // options should go into settings
 export default function App() {
   return (
-    <div className="App w-full h-full" >
-      <TableLoader />
+    <div className="App w-full h-full">
+      <PathProvider>
+        <PopupProvider>
+          <ContextMenuProvider>
+            <TableLoader />
+          </ContextMenuProvider>
+        </PopupProvider>
+      </PathProvider>
     </div>
   );
 }

@@ -14,7 +14,7 @@ export function SingleItemContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = basicNodes.includes(props.thing.title);
+  const isProtected: boolean = props.thing?.title ? basicNodes.includes(props.thing.title) : false;
   const [children, setChildren] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
 
   const handleShowInFolder = async (

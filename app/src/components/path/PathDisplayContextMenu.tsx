@@ -2,6 +2,7 @@ import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../../utils/interactivity/getPath";
 import { useContextMenu } from "../../contexts/ContextMenuContext";
 import { EditDeleteSection } from "../contextMenuComponents/EditDeleteSection";
+import { toast } from "react-toastify";
 
 function stringifyPath(nodes: chrome.bookmarks.BookmarkTreeNode[]): string {
   return nodes.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join("/");
@@ -14,7 +15,8 @@ export function PathDisplayContextMenu(
     getPath(props.thing).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
-      // todo alert to notify it's copied
+      // todo check if this toast works fr https://github.com/fkhadra/react-toastify
+      toast('wow so easy!');
     });
   };
 

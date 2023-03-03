@@ -1,9 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  usePath,
-  usePathDispatch
-} from "../contexts/PathContext";
+import { usePath, usePathDispatch } from "../contexts/PathContext";
 import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
 import ContextMenu from "./multi-displayers/ContextMenu";
@@ -26,7 +23,6 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.BookmarkTreeNode[]
   >([]);
 
-  // todo that gives error, as this component does not have a providerg
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
@@ -56,15 +52,28 @@ export function TableLoader(): JSX.Element {
     );
   }
 
-  // todo wrap in a useEffect
   const deltaListener = (e: string): void => {
     console.log("the bookmarks have changed...", e);
     reloadWithNode(path.items);
   };
-  chrome.bookmarks.onChanged.addListener(deltaListener);
-  chrome.bookmarks.onMoved.addListener(deltaListener);
-  chrome.bookmarks.onRemoved.addListener(deltaListener);
-  chrome.bookmarks.onImportEnded.addListener(() => reloadWithNode(path.items));
+
+  useEffect(() => {
+    chrome.bookmarks.onChanged.addListener(deltaListener);
+    chrome.bookmarks.onMoved.addListener(deltaListener);
+    chrome.bookmarks.onRemoved.addListener(deltaListener);
+    chrome.bookmarks.onImportEnded.addListener(() =>
+      reloadWithNode(path.items)
+    );
+
+    return () => {
+      chrome.bookmarks.onChanged.removeListener(deltaListener);
+      chrome.bookmarks.onMoved.removeListener(deltaListener);
+      chrome.bookmarks.onRemoved.removeListener(deltaListener);
+      chrome.bookmarks.onImportEnded.removeListener(() =>
+        reloadWithNode(path.items)
+      );
+    };
+  }, []);
 
   useEffect(() => {
     const currentLast = lastPathItem();

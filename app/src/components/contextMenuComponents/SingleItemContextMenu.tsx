@@ -4,18 +4,27 @@ import { OpenAllSection } from "./OpenAllSection";
 import { EditDeleteSection } from "./EditDeleteSection";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { useCallback, useEffect, useState } from "react";
-import { useContextMenu, useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import {
+  useContextMenu,
+  useContextMenuDispatch,
+} from "../../contexts/ContextMenuContext";
 import { sortRows } from "../../utils/interactivity/sortRows";
 
 export function SingleItemContextMenu(
   props: {
-    thing: chrome.bookmarks.BookmarkTreeNode
+    thing: chrome.bookmarks.BookmarkTreeNode;
     setRowsCallback?: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
     searchResults?: boolean;
   },
 ): JSX.Element {
-  const isProtected: boolean = props.thing?.title ? basicNodes.includes(props.thing.title) : false;
-  const [children, setChildren] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
+  // todo this returns undefined. bad
+  console.log(props.thing);
+  const isProtected: boolean = props.thing?.title
+    ? basicNodes.includes(props.thing.title)
+    : false;
+  const [children, setChildren] = useState<chrome.bookmarks.BookmarkTreeNode[]>(
+    [],
+  );
 
   const handleShowInFolder = async (
     _e: React.MouseEvent<HTMLButtonElement>,
@@ -33,23 +42,24 @@ export function SingleItemContextMenu(
     props.setRowsCallback(children);
   };
 
-  // it's sortable when either just 1 thing is selected, or are all 
-  const sortable = isAFolder(props.thing) && ((props.thing.children?.length ?? -1) > 0);
+  // it's sortable when either just 1 thing is selected, or are all
+  // todo here error
+  const sortable = isAFolder(props.thing) &&
+    ((props.thing.children?.length ?? -1) > 0);
 
   const dispatch = useContextMenuDispatch();
 
   const contextMenu = useContextMenu();
   const position = contextMenu.position;
 
-
   const close = useCallback(() => {
     dispatch({
       type: "single-bookmark",
       direction: "close",
       position: position,
-      things: [props.thing]
+      things: [props.thing],
     });
-  }, [dispatch, position, props.thing])
+  }, [dispatch, position, props.thing]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -89,8 +99,9 @@ export function SingleItemContextMenu(
       <hr />
       <div className="group-changing flex flex-col">
         <button
-          className={`${!props.searchResults && "hidden"
-            } ${contextMenuButtonClass}`}
+          className={`${
+            !props.searchResults && "hidden"
+          } ${contextMenuButtonClass}`}
           onClick={handleShowInFolder}
         >
           <p>show in folder</p>

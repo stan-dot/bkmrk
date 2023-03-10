@@ -1,5 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { usePath, usePathDispatch } from "../contexts/PathContext";
 import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
@@ -64,6 +65,7 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.onImportEnded.addListener(() =>
       reloadWithNode(path.items)
     );
+    toast("wow so easy!");
 
     return () => {
       chrome.bookmarks.onChanged.removeListener(deltaListener);
@@ -73,7 +75,7 @@ export function TableLoader(): JSX.Element {
         reloadWithNode(path.items)
       );
     };
-  }, []);
+  }, [deltaListener, path.items, reloadWithNode]);
 
   useEffect(() => {
     const currentLast = lastPathItem();

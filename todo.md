@@ -4,15 +4,16 @@
 
 # MVP
 - [x] done API
+- [x] add proper menus on context
 https://www.w3schools.com/html/html5_draganddrop.asp
 browser provides the image for dragging
 https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
+- [ ] solve the selection bit
 - [ ] working paste and copy
   - [ ] make the table receptive to drop
   - [ ] make the path receptive to drop
 - [ ] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
 - [ ] fix search bookmarks field positioning
-- [ ] add proper menus on context
 - [ ] a 'undo' popup in the left bottom corner
 
 # after mvp

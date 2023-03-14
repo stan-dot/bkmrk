@@ -98,6 +98,26 @@ const myCols: ComprehensiveColDef[] = [
         displayData: 'View details',
       };
       return cell;
+      // todo solve this
+      // const d: ButtonCell = {
+                            // kind: GridCellKind.Custom,
+                            // cursor: "pointer",
+                            // allowOverlay: true,
+                            // copyData: "4",
+                            // readonly: true,
+                            // data: {
+                                // kind: "button-cell",
+                                // backgroundColor: ["transparent", "#6572ffee"],
+                                // color: ["accentColor", "accentFg"],
+                                // borderColor: "#6572ffa0",
+                                // borderRadius: 9,
+                                // title: "View Details",
+                                // onClick: () => window.alert("Button clicked"),
+                            // },
+                            // themeOverride: {
+                                // baseFontStyle: "700 12px",
+                            // },
+                        // };
       // const d: ButtonCell = {
       //   kind: GridCellKind.Custom,
       //   cursor: "pointer",

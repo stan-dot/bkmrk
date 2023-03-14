@@ -11,12 +11,13 @@ export function EditDeleteSection(
       <button
         disabled={props.protected}
         onClick={(e) => {
-          console.log('clicked the edit button, opening the edit menu');
+          console.log("clicked the edit button, opening the edit menu");
           const changes: PopupAction = {
-            type: isAFolder(props.thing) ? 'edit-folder' : 'edit-bookmark',
-            direction: 'open',
+            type: isAFolder(props.thing) ? "edit-folder" : "edit-bookmark",
+            direction: "open",
+            nodeId: props.thing.id,
           };
-          dispatch(changes)
+          dispatch(changes);
         }}
         className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
       >

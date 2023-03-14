@@ -6,6 +6,7 @@ import {
 import { basicNodes } from "../../utils/dataProcessing/basicNodes";
 import { sortRows } from "../../utils/interactivity/sortRows";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
+import { EditDeleteSection } from "./EditDeleteSection";
 import { OpenAllSection } from "./OpenAllSection";
 
 export function ManySelectedContextMenu(
@@ -18,7 +19,7 @@ export function ManySelectedContextMenu(
   console.log("inside another context menu", props.things);
   const isProtected: boolean = props.things.length > 1 ||
     basicNodes.includes(
-      props.things[0].title,
+      props.things[0].title ?? "",
     );
   const dispatch = useContextMenuDispatch();
 
@@ -51,6 +52,9 @@ export function ManySelectedContextMenu(
       }}
       onBlur={close}
     >
+      {props.things.length === 1 &&
+        <EditDeleteSection thing={props.things[0]} protected={false} />}
+      <hr />
       <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2">
         <button disabled={!isProtected} className={contextMenuButtonClass}>
           <p>Cut</p>
@@ -67,7 +71,7 @@ export function ManySelectedContextMenu(
       {props.things.length === 1 &&
         (
           <button
-          // todo this doesn't show up
+            // todo this doesn't show up
             className={`${
               !props.searchResults && "hidden"
             } ${contextMenuButtonClass}`}

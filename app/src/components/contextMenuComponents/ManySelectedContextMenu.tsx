@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import {
   useContextMenu,
-  useContextMenuDispatch
+  useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
 import { basicNodes } from "../../utils/dataProcessing/basicNodes";
 import { sortRows } from "../../utils/interactivity/sortRows";
@@ -15,6 +15,7 @@ export function ManySelectedContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
+  console.log("inside another context menu", props.things);
   const isProtected: boolean = props.things.length > 1 ||
     basicNodes.includes(
       props.things[0].title,
@@ -32,7 +33,6 @@ export function ManySelectedContextMenu(
       things: props.things,
     });
   }, [dispatch, position, props.things]);
-
 
   useEffect(() => {
     setTimeout(() => {

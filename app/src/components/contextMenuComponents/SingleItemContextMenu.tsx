@@ -17,11 +17,11 @@ export function SingleItemContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
-  // todo this returns undefined. bad
-  console.log(props.thing);
+
   const isProtected: boolean = props.thing?.title
     ? basicNodes.includes(props.thing.title)
     : false;
+
   const [children, setChildren] = useState<chrome.bookmarks.BookmarkTreeNode[]>(
     [],
   );

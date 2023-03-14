@@ -1,5 +1,6 @@
 import {
   getChildrenLinksMany,
+  isAFolder,
   openAllSelected,
 } from "../../utils/ifHasChildrenFolders";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
@@ -7,10 +8,13 @@ import { contextMenuButtonClass } from "./contextMenuButtonClass";
 export function OpenAllSection(
   props: { things: chrome.bookmarks.BookmarkTreeNode[] },
 ): JSX.Element {
-  const childrenLinks: chrome.bookmarks.BookmarkTreeNode[] =
-    getChildrenLinksMany(
-      props.things,
-    );
+  console.log("open all links", props.things);
+  const allFolders = props.things.every(isAFolder);
+  let childrenLinks: chrome.bookmarks.BookmarkTreeNode[] = props.things;
+  if (allFolders) {
+    childrenLinks = getChildrenLinksMany(props.things);
+  }
+  // todo this may be buggy
   const hasChildrenLinks: boolean = childrenLinks.length > 0;
   return (
     <div className="group3  flex flex-col">

@@ -8,7 +8,6 @@ import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 // and the branches would be subsections of the whole component, not switch cases
 export default function ContextMenu() {
   const contextMenu = useContextMenu();
-  console.log("current componentId", contextMenu.componentId);
   console.log("full context menu", contextMenu);
   if (contextMenu.componentId === "m") {
     return <MiniContextMenu />;
@@ -16,6 +15,9 @@ export default function ContextMenu() {
 
   if (contextMenu.things && contextMenu.things.length > 0) {
     if (contextMenu.componentId === "b") {
+      return <SingleItemContextMenu thing={contextMenu.things[0]} />;
+    }
+    if (contextMenu.componentId === "f") {
       return <SingleItemContextMenu thing={contextMenu.things[0]} />;
     }
     if (contextMenu.componentId === "s") {

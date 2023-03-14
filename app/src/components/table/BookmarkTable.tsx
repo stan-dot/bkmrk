@@ -104,7 +104,7 @@ export function BookmarkTable(
   };
 
   const doubleClickHandler = (cell: Item) => {
-    console.log(cell);
+    // console.log(cell);
     const b = props.rows[cell[0]];
     const isFolder = isAFolder(b);
     if (isFolder) {
@@ -119,32 +119,42 @@ export function BookmarkTable(
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
     event.preventDefault();
-    console.log("on cell context in cell", cell);
+    // console.log("on cell context in cell", cell);
     console.log("current selection", selection);
-    // todo here error for many cells
     const includes = gridSelectionHasItem(selection, cell);
     if (includes) {
-      // const rowIndexes = selection.rows.toArray();
       const start = selection.current?.range.y ?? 0;
-      // todo change to use the correct notation
-      // console.log("row indexes", rowIndexes);
-      // const selectedBookmarks = rowIndexes.map((i) => props.rows[i]);
       // todo can change to use always full width
       const selectedBookmarks = props.rows.slice(
         start,
         start + (selection.current?.range.height ?? 0),
       );
       console.log("selected bookmarks", selectedBookmarks);
-      console.log(
-        "dispatching context menu, selected bookmarks",
-        selectedBookmarks,
-      );
-      contextMenuDispatch({
-        type: "single-bookmark",
-        direction: "open",
-        position: [event.localEventX, event.localEventY],
-        things: selectedBookmarks,
-      });
+      if (selectedBookmarks.length === 1) {
+        const item = selectedBookmarks[0];
+        if (isAFolder(item)) {
+          contextMenuDispatch({
+            type: "folder",
+            direction: "open",
+            position: [event.localEventX, event.localEventY],
+            things: selectedBookmarks,
+          });
+        } else {
+          contextMenuDispatch({
+            type: "single-bookmark",
+            direction: "open",
+            position: [event.localEventX, event.localEventY],
+            things: selectedBookmarks,
+          });
+        }
+      } else {
+        contextMenuDispatch({
+          type: "mixed",
+          direction: "open",
+          position: [event.localEventX, event.localEventY],
+          things: selectedBookmarks,
+        });
+      }
     }
   };
 

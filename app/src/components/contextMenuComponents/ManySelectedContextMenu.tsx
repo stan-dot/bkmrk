@@ -51,8 +51,6 @@ export function ManySelectedContextMenu(
       }}
       onBlur={close}
     >
-      <hr />
-
       <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2">
         <button disabled={!isProtected} className={contextMenuButtonClass}>
           <p>Cut</p>
@@ -66,6 +64,32 @@ export function ManySelectedContextMenu(
       </div>
 
       <hr />
+      {props.things.length === 1 &&
+        (
+          <button
+            className={`${
+              !props.searchResults && "hidden"
+            } ${contextMenuButtonClass}`}
+            onClick={(e) => {
+              if (!props.setRowsCallback) return;
+
+              const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome
+                .bookmarks
+                .get(props.things[0].parentId!);
+
+              if (parent.length > 1) {
+                console.error("there is more than one parent for this id");
+                return;
+              }
+              const children: chrome.bookmarks.BookmarkTreeNode[] = parent[0]
+                .children!;
+              setChildren(children);
+              props.setRowsCallback(children);
+            }}
+          >
+            <p>show in folder</p>
+          </button>
+        )}
       <div className="group-changing flex flex-col">
         <button
           onClick={() =>

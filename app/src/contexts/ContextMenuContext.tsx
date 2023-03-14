@@ -11,7 +11,7 @@ export type ContextMenuContextType = {
   things?: chrome.bookmarks.BookmarkTreeNode[]
 }
 
-type ContextMenuActionTypes = 'single-bookmark' | 'mixed' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update';
+export type ContextMenuActionTypes = 'single-bookmark' | 'mixed' | 'folder' | 'general' | 'search-result' | 'none' | 'position-update';
 
 export type ContextMenuContextAction = {
   type: ContextMenuActionTypes;

@@ -1,7 +1,6 @@
 import { useContextMenu } from "../../contexts/ContextMenuContext";
 import { ManySelectedContextMenu } from "../contextMenuComponents/ManySelectedContextMenu";
 import { MiniContextMenu } from "../contextMenuComponents/MiniContextMenu";
-import { SingleItemContextMenu } from "../contextMenuComponents/SingleItemContextMenu";
 import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 
 // todo maybe all context menus in here? that'd be smart, wouldn't it be
@@ -15,17 +14,22 @@ export default function ContextMenu() {
 
   if (contextMenu.things && contextMenu.things.length > 0) {
     if (contextMenu.componentId === "b") {
-      return <SingleItemContextMenu thing={contextMenu.things[0]} />;
+      return <ManySelectedContextMenu things={contextMenu.things} />;
+      // return <SingleItemContextMenu thing={contextMenu.things[0]} />;
     }
     if (contextMenu.componentId === "f") {
-      return <SingleItemContextMenu thing={contextMenu.things[0]} />;
+      return <ManySelectedContextMenu things={contextMenu.things} />;
+      // return <SingleItemContextMenu thing={contextMenu.things[0]} />;
     }
     if (contextMenu.componentId === "s") {
       return <ManySelectedContextMenu things={contextMenu.things} />;
     }
+    
+
+    // path display is built different
     if (contextMenu.componentId === "p") {
       return <PathDisplayContextMenu thing={contextMenu.things[0]} />;
     }
   }
-  return <></>
+  return <></>;
 }

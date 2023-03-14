@@ -1,14 +1,14 @@
-import { basicNodes } from "../../utils/dataProcessing/basicNodes";
-import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { OpenAllSection } from "./OpenAllSection";
-import { EditDeleteSection } from "./EditDeleteSection";
-import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { useCallback, useEffect, useState } from "react";
 import {
   useContextMenu,
-  useContextMenuDispatch,
+  useContextMenuDispatch
 } from "../../contexts/ContextMenuContext";
+import { basicNodes } from "../../utils/dataProcessing/basicNodes";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { sortRows } from "../../utils/interactivity/sortRows";
+import { contextMenuButtonClass } from "./contextMenuButtonClass";
+import { EditDeleteSection } from "./EditDeleteSection";
+import { OpenAllSection } from "./OpenAllSection";
 
 export function SingleItemContextMenu(
   props: {

@@ -99,7 +99,7 @@ export function SideTreeElement(
       draggable
     >
       <div
-        className="flex min-w-fit  min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"
+        className="flex min-w-fit min-h-fit flex-row p-2 hover:bg-slate-500 focus:bg-cyan-400 focus:border-white focus:border-2"
         id={`${props.thing.id}-side-tree-row`}
       >
         <button
@@ -107,11 +107,11 @@ export function SideTreeElement(
           onClick={(e) => setUnrolled(!unrolled)}
           className={`${
             !isALeafNode && "hidden"
-          } hover:bg-slate-400 text-slate-50 text-xl mr-2 rounded-full`}
+          } hover:bg-slate-400 text-slate-50 text-l mr-2 rounded-full`}
         >
           {unrolled ? <p>&#709;</p> : <p>&#707;</p>}
         </button>
-        <p className={` text-slate-50 text-xl mr-2`}>
+        <p className={` text-slate-50 text-l mr-2`}>
           {props.thing.children?.length}
         </p>
         <button

@@ -7,7 +7,11 @@ import DataEditor, {
   Item,
 } from "@glideapps/glide-data-grid";
 import React, { useState } from "react";
-import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import {
+  ContextMenuActionTypes,
+  ContextMenuContextType,
+  useContextMenuDispatch,
+} from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { getPath } from "../../utils/interactivity/getPath";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
@@ -31,12 +35,6 @@ export function BookmarkTable(
 
   const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
     console.log("in table click handler");
-    if (event.ctrlKey) {
-      console.log(" pressed ctrl button");
-    }
-    if (event.shiftKey) {
-      console.log(" pressed shift button");
-    }
 
     const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
     console.log("in table click handler on bookmark", bookmark);
@@ -119,8 +117,6 @@ export function BookmarkTable(
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
     event.preventDefault();
-    // console.log("on cell context in cell", cell);
-    console.log("current selection", selection);
     const includes = gridSelectionHasItem(selection, cell);
     if (includes) {
       const start = selection.current?.range.y ?? 0;
@@ -130,31 +126,19 @@ export function BookmarkTable(
         start + (selection.current?.range.height ?? 0),
       );
       console.log("selected bookmarks", selectedBookmarks);
-      if (selectedBookmarks.length === 1) {
-        const item = selectedBookmarks[0];
-        if (isAFolder(item)) {
-          contextMenuDispatch({
-            type: "folder",
-            direction: "open",
-            position: [event.localEventX, event.localEventY],
-            things: selectedBookmarks,
-          });
-        } else {
-          contextMenuDispatch({
-            type: "single-bookmark",
-            direction: "open",
-            position: [event.localEventX, event.localEventY],
-            things: selectedBookmarks,
-          });
-        }
-      } else {
-        contextMenuDispatch({
-          type: "mixed",
-          direction: "open",
-          position: [event.localEventX, event.localEventY],
-          things: selectedBookmarks,
-        });
-      }
+
+      const type: ContextMenuActionTypes = selectedBookmarks.length === 1
+        ? "mixed"
+        : isAFolder(selectedBookmarks[0])
+        ? "folder"
+        : "single-bookmark";
+
+      contextMenuDispatch({
+        type: type,
+        direction: "open",
+        position: [event.localEventX, event.localEventY],
+        things: selectedBookmarks,
+      });
     }
   };
 

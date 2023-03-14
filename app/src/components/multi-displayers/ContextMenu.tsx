@@ -1,6 +1,4 @@
-import {
-  useContextMenu
-} from "../../contexts/ContextMenuContext";
+import { useContextMenu } from "../../contexts/ContextMenuContext";
 import { ManySelectedContextMenu } from "../contextMenuComponents/ManySelectedContextMenu";
 import { MiniContextMenu } from "../contextMenuComponents/MiniContextMenu";
 import { SingleItemContextMenu } from "../contextMenuComponents/SingleItemContextMenu";
@@ -11,22 +9,21 @@ import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 export default function ContextMenu() {
   const contextMenu = useContextMenu();
   console.log("current componentId", contextMenu.componentId);
-  console.log('full context menu', contextMenu);
-  return (
-    <div>
-      {/* {popup.component} */}
-      {contextMenu.componentId === "m" && (
-        <MiniContextMenu />
-      )}
-      {contextMenu.componentId === "b" && (
-        <SingleItemContextMenu thing={contextMenu.things![0]!} />
-      )}
-      {contextMenu.componentId === "s" && (
-        <ManySelectedContextMenu things={contextMenu.things!} />
-      )}
-      {contextMenu.componentId === "p" && (
-        <PathDisplayContextMenu thing={contextMenu.things![0]} />
-      )}
-    </div>
-  );
+  console.log("full context menu", contextMenu);
+  if (contextMenu.componentId === "m") {
+    return <MiniContextMenu />;
+  }
+
+  if (contextMenu.things && contextMenu.things.length > 0) {
+    if (contextMenu.componentId === "b") {
+      return <SingleItemContextMenu thing={contextMenu.things[0]} />;
+    }
+    if (contextMenu.componentId === "s") {
+      return <ManySelectedContextMenu things={contextMenu.things} />;
+    }
+    if (contextMenu.componentId === "p") {
+      return <PathDisplayContextMenu thing={contextMenu.things[0]} />;
+    }
+  }
+  return <></>
 }

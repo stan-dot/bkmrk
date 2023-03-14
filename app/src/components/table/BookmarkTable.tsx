@@ -1,5 +1,6 @@
 import DataEditor, {
   CellClickedEventArgs,
+  CompactSelection,
   GridDragEventArgs,
   GridSelection,
   gridSelectionHasItem,
@@ -102,7 +103,6 @@ export function BookmarkTable(
     createBookmarksFromPaste(e, parentId);
   };
 
-  const [currentSelection, setCurrentSelection] = useState({} as GridSelection);
   const doubleClickHandler = (cell: Item) => {
     console.log(cell);
     const b = props.rows[cell[0]];
@@ -120,11 +120,25 @@ export function BookmarkTable(
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
     event.preventDefault();
     console.log("on cell context in cell", cell);
+    console.log("current selection", selection);
     // todo here error for many cells
-    const includes = gridSelectionHasItem(currentSelection, cell);
+    const includes = gridSelectionHasItem(selection, cell);
     if (includes) {
-      const rowIndexes = currentSelection.rows.toArray();
-      const selectedBookmarks = rowIndexes.map((i) => props.rows[i]);
+      // const rowIndexes = selection.rows.toArray();
+      const start = selection.current?.range.y ?? 0;
+      // todo change to use the correct notation
+      // console.log("row indexes", rowIndexes);
+      // const selectedBookmarks = rowIndexes.map((i) => props.rows[i]);
+      // todo can change to use always full width
+      const selectedBookmarks = props.rows.slice(
+        start,
+        start + (selection.current?.range.height ?? 0),
+      );
+      console.log("selected bookmarks", selectedBookmarks);
+      console.log(
+        "dispatching context menu, selected bookmarks",
+        selectedBookmarks,
+      );
       contextMenuDispatch({
         type: "single-bookmark",
         direction: "open",
@@ -133,6 +147,11 @@ export function BookmarkTable(
       });
     }
   };
+
+  const [selection, setSelection] = React.useState<GridSelection>({
+    columns: CompactSelection.empty(),
+    rows: CompactSelection.empty(),
+  });
 
   return (
     <div
@@ -158,16 +177,20 @@ export function BookmarkTable(
           copy: true,
           paste: true,
         }}
-        onCellClicked={tableClickHandler}
+        // onCellClicked={tableClickHandler}
         onCellActivated={doubleClickHandler}
         onCellContextMenu={contextMenuHandler}
         rowSelect={"single"}
-        onGridSelectionChange={(newSelection: GridSelection) => {
-          setCurrentSelection(newSelection);
-        }}
+        gridSelection={selection}
+        onGridSelectionChange={setSelection}
+        // onGridSelectionChange={(newSelection: GridSelection) => {
+        //   console.log("changing selection into", newSelection);
+        //   setselection(newSelection);
+        // }}
         // drag and drop interactivity
         // isDraggable="cell" //this might be dragging the whole thing, experimental
         onDragStart={dragHandler}
+        getCellsForSelection={true}
         onDrop={dropHandler}
       />
     </div>

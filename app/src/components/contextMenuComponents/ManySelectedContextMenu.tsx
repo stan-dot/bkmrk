@@ -67,24 +67,24 @@ export function ManySelectedContextMenu(
       {props.things.length === 1 &&
         (
           <button
+          // todo this doesn't show up
             className={`${
               !props.searchResults && "hidden"
             } ${contextMenuButtonClass}`}
             onClick={(e) => {
               if (!props.setRowsCallback) return;
-
-              const parent: chrome.bookmarks.BookmarkTreeNode[] = await chrome
+              chrome
                 .bookmarks
-                .get(props.things[0].parentId!);
-
-              if (parent.length > 1) {
-                console.error("there is more than one parent for this id");
-                return;
-              }
-              const children: chrome.bookmarks.BookmarkTreeNode[] = parent[0]
-                .children!;
-              setChildren(children);
-              props.setRowsCallback(children);
+                .get(props.things[0].parentId!).then((parents) => {
+                  if (parents.length > 1) {
+                    console.error("there is more than one parent for this id");
+                    return;
+                  }
+                  const children: chrome.bookmarks.BookmarkTreeNode[] =
+                    parents[0]
+                      .children!;
+                  props.setRowsCallback!(children);
+                });
             }}
           >
             <p>show in folder</p>

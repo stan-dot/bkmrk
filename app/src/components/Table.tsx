@@ -65,7 +65,6 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.onImportEnded.addListener(() =>
       reloadWithNode(path.items)
     );
-    toast("wow so easy!");
 
     return () => {
       chrome.bookmarks.onChanged.removeListener(deltaListener);

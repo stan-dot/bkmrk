@@ -23,7 +23,7 @@ export default function App() {
           </ContextMenuProvider>
         </PopupProvider>
       </PathProvider>
-      <ToastContainer />
+      <ToastContainer position="bottom-left" />
     </div>
   );
 }

@@ -22,6 +22,7 @@ export function sortRows(
 ):void {
   const { key, reverse } = sortOptions ?? DEFAULT_SORT_OPTIONS;
   const sorted = sorting(key, rows, reverse);
+  console.log('before sorting:', rows, ' after sorting: ', sorted);
     callToBookmarksApi(sorted);
 }
 

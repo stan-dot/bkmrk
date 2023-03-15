@@ -14,6 +14,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 
 ### bug fixes
+- [ ] wrong row gets targeted for any changes
 - [ ] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
 
 # after mvp

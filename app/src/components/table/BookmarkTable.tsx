@@ -23,7 +23,7 @@ import {
   columns,
   getData,
   viewDetailsColNumber,
-} from "./columnNumberToGridCell";
+} from "./columns";
 
 export function BookmarkTable(
   props: {

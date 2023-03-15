@@ -1,6 +1,21 @@
+import { toast } from "react-toastify";
 import { PopupAction, usePopupDispatch } from "../../contexts/PopupContext";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
+
+function DeleteUndoButton(
+  props: { thing: chrome.bookmarks.BookmarkTreeNode; undoCallback: Function },
+): JSX.Element {
+  return (
+    <div>
+      <h2>
+        removed item {props.thing.title}
+      </h2>
+
+      <button onClick={() => props.undoCallback}>undo?</button>
+    </div>
+  );
+}
 
 export function EditDeleteSection(
   props: { thing: chrome.bookmarks.BookmarkTreeNode; protected: boolean },
@@ -26,6 +41,20 @@ export function EditDeleteSection(
       <button
         disabled={props.protected}
         onClick={(e) => {
+          toast(
+            <DeleteUndoButton
+              thing={props.thing}
+              undoCallback={() => {
+                const createArgs: chrome.bookmarks.BookmarkCreateArg = {
+                  parentId: props.thing.parentId,
+                  index: props.thing.index,
+                  title: props.thing.title,
+                  url: props.thing.url,
+                };
+                chrome.bookmarks.create(createArgs);
+              }}
+            />,
+          );
           chrome.bookmarks.remove(props.thing.id);
         }}
         className={`${contextMenuButtonClass} 'disabled:opacity-25'`}

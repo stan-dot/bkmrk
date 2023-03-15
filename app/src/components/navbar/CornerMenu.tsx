@@ -12,7 +12,6 @@ const linkClass =
 
 type OpenMenuStates = "IMPORT" | "EXPORT" | "NEW_FOLDER" | "NEW_BOOKMARK";
 
-// todo the advanced should have a separate alert window
 export function CornerMenu(
   props: {
     importCallback: Function;
@@ -23,16 +22,21 @@ export function CornerMenu(
   const [openVariant, setOpenVariant] = useState<OpenMenuStates>(
     "NEW_BOOKMARK",
   );
-  const dispatch = usePopupDispatch()
+  const dispatch = usePopupDispatch();
 
   return (
-    <div className={"conrner-menu-button z-40 relative"}
+    <div
+      className={"conrner-menu-button z-40 relative"}
       onBlur={() => {
-        dispatch({
-          direction: 'close',
-          type: 'none'
-        })
-      }}>
+        // todo refine the delay
+        setTimeout(() => {
+          dispatch({
+            direction: "close",
+            type: "none",
+          });
+        }, 500);
+      }}
+    >
       <button
         onClick={() => setShowMenu(!showMenu)}
         id="dropdownDefaultButton"
@@ -45,21 +49,24 @@ export function CornerMenu(
       <div
         id="dropdown"
         onBlur={() => setShowMenu(false)}
-        className={`absolute right-1/3 top-1/10 z-10 ${!showMenu && "hidden"
-          } bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700`}
+        className={`absolute right-1/3 top-1/10 z-10 ${
+          !showMenu && "hidden"
+        } bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700`}
       >
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 justify-start">
           <li>
             <button
               className={linkClass}
-              onClick={(v) =>
+              onClick={(v) => {
+                console.log("clicked to sort by name");
                 sortRows(
                   props.rows,
                   {
                     key: "title",
                     reverse: false,
                   },
-                )}
+                );
+              }}
             >
               <span className="italic text-l ">A-Z</span> Sort by name
             </button>
@@ -67,11 +74,13 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) =>
+              onClick={(v) => {
+                console.log("clicked to sort by date");
                 sortRows(props.rows, {
                   key: "title",
                   reverse: false,
-                })}
+                });
+              }}
             >
               &#128197; Sort by date
             </button>
@@ -82,9 +91,9 @@ export function CornerMenu(
               className={linkClass}
               onClick={(v) => {
                 dispatch({
-                  type: 'add-new-bookmark',
-                  direction: 'open'
-                })
+                  type: "add-new-bookmark",
+                  direction: "open",
+                });
               }}
             >
               &#9734; Add new bookmark
@@ -95,9 +104,9 @@ export function CornerMenu(
               className={linkClass}
               onClick={(v) => {
                 dispatch({
-                  type: 'add-new-folder',
-                  direction: 'open'
-                })
+                  type: "add-new-folder",
+                  direction: "open",
+                });
               }}
             >
               &#128448; Add new folder

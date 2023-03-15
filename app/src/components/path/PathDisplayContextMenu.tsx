@@ -15,12 +15,12 @@ export function PathDisplayContextMenu(
     getPath(props.thing).then((path) => {
       const text: string = stringifyPath(path);
       window.navigator.clipboard.writeText(text);
-      // todo check if this toast works fr https://github.com/fkhadra/react-toastify
-      toast('wow so easy!');
+      const content = `copied to clipboard ${text}`;
+      toast(content);
     });
   };
 
-  const contextMenu = useContextMenu()
+  const contextMenu = useContextMenu();
   const position = contextMenu.position;
   return (
     <div

@@ -8,8 +8,6 @@ const removableLinks:RegExp[] = [
   /(\?utm_medium)/g
 ];
 
-
-
 // todo integrate this, should be fairly easy
 // the list of removable links as a thing from storage, with the option to restore defaults
 export async function removeAllTracingLinks(): Promise<number> {

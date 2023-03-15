@@ -8,15 +8,19 @@
 https://www.w3schools.com/html/html5_draganddrop.asp
 browser provides the image for dragging
 https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
-- [ ] solve the selection bit
-- [ ] working paste and copy
-  - [ ] make the table receptive to drop
-  - [ ] make the path receptive to drop
-- [ ] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
+- [x] solve the selection bit
 - [ ] fix search bookmarks field positioning
 - [ ] a 'undo' popup in the left bottom corner
 
+
+### bug fixes
+- [ ] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
+
 # after mvp
+### QoL features
+- [ ] working paste and copy
+  - [ ] make the table receptive to drop
+  - [ ] make the path receptive to drop
 ### power user expansions
 - [ ] automatic addition of a 'source website column', sortable
 - [ ] add checkbox column for precision marking

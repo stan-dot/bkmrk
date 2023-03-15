@@ -1,7 +1,11 @@
 import {
-  GridCell, GridCellKind, GridColumn, Item, LoadingCell,
+  GridCell,
+  GridCellKind,
+  GridColumn,
+  Item,
+  LoadingCell,
   TextCell,
-  UriCell
+  UriCell,
 } from "@glideapps/glide-data-grid";
 import { ButtonCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/button-cell";
 import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-cell";
@@ -9,7 +13,9 @@ import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-ce
 import "@glideapps/glide-data-grid/dist/index.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 
-type CellGetter = (v: chrome.bookmarks.BookmarkTreeNode) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
+type CellGetter = (
+  v: chrome.bookmarks.BookmarkTreeNode,
+) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
 
 type ComprehensiveColDef = {
   static: GridColumn;
@@ -64,7 +70,9 @@ const myCols: ComprehensiveColDef[] = [
     columnGetter: (v) => {
       if (v === undefined) return ErrorCell;
       const isRealLink = v.url !== undefined;
-      const display: string = (isRealLink ? v.url : v.children?.length.toString()) ?? 'folder';
+      // todo would need to have the chrome.bookmarks.getChildren(id) to get their number. that would be longer
+      const display: string =
+        (isRealLink ? v.url : v.children?.length.toString()) ?? "folder";
       const d: TextCell = {
         kind: GridCellKind.Text,
         displayData: display,
@@ -82,42 +90,42 @@ const myCols: ComprehensiveColDef[] = [
         kind: GridCellKind.Text,
         data: v?.title ?? "empty",
         allowOverlay: false,
-        displayData: v?.title ?? 'empty',
+        displayData: v?.title ?? "empty",
       };
       return cell;
     },
   },
   {
-    static: { title: "buttonCol", width: 50 },
+    static: { title: "buttonCol", width: 150 },
     columnGetter: (v) => {
       const cell: TextCell = {
         kind: GridCellKind.Text,
         // data: v?.title ?? "empty",
-        data: 'View details',
+        data: "View details",
         allowOverlay: false,
-        displayData: 'View details',
+        displayData: "View details",
       };
       return cell;
       // todo solve this
       // const d: ButtonCell = {
-                            // kind: GridCellKind.Custom,
-                            // cursor: "pointer",
-                            // allowOverlay: true,
-                            // copyData: "4",
-                            // readonly: true,
-                            // data: {
-                                // kind: "button-cell",
-                                // backgroundColor: ["transparent", "#6572ffee"],
-                                // color: ["accentColor", "accentFg"],
-                                // borderColor: "#6572ffa0",
-                                // borderRadius: 9,
-                                // title: "View Details",
-                                // onClick: () => window.alert("Button clicked"),
-                            // },
-                            // themeOverride: {
-                                // baseFontStyle: "700 12px",
-                            // },
-                        // };
+      // kind: GridCellKind.Custom,
+      // cursor: "pointer",
+      // allowOverlay: true,
+      // copyData: "4",
+      // readonly: true,
+      // data: {
+      // kind: "button-cell",
+      // backgroundColor: ["transparent", "#6572ffee"],
+      // color: ["accentColor", "accentFg"],
+      // borderColor: "#6572ffa0",
+      // borderRadius: 9,
+      // title: "View Details",
+      // onClick: () => window.alert("Button clicked"),
+      // },
+      // themeOverride: {
+      // baseFontStyle: "700 12px",
+      // },
+      // };
       // const d: ButtonCell = {
       //   kind: GridCellKind.Custom,
       //   cursor: "pointer",
@@ -145,21 +153,20 @@ const myCols: ComprehensiveColDef[] = [
   },
 ];
 
-
-const columnNumberToGridCell: Map<number, CellGetter> = new Map(myCols.map((v, i) => [i, v.columnGetter]));
+const columnNumberToGridCell: Map<number, CellGetter> = new Map(
+  myCols.map((v, i) => [i, v.columnGetter]),
+);
 
 const DEFAULT_GRID_CELL: LoadingCell = {
   kind: GridCellKind.Loading,
   allowOverlay: false,
 };
 
-
 // If fetching data is slow you can use the DataEditor ref to send updates for cells
 // once data is loaded.
 export function getData(
   bookmarksArr: chrome.bookmarks.BookmarkTreeNode[],
 ): ([col, row]: Item) => GridCell {
-
   const curriedFunction: ([col, row]: Item) => GridCell = (
     coordinates: Item,
   ) => {
@@ -176,5 +183,9 @@ export function getData(
   };
   return curriedFunction;
 }
+
+export const viewDetailsColNumber: number = myCols.findIndex((c) =>
+  c.static.title === "buttonCol"
+);
 
 export const columns: GridColumn[] = myCols.map((c) => c.static);

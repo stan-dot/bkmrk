@@ -9,7 +9,7 @@ const manySelectedArray: string[] = ["b", "f", "s"];
 
 export default function ContextMenu() {
   const contextMenu = useContextMenu();
-  console.log("full context menu", contextMenu);
+  // console.log("full context menu", contextMenu);
   if (contextMenu.componentId === "m") {
     return <MiniContextMenu />;
   }

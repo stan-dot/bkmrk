@@ -6,21 +6,24 @@ import DataEditor, {
   gridSelectionHasItem,
   Item,
 } from "@glideapps/glide-data-grid";
-import React, { useState } from "react";
+import React from "react";
 import {
   ContextMenuActionTypes,
-  ContextMenuContextType,
   useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
-import { getPath } from "../../utils/interactivity/getPath";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { columns, getData } from "./columnNumberToGridCell";
 import { createBookmarksFromPaste } from "../../utils/interactivity/createBookmarksFromPaste";
 import {
   readRawTextAsBookmarks,
   unpackBookmarks,
 } from "../../utils/interactivity/dragProcessing";
+import { getPath } from "../../utils/interactivity/getPath";
+import {
+  columns,
+  getData,
+  viewDetailsColNumber,
+} from "./columnNumberToGridCell";
 
 export function BookmarkTable(
   props: {
@@ -32,35 +35,10 @@ export function BookmarkTable(
   const path = usePath();
   const pathDispatch = usePathDispatch();
   const contextMenuDispatch = useContextMenuDispatch();
-
-  const tableClickHandler = (cell: Item, event: CellClickedEventArgs) => {
-    console.log("in table click handler");
-
-    const bookmark: chrome.bookmarks.BookmarkTreeNode = props.rows[cell[1]];
-    console.log("in table click handler on bookmark", bookmark);
-    // checking col number for the cell with the button
-    // only react on that row
-    const folder = isAFolder(bookmark);
-    // todo make this more robust, rn that number is hard coded
-    console.log("col number:", cell[0]);
-    if (cell[0] === 4) {
-      contextMenuDispatch({
-        type: folder ? "folder" : "single-bookmark",
-        direction: "open",
-        position: [event.localEventX, event.localEventY],
-        things: [bookmark],
-      });
-    }
-    // else {
-    //   getPath(bookmark).then((newPath) => {
-    //     console.log("path:", newPath);
-    //     pathDispatch({
-    //       type: "full",
-    //       nodes: newPath,
-    //     });
-    //   });
-    // }
-  };
+  const [selection, setSelection] = React.useState<GridSelection>({
+    columns: CompactSelection.empty(),
+    rows: CompactSelection.empty(),
+  });
 
   const dragHandler = (e: GridDragEventArgs) => {
     e.preventDefault();
@@ -102,10 +80,28 @@ export function BookmarkTable(
   };
 
   const doubleClickHandler = (cell: Item) => {
-    // console.log(cell);
-    const b = props.rows[cell[0]];
+    const colNumber = cell[0];
+    const b = props.rows[colNumber];
     const isFolder = isAFolder(b);
-    if (isFolder) {
+
+    console.log("col number:", colNumber);
+    if (props.searchResultsMode && isFolder) {
+      getPath(b).then((newPath) => {
+        console.log("path:", newPath);
+        pathDispatch({
+          type: "full",
+          nodes: newPath,
+        });
+      });
+    } else if (colNumber === viewDetailsColNumber) {
+      contextMenuDispatch({
+        type: isFolder ? "folder" : "single-bookmark",
+        direction: "open",
+        // todo change that hardcoded value for position
+        position: [350, 350],
+        things: [b],
+      });
+    } else if (isFolder) {
       pathDispatch({
         type: "added",
         nodes: [b],
@@ -141,11 +137,6 @@ export function BookmarkTable(
       });
     }
   };
-
-  const [selection, setSelection] = React.useState<GridSelection>({
-    columns: CompactSelection.empty(),
-    rows: CompactSelection.empty(),
-  });
 
   return (
     <div

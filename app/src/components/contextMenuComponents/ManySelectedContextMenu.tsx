@@ -16,7 +16,7 @@ export function ManySelectedContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
-  console.log("inside another context menu", props.things);
+  // console.log("inside another context menu", props.things);
   const isProtected: boolean = props.things.length > 1 ||
     basicNodes.includes(
       props.things[0].title ?? "",

@@ -1,6 +1,6 @@
 import { TraverseArgs, traverseTree } from "./traverseTree";
 
-
+// todo at init this should be recovered or when reset to defaults
 const removableLinks:RegExp[] = [
   /(\?ref=)/g,
   /(\?mtrref)/g,

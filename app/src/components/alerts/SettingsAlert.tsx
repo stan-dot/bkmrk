@@ -1,8 +1,12 @@
 import { FormEvent, useState } from "react";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
 
-export type Settings = {};
+export type Settings = {
+  tracingLinksRegexes: RegExp[];
+};
 
+
+// todo a button to reset to defaults
 export default function SettingsAlert(
   { id, closeCallback, visible }: any,
 ) {
@@ -12,7 +16,6 @@ export default function SettingsAlert(
   const onSubmit = (e: FormEvent) => {
     console.log("submitting the form");
     e.preventDefault();
-    chrome.bookmarks.create(data);
     closeCallback();
   };
 

@@ -9,8 +9,12 @@ https://www.w3schools.com/html/html5_draganddrop.asp
 browser provides the image for dragging
 https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] solve the selection bit
-- [ ] fix search bookmarks field positioning
-- [ ] a 'undo' popup in the left bottom corner
+- [x] fix search bookmarks field positioning
+- [x] a 'undo' popup in the left bottom corner
+
+- [ ] fix the issue with 'add new bookmark' alert
+- [ ] fix the issue with 'add new folder' alert
+- [ ] make the settings alert
 
 
 ### bug fixes

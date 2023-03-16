@@ -28,6 +28,7 @@ export function usePathDispatch() {
 
 export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
+  // todo change this to only store IDs
   chrome.storage.local.set({ 'path': path }).then(() => {
     console.log('value is set to:', path);
   });

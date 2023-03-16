@@ -22,6 +22,7 @@ export default function AddNewFolderAlert(
     url: "",
     parentId: locationId,
   });
+
   const onSubmit = (e: FormEvent) => {
     console.log("submitting the form");
     e.preventDefault();

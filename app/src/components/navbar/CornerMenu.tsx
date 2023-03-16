@@ -6,6 +6,7 @@ import { BookmarkImportWindow } from "../../utils/io/importBookmarks";
 import { printCsv } from "../../utils/io/printCsv";
 import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
 import { recognizeDuplicates } from "../../utils/traversalFunctions/getCopies";
+import { removeAllTracingLinks } from "../../utils/traversalFunctions/removeTracingLinks";
 
 const linkClass =
   "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
@@ -144,7 +145,7 @@ export function CornerMenu(
               className={linkClass}
               onClick={(v) => deleteAllEmpty()}
             >
-              &#128465; Delete empty folders
+              &#128465; Delete empty folders in this folder
             </button>
           </li>
           <li>
@@ -152,10 +153,23 @@ export function CornerMenu(
               className={linkClass}
               onClick={(v) => {
                 const copiesNumber = recognizeDuplicates();
+                window.alert(`copies number:  ${copiesNumber}`);
                 console.log(copiesNumber);
               }}
             >
-              &#129694; Delete duplicates
+              &#129694; Delete duplicates in this folder
+            </button>
+          </li>
+          <li>
+            <button
+              className={linkClass}
+              onClick={(v) => {
+                const copiesNumber = removeAllTracingLinks();
+                window.alert(`copies number:  ${copiesNumber}`);
+                console.log(copiesNumber);
+              }}
+            >
+              &#129694; Remove tracing links
             </button>
           </li>
           <hr />

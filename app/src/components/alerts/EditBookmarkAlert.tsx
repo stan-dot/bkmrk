@@ -65,7 +65,7 @@ export default function EditBookmarkAlert(
       <form
         className="
       fixed 
-      top-1/3 left-1/3
+      
       flex flex-col px-6 py-2
       m-auto
       z-60 inset-0 border-solid border-gray-500 h-60 w-96  bg-slate-800 overflow-y-auto rounded  "

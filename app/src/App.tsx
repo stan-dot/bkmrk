@@ -3,9 +3,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ContextMenu from "./components/multi-displayers/ContextMenu";
 import Popup from "./components/multi-displayers/Popup";
 import { TableLoader } from "./components/Table";
-import { ContextMenuProvider } from "./contexts/ContextMenuContext";
 import { PathProvider } from "./contexts/PathContext";
-import { PopupProvider } from "./contexts/PopupContext";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change
@@ -19,14 +17,9 @@ export default function App() {
   return (
     <div className="App w-full h-full">
       <PathProvider>
-        <PopupProvider>
-          <ContextMenuProvider>
-            <TableLoader />
-            {/**the multidiplayers */}
-            <Popup />
-            <ContextMenu />
-          </ContextMenuProvider>
-        </PopupProvider>
+        <TableLoader />
+        <Popup />
+        <ContextMenu />
       </PathProvider>
       <ToastContainer position="bottom-left" />
     </div>

@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useReducer } from "react";
-import AddNewFolderAlert from "../components/alerts/AddNewFolderAlert";
 import EditBookmarkAlert from "../components/alerts/EditBookmarkAlert";
 import EditFolderAlert from "../components/alerts/EditFolderAlert";
 
@@ -21,7 +20,8 @@ export type PopupAction = {
     | "edit-bookmark"
     | "edit-folder"
     | "open-15-plus"
-    | "none";
+    | "none"
+    | "settings";
   direction: "open" | "close";
   nodeId?: string;
 };
@@ -97,6 +97,12 @@ export function popupReducer(
       };
     }
 
+    case "settings": {
+      console.log("inside edit folder reducer");
+      return {
+        componentId: "s",
+      };
+    }
     default: {
       throw Error("Unknown action: " + action.type);
     }

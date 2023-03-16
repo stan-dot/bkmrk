@@ -1,18 +1,17 @@
 import { FormEvent, useEffect, useState } from "react";
+import { usePopupDispatch } from "../../contexts/PopupContext";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
 import {
   defaultSettings,
   getSettings,
   setSettingsToDefault,
-  Settings,
+  Settings
 } from "./Settings";
 
 // todo maybe use reducer
 // todo a button to reset to defaults
 // todo need to do the loading first
-export default function SettingsAlert(
-  { id, closeCallback, visible }: any,
-) {
+export default function SettingsAlert() {
   console.log("created the add new folder alert");
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -23,19 +22,40 @@ export default function SettingsAlert(
   }, []);
 
   const [data, setData] = useState<Settings>(defaultSettings);
-
   const [newInput, setNewInput] = useState<string>("");
+
+  const dispatch = usePopupDispatch();
+  const [error, setError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setError(false);
+  }, [data, setError]);
+
   const onSubmit = (e: FormEvent) => {
     console.log("submitting the form");
     e.preventDefault();
-    closeCallback();
+    if (checkIfCreateBookmarkValid(data)) {
+      chrome.bookmarks.create(data).then((r) => {
+        console.debug("new bookmark", r);
+        close();
+      });
+    } else {
+      setError(true);
+    }
+  };
+
+  const close = () => {
+    dispatch({
+      type: "add-new-bookmark",
+      direction: "close",
+    });
   };
 
   return (
     <div
       className="fixed backdrop-blur-md w-full h-full grid grid-cols-2 gap-4 place-content-center z-50"
       id="alertBackground"
-      style={{ display: `${visible ? "absolute" : "none"}` }}
+      style={{ display: "absolute" }}
     >
       <form
         className="
@@ -89,7 +109,7 @@ export default function SettingsAlert(
             to prepare exactly what you need
           </p>
         </div>
-        <CancelSaveGroup closeCallback={closeCallback} />
+        <CancelSaveGroup closeCallback={close} />
       </form>
     </div>
   );

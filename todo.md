@@ -13,7 +13,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] a 'undo' popup in the left bottom corner
 
 - [x] fix the issue with 'add new bookmark' alert
-- [ ] fix the issue with 'add new folder' alert
+- [x] fix the issue with 'add new folder' alert
 - [ ] fix reloading
 - [ ] make the settings alert
 - [ ] fix the click does not work right with double click but right with context click

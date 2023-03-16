@@ -131,7 +131,10 @@ export function CornerMenu(
             </button>
           </li>
           <li>
-            <button className={linkClass} onClick={(v) => exportBookmarks}>
+            <button
+              className={linkClass}
+              onClick={(v) => exportBookmarks(props.rows)}
+            >
               Export bookmarks{" "}
             </button>
           </li>
@@ -183,6 +186,19 @@ export function CornerMenu(
             </button>
           </li>
           <hr />
+          <li>
+            <button
+              className={linkClass}
+              onClick={() => {
+                dispatch({
+                  type: "settings",
+                  direction: "open",
+                });
+              }}
+            >
+              &#9881; settings
+            </button>
+          </li>
           <li>
             <a className={linkClass} href="https://github.com/stan-dot/bkmrk">
               <span id="help-question-mark" className="text-l">?</span>{" "}

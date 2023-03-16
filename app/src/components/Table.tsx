@@ -65,7 +65,7 @@ export function TableLoader(): JSX.Element {
       chrome.bookmarks.onChanged.removeListener(deltaListener);
       chrome.bookmarks.onMoved.removeListener(deltaListener);
       chrome.bookmarks.onRemoved.removeListener(deltaListener);
-      chrome.bookmarks.onImportEnded.removeListener(del);
+      chrome.bookmarks.onImportEnded.removeListener(deltaListener);
     };
   }, [deltaListener, path.items, reloadWithNode]);
 

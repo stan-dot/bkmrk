@@ -31,59 +31,80 @@ export function TableLoader(): JSX.Element {
     [globalTree, path.items],
   );
 
-  if (loaded === "LOADING") {
-    chrome.bookmarks.getTree().then(
-      (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-        console.log("loaded!");
-        // todo that might be controversial
-        pathDispatch({
-          type: "full",
-          nodes: root,
-        });
-      },
-    );
-  }
+  // options
+  // bookmark changes in the current folder
+  // bookmark changes outside of the current view
+  // bookmark changes upstream in the path
+  // bookmark changes completely elsewhere, like on a different tab
 
-  useEffect(() => {
-    const deltaListener = (e?: string): void => {
-      console.log("the bookmarks have changed...", e);
-      reloadWithNode(path.items);
-    };
+  // things that need to change
+  // current rows. rows appears completely downstream from the path
+  // current path
+  // loaded status?
+  // global tree - complex, it changes, but only folders changes matter, the numbers should update too though
 
-    const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+  // todo maybe simplify with reducer, with diff actions for all of these
+
+  const reloadWithNode = useCallback(
+    (root: chrome.bookmarks.BookmarkTreeNode[]) => {
       setLoaded("LOADED");
-      setGlobalTree(root[0].children!);
       const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
         root[0].children![0];
-      setRows(bookmarksBar.children ?? []);
+      // setRows(bookmarksBar.children ?? []);
       pathDispatch({
         type: "full",
         nodes: [...root, bookmarksBar],
       });
-    };
+    },
+    [pathDispatch],
+  );
+
+  if (loaded === "LOADING") {
+    // reloadWithNode(path.items);
+    chrome.bookmarks.getTree().then(
+      (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+        console.log("loaded!");
+        setGlobalTree(root);
+        reloadWithNode(root);
+
+        // todo that might be controversial
+        // setGlobalTree(root[0].children!);
+        // pathDispatch({
+        //   type: "full",
+        //   nodes: root,
+        // });
+      },
+    );
+  }
+
+  const deltaListener = useCallback((e?: string): void => {
+    console.log("the bookmarks have changed...", e);
+    reloadWithNode(path.items);
+  }, [path.items, reloadWithNode]);
+
+  useEffect(() => {
     chrome.bookmarks.onChanged.addListener(deltaListener);
     chrome.bookmarks.onMoved.addListener(deltaListener);
     chrome.bookmarks.onRemoved.addListener(deltaListener);
     chrome.bookmarks.onImportEnded.addListener(deltaListener);
-
     return () => {
       chrome.bookmarks.onChanged.removeListener(deltaListener);
       chrome.bookmarks.onMoved.removeListener(deltaListener);
       chrome.bookmarks.onRemoved.removeListener(deltaListener);
       chrome.bookmarks.onImportEnded.removeListener(deltaListener);
     };
-  }, [path.items, pathDispatch]);
+  }, [deltaListener]);
 
-  // useEffect(() => {
-  //   const currentLast = lastPathItem();
-  //   console.log("current last:", currentLast);
-  //   if (currentLast) {
-  //     chrome.bookmarks.getChildren(currentLast.id).then((children) => {
-  //       setRows(children);
-  //     });
-  //   }
-  //   return () => {};
-  // }, [path, lastPathItem]);
+  useEffect(() => {
+    const currentLast = lastPathItem();
+    console.log("current last:", currentLast);
+    if (currentLast) {
+      chrome.bookmarks.getChildren(currentLast.id).then((children) => {
+        setRows(children);
+      });
+    }
+    return () => {};
+  }, [path, lastPathItem]);
 
   const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
     setRows(nodes);

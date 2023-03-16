@@ -17,6 +17,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] make the settings alert
 - [ ] fix reloading
 - [ ] fix the click does not work right with double click but right with context click
+- [ ] fix the broken alerts and context menus
+- [ ] back and front buttons for path navigation
 
 
 ### bug fixes

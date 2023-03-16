@@ -6,7 +6,6 @@ import EditFolderAlert from "../alerts/EditFolderAlert";
 
 export default function Popup() {
   const popup = usePopup();
-  console.log("current component", popup.component);
   console.log("current componentId", popup.componentId);
   return (
     <div>
@@ -14,19 +13,9 @@ export default function Popup() {
       {popup.componentId === "eba" && <EditBookmarkAlert id={popup.args} />}
       {popup.componentId === "efa" && <EditFolderAlert id={popup.args} />}
       {popup.componentId === "anb" && (
-        <AddNewBookmarkAlert
-          parentId={popup.args}
-        />
+        <AddNewBookmarkAlert parentId={popup.args} />
       )}
-      {popup.componentId === "anf" && (
-        <AddNewFolderAlert
-          id={popup.args}
-          closeCallback={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          visible={false}
-        />
-      )}
+      {popup.componentId === "anf" && <AddNewFolderAlert parent={popup.args} />}
     </div>
   );
 }

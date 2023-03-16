@@ -20,3 +20,7 @@ https://stackoverflow.com/questions/50949594/axios-having-cors-issue
 
 this is about security and CORS would be persistent.
 could theoretically do this, with some microbackend and 
+
+
+# 16.03.2023
+struggle with regex

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import AddNewFolderAlert from "../components/alerts/AddNewFolderAlert";
 import EditBookmarkAlert from "../components/alerts/EditBookmarkAlert";
 import EditFolderAlert from "../components/alerts/EditFolderAlert";
 
@@ -8,7 +9,7 @@ const initialPopup: PopupContext = {
 };
 
 export type PopupContext = {
-  component: JSX.Element;
+  component?: JSX.Element;
   componentId?: string;
   args?: any;
 };
@@ -78,10 +79,19 @@ export function popupReducer(
         args: action.nodeId!,
       };
     }
+
+    case "add-new-folder": {
+      console.log("inside edit folder reducer");
+      return {
+        componentId: "anf",
+        args: action.nodeId!,
+      };
+    }
+
     case "add-new-bookmark": {
       console.log("inside edit folder reducer");
       return {
-        component: <EditFolderAlert id={action.nodeId!} />,
+        component: <EditBookmarkAlert id={action.nodeId!} />,
         componentId: "anb",
         args: action.nodeId!,
       };

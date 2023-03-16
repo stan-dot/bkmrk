@@ -10,11 +10,6 @@ type AddNewBookmarkProps = {
   parentId: string;
 };
 
-const initialData: chrome.bookmarks.BookmarkCreateArg = {
-  title: "",
-  url: "",
-};
-
 function checkIfCreateBookmarkValid(
   data: chrome.bookmarks.BookmarkCreateArg,
 ): boolean {

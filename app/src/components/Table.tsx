@@ -1,11 +1,8 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import { usePath, usePathDispatch } from "../contexts/PathContext";
 import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
-import ContextMenu from "./multi-displayers/ContextMenu";
-import Popup from "./multi-displayers/Popup";
 import { Navbar } from "./navbar/Navbar";
 import { PathDisplay } from "./path/PathDisplay";
 import { SideSubTree } from "./sidePanel/SideSubTree";
@@ -53,7 +50,7 @@ export function TableLoader(): JSX.Element {
     );
   }
 
-  const deltaListener = (e: string): void => {
+  const deltaListener = (e?: string): void => {
     console.log("the bookmarks have changed...", e);
     reloadWithNode(path.items);
   };
@@ -62,17 +59,13 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.onChanged.addListener(deltaListener);
     chrome.bookmarks.onMoved.addListener(deltaListener);
     chrome.bookmarks.onRemoved.addListener(deltaListener);
-    chrome.bookmarks.onImportEnded.addListener(() =>
-      reloadWithNode(path.items)
-    );
+    chrome.bookmarks.onImportEnded.addListener(deltaListener);
 
     return () => {
       chrome.bookmarks.onChanged.removeListener(deltaListener);
       chrome.bookmarks.onMoved.removeListener(deltaListener);
       chrome.bookmarks.onRemoved.removeListener(deltaListener);
-      chrome.bookmarks.onImportEnded.removeListener(() =>
-        reloadWithNode(path.items)
-      );
+      chrome.bookmarks.onImportEnded.removeListener(del);
     };
   }, [deltaListener, path.items, reloadWithNode]);
 
@@ -133,9 +126,6 @@ export function TableLoader(): JSX.Element {
           />
         </div>
       </div>
-      {/**the multidiplayers */}
-      <Popup />
-      <ContextMenu />
     </>
   );
 }

@@ -53,7 +53,7 @@ export function popupReducer(
   popup: PopupContext,
   action: PopupAction,
 ): PopupContext {
-  console.log("action", action);
+  // console.log("action", action);
   if (action.direction === "close") {
     return {
       component: emptyComponent,

@@ -1,6 +1,5 @@
-
-import { readFileSync } from 'fs';
-import { useState } from 'react';
+import { readFileSync } from "fs";
+import { useState } from "react";
 
 // <DL>
 //     <DT><H3>Folder Name 1</H3></DT>
@@ -19,10 +18,10 @@ import { useState } from 'react';
 
 // ✅ read file SYNCHRONOUSLY
 function syncReadFile(filename: string): any[] {
-  const contents: string = readFileSync(filename, 'utf-8');
+  const contents: string = readFileSync(filename, "utf-8");
 
   const parser: DOMParser = new DOMParser();
-  const t2: Document = parser.parseFromString(contents, 'text/html');
+  const t2: Document = parser.parseFromString(contents, "text/html");
 
   const arr = contents.split(/\r?\n/);
 
@@ -31,25 +30,38 @@ function syncReadFile(filename: string): any[] {
   return arr;
 }
 
-export function BookmarkImportWindow(props: { callback: Function }): JSX.Element {
+export function BookmarkImportAlert(
+  props: { callback: Function },
+): JSX.Element {
   const EMPTY_NAME = "";
   const [open, setOpen] = useState(true);
   const [fileName, setFileName] = useState(EMPTY_NAME);
   // todo there's some inconsistency, but it should be fine, the function above is for Node
 
   const handleClick = (name: string) => {
-    const bookmarks: chrome.bookmarks.BookmarkTreeNode[] = syncReadFile(fileName)
+    const bookmarks: chrome.bookmarks.BookmarkTreeNode[] = syncReadFile(
+      fileName,
+    );
     props.callback(bookmarks);
     setOpen(false);
-  }
+  };
 
-  return <dialog open={open}>
-    <p>
-      test bookmark import window
-    </p>
-    <input type='file' onInput={v => setFileName('testname')} value={`your file: ${fileName}`} />
-    <button disabled={fileName === EMPTY_NAME} onClick={v => handleClick(fileName)}>
-      OK
-    </button>
-  </dialog>
+  return (
+    <dialog open={open}>
+      <p>
+        test bookmark import window
+      </p>
+      <input
+        type="file"
+        onInput={(v) => setFileName("testname")}
+        value={`your file: ${fileName}`}
+      />
+      <button
+        disabled={fileName === EMPTY_NAME}
+        onClick={(v) => handleClick(fileName)}
+      >
+        OK
+      </button>
+    </dialog>
+  );
 }

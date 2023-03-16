@@ -3,6 +3,7 @@ import { usePopupDispatch } from "../../contexts/PopupContext";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
 import { RenameGroup } from "./groups/RenameGroup";
 import { UrlEditGroup } from "./groups/UrlEditGroup";
+import { validUrlRegexp } from "./validUrlRegexp";
 
 type EditAlertProps = {
   id: string;
@@ -13,15 +14,12 @@ const initialData: chrome.bookmarks.BookmarkChangesArg = {
   url: "",
 };
 
-const urlRegexp: RegExp =
-  /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-
 function checkIfChangesValid(
   changes: chrome.bookmarks.BookmarkChangesArg,
 ): boolean {
   const url = changes.url;
   return url !== undefined && url.length > 0 &&
-    url.match(urlRegexp) !== undefined;
+    url.match(validUrlRegexp) !== undefined;
 }
 
 export default function EditBookmarkAlert(

@@ -15,11 +15,7 @@ export default function Popup() {
       {popup.componentId === "efa" && <EditFolderAlert id={popup.args} />}
       {popup.componentId === "anb" && (
         <AddNewBookmarkAlert
-          id={popup.args}
-          closeCallback={function (): void {
-            throw new Error("Function not implemented.");
-          }}
-          visible={false}
+          parentId={popup.args}
         />
       )}
       {popup.componentId === "anf" && (

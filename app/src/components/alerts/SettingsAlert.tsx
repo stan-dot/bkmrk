@@ -1,18 +1,30 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
+import {
+  defaultSettings,
+  getSettings,
+  setSettingsToDefault,
+  Settings,
+} from "./Settings";
 
-export type Settings = {
-  tracingLinksRegexes: RegExp[];
-};
-
-
+// todo maybe use reducer
 // todo a button to reset to defaults
+// todo need to do the loading first
 export default function SettingsAlert(
   { id, closeCallback, visible }: any,
 ) {
   console.log("created the add new folder alert");
-  const [data, setData] = useState<Settings>({});
+  const [loading, setLoading] = useState<boolean>(true);
 
+  useEffect(() => {
+    getSettings().then((s) => {
+      setData(s);
+    });
+  }, []);
+
+  const [data, setData] = useState<Settings>(defaultSettings);
+
+  const [newInput, setNewInput] = useState<string>("");
   const onSubmit = (e: FormEvent) => {
     console.log("submitting the form");
     e.preventDefault();
@@ -34,9 +46,49 @@ export default function SettingsAlert(
         id="editAlertForm"
         onSubmit={onSubmit}
       >
-        <h2 id="title" className="text-xl text-slate-50 m-4">
-          here some settings
-        </h2>
+        <div>
+          <h2 id="title" className="text-xl text-slate-50 m-4">
+            here some settings
+          </h2>
+          <div>
+            {data.tracingLinksRegexes.map((regex, i) => {
+              return (
+                <div>
+                  <input type={"text"} value={regex.toString()} key={i} />
+                  <button>delete</button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          <input type="text" onChange={(s) => setNewInput(s.target.value)} />
+          <button
+            onClick={() => {
+              // todo here set new data based on the current new input and reset that input
+            }}
+          >
+            Add new regular expression
+          </button>
+        </div>
+
+        <div
+          onClick={() => {
+            setSettingsToDefault().then((d) => {
+              setData(defaultSettings);
+            });
+          }}
+        >
+          <button>reset to defaults</button>
+        </div>
+        <div>
+          <h2>help</h2>
+          <p>
+            use websites like
+            <a href="https://regexr.com/">regexr.com</a>
+            to prepare exactly what you need
+          </p>
+        </div>
         <CancelSaveGroup closeCallback={closeCallback} />
       </form>
     </div>

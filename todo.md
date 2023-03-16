@@ -12,6 +12,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] fix search bookmarks field positioning
 - [x] a 'undo' popup in the left bottom corner
 
+- [ ] fix the click does not work right with double click but right with context click
 - [ ] fix the issue with 'add new bookmark' alert
 - [ ] fix the issue with 'add new folder' alert
 - [ ] make the settings alert

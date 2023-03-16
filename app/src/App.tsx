@@ -1,5 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ContextMenu from "./components/multi-displayers/ContextMenu";
+import Popup from "./components/multi-displayers/Popup";
 import { TableLoader } from "./components/Table";
 import { ContextMenuProvider } from "./contexts/ContextMenuContext";
 import { PathProvider } from "./contexts/PathContext";
@@ -20,6 +22,9 @@ export default function App() {
         <PopupProvider>
           <ContextMenuProvider>
             <TableLoader />
+            {/**the multidiplayers */}
+            <Popup />
+            <ContextMenu />
           </ContextMenuProvider>
         </PopupProvider>
       </PathProvider>

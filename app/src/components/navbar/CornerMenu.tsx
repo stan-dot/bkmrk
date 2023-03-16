@@ -2,11 +2,11 @@ import { useState } from "react";
 import { usePopupDispatch } from "../../contexts/PopupContext";
 import { sortRows } from "../../utils/interactivity/sortRows";
 import { exportBookmarks } from "../../utils/io/exportBookmarks";
-import { BookmarkImportWindow } from "../../utils/io/importBookmarks";
+import { BookmarkImportAlert } from "../../utils/io/importBookmarks";
 import { printCsv } from "../../utils/io/printCsv";
 import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
 import { recognizeDuplicates } from "../../utils/traversalFunctions/getCopies";
-import { removeAllTracingLinks } from "../../utils/traversalFunctions/removeTracingLinks";
+import { removeTracingLinksFromChildren } from "../../utils/traversalFunctions/removeTracingLinks";
 
 const linkClass =
   "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
@@ -17,6 +17,7 @@ export function CornerMenu(
   props: {
     importCallback: Function;
     rows: chrome.bookmarks.BookmarkTreeNode[];
+    searchResultsMode?: boolean;
   },
 ): JSX.Element {
   const [showMenu, setShowMenu] = useState(false);
@@ -29,12 +30,12 @@ export function CornerMenu(
     <div
       className={"conrner-menu-button z-40 relative"}
       onBlur={() => {
-        setTimeout(() => {
-          dispatch({
-            direction: "close",
-            type: "none",
-          });
-        }, 2500);
+        // setTimeout(() => {
+        //   dispatch({
+        //     direction: "close",
+        //     type: "none",
+        //   });
+        // }, 2500);
       }}
     >
       <button
@@ -44,12 +45,12 @@ export function CornerMenu(
         type="button"
         onBlur={() => {
           // todo that is problematic
-          setTimeout(
-            () => {
-              setShowMenu(false);
-            },
-            1000,
-          );
+          // setTimeout(
+          //   () => {
+          //     setShowMenu(false);
+          //   },
+          //   1000,
+          // );
         }}
       >
         &#8942;
@@ -163,13 +164,22 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) => {
-                const copiesNumber = removeAllTracingLinks();
-                window.alert(`copies number:  ${copiesNumber}`);
-                console.log(copiesNumber);
+              disabled={props.searchResultsMode}
+              onClick={async (v) => {
+                const parentId = props.rows[0].parentId;
+                if (parentId) {
+                  const parent = (await chrome.bookmarks.get(parentId))[0];
+                  removeTracingLinksFromChildren(parent).then(
+                    (tracedChanged) => {
+                      window.alert(`changed number: ${tracedChanged}`);
+                      console.log(tracedChanged);
+                    },
+                  );
+                }
               }}
+              // https://symbl.cc/en/1F9BA/ safety vest emoji
             >
-              &#129694; Remove tracing links
+              &#129466; Remove tracing links in this folder
             </button>
           </li>
           <hr />
@@ -182,26 +192,8 @@ export function CornerMenu(
         </ul>
       </div>
       {openVariant === "IMPORT" && (
-        <BookmarkImportWindow callback={props.importCallback} />
+        <BookmarkImportAlert callback={props.importCallback} />
       )}
-      {openVariant === "NEW_BOOKMARK" && <NewBookmarkWindow />}
-      {openVariant === "NEW_FOLDER" && <NewFolderWindow />}
     </div>
-  );
-}
-
-function NewBookmarkWindow(props: {}): JSX.Element {
-  return (
-    <dialog>
-      <p>hi, what's the new bookmark that you need?</p>
-    </dialog>
-  );
-}
-
-function NewFolderWindow(props: {}): JSX.Element {
-  return (
-    <dialog>
-      <p>hi, what's the new folder that you need?</p>
-    </dialog>
   );
 }

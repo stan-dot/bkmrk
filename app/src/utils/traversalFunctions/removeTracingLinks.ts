@@ -1,7 +1,7 @@
 import {
   defaultTracingRegexes,
   getSettings,
-} from "../../components/alerts/Settings";
+} from "../../components/alerts/settings_stuff/Settings";
 import { TraverseArgs, traverseTree } from "./traverseTree";
 
 export async function getLinks(): Promise<RegExp[]> {

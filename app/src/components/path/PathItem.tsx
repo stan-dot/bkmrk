@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 export function PathItem(
   props: {
@@ -8,7 +8,10 @@ export function PathItem(
     ) => void;
     index: number;
     node: chrome.bookmarks.BookmarkTreeNode;
-    contextMenuHandler: React.MouseEventHandler<HTMLDivElement>;
+    contextMenuHandler: (
+      e: React.MouseEvent<HTMLDivElement>,
+      node: chrome.bookmarks.BookmarkTreeNode,
+    ) => void;
     siblings?: chrome.bookmarks.BookmarkTreeNode[];
   },
 ): JSX.Element {
@@ -16,11 +19,12 @@ export function PathItem(
   return (
     <div
       className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid  focus:shadow "
-      onContextMenu={props.contextMenuHandler}
+      onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
+        props.contextMenuHandler(e, props.node)}
     >
       <button
         // onClick={(v) => setSiblingsVisible(true)}
-        onBlur={e => setSiblingsVisible(false)}
+        onBlur={(e) => setSiblingsVisible(false)}
         className={"ml-2 mr-1 text-md h-fit hover:bg-slate-400 rounded-sm"}
       >
         {"/"}
@@ -33,7 +37,8 @@ export function PathItem(
           width: `${siblingsVisible ? 40 : 0}`,
         }}
       >
-        {/* {props.siblings
+        {
+          /* {props.siblings
           ? props.siblings.map((s) => {
             return (
               <p
@@ -46,10 +51,10 @@ export function PathItem(
               </p>
             );
           })
-          : props.node.title} */}
+          : props.node.title} */
+        }
       </div>
-      <button onClick={(v) => props.handleClick(props.index, props.node)}
-      >
+      <button onClick={(v) => props.handleClick(props.index, props.node)}>
         {props.node.title}
       </button>
     </div>

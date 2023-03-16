@@ -20,32 +20,48 @@ export function sortRows(
   rows: chrome.bookmarks.BookmarkTreeNode[],
   sortOptions?: SortOptions,
 ):void {
+  console.log('sort options', sortOptions);
   const { key, reverse } = sortOptions ?? DEFAULT_SORT_OPTIONS;
   const sorted = sorting(key, rows, reverse);
   console.log('before sorting:', rows, ' after sorting: ', sorted);
     callToBookmarksApi(sorted);
 }
 
-function callToBookmarksApi(sorted: chrome.bookmarks.BookmarkTreeNode[]) {
+function callToBookmarksApi(sorted: chrome.bookmarks.BookmarkTreeNode[]):void {
   sorted.forEach((v, i) => {
-    const args: chrome.bookmarks.BookmarkCreateArg = {
+    // const args: chrome.bookmarks.BookmarkCreateArg = {
+    //   parentId: v.parentId,
+    //   index: v.index,
+    //   title: v.title,
+    //   url: v.url,
+    // };
+    const args: chrome.bookmarks.BookmarkDestinationArg= {
       parentId: v.parentId,
-      index: v.index,
-      title: v.title,
-      url: v.url,
+      index: i,
     };
-    chrome.bookmarks.create(args);
+    chrome.bookmarks.move(v.id, args);
+    // todo that is potentially breaking as folders are re-created empty
+    // this should be a move action
+    // chrome.bookmarks.remove(v.id);
+    // chrome.bookmarks.create(args);
   });
 }
 
-function sorting(key:PossibleKeys,  rows: chrome.bookmarks.BookmarkTreeNode[], reverse: boolean): chrome.bookmarks.BookmarkTreeNode[] {
+function sorting(key:PossibleKeys, rows: chrome.bookmarks.BookmarkTreeNode[], reverse: boolean): chrome.bookmarks.BookmarkTreeNode[] {
   if (key === "title") {
     return rows.sort((a, b) => ("" + a.title).localeCompare(b.title) * (reverse ? -1 : 1)
     );
   }
 
   if (key === "date") {
-    return rows.sort((a, b) => (a.dateAdded ?? 0 - (b.dateAdded ?? 0)) * (reverse ? -1 : 1)
+    // console.log('comparing dates');
+    return rows.sort((a, b) => {
+      // console.log('a date added ', a.dateAdded, 'b date added: ', b.dateAdded);
+      // const value = (a.dateAdded ?? 0 - (b.dateAdded ?? 0)) * (reverse ? -1 : 1);
+      const value = (a.dateAdded! - b.dateAdded! ) * (reverse ? -1 : 1);
+      // console.log(value);
+      return value
+    }
     );
   }
   throw Error('unknown sorting key');

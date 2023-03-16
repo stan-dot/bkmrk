@@ -28,13 +28,12 @@ export function CornerMenu(
     <div
       className={"conrner-menu-button z-40 relative"}
       onBlur={() => {
-        // todo refine the delay
         setTimeout(() => {
           dispatch({
             direction: "close",
             type: "none",
           });
-        }, 500);
+        }, 2500);
       }}
     >
       <button
@@ -42,7 +41,15 @@ export function CornerMenu(
         id="dropdownDefaultButton"
         className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-3xl p-4 text-center border-red-600"
         type="button"
-        onBlur={() => setShowMenu(false)}
+        onBlur={() => {
+          // todo that is problematic
+          setTimeout(
+            () => {
+              setShowMenu(false);
+            },
+            1000,
+          );
+        }}
       >
         &#8942;
       </button>
@@ -77,7 +84,7 @@ export function CornerMenu(
               onClick={(v) => {
                 console.log("clicked to sort by date");
                 sortRows(props.rows, {
-                  key: "title",
+                  key: "date",
                   reverse: false,
                 });
               }}

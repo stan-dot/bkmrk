@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { usePopupDispatch } from "../../contexts/PopupContext";
 import { sortRows } from "../../utils/interactivity/sortRows";
 import { exportBookmarks } from "../../utils/io/exportBookmarks";
@@ -174,8 +175,8 @@ export function CornerMenu(
                   const parent = (await chrome.bookmarks.get(parentId))[0];
                   removeTracingLinksFromChildren(parent).then(
                     (tracedChanged) => {
-                      window.alert(`changed number: ${tracedChanged}`);
-                      console.log(tracedChanged);
+                      toast(<RemovedPopup number={tracedChanged} />);
+                      console.debug(tracedChanged);
                     },
                   );
                 }
@@ -210,6 +211,14 @@ export function CornerMenu(
       {openVariant === "IMPORT" && (
         <BookmarkImportAlert callback={props.importCallback} />
       )}
+    </div>
+  );
+}
+
+function RemovedPopup(props: { number: number }) {
+  return (
+    <div>
+      Removed {props.number} tracing links &#128373;
     </div>
   );
 }

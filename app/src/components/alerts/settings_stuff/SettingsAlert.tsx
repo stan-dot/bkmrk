@@ -1,16 +1,16 @@
 import { FormEvent, useEffect, useReducer } from "react";
-import { usePopupDispatch } from "../../contexts/PopupContext";
-import { CancelSaveGroup } from "./groups/CancelSaveGroup";
+import { usePopupDispatch } from "../../../contexts/PopupContext";
+import { CancelSaveGroup } from "../groups/CancelSaveGroup";
+import {
+  AddNewTracingLink,
+  TracingLinksContainer,
+} from "../TracingLinksContainer";
 import {
   defaultSettings,
   setSettingsToDefault,
   updateSettings,
 } from "./Settings";
 import { settingsReducer } from "./SettingsReducer";
-import {
-  AddNewTracingLink,
-  TracingLinksContainer,
-} from "./TracingLinksContainer";
 
 export default function SettingsAlert() {
   console.log("created the add new folder alert");

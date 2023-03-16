@@ -162,7 +162,6 @@ export function BookmarkTable(
           copy: true,
           paste: true,
         }}
-        // onCellClicked={tableClickHandler}
         onCellActivated={doubleClickHandler}
         onCellContextMenu={contextMenuHandler}
         rowSelect={"single"}

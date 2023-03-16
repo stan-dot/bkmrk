@@ -24,18 +24,6 @@ export function TableLoader(): JSX.Element {
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
-  const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-    setLoaded("LOADED");
-    setGlobalTree(root[0].children!);
-    const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
-      root[0].children![0];
-    setRows(bookmarksBar.children ?? []);
-    pathDispatch({
-      type: "full",
-      nodes: [...root, bookmarksBar],
-    });
-  };
-
   const lastPathItem: () => chrome.bookmarks.BookmarkTreeNode = useCallback(
     () => path.items.at(-1) ?? globalTree[0],
     [globalTree, path.items],
@@ -45,17 +33,32 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
         console.log("loaded!");
-        reloadWithNode(root);
+        // todo that might be controversial
+        pathDispatch({
+          type: "full",
+          nodes: root,
+        });
       },
     );
   }
 
-  const deltaListener = (e?: string): void => {
-    console.log("the bookmarks have changed...", e);
-    reloadWithNode(path.items);
-  };
-
   useEffect(() => {
+    const deltaListener = (e?: string): void => {
+      console.log("the bookmarks have changed...", e);
+      reloadWithNode(path.items);
+    };
+
+    const reloadWithNode = (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+      setLoaded("LOADED");
+      setGlobalTree(root[0].children!);
+      const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
+        root[0].children![0];
+      setRows(bookmarksBar.children ?? []);
+      pathDispatch({
+        type: "full",
+        nodes: [...root, bookmarksBar],
+      });
+    };
     chrome.bookmarks.onChanged.addListener(deltaListener);
     chrome.bookmarks.onMoved.addListener(deltaListener);
     chrome.bookmarks.onRemoved.addListener(deltaListener);
@@ -67,7 +70,7 @@ export function TableLoader(): JSX.Element {
       chrome.bookmarks.onRemoved.removeListener(deltaListener);
       chrome.bookmarks.onImportEnded.removeListener(deltaListener);
     };
-  }, [deltaListener, path.items, reloadWithNode]);
+  }, [path.items, pathDispatch]);
 
   useEffect(() => {
     const currentLast = lastPathItem();
@@ -95,7 +98,6 @@ export function TableLoader(): JSX.Element {
     <>
       <Navbar
         dataCallback={dataCallback}
-        reloadWithNode={reloadWithNode}
         lastPathItem={lastPathItem}
         rows={rows}
       />

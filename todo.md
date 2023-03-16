@@ -14,8 +14,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 - [x] fix the issue with 'add new bookmark' alert
 - [x] fix the issue with 'add new folder' alert
+- [x] make the settings alert
 - [ ] fix reloading
-- [ ] make the settings alert
 - [ ] fix the click does not work right with double click but right with context click
 
 

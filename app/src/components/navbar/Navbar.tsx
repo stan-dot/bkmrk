@@ -4,7 +4,6 @@ import { SearchField } from "./SearchField";
 
 type NavbarProps = {
   dataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
-  reloadWithNode: (root: chrome.bookmarks.BookmarkTreeNode[]) => void;
   lastPathItem: () => chrome.bookmarks.BookmarkTreeNode;
   rows: chrome.bookmarks.BookmarkTreeNode[];
 };
@@ -12,7 +11,6 @@ type NavbarProps = {
 export function Navbar(
   {
     dataCallback,
-    reloadWithNode,
     lastPathItem,
     rows,
   }: NavbarProps,

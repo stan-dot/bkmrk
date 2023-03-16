@@ -8,7 +8,7 @@ export function CancelSaveGroup(
   },
 ) {
   return (
-    <div id="bottomPanel" className="absolute justify-end inset-x-0 bottom-2">
+    <div id="bottomPanel" className=" justify-end  ">
       <div id="buttonArea" className="flex justify-end w-full m-b-4 m-r-4">
         <button
           className={`${buttonClass} bg-slate-700 hover:bg-slate-600 text-cyan-400 border-slate-50 border-solid border-1`}

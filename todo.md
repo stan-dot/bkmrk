@@ -15,19 +15,21 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] fix the issue with 'add new bookmark' alert
 - [x] fix the issue with 'add new folder' alert
 - [x] make the settings alert
-- [ ] fix reloading
+- [x] history context for back and forward arrows. history is a queue?
+- [x] context for basic nodes - language independent
+
+- [ ] back and front buttons for path navigation
 - [ ] fix the click does not work right with double click but right with context click
 - [ ] fix the broken alerts and context menus
-- [ ] back and front buttons for path navigation
 
-- [ ] fix the starting root - make it disappear
-- [ ]  history context for back and forward arrows. history is a queue?
-- [x] context for basic nodes - language independent
-- [ ] fix the side bar no context menu
 
 ### bug fixes
+- [ ] fix the starting root - make it disappear
+- [ ] fix the side bar no context menu
 - [ ] wrong row gets targeted for any changes
+- [ ] fix reloading
 - [ ] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
+- [ ] download excludes urls
 
 # after mvp
 ### QoL features

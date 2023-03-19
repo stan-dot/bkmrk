@@ -198,13 +198,13 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) => {
-                const copiesNumber = recognizeDuplicates();
+              onClick={async (v) => {
+                const copiesNumber = await recognizeDuplicates();
                 window.alert(`copies number:  ${copiesNumber}`);
                 console.log(copiesNumber);
               }}
             >
-              &#129694; Delete duplicates in this folder
+              &#129694; See the number of duplicates in this folder
             </button>
           </li>
           <li>
@@ -239,7 +239,7 @@ export function CornerMenu(
                 });
               }}
             >
-              &#9881; settings
+              &#9881; Settings
             </button>
           </li>
           <li>

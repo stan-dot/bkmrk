@@ -11,7 +11,7 @@ export type HistoryContextType = {
 };
 
 export type HistoryAction = {
-  type: "forward" | "back" | "goto-past-event" | "goto-future-event";
+  type: "add" | "forward" | "back" | "goto-past-event" | "goto-future-event";
   nodeId?: string;
 };
 
@@ -45,6 +45,14 @@ export function historyReducer(
 ): HistoryContextType {
   console.log("history reducer", action);
   switch (action.type) {
+    case "add": {
+      if (action.nodeId === undefined) return history;
+      return {
+        ...history,
+        pastNodeIds: [...history.pastNodeIds, action.nodeId],
+      };
+    }
+
     case "forward": {
       console.log("inside history context handler add");
       const node = history.futureNodeIds[0];
@@ -78,7 +86,6 @@ export function historyReducer(
           ...history.futureNodeIds,
         ],
       };
-
     }
 
     case "goto-future-event": {

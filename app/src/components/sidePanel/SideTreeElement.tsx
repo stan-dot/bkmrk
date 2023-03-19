@@ -8,6 +8,7 @@ import {
   codeBookmarkToUriList,
   readRawTextAsBookmarks,
 } from "../../utils/interactivity/dragProcessing";
+import { useHistoryDispatch } from "../../contexts/HistoryContext";
 
 export function SideTreeElement(
   props: {
@@ -21,12 +22,17 @@ export function SideTreeElement(
   const path = usePath();
   const dispatch = usePathDispatch();
 
+  const historyDispatch = useHistoryDispatch();
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (isInPath()) return;
     getPath(props.thing).then((newPath) => {
       dispatch({
         type: "full",
         nodes: newPath,
+      });
+      historyDispatch({
+        type: "add",
+        nodeId: props.thing.id,
       });
     });
   };

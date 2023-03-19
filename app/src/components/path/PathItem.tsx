@@ -47,10 +47,11 @@ function SiblingBox(
   { siblingsVisible, node }: SiblingBoxTypes,
 ) {
   const siblings = useSiblings(node);
+  console.log('siblings of :', node, " : ,", siblings);
   return (
     <div
       id="siblings"
-      className="bg-slate-700 z-20 h-40 overflow-visible min-h-fit mb-2 text-slate-50 "
+      className="bg-slate-700 z-20 w-40 h-40 overflow-visible mb-2 text-slate-50 "
       style={{
         visibility: `${siblingsVisible ? "visible" : "hidden"}`,
         width: `${siblingsVisible ? 40 : 0}`,

@@ -11,6 +11,7 @@ import {
   ContextMenuActionTypes,
   useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
+import { useHistoryDispatch } from "../../contexts/HistoryContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { createBookmarksFromPaste } from "../../utils/interactivity/createBookmarksFromPaste";
@@ -19,11 +20,7 @@ import {
   unpackBookmarks,
 } from "../../utils/interactivity/dragProcessing";
 import { getPath } from "../../utils/interactivity/getPath";
-import {
-  columns,
-  getData,
-  viewDetailsColNumber,
-} from "./columns";
+import { columns, getData, viewDetailsColNumber } from "./columns";
 
 export function BookmarkTable(
   props: {
@@ -40,6 +37,7 @@ export function BookmarkTable(
     rows: CompactSelection.empty(),
   });
 
+  const historyDispatch = useHistoryDispatch();
   const dragHandler = (e: GridDragEventArgs) => {
     e.preventDefault();
     const x = e.location[0];
@@ -91,6 +89,10 @@ export function BookmarkTable(
         pathDispatch({
           type: "full",
           nodes: newPath,
+        });
+        historyDispatch({
+          type: "add",
+          nodeId: newPath[-1].id,
         });
       });
     } else if (colNumber === viewDetailsColNumber) {

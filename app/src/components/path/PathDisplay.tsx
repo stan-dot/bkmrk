@@ -47,6 +47,11 @@ export function PathDisplay(): JSX.Element {
         type: "full",
         nodes: newPath,
       });
+
+      historyDispatch({
+        type: "add",
+        nodeId: node.id,
+      });
     }
   };
 
@@ -58,6 +63,10 @@ export function PathDisplay(): JSX.Element {
     pathDispatch({
       type: "full",
       nodes: newPath,
+    });
+    historyDispatch({
+      type: "add",
+      nodeId: newPath[-1].id,
     });
   };
 

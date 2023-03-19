@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
+import { useHistory, useHistoryDispatch } from "../../contexts/HistoryContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { PathItem } from "./PathItem";
 
@@ -9,6 +10,9 @@ export function PathDisplay(): JSX.Element {
   const [lastInteracted, setLastInteracted] = useState(
     path.items[path.items.length - 1],
   );
+
+  const historyDispatch = useHistoryDispatch();
+  const history = useHistory();
 
   const contextMenuDispatch = useContextMenuDispatch();
 
@@ -64,20 +68,22 @@ export function PathDisplay(): JSX.Element {
     >
       <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
         <button
-          disabled={true}
+          disabled={history.pastNodeIds.length === 0}
           onClick={() => {
-            console.log("back arrow clicked");
-            // todo dispatch history context
+            historyDispatch({
+              type: "back",
+            });
           }}
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >
           {"<-"}
         </button>
         <button
-          disabled={true}
+          disabled={history.futureNodeIds.length === 0}
           onClick={() => {
-            console.log("forward arrow clicked");
-            // todo dispatch history context
+            historyDispatch({
+              type: "forward",
+            });
           }}
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >

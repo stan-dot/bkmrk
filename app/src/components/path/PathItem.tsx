@@ -16,6 +16,8 @@ export function PathItem(
   },
 ): JSX.Element {
   const [siblingsVisible, setSiblingsVisible] = useState(false);
+
+  const [siblings, setSiblings] = useState<chrome.bookmarks.BookmarkTreeNode[]>([])
   return (
     <div
       className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid  focus:shadow "

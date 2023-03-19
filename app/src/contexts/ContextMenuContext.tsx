@@ -99,8 +99,9 @@ export function contextMenuReducer(
     }
     case "folder": {
       console.log("inside edit folder reducer");
+      // todo that is missing the component Id
       return {
-        ...contextMenu,
+        componentId: 'side',
         position: action.position,
         things: action.things!,
       };

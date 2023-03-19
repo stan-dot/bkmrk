@@ -66,7 +66,8 @@ export function TableLoader(): JSX.Element {
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
         console.log("loaded!");
-        setGlobalTree(root);
+        // todo here might be an error
+        setGlobalTree(root[0].children!);
         reloadWithNode(root);
         const names = root[0].children?.map((b) => b.title);
         if (names) {

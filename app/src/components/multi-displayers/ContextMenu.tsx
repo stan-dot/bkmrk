@@ -5,7 +5,7 @@ import { PathDisplayContextMenu } from "../path/PathDisplayContextMenu";
 
 // todo maybe all context menus in here? that'd be smart, wouldn't it be
 // and the branches would be subsections of the whole component, not switch cases
-const manySelectedArray: string[] = ["b", "f", "s"];
+const manySelectedArray: string[] = ["b", "f", "s", "side"];
 
 export default function ContextMenu() {
   const contextMenu = useContextMenu();
@@ -15,6 +15,7 @@ export default function ContextMenu() {
   }
 
   if (contextMenu.things && contextMenu.things.length > 0) {
+    console.log("figuring out the context menu for: ", contextMenu);
     if (manySelectedArray.includes(contextMenu.componentId as string)) {
       return <ManySelectedContextMenu things={contextMenu.things} />;
     }

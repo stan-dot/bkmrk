@@ -4,6 +4,7 @@ import ContextMenu from "./components/multi-displayers/ContextMenu";
 import Popup from "./components/multi-displayers/Popup";
 import { TableLoader } from "./components/Table";
 import { ContextMenuProvider } from "./contexts/ContextMenuContext";
+import { HistoryProvider } from "./contexts/HistoryContext";
 import { PathProvider } from "./contexts/PathContext";
 import { PopupProvider } from "./contexts/PopupContext";
 import { RootProvider } from "./contexts/RootContext";
@@ -23,9 +24,11 @@ export default function App() {
         <PopupProvider>
           <ContextMenuProvider>
             <PathProvider>
-              <TableLoader />
-              <Popup />
-              <ContextMenu />
+              <HistoryProvider>
+                <TableLoader />
+                <Popup />
+                <ContextMenu />
+              </HistoryProvider>
             </PathProvider>
           </ContextMenuProvider>
         </PopupProvider>

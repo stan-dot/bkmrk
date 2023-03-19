@@ -1,5 +1,6 @@
 import React from "react";
 import { CornerMenu } from "./CornerMenu";
+import { HistoryPanel } from "./for-later/HistoryPanel";
 import { SearchField } from "./SearchField";
 
 type NavbarProps = {
@@ -23,6 +24,7 @@ export function Navbar(
         </p>
       </div>
       <SearchField setDataCallback={dataCallback} />
+      {/* <HistoryPanel historyVisible={true}/> */}
       <CornerMenu
         importCallback={() => {
           console.log("should load the datastructure");

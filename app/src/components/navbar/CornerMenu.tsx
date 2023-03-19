@@ -18,8 +18,8 @@ function partition(
   isValid: (b: chrome.bookmarks.BookmarkTreeNode) => boolean | Promise<boolean>,
 ): TwoArrs {
   const starter: TwoArrs = [[], []];
-  array.forEach((e) => {
-    isValid(e) ? starter[0].push(e) : starter[1].push(e);
+  array.forEach(async (e) => {
+    await isValid(e) ? starter[0].push(e) : starter[1].push(e);
   });
   return starter;
   // return array.reduce(
@@ -61,6 +61,7 @@ export function CornerMenu(
         return children.length === 0;
       },
     );
+    console.log("empty: ", empty, "  nonempty: ", nonEmptyFolders);
     empty.forEach((b) => {
       chrome.bookmarks.remove(b.id);
     });
@@ -170,15 +171,16 @@ export function CornerMenu(
               className={linkClass}
               onClick={(v) => setOpenVariant("IMPORT")}
             >
-              Import bookmarks
+              (TBA) Import bookmarks
             </button>
           </li>
           <li>
             <button
               className={linkClass}
+              disabled
               onClick={(v) => exportBookmarks(props.rows)}
             >
-              Export bookmarks{" "}
+              (TBA) Export bookmarks{" "}
             </button>
           </li>
           <li>

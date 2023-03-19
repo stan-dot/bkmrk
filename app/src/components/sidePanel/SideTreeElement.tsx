@@ -43,6 +43,7 @@ export function SideTreeElement(
       | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
       | React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
   ) => {
+    console.log("launching context menu for side element", props.thing);
     e.preventDefault();
     e.stopPropagation();
     contextMenuDispatch({

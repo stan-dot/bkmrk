@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 import {
   useContextMenu,
-  useContextMenuDispatch
+  useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
 import { useRoot } from "../../contexts/RootContext";
 import { sortRows } from "../../utils/interactivity/sortRows";
@@ -16,10 +16,10 @@ export function ManySelectedContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
+  console.log("many selected menui for :", props.things);
   const protectedNames = useRoot().nodeNames;
   // console.log("inside another context menu", props.things);
   const isProtected: boolean = props.things.length > 1 ||
-    // todo update this to use root context
     protectedNames.includes(
       props.things[0].title ?? "",
     );
@@ -43,6 +43,7 @@ export function ManySelectedContextMenu(
     }, 3000);
   }, [close, dispatch, position]);
 
+  // todo make these buttons real
   return (
     <div
       id="bookmarkContextMenu"

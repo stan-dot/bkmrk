@@ -6,7 +6,7 @@ import DataEditor, {
   gridSelectionHasItem,
   Item,
 } from "@glideapps/glide-data-grid";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   ContextMenuActionTypes,
   useContextMenuDispatch,
@@ -36,6 +36,11 @@ export function BookmarkTable(
     columns: CompactSelection.empty(),
     rows: CompactSelection.empty(),
   });
+
+  useEffect(() => {
+    console.log("seelection changed: ", selection);
+    // todo need to handle the selection change
+  }, [selection]);
 
   const historyDispatch = useHistoryDispatch();
   const dragHandler = (e: GridDragEventArgs) => {
@@ -73,43 +78,63 @@ export function BookmarkTable(
   const containerDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const parentId = path.items.at(-1)!.id;
-    console.log("ondrop triggered");
+    console.log("ondrop triggered, data: ", e.dataTransfer);
     createBookmarksFromPaste(e, parentId);
   };
 
   const doubleClickHandler = (cell: Item) => {
     const colNumber = cell[0];
-    const b = props.rows[colNumber];
-    const isFolder = isAFolder(b);
+    // const b = props.rows[colNumber];
+    // const isFolder = isAFolder(b);
+    const includes = gridSelectionHasItem(selection, cell);
+    if (includes) {
+      const start = selection.current?.range.y ?? 0;
+      // todo can change to use always full width
+      const selectedBookmarks: chrome.bookmarks.BookmarkTreeNode[] = props.rows
+        .slice(
+          start,
+          start + (selection.current?.range.height ?? 0),
+        );
+      const b = selectedBookmarks[0];
+      const isFolder = isAFolder(b);
+      console.log(
+        "selected bookmarks",
+        selectedBookmarks,
+        " vs theoretical simple get",
+        b,
+      );
 
-    console.log("col number:", colNumber);
-    if (props.searchResultsMode && isFolder) {
-      getPath(b).then((newPath) => {
-        console.log("path:", newPath);
+      console.log("col number:", colNumber);
+
+      if (props.searchResultsMode && isFolder) {
+        getPath(b).then((newPath) => {
+          console.log("path:", newPath);
+          pathDispatch({
+            type: "full",
+            nodes: newPath,
+          });
+          historyDispatch({
+            type: "add",
+            nodeId: newPath[-1].id,
+          });
+        });
+      } else if (colNumber === viewDetailsColNumber) {
+        contextMenuDispatch({
+          type: isFolder ? "folder" : "single-bookmark",
+          direction: "open",
+          // todo change that hardcoded value for position
+          position: [550, 550],
+          things: [b],
+        });
+      } else if (isFolder) {
+        // put this together with the other bit as 2 similar logical brnaches
         pathDispatch({
-          type: "full",
-          nodes: newPath,
+          type: "added",
+          nodes: [b],
         });
-        historyDispatch({
-          type: "add",
-          nodeId: newPath[-1].id,
-        });
-      });
-    } else if (colNumber === viewDetailsColNumber) {
-      contextMenuDispatch({
-        type: isFolder ? "folder" : "single-bookmark",
-        direction: "open",
-        // todo change that hardcoded value for position
-        position: [350, 350],
-        things: [b],
-      });
-    } else if (isFolder) {
-      pathDispatch({
-        type: "added",
-        nodes: [b],
-      });
-    } else {
-      chrome.tabs.create({ url: b.url });
+      } else {
+        chrome.tabs.create({ url: b.url });
+      }
     }
   };
 

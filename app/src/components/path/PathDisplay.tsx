@@ -65,14 +65,20 @@ export function PathDisplay(): JSX.Element {
       <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
         <button
           disabled={true}
-          onClick={upButtonHandler}
+          onClick={() => {
+            console.log("back arrow clicked");
+            // todo dispatch history context
+          }}
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >
           {"<-"}
         </button>
         <button
           disabled={true}
-          onClick={upButtonHandler}
+          onClick={() => {
+            console.log("forward arrow clicked");
+            // todo dispatch history context
+          }}
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >
           {"->"}

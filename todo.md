@@ -20,6 +20,8 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [ ] fix the broken alerts and context menus
 - [ ] back and front buttons for path navigation
 
+- [ ] fix the starting root - make it disappear
+- [ ]  history context for back and forward arrows. history is a queue?
 - [ ] context for basic nodes - language independent
 
 ### bug fixes

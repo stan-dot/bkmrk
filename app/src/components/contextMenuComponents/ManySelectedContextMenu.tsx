@@ -1,9 +1,9 @@
 import { useCallback, useEffect } from "react";
+import { basicNodes } from "../../contexts/RootContext";
 import {
   useContextMenu,
   useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
-import { basicNodes } from "../../utils/dataProcessing/basicNodes";
 import { sortRows } from "../../utils/interactivity/sortRows";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { EditDeleteSection } from "./EditDeleteSection";
@@ -18,6 +18,7 @@ export function ManySelectedContextMenu(
 ): JSX.Element {
   // console.log("inside another context menu", props.things);
   const isProtected: boolean = props.things.length > 1 ||
+    // todo update this to use root context
     basicNodes.includes(
       props.things[0].title ?? "",
     );

@@ -15,7 +15,7 @@ type TwoArrs = [
 
 function partition(
   array: chrome.bookmarks.BookmarkTreeNode[],
-  isValid: (b: chrome.bookmarks.BookmarkTreeNode) => boolean,
+  isValid: (b: chrome.bookmarks.BookmarkTreeNode) => boolean | Promise<boolean>,
 ): TwoArrs {
   const starter: TwoArrs = [[], []];
   array.forEach((e) => {
@@ -50,6 +50,24 @@ export function CornerMenu(
     "NEW_BOOKMARK",
   );
   const dispatch = usePopupDispatch();
+
+  const removeHandler = async (_v: any) => {
+    const rows = props.rows;
+    const [folders, bkmrks] = partition(rows, (b) => b.url === undefined);
+    const [empty, nonEmptyFolders] = partition(
+      folders,
+      async (b) => {
+        const children = await chrome.bookmarks.getChildren(b.id);
+        return children.length > 0;
+      },
+    );
+    empty.forEach((b) => {
+      // chrome.bookmarks.remove(b.id);
+    });
+    props.dataCallback([...nonEmptyFolders, ...bkmrks]);
+    window.alert(`filtered out ${empty.length} empty folders`);
+    console.debug("diff: ", empty);
+  };
 
   return (
     <div
@@ -172,20 +190,7 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={async (v) => {
-                const rows = props.rows;
-                const [folders, bkmrks] = partition(rows, (b) =>
-                  b.url === undefined);
-                const nonEmptyFolders = folders.filter(async (b) => {
-                  const children = await chrome.bookmarks.getChildren(b.id);
-                  return children.length > 0;
-                });
-                props.dataCallback([...nonEmptyFolders, ...bkmrks]);
-                const diff = folders.length - nonEmptyFolders.length;
-                window.alert(`filtered out ${diff} empty folders`);
-                console.debug("diff: ", diff);
-                // deleteAllEmpty()
-              }}
+              onClick={removeHandler}
             >
               &#128465; Delete empty folders in this folder
             </button>

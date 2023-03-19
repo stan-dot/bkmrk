@@ -27,9 +27,10 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] wrong row gets targeted for any changes
 - [x] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
 
-- [ ] download excludes urls
-- [ ] fix reloading
-- [ ] make the cut copy paste buttons real
+- [x] download excludes urls
+- [ ] reloading of rows
+- [ ] make the cut copy paste buttons real - context for copy and paste is broken 
+- [ ] fix siblings
 
 
 # after mvp
@@ -49,6 +50,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [ ] settings menu
 - [ ] colors
 - [ ] history, and minimenu visible as smaller wrappers
+- [ ] change to use always select full width, never just some cells. good for clarity
 
 ### recently done
 - [x] split global tree into context, with callbacks

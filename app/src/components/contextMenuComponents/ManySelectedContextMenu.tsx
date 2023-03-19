@@ -1,9 +1,10 @@
-import { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import {
   useContextMenu,
   useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
 import { useRoot } from "../../contexts/RootContext";
+import { codeBookmarkToUriList } from "../../utils/interactivity/dragProcessing";
 import { sortRows } from "../../utils/interactivity/sortRows";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { EditDeleteSection } from "./EditDeleteSection";
@@ -59,13 +60,46 @@ export function ManySelectedContextMenu(
         <EditDeleteSection thing={props.things[0]} protected={false} />}
       <hr />
       <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2">
-        <button disabled={!isProtected} className={contextMenuButtonClass}>
+        <button
+          disabled={!isProtected}
+          className={contextMenuButtonClass}
+          onClick={() => {
+            const list: string = codeBookmarkToUriList(props.things, true);
+            window.navigator.clipboard.writeText(list);
+            window.alert(
+              `all ${list.length} bookmarks are in your clipboard now. Proceed carefully. There is no going back right now.`,
+            );
+            props.things.forEach((bookmark) => {
+              chrome.bookmarks.remove(bookmark.id);
+            });
+          }}
+        >
           <p>Cut</p>
         </button>
-        <button className={contextMenuButtonClass}>
+        <button
+          className={contextMenuButtonClass}
+          onClick={() => {
+            const list: string = codeBookmarkToUriList(props.things, true);
+            window.navigator.clipboard.writeText(list);
+            window.alert(
+              `all ${list.length} bookmarks are in your clipboard now. Proceed carefully. There is no going back right now.`,
+            );
+          }}
+        >
           <p>Copy</p>
         </button>
-        <button className={contextMenuButtonClass}>
+        <button
+          className={contextMenuButtonClass}
+          onClick={() => {
+            const output = window.navigator.clipboard.read();
+            console.log(output);
+            // todo somehow translate the output into bookmarks
+            const newBookmarks: chrome.bookmarks.BookmarkCreateArg[] = [];
+            newBookmarks.forEach((b) => {
+              chrome.bookmarks.create(b);
+            });
+          }}
+        >
           <p>Paste</p>
         </button>
       </div>

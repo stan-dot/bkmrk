@@ -143,13 +143,13 @@ export function BookmarkTable(
     const includes = gridSelectionHasItem(selection, cell);
     if (includes) {
       const start = selection.current?.range.y ?? 0;
-      // todo can change to use always full width
       const selectedBookmarks = props.rows.slice(
         start,
         start + (selection.current?.range.height ?? 0),
       );
       console.log("selected bookmarks", selectedBookmarks);
 
+      // todo here logic does not seem to work actualyl
       const type: ContextMenuActionTypes = selectedBookmarks.length === 1
         ? "mixed"
         : isAFolder(selectedBookmarks[0])

@@ -169,6 +169,7 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
+              disabled
               onClick={(v) => setOpenVariant("IMPORT")}
             >
               (TBA) Import bookmarks

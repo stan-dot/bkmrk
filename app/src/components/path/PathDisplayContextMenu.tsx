@@ -11,6 +11,7 @@ function stringifyPath(nodes: chrome.bookmarks.BookmarkTreeNode[]): string {
 export function PathDisplayContextMenu(
   props: { thing: chrome.bookmarks.BookmarkTreeNode },
 ): JSX.Element {
+
   const handleCopyOption = () => {
     getPath(props.thing).then((path) => {
       const text: string = stringifyPath(path);

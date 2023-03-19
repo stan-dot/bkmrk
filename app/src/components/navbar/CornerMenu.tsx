@@ -5,9 +5,32 @@ import { sortRows } from "../../utils/interactivity/sortRows";
 import { exportBookmarks } from "../../utils/io/exportBookmarks";
 import { BookmarkImportAlert } from "../../utils/io/importBookmarks";
 import { printCsv } from "../../utils/io/printCsv";
-import { deleteAllEmpty } from "../../utils/traversalFunctions/deleteEmpty";
 import { recognizeDuplicates } from "../../utils/traversalFunctions/getCopies";
 import { removeTracingLinksFromChildren } from "../../utils/traversalFunctions/removeTracingLinks";
+
+type TwoArrs = [
+  chrome.bookmarks.BookmarkTreeNode[],
+  chrome.bookmarks.BookmarkTreeNode[],
+];
+
+function partition(
+  array: chrome.bookmarks.BookmarkTreeNode[],
+  isValid: (b: chrome.bookmarks.BookmarkTreeNode) => boolean,
+): TwoArrs {
+  const starter: TwoArrs = [[], []];
+  array.forEach((e) => {
+    isValid(e) ? starter[0].push(e) : starter[1].push(e);
+  });
+  return starter;
+  // return array.reduce(
+  //   ([pass, fail]: TwoArrs, elem: chrome.bookmarks.BookmarkTreeNode) => {
+  //     return isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]];
+  //   },
+  //   starter,
+  // );
+  // https://stackoverflow.com/questions/11731072/dividing-an-array-by-filter-function
+  // that didn't work
+}
 
 const linkClass =
   "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
@@ -18,6 +41,7 @@ export function CornerMenu(
   props: {
     importCallback: Function;
     rows: chrome.bookmarks.BookmarkTreeNode[];
+    dataCallback: (bookmarks: chrome.bookmarks.BookmarkTreeNode[]) => void;
     searchResultsMode?: boolean;
   },
 ): JSX.Element {
@@ -148,9 +172,18 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={async(v) => {
-
-                
+              onClick={async (v) => {
+                const rows = props.rows;
+                const [folders, bkmrks] = partition(rows, (b) =>
+                  b.url === undefined);
+                const nonEmptyFolders = folders.filter(async (b) => {
+                  const children = await chrome.bookmarks.getChildren(b.id);
+                  return children.length > 0;
+                });
+                props.dataCallback([...nonEmptyFolders, ...bkmrks]);
+                const diff = folders.length - nonEmptyFolders.length;
+                window.alert(`filtered out ${diff} empty folders`);
+                console.debug("diff: ", diff);
                 // deleteAllEmpty()
               }}
             >

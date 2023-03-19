@@ -43,7 +43,7 @@ export function SideTreeElement(
       type: "folder",
       position: [e.pageX, e.pageY],
       direction: "open",
-      things: [props.thing]
+      things: [props.thing],
     });
   };
 
@@ -92,7 +92,12 @@ export function SideTreeElement(
             nodes: newPath,
           });
         })}
-      style={{ border: isInPath() ? "0.25rem solid red" : "none" }}
+      style={{
+        // border: isInPath() ? "0.25rem solid" : "none",
+        borderWidth: "0.25rem",
+        borderStyle: isInPath() ? "solid" : "none",
+        borderColor: "rgb(8, 145, 178)",
+      }}
       onContextMenu={(e) => handleContextMenu(e)}
       onDrop={dropHandler}
       onDragStart={dragHandler}

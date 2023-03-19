@@ -1,8 +1,6 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
-import { ContextMenuProvider } from "../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../contexts/PathContext";
-import { PopupProvider } from "../contexts/PopupContext";
 import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
 import { Navbar } from "./navbar/Navbar";
@@ -119,8 +117,6 @@ export function TableLoader(): JSX.Element {
 
   return (
     <>
-      <PopupProvider>
-        <ContextMenuProvider>
           <Navbar
             dataCallback={dataCallback}
             lastPathItem={lastPathItem}
@@ -153,8 +149,6 @@ export function TableLoader(): JSX.Element {
               />
             </div>
           </div>
-        </ContextMenuProvider>
-      </PopupProvider>
     </>
   );
 }

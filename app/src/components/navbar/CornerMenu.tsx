@@ -148,7 +148,11 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              onClick={(v) => deleteAllEmpty()}
+              onClick={async(v) => {
+
+                
+                // deleteAllEmpty()
+              }}
             >
               &#128465; Delete empty folders in this folder
             </button>

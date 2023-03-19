@@ -24,14 +24,16 @@ export function PathItem(
       onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
         props.contextMenuHandler(e, props.node)}
     >
-      <button
-        onClick={(v) => setSiblingsVisible(true)}
-        onBlur={(e) => setSiblingsVisible(false)}
-        className={"ml-2 mr-1 text-md h-fit hover:bg-slate-400 rounded-sm"}
-      >
-        {"/"}
-      </button>
-      <SiblingBox siblingsVisible={siblingsVisible} node={props.node} />
+      <div className="flex flex-col">
+        <button
+          onClick={(v) => setSiblingsVisible(true)}
+          // onBlur={(e) => setSiblingsVisible(false)}
+          className={"ml-2 mr-1 text-lg p-2 h-fit hover:bg-slate-400 rounded-sm"}
+        >
+          {"/"}
+        </button>
+        <SiblingBox siblingsVisible={siblingsVisible} node={props.node} />
+      </div>
       <button onClick={(v) => props.handleClick(props.index, props.node)}>
         {props.node.title}
       </button>

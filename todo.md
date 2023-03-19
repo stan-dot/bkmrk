@@ -18,6 +18,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] history context for back and forward arrows. history is a queue?
 - [x] context for basic nodes - language independent
 - [ ] back and front buttons for path navigation
+- [ ] make the loading screen nicer. maybe with a loading bar?
 
 ### bug fixes
 - [x] fix the click does not work right with double click but right with context click

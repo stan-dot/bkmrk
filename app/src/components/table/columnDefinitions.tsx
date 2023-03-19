@@ -92,7 +92,7 @@ export const myCols: ComprehensiveColDef[] = [
     },
   },
   {
-    static: { title: "buttonCol", width: 150 },
+    static: { title: "Actions", width: 150 },
     columnGetter: (v) => {
       const cell: TextCell = {
         kind: GridCellKind.Text,

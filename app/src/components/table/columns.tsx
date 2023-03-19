@@ -41,7 +41,7 @@ export function getData(
 }
 
 export const viewDetailsColNumber: number = myCols.findIndex((c) =>
-  c.static.title === "buttonCol"
+  c.static.title === "Actions"
 );
 
 export const columns: GridColumn[] = myCols.map((c) => c.static);

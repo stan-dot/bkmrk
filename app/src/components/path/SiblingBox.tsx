@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { useHistoryDispatch } from "../../contexts/HistoryContext";
+import { usePathDispatch } from "../../contexts/PathContext";
 
 type SiblingBoxTypes = {
   siblingsVisible: boolean;
@@ -10,29 +12,49 @@ export function SiblingBox(
 ) {
   const siblings = useSiblings(node);
   console.log("siblings of :", node, " : ,", siblings);
+  const historyDispatch = useHistoryDispatch();
+  const pathDispatch = usePathDispatch();
+  // todo that is just a kind of dropdown, should be easy to do
   return (
-    <div
-      id="siblings"
-      className="bg-slate-700 z-20 w-40 h-40 overflow-visible mb-2 text-slate-50 "
-      style={{
-        visibility: `${siblingsVisible ? "visible" : "hidden"}`,
-        // width: `${siblingsVisible ? 40 : 0}`,
-        width: 40,
-      }}
-    >
-      {siblings.map((s) => {
-        // todo make this a button tbh
-        return (
-          <p
-            style={{
-              fontWeight: `${s.title === node.title ? "bold" : "normal"}`,
-            }}
+    <>
+      {siblingsVisible &&
+        (
+          <div
+            id="siblings"
+            // style={{
+            //   visibility: `${siblingsVisible ? "visible" : "hidden"}`,
+            //   // width: `${siblingsVisible ? 40 : 0}`,
+            //   width: 40,
+            //   display: "absolute",
+            // }}
+            // className="bg-slate-700 z-20 w-40 h-40 overflow-visible mb-2 text-slate-50 "
+            className=" relative  w-40 h-40 mb-2  bg-slate-700 text-slate-50 z-50 "
           >
-            {s.title}
-          </p>
-        );
-      })}
-    </div>
+            {siblings.map((s) => {
+              return (
+                <button
+                  style={{
+                    fontWeight: `${s.title === node.title ? "bold" : "normal"}`,
+                  }}
+                  className=" relative w-10  mb-2  bg-slate-700 text-slate-50 z-70 "
+                  onClick={() => {
+                    pathDispatch({
+                      type: "branch",
+                      nodes: [s],
+                    });
+                    historyDispatch({
+                      type: "add",
+                      nodeId: s.id,
+                    });
+                  }}
+                >
+                  {s.title}
+                </button>
+              );
+            })}
+          </div>
+        )}
+    </>
   );
 }
 

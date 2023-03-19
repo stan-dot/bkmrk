@@ -73,6 +73,7 @@ export function PathDisplay(): JSX.Element {
             historyDispatch({
               type: "back",
             });
+            console.log("history:", history);
           }}
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >
@@ -84,6 +85,7 @@ export function PathDisplay(): JSX.Element {
             historyDispatch({
               type: "forward",
             });
+            console.log("history:", history);
           }}
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >

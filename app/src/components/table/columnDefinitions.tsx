@@ -33,7 +33,9 @@ export const myCols: ComprehensiveColDef[] = [
   {
     static: { title: "Date Added", width: 130 },
     columnGetter: (v) => {
-      const date: Date = new Date(v.dateAdded || 0);
+      const date: Date = v.dateAdded === undefined
+        ? new Date()
+        : new Date(v.dateAdded);
       const cell: GridCell = {
         kind: GridCellKind.Text,
         data: v.dateAdded?.toString() ?? "-1",

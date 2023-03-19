@@ -58,11 +58,11 @@ export function CornerMenu(
       folders,
       async (b) => {
         const children = await chrome.bookmarks.getChildren(b.id);
-        return children.length > 0;
+        return children.length === 0;
       },
     );
     empty.forEach((b) => {
-      // chrome.bookmarks.remove(b.id);
+      chrome.bookmarks.remove(b.id);
     });
     props.dataCallback([...nonEmptyFolders, ...bkmrks]);
     window.alert(`filtered out ${empty.length} empty folders`);

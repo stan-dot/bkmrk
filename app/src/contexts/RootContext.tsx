@@ -1,13 +1,13 @@
 import React, { createContext, useContext, useReducer } from "react";
 
-export const basicNodes: string[] = [
+const basicNodesEN: string[] = [
   "Bookmarks bar",
   "Mobile bookmarks",
   "Other bookmarks",
 ];
 
 const initialRoot: RootContextType = {
-  nodeNames: basicNodes,
+  nodeNames: basicNodesEN,
 };
 
 export type RootContextType = {
@@ -49,7 +49,6 @@ export function rootReducer(
   root: RootContextType,
   action: RootAction,
 ): RootContextType {
-
   switch (action.type) {
     case "add": {
       console.log("inside root context handler add");

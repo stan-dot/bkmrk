@@ -22,7 +22,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 
 - [ ] fix the starting root - make it disappear
 - [ ]  history context for back and forward arrows. history is a queue?
-- [ ] context for basic nodes - language independent
+- [x] context for basic nodes - language independent
 
 ### bug fixes
 - [ ] wrong row gets targeted for any changes

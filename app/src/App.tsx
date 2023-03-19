@@ -6,6 +6,7 @@ import { TableLoader } from "./components/Table";
 import { ContextMenuProvider } from "./contexts/ContextMenuContext";
 import { PathProvider } from "./contexts/PathContext";
 import { PopupProvider } from "./contexts/PopupContext";
+import { RootProvider } from "./contexts/RootContext";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change
@@ -18,15 +19,17 @@ import { PopupProvider } from "./contexts/PopupContext";
 export default function App() {
   return (
     <div className="App w-full h-full">
-      <PopupProvider>
-        <ContextMenuProvider>
-          <PathProvider>
-            <TableLoader />
-            <Popup />
-            <ContextMenu />
-          </PathProvider>
-        </ContextMenuProvider>
-      </PopupProvider>
+      <RootProvider>
+        <PopupProvider>
+          <ContextMenuProvider>
+            <PathProvider>
+              <TableLoader />
+              <Popup />
+              <ContextMenu />
+            </PathProvider>
+          </ContextMenuProvider>
+        </PopupProvider>
+      </RootProvider>
       <ToastContainer position="bottom-left" />
     </div>
   );

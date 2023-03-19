@@ -1,6 +1,7 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { usePath, usePathDispatch } from "../contexts/PathContext";
+import { useRootDispatch } from "../contexts/RootContext";
 import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
 import { LoadingScreen } from "./LoadingScreen";
 import { Navbar } from "./navbar/Navbar";
@@ -23,6 +24,8 @@ export function TableLoader(): JSX.Element {
 
   const path = usePath();
   const pathDispatch = usePathDispatch();
+
+  const rootNodesDispatch = useRootDispatch();
 
   const lastPathItem: () => chrome.bookmarks.BookmarkTreeNode = useCallback(
     () => path.items.at(-1) ?? globalTree[0],
@@ -48,6 +51,7 @@ export function TableLoader(): JSX.Element {
       setLoaded("LOADED");
       const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
         root[0].children![0];
+
       // setRows(bookmarksBar.children ?? []);
       pathDispatch({
         type: "full",
@@ -64,6 +68,13 @@ export function TableLoader(): JSX.Element {
         console.log("loaded!");
         setGlobalTree(root);
         reloadWithNode(root);
+        const names = root[0].children?.map((b) => b.title);
+        if (names) {
+          rootNodesDispatch({
+            type: "replace",
+            nodeNames: names,
+          });
+        }
 
         // todo that might be controversial
         // setGlobalTree(root[0].children!);
@@ -117,38 +128,38 @@ export function TableLoader(): JSX.Element {
 
   return (
     <>
-          <Navbar
-            dataCallback={dataCallback}
-            lastPathItem={lastPathItem}
+      <Navbar
+        dataCallback={dataCallback}
+        lastPathItem={lastPathItem}
+        rows={rows}
+      />
+      <hr />
+      <div
+        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
+        onPaste={pasteHandler}
+      >
+        <PathDisplay />
+      </div>
+      <LoadingScreen loading={loaded === "LOADING"} />
+      <div
+        id="lowerPanel"
+        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
+        style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
+      >
+        <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
+          <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
+        </div>
+        <div
+          id="mainContainer"
+          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
+        >
+          <BookmarkTable
             rows={rows}
+            setRowsCallback={dataCallback}
+            searchResultsMode={loaded === "SEARCH_RESULT"}
           />
-          <hr />
-          <div
-            className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-            onPaste={pasteHandler}
-          >
-            <PathDisplay />
-          </div>
-          <LoadingScreen loading={loaded === "LOADING"} />
-          <div
-            id="lowerPanel"
-            className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
-            style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-          >
-            <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
-              <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
-            </div>
-            <div
-              id="mainContainer"
-              className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-            >
-              <BookmarkTable
-                rows={rows}
-                setRowsCallback={dataCallback}
-                searchResultsMode={loaded === "SEARCH_RESULT"}
-              />
-            </div>
-          </div>
+        </div>
+      </div>
     </>
   );
 }

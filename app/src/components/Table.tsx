@@ -32,20 +32,6 @@ export function TableLoader(): JSX.Element {
     [globalTree, path.items],
   );
 
-  // options
-  // bookmark changes in the current folder
-  // bookmark changes outside of the current view
-  // bookmark changes upstream in the path
-  // bookmark changes completely elsewhere, like on a different tab
-
-  // things that need to change
-  // current rows. rows appears completely downstream from the path
-  // current path
-  // loaded status?
-  // global tree - complex, it changes, but only folders changes matter, the numbers should update too though
-
-  // todo maybe simplify with reducer, with diff actions for all of these
-
   const reloadWithNode = useCallback(
     (root: chrome.bookmarks.BookmarkTreeNode[]) => {
       setLoaded("LOADED");
@@ -76,13 +62,6 @@ export function TableLoader(): JSX.Element {
             nodeNames: names,
           });
         }
-
-        // todo that might be controversial
-        // setGlobalTree(root[0].children!);
-        // pathDispatch({
-        //   type: "full",
-        //   nodes: root,
-        // });
       },
     );
   }
@@ -107,20 +86,19 @@ export function TableLoader(): JSX.Element {
 
   useEffect(() => {
     const currentLast = lastPathItem();
-    console.log("current last:", currentLast);
+    // console.log("current last:", currentLast);
     if (currentLast) {
       chrome.bookmarks.getChildren(currentLast.id).then((children) => {
         setRows(children);
       });
     }
-    return () => {};
   }, [path, lastPathItem]);
 
   const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
     setRows(nodes);
   };
 
-  const pasteHandler = (e: React.ClipboardEvent<Element>) => {
+  const pathDisplayPasteHandler = (e: React.ClipboardEvent<Element>) => {
     const parentId = lastPathItem().id;
     e.preventDefault();
     console.log(e);
@@ -137,7 +115,7 @@ export function TableLoader(): JSX.Element {
       <hr />
       <div
         className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-        onPaste={pasteHandler}
+        onPaste={pathDisplayPasteHandler}
       >
         <PathDisplay />
       </div>

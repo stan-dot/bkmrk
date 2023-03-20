@@ -76,7 +76,8 @@ export function PathDisplay(): JSX.Element {
       className="flex fixed h-12 justify-start bg-slate-700 ml-4 "
     >
       <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
-        <button
+        {
+          /* <button
           disabled={history.pastNodeIds.length === 0}
           onClick={() => {
             historyDispatch({
@@ -99,7 +100,8 @@ export function PathDisplay(): JSX.Element {
           className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
         >
           {"->"}
-        </button>
+        </button> */
+        }
         <button
           disabled={path.items.length < 2}
           onClick={upButtonHandler}

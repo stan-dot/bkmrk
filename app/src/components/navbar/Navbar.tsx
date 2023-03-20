@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { CornerMenu } from "./CornerMenu";
 import { HistoryPanel } from "./for-later/HistoryPanel";
 import { SearchField } from "./SearchField";
@@ -16,6 +16,8 @@ export function Navbar(
     rows,
   }: NavbarProps,
 ) {
+  const [historyVisible, setHistoryVisible] = useState(false);
+
   return (
     <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
       <div className="flex align-middle" id="brandingBit">
@@ -24,7 +26,18 @@ export function Navbar(
         </p>
       </div>
       <SearchField setDataCallback={dataCallback} />
-      {/* <HistoryPanel historyVisible={true}/> */}
+      {
+        /* <button
+        id="history-button"
+        className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-md p-4 text-center border-red-600 cursor-pointer"
+        onClick={() => setHistoryVisible(!historyVisible)}
+        // onBlur={() => setHistoryVisible(false)}
+        disabled
+      >
+        &#11186; History
+      </button>
+      <HistoryPanel historyVisible={true} /> */
+      }
       <CornerMenu
         importCallback={() => {
           console.log("should load the datastructure");

@@ -13,10 +13,10 @@ type TwoArrs = [
   chrome.bookmarks.BookmarkTreeNode[],
 ];
 
-function partition(
+async function partition(
   array: chrome.bookmarks.BookmarkTreeNode[],
   isValid: (b: chrome.bookmarks.BookmarkTreeNode) => boolean | Promise<boolean>,
-): TwoArrs {
+): Promise<TwoArrs> {
   const starter: TwoArrs = [[], []];
   array.forEach(async (e) => {
     await isValid(e) ? starter[0].push(e) : starter[1].push(e);
@@ -34,6 +34,8 @@ function partition(
 
 const linkClass =
   "block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white";
+
+const disabledLink = "block px-4 py-2 w-full text-left";
 
 type OpenMenuStates = "IMPORT" | "EXPORT" | "NEW_FOLDER" | "NEW_BOOKMARK";
 
@@ -53,8 +55,10 @@ export function CornerMenu(
 
   const removeHandler = async (_v: any) => {
     const rows = props.rows;
-    const [folders, bkmrks] = partition(rows, (b) => b.url === undefined);
-    const [empty, nonEmptyFolders] = partition(
+    console.log("all rows before partition", rows);
+    const [folders, bkmrks] = await partition(rows, (b) => b.url === undefined);
+    console.log("just folders", folders);
+    const [empty, nonEmptyFolders] = await partition(
       folders,
       async (b) => {
         const children = await chrome.bookmarks.getChildren(b.id);
@@ -66,7 +70,7 @@ export function CornerMenu(
       chrome.bookmarks.remove(b.id);
     });
     props.dataCallback([...nonEmptyFolders, ...bkmrks]);
-    window.alert(`filtered out ${empty.length} empty folders`);
+    toast(`filtered out ${empty.length} empty folders`);
     console.debug("diff: ", empty);
   };
 
@@ -111,7 +115,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                console.log("clicked to sort by name");
+                // console.log("clicked to sort by name");
                 sortRows(
                   props.rows,
                   {
@@ -128,7 +132,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                console.log("clicked to sort by date");
+                // console.log("clicked to sort by date");
                 sortRows(props.rows, {
                   key: "date",
                   reverse: false,
@@ -168,7 +172,7 @@ export function CornerMenu(
           <hr />
           <li>
             <button
-              className={linkClass}
+              className={disabledLink}
               disabled
               onClick={(v) => setOpenVariant("IMPORT")}
             >
@@ -177,7 +181,7 @@ export function CornerMenu(
           </li>
           <li>
             <button
-              className={linkClass}
+              className={disabledLink}
               disabled
               onClick={(v) => exportBookmarks(props.rows)}
             >
@@ -203,7 +207,7 @@ export function CornerMenu(
               className={linkClass}
               onClick={async (v) => {
                 const copiesNumber = await recognizeDuplicates();
-                window.alert(`copies number:  ${copiesNumber}`);
+                toast(`copies number:  ${copiesNumber}`);
                 console.log(copiesNumber);
               }}
             >
@@ -246,7 +250,12 @@ export function CornerMenu(
             </button>
           </li>
           <li>
-            <a className={linkClass} href="https://github.com/stan-dot/bkmrk">
+            <a
+              className={linkClass}
+              target="_blank"
+              rel="noreferrer"
+              href="https://github.com/stan-dot/bkmrk"
+            >
               <span id="help-question-mark" className="text-l">?</span>{" "}
               Help center
             </a>

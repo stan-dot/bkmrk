@@ -1,22 +1,23 @@
 import React, { createContext, useContext, useReducer } from "react";
 
-
 const initialPath: Path = {
-  items: []
+  items: [],
 };
 
 type Path = {
-  items: chrome.bookmarks.BookmarkTreeNode[]
-}
+  items: chrome.bookmarks.BookmarkTreeNode[];
+};
 
 type PathAction = {
-  type: 'changed' | 'added' | 'up' | 'branch' | 'full';
+  type: "changed" | "added" | "up" | "branch" | "full";
   nodes?: chrome.bookmarks.BookmarkTreeNode[];
+  changeLevelsUp?: number;
 };
 
 const PathContext = createContext<Path>(initialPath);
-const PathDispatchContext = createContext<React.Dispatch<PathAction>>(null as unknown as React.Dispatch<PathAction>);
-
+const PathDispatchContext = createContext<React.Dispatch<PathAction>>(
+  null as unknown as React.Dispatch<PathAction>,
+);
 
 export function usePath() {
   return useContext(PathContext);
@@ -29,53 +30,73 @@ export function usePathDispatch() {
 export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
   // todo change this to only store IDs
-  chrome.storage.local.set({ 'path': path }).then(() => {
-    console.log('value is set to:', path);
+  chrome.storage.local.set({ "path": path }).then(() => {
+    console.log("value is set to:", path);
   });
-  return <PathContext.Provider value={path}>
-    <PathDispatchContext.Provider value={dispatch}>
-      {children}
-    </PathDispatchContext.Provider>
-  </PathContext.Provider>
+  return (
+    <PathContext.Provider value={path}>
+      <PathDispatchContext.Provider value={dispatch}>
+        {children}
+      </PathDispatchContext.Provider>
+    </PathContext.Provider>
+  );
 }
 
 function pathReducer(path: Path, action: PathAction): Path {
   switch (action.type) {
-    case 'added': {
+    case "added": {
       return {
-        items: [...path.items, ...action.nodes!]
-      }
+        items: [...path.items, ...action.nodes!],
+      };
     }
-    case 'full': {
+    case "full": {
       if (!action.nodes) {
-        throw Error('this action should carry a node' + action.nodes ?? action.type)
+        throw Error(
+          "this action should carry a node" + action.nodes ?? action.type,
+        );
       }
       return {
-        items: action.nodes
-      }
+        items: action.nodes,
+      };
     }
-    case 'changed': {
+    case "changed": {
       return {
         items: path.items.map((node) => {
           const newNode = action.nodes![0];
           if (!newNode) {
-            throw Error('this action should carry only 1 node' + action.nodes ?? action.type)
+            throw Error(
+              "this action should carry only 1 node" + action.nodes ??
+                action.type,
+            );
           }
           return node.id === newNode.id ? newNode : node;
-        })
-      }
+        }),
+      };
     }
-    case 'up': {
+    case "up": {
       const deletedNodes = action.nodes!;
       if (!deletedNodes) {
-        throw Error('this action should carry a node' + action.nodes ?? action.type)
+        throw Error(
+          "this action should carry a node" + action.nodes ?? action.type,
+        );
       }
       return {
-        items: path.items.filter(t => !deletedNodes.includes(t))
-      }
+        items: path.items.filter((t) => !deletedNodes.includes(t)),
+      };
+    }
+
+    case "branch": {
+      // todo reset path up to that point, then add the given sibling (node)
+      const change = action.changeLevelsUp!;
+      const lastSameIndex = path.items.length - change ;
+      const newPathTrunk = path.items.slice(0, lastSameIndex);
+      console.log('change: ', change, ' new trunk: ', newPathTrunk);
+      return {
+        items: [...newPathTrunk, action.nodes![0]],
+      };
     }
     default: {
-      throw Error('Unknown action: ' + action.type);
+      throw Error("Unknown action: " + action.type);
     }
   }
 }

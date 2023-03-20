@@ -4,12 +4,12 @@ import DataEditor, {
   GridDragEventArgs,
   GridSelection,
   gridSelectionHasItem,
-  Item,
+  Item
 } from "@glideapps/glide-data-grid";
 import React, { useEffect } from "react";
 import {
   ContextMenuActionTypes,
-  useContextMenuDispatch,
+  useContextMenuDispatch
 } from "../../contexts/ContextMenuContext";
 import { useHistoryDispatch } from "../../contexts/HistoryContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
@@ -17,7 +17,7 @@ import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { createBookmarksFromPaste } from "../../utils/interactivity/createBookmarksFromPaste";
 import {
   readRawTextAsBookmarks,
-  unpackBookmarks,
+  unpackBookmarks
 } from "../../utils/interactivity/dragProcessing";
 import { getPath } from "../../utils/interactivity/getPath";
 import { columns, getData, viewDetailsColNumber } from "./columns";
@@ -37,12 +37,9 @@ export function BookmarkTable(
     rows: CompactSelection.empty(),
   });
 
-  useEffect(() => {
-    console.log("seelection changed: ", selection);
-    // todo need to handle the selection change
-  }, [selection]);
-
   const historyDispatch = useHistoryDispatch();
+
+  // DRAG AND DROP HANDLING
   const dragHandler = (e: GridDragEventArgs) => {
     e.preventDefault();
     const x = e.location[0];
@@ -82,6 +79,7 @@ export function BookmarkTable(
     createBookmarksFromPaste(e, parentId);
   };
 
+  // CLICK HANDLING
   const doubleClickHandler = (cell: Item) => {
     const colNumber = cell[0];
     // const b = props.rows[colNumber];
@@ -115,7 +113,7 @@ export function BookmarkTable(
           });
           historyDispatch({
             type: "add",
-            nodeId: newPath[-1].id,
+            nodeId: newPath[newPath.length-1].id,
           });
         });
       } else if (colNumber === viewDetailsColNumber) {
@@ -147,7 +145,7 @@ export function BookmarkTable(
         start,
         start + (selection.current?.range.height ?? 0),
       );
-      console.log("selected bookmarks", selectedBookmarks);
+      // console.log("selected bookmarks", selectedBookmarks);
 
       // todo here logic does not seem to work actualyl
       const type: ContextMenuActionTypes = selectedBookmarks.length === 1

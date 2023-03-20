@@ -33,6 +33,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [ ] make the cut copy paste buttons real - context for copy and paste is broken 
 - [ ] fix siblings
 
+- [ ] sorting in a deep folder sends into weird places
 
 # after mvp
 ### QoL features
@@ -58,4 +59,20 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [x] add table context menu not only on left click, but also button - need to simplify the getData and column creation utilities
 
 ### decided against
-- [ ] do rows as lower level container
+do rows as lower level container
+
+
+### reaction to changes considerations
+options
+bookmark changes in the current folder
+bookmark changes outside of the current view
+bookmark changes upstream in the path
+bookmark changes completely elsewhere, like on a different tab
+
+things that need to change
+current rows. rows appears completely downstream from the path
+current path
+loaded status?
+global tree - complex, it changes, but only folders changes matter, the numbers should update too though
+
+todo maybe simplify with reducer, with diff actions for all of these

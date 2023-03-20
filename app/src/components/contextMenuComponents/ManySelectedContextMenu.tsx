@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from "react";
+import { toast } from "react-toastify";
 import {
   useContextMenu,
   useContextMenuDispatch,
@@ -66,7 +67,7 @@ export function ManySelectedContextMenu(
           onClick={() => {
             const list: string = codeBookmarkToUriList(props.things, true);
             window.navigator.clipboard.writeText(list);
-            window.alert(
+            toast(
               `all ${list.length} bookmarks are in your clipboard now. Proceed carefully. There is no going back right now.`,
             );
             props.things.forEach((bookmark) => {
@@ -81,8 +82,8 @@ export function ManySelectedContextMenu(
           onClick={() => {
             const list: string = codeBookmarkToUriList(props.things, true);
             window.navigator.clipboard.writeText(list);
-            window.alert(
-              `all ${list.length} bookmarks are in your clipboard now. Proceed carefully. There is no going back right now.`,
+            toast(
+              `all ${list.length} bookmarks are in your clipboard now.`,
             );
           }}
         >

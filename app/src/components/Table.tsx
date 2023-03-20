@@ -119,12 +119,13 @@ export function TableLoader(): JSX.Element {
       >
         <PathDisplay />
       </div>
-      <LoadingScreen loading={loaded === "LOADING"} />
       <div
         id="lowerPanel"
-        className={"flex flex-grow h-full fixed top-28 w-full  bg-slate-800 "}
+        className={"flex flex-grow h-full fixed top-28 w-full bg-slate-800 "}
         style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
       >
+        {/* <LoadingScreen loading={true} /> */}
+        <LoadingScreen loading={loaded === "LOADING"} />
         <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
           <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
         </div>

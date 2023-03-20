@@ -1,45 +1,16 @@
 
-
-## refactor
-
-# MVP
-- [x] done API
-- [x] add proper menus on context
-https://www.w3schools.com/html/html5_draganddrop.asp
-browser provides the image for dragging
-https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
-- [x] solve the selection bit
-- [x] fix search bookmarks field positioning
-- [x] a 'undo' popup in the left bottom corner
-
-- [x] fix the issue with 'add new bookmark' alert
-- [x] fix the issue with 'add new folder' alert
-- [x] make the settings alert
-- [x] history context for back and forward arrows. history is a queue?
-- [x] context for basic nodes - language independent
+# after mvp
 - [ ] back and front buttons for path navigation
-- [ ] make the loading screen nicer. maybe with a loading bar?
-
-### bug fixes
-- [x] fix the click does not work right with double click but right with context click
-- [x] fix the broken alerts and context menus
-- [x] fix the starting root - make it disappear
-- [x] fix the side bar no context menu
-- [x] wrong row gets targeted for any changes
-- [x] side subtree gets error on deletion. also the erroneous state with 0 is preserved for far too long. cannot read properties of undefined props.node
-
-- [x] download excludes urls
 - [ ] reloading of rows
-- [ ] make the cut copy paste buttons real - context for copy and paste is broken 
 - [ ] fix siblings
-
 - [ ] sorting in a deep folder sends into weird places
 
-# after mvp
 ### QoL features
+- [ ] make the cut copy paste buttons real - context for copy and paste is broken 
 - [ ] working paste and copy
   - [ ] make the table receptive to drop
   - [ ] make the path receptive to drop
+
 ### power user expansions
 - [ ] automatic addition of a 'source website column', sortable
 - [ ] add checkbox column for precision marking
@@ -54,25 +25,3 @@ https://developer.mozilla.org/en-US/docs/Web/API/HTML_Drag_and_Drop_API
 - [ ] history, and minimenu visible as smaller wrappers
 - [ ] change to use always select full width, never just some cells. good for clarity
 
-### recently done
-- [x] split global tree into context, with callbacks
-- [x] add table context menu not only on left click, but also button - need to simplify the getData and column creation utilities
-
-### decided against
-do rows as lower level container
-
-
-### reaction to changes considerations
-options
-bookmark changes in the current folder
-bookmark changes outside of the current view
-bookmark changes upstream in the path
-bookmark changes completely elsewhere, like on a different tab
-
-things that need to change
-current rows. rows appears completely downstream from the path
-current path
-loaded status?
-global tree - complex, it changes, but only folders changes matter, the numbers should update too though
-
-todo maybe simplify with reducer, with diff actions for all of these

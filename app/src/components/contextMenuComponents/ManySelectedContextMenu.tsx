@@ -60,8 +60,8 @@ export function ManySelectedContextMenu(
       {props.things.length === 1 &&
         <EditDeleteSection thing={props.things[0]} protected={false} />}
       <hr />
-      <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2">
-        <button
+      {/* <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2"> */}
+        {/* <button
           disabled={!isProtected}
           className={contextMenuButtonClass}
           onClick={() => {
@@ -103,7 +103,7 @@ export function ManySelectedContextMenu(
         >
           <p>Paste</p>
         </button>
-      </div>
+      </div> */}
 
       <hr />
       {props.things.length === 1 &&

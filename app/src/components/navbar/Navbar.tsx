@@ -22,7 +22,7 @@ export function Navbar(
     <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
       <div className="flex align-middle" id="brandingBit">
         <p className="text-2xl mt-2 ml-2 text-white">
-          &#128366; BOOKasta
+          &#128366; BKMRK
         </p>
       </div>
       <SearchField setDataCallback={dataCallback} />

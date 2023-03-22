@@ -54,7 +54,7 @@ export function popupReducer(
   popup: PopupContext,
   action: PopupAction,
 ): PopupContext {
-  // console.log("action", action);
+  // console.debug("action", action);
   if (action.direction === "close") {
     return {
       component: emptyComponent,
@@ -63,7 +63,7 @@ export function popupReducer(
   }
   switch (action.type) {
     case "edit-bookmark": {
-      console.log("inside edit bookmark reducer");
+      console.debug("inside edit bookmark reducer");
       return {
         component: <EditBookmarkAlert id={action.nodeId!} />,
         componentId: "eba",
@@ -72,7 +72,7 @@ export function popupReducer(
     }
 
     case "edit-folder": {
-      console.log("inside edit folder reducer");
+      console.debug("inside edit folder reducer");
       return {
         component: <EditFolderAlert id={action.nodeId!} />,
         componentId: "efa",
@@ -81,7 +81,7 @@ export function popupReducer(
     }
 
     case "add-new-folder": {
-      console.log("inside edit folder reducer");
+      console.debug("inside edit folder reducer");
       return {
         componentId: "anf",
         args: action.nodeId!,
@@ -89,7 +89,7 @@ export function popupReducer(
     }
 
     case "add-new-bookmark": {
-      console.log("inside edit folder reducer");
+      console.debug("inside edit folder reducer");
       return {
         component: <EditBookmarkAlert id={action.nodeId!} />,
         componentId: "anb",
@@ -98,7 +98,7 @@ export function popupReducer(
     }
 
     case "settings": {
-      console.log("inside edit folder reducer");
+      console.debug("inside edit folder reducer");
       return {
         componentId: "s",
       };

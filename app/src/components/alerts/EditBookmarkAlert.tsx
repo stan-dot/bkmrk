@@ -26,7 +26,7 @@ export default function EditBookmarkAlert(
   { id }: EditAlertProps,
 ) {
   const dispatch = usePopupDispatch();
-  console.log("created the edit alert");
+  console.debug("created the edit alert");
   const [data, setData] = useState<chrome.bookmarks.BookmarkChangesArg>(
     initialData,
   );
@@ -38,7 +38,7 @@ export default function EditBookmarkAlert(
   }, [data, setError]);
 
   const onSubmit = (e: FormEvent) => {
-    console.log("submitting the form");
+    console.debug("submitting the form");
     e.preventDefault();
     if (checkIfChangesValid(data)) {
       chrome.bookmarks.update(id, data).then((r) => {

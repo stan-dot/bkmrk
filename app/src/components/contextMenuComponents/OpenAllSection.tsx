@@ -23,12 +23,12 @@ export function OpenAllSection(
   const [links, setLinks] = useState<chrome.bookmarks.BookmarkTreeNode[]>(
     props.things,
   );
-  // console.log("open all links", props.things, "all are folders", allFolders);
+  // console.debug("open all links", props.things, "all are folders", allFolders);
 
   useEffect(() => {
     if (allFolders) {
       getChildenSimple(props.things).then((links) => {
-        // console.log("children links", links);
+        // console.debug("children links", links);
         setLinks(links);
       });
     }

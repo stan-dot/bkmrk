@@ -4,12 +4,12 @@ import DataEditor, {
   GridDragEventArgs,
   GridSelection,
   gridSelectionHasItem,
-  Item
+  Item,
 } from "@glideapps/glide-data-grid";
 import React, { useEffect } from "react";
 import {
   ContextMenuActionTypes,
-  useContextMenuDispatch
+  useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
 import { useHistoryDispatch } from "../../contexts/HistoryContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
@@ -17,7 +17,7 @@ import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { createBookmarksFromPaste } from "../../utils/interactivity/createBookmarksFromPaste";
 import {
   readRawTextAsBookmarks,
-  unpackBookmarks
+  unpackBookmarks,
 } from "../../utils/interactivity/dragProcessing";
 import { getPath } from "../../utils/interactivity/getPath";
 import { columns, getData, viewDetailsColNumber } from "./columns";
@@ -75,7 +75,7 @@ export function BookmarkTable(
   const containerDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const parentId = path.items.at(-1)!.id;
-    console.log("ondrop triggered, data: ", e.dataTransfer);
+    console.debug("ondrop triggered, data: ", e.dataTransfer);
     createBookmarksFromPaste(e, parentId);
   };
 
@@ -95,25 +95,25 @@ export function BookmarkTable(
         );
       const b = selectedBookmarks[0];
       const isFolder = isAFolder(b);
-      console.log(
+      console.debug(
         "selected bookmarks",
         selectedBookmarks,
         " vs theoretical simple get",
         b,
       );
 
-      console.log("col number:", colNumber);
+      console.debug("col number:", colNumber);
 
       if (props.searchResultsMode && isFolder) {
         getPath(b).then((newPath) => {
-          console.log("path:", newPath);
+          console.debug("path:", newPath);
           pathDispatch({
             type: "full",
             nodes: newPath,
           });
           historyDispatch({
             type: "add",
-            nodeId: newPath[newPath.length-1].id,
+            nodeId: newPath[newPath.length - 1].id,
           });
         });
       } else if (colNumber === viewDetailsColNumber) {
@@ -145,7 +145,7 @@ export function BookmarkTable(
         start,
         start + (selection.current?.range.height ?? 0),
       );
-      // console.log("selected bookmarks", selectedBookmarks);
+      // console.debug("selected bookmarks", selectedBookmarks);
 
       // todo here logic does not seem to work actualyl
       const type: ContextMenuActionTypes = selectedBookmarks.length === 1
@@ -193,7 +193,7 @@ export function BookmarkTable(
         gridSelection={selection}
         onGridSelectionChange={setSelection}
         // onGridSelectionChange={(newSelection: GridSelection) => {
-        //   console.log("changing selection into", newSelection);
+        //   console.debug("changing selection into", newSelection);
         //   setselection(newSelection);
         // }}
         // drag and drop interactivity

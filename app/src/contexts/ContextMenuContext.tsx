@@ -62,7 +62,7 @@ export function contextMenuReducer(
   contextMenu: ContextMenuContextType,
   action: ContextMenuContextAction,
 ): ContextMenuContextType {
-  console.log("action", action);
+  console.debug("action", action);
   if (action.direction === "close") {
     return {
       componentId: "none",
@@ -71,7 +71,7 @@ export function contextMenuReducer(
   }
   switch (action.type) {
     case "path": {
-      console.log("inside edit single bookmark reducer");
+      console.debug("inside edit single bookmark reducer");
       return {
         componentId: "p",
         args: action.nodeId!,
@@ -80,7 +80,7 @@ export function contextMenuReducer(
       };
     }
     case "single-bookmark": {
-      console.log("inside edit single bookmark reducer");
+      console.debug("inside edit single bookmark reducer");
       return {
         componentId: "b",
         args: action.nodeId!,
@@ -89,7 +89,7 @@ export function contextMenuReducer(
       };
     }
     case "mixed": {
-      console.log("inside edit mixed bookmarks reducer");
+      console.debug("inside edit mixed bookmarks reducer");
       return {
         componentId: "s",
         args: action.nodeId!,
@@ -98,16 +98,15 @@ export function contextMenuReducer(
       };
     }
     case "folder": {
-      console.log("inside edit folder reducer");
-      // todo that is missing the component Id
+      console.debug("inside edit folder reducer");
       return {
-        componentId: 'side',
+        componentId: "side",
         position: action.position,
         things: action.things!,
       };
     }
     case "position-update": {
-      console.log("inside position update reducer");
+      console.debug("inside position update reducer");
       return {
         ...contextMenu,
         position: action.position,

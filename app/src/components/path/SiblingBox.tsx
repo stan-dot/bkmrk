@@ -13,10 +13,9 @@ export function SiblingBox(
   { siblingsVisible, node, closeCallback, level }: SiblingBoxTypes,
 ) {
   const siblings = useSiblings(node);
-  // console.log("siblings of :", node, " : ,", siblings);
+  // console.debug("siblings of :", node, " : ,", siblings);
   const historyDispatch = useHistoryDispatch();
   const pathDispatch = usePathDispatch();
-  // todo that is just a kind of dropdown, should be easy to do
   return (
     <>
       {siblingsVisible &&

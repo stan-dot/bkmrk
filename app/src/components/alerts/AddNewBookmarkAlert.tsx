@@ -24,7 +24,7 @@ export default function AddNewBookmarkAlert(
 ) {
   const path = usePath();
   const locationId = path.items.at(-1)!.id;
-  console.log("created the add new bookmark alert");
+  console.debug("created the add new bookmark alert");
 
   const dispatch = usePopupDispatch();
   const [error, setError] = useState<boolean>(false);
@@ -39,7 +39,7 @@ export default function AddNewBookmarkAlert(
   }, [data, setError]);
 
   const onSubmit = (e: FormEvent) => {
-    console.log("submitting the form");
+    console.debug("submitting the form");
     e.preventDefault();
     if (checkIfCreateBookmarkValid(data)) {
       chrome.bookmarks.create(data).then((r) => {

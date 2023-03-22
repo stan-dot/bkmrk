@@ -43,7 +43,7 @@ export function SideTreeElement(
       | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
       | React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
   ) => {
-    console.log("launching context menu for side element", props.thing);
+    console.debug("launching context menu for side element", props.thing);
     e.preventDefault();
     e.stopPropagation();
     contextMenuDispatch({
@@ -69,12 +69,12 @@ export function SideTreeElement(
       codeBookmarkToUriList([props.thing], false),
     );
     e.dataTransfer.dropEffect = "move";
-    console.log("dragging the side element", e);
+    console.debug("dragging the side element", e);
   };
 
   const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    console.log("ondrop triggered");
+    console.debug("ondrop triggered");
     const data: DataTransfer = e.dataTransfer;
     const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(
       data,

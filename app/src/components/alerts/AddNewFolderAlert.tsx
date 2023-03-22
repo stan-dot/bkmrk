@@ -27,7 +27,7 @@ export default function AddNewFolderAlert(
   }, [data, setError]);
 
   const onSubmit = (e: FormEvent) => {
-    console.log("submitting the form");
+    console.debug("submitting the form");
     e.preventDefault();
     chrome.bookmarks.create(data).then((r) => {
       console.debug("new bookmark", r);
@@ -41,7 +41,7 @@ export default function AddNewFolderAlert(
       direction: "close",
     });
   };
-  console.log("created the add new folder alert");
+  console.debug("created the add new folder alert");
 
   return (
     <div

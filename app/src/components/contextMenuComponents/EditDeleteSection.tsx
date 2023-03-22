@@ -26,7 +26,7 @@ export function EditDeleteSection(
       <button
         disabled={props.protected}
         onClick={(e) => {
-          console.log("clicked the edit button, opening the edit menu");
+          console.debug("clicked the edit button, opening the edit menu");
           const changes: PopupAction = {
             type: isAFolder(props.thing) ? "edit-folder" : "edit-bookmark",
             direction: "open",

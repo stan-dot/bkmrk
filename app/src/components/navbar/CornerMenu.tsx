@@ -55,9 +55,9 @@ export function CornerMenu(
 
   const removeHandler = async (_v: any) => {
     const rows = props.rows;
-    console.log("all rows before partition", rows);
+    console.debug("all rows before partition", rows);
     const [folders, bkmrks] = await partition(rows, (b) => b.url === undefined);
-    console.log("just folders", folders);
+    console.debug("just folders", folders);
     const [empty, nonEmptyFolders] = await partition(
       folders,
       async (b) => {
@@ -65,7 +65,7 @@ export function CornerMenu(
         return children.length === 0;
       },
     );
-    console.log("empty: ", empty, "  nonempty: ", nonEmptyFolders);
+    console.debug("empty: ", empty, "  nonempty: ", nonEmptyFolders);
     empty.forEach((b) => {
       chrome.bookmarks.remove(b.id);
     });
@@ -75,31 +75,12 @@ export function CornerMenu(
   };
 
   return (
-    <div
-      className={"conrner-menu-button z-40 relative"}
-      onBlur={() => {
-        // setTimeout(() => {
-        //   dispatch({
-        //     direction: "close",
-        //     type: "none",
-        //   });
-        // }, 2500);
-      }}
-    >
+    <div className={"conrner-menu-button z-40 relative"} >
       <button
         onClick={() => setShowMenu(!showMenu)}
         id="dropdownDefaultButton"
         className="text-white hover:bg-slate-400 focus:outline-none rounded-lg text-3xl p-4 text-center border-red-600"
         type="button"
-        onBlur={() => {
-          // todo that is problematic
-          // setTimeout(
-          //   () => {
-          //     setShowMenu(false);
-          //   },
-          //   1000,
-          // );
-        }}
       >
         &#8942;
       </button>
@@ -115,7 +96,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                // console.log("clicked to sort by name");
+                // console.debug("clicked to sort by name");
                 sortRows(
                   props.rows,
                   {
@@ -132,7 +113,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                // console.log("clicked to sort by date");
+                // console.debug("clicked to sort by date");
                 sortRows(props.rows, {
                   key: "date",
                   reverse: false,
@@ -208,7 +189,7 @@ export function CornerMenu(
               onClick={async (v) => {
                 const copiesNumber = await recognizeDuplicates();
                 toast(`copies number:  ${copiesNumber}`);
-                console.log(copiesNumber);
+                console.debug(copiesNumber);
               }}
             >
               &#129694; See the number of duplicates in this folder

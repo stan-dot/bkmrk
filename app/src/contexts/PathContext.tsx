@@ -31,7 +31,7 @@ export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
   // todo change this to only store IDs
   chrome.storage.local.set({ "path": path }).then(() => {
-    console.log("value is set to:", path);
+    console.debug("value is set to:", path);
   });
   return (
     <PathContext.Provider value={path}>
@@ -86,11 +86,10 @@ function pathReducer(path: Path, action: PathAction): Path {
     }
 
     case "branch": {
-      // todo reset path up to that point, then add the given sibling (node)
       const change = action.changeLevelsUp!;
-      const lastSameIndex = path.items.length - change ;
+      const lastSameIndex = path.items.length - change;
       const newPathTrunk = path.items.slice(0, lastSameIndex);
-      console.log('change: ', change, ' new trunk: ', newPathTrunk);
+      console.debug("change: ", change, " new trunk: ", newPathTrunk);
       return {
         items: [...newPathTrunk, action.nodes![0]],
       };

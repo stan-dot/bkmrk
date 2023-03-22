@@ -51,14 +51,14 @@ export function rootReducer(
 ): RootContextType {
   switch (action.type) {
     case "add": {
-      console.log("inside root context handler add");
+      console.debug("inside root context handler add");
       return {
         nodeNames: [...root.nodeNames, ...action.nodeNames],
       };
     }
 
     case "replace": {
-      console.log("inside root context handler replace");
+      console.debug("inside root context handler replace");
       return {
         nodeNames: action.nodeNames,
       };

@@ -13,7 +13,7 @@ import {
 import { settingsReducer } from "./SettingsReducer";
 
 export default function SettingsAlert() {
-  console.log("created the add new folder alert");
+  console.debug("created the add new folder alert");
   const dispatch = usePopupDispatch();
   const [localSettings, localDispatch] = useReducer(
     settingsReducer,
@@ -29,7 +29,7 @@ export default function SettingsAlert() {
   }, []);
 
   const onSubmit = (e: FormEvent) => {
-    console.log("submitting the settings change form");
+    console.debug("submitting the settings change form");
     e.preventDefault();
     updateSettings(localSettings);
   };

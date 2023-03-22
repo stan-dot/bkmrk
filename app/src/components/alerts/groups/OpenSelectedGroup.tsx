@@ -16,7 +16,7 @@ export default function OpenSelectedAlert(
     OpenSelectedAlertProps,
 ) {
   const onSubmit = (e: FormEvent) => {
-    console.log("submitting the form");
+    console.debug("submitting the form");
     e.preventDefault();
     openThemCallback();
     closeCallback();

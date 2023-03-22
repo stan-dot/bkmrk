@@ -25,7 +25,7 @@ function syncReadFile(filename: string): any[] {
 
   const arr = contents.split(/\r?\n/);
 
-  console.log(arr); // 👉️ ['One', 'Two', 'Three', 'Four']
+  console.debug(arr); // 👉️ ['One', 'Two', 'Three', 'Four']
 
   return arr;
 }

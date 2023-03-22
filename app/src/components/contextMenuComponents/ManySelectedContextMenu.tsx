@@ -18,9 +18,9 @@ export function ManySelectedContextMenu(
     searchResults?: boolean;
   },
 ): JSX.Element {
-  console.log("many selected menui for :", props.things);
+  console.debug("many selected menui for :", props.things);
   const protectedNames = useRoot().nodeNames;
-  // console.log("inside another context menu", props.things);
+  // console.debug("inside another context menu", props.things);
   const isProtected: boolean = props.things.length > 1 ||
     protectedNames.includes(
       props.things[0].title ?? "",
@@ -61,7 +61,8 @@ export function ManySelectedContextMenu(
         <EditDeleteSection thing={props.things[0]} protected={false} />}
       <hr />
       {/* <div className="group2 w-32 flex flex-col border-t-solid border-b-solid border-slate-200 m-2"> */}
-        {/* <button
+      {
+        /* <button
           disabled={!isProtected}
           className={contextMenuButtonClass}
           onClick={() => {
@@ -93,7 +94,7 @@ export function ManySelectedContextMenu(
           className={contextMenuButtonClass}
           onClick={() => {
             const output = window.navigator.clipboard.read();
-            console.log(output);
+            console.debug(output);
             // todo somehow translate the output into bookmarks
             const newBookmarks: chrome.bookmarks.BookmarkCreateArg[] = [];
             newBookmarks.forEach((b) => {
@@ -103,7 +104,8 @@ export function ManySelectedContextMenu(
         >
           <p>Paste</p>
         </button>
-      </div> */}
+      </div> */
+      }
 
       <hr />
       {props.things.length === 1 &&

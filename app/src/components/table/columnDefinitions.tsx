@@ -66,7 +66,7 @@ export const myCols: ComprehensiveColDef[] = [
         return ErrorCell;
       }
       const isRealLink = v.url !== undefined;
-      // todo would need to have the chrome.bookmarks.getChildren(id) to get their number. that would be longer
+      // NOTE would need to have the chrome.bookmarks.getChildren(id) to get their number. that would be longer
       const display: string =
         (isRealLink ? v.url : v.children?.length.toString()) ?? "folder";
       const d: TextCell = {
@@ -137,7 +137,7 @@ export const myCols: ComprehensiveColDef[] = [
       //     title: "View Details",
       //     onClick: () => {
       //       window.alert("Button clicked");
-      //       console.log('should show context here')
+      //       console.debug('should show context here')
       //     },
       //   },
       //   // themeOverride: {

@@ -40,7 +40,7 @@ export function Navbar(
       }
       <CornerMenu
         importCallback={() => {
-          console.log("should load the datastructure");
+          console.debug("should load the datastructure");
         }}
         dataCallback={dataCallback}
         rows={rows}

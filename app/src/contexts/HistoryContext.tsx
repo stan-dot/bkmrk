@@ -43,7 +43,7 @@ export function historyReducer(
   history: HistoryContextType,
   action: HistoryAction,
 ): HistoryContextType {
-  console.log("history reducer", action);
+  console.debug("history reducer", action);
   switch (action.type) {
     case "add": {
       if (action.nodeId === undefined) return history;
@@ -54,7 +54,7 @@ export function historyReducer(
     }
 
     case "forward": {
-      console.log("inside history context handler add");
+      console.debug("inside history context handler add");
       const node = history.futureNodeIds[0];
       return {
         pastNodeIds: [...history.pastNodeIds, ...node],
@@ -63,7 +63,7 @@ export function historyReducer(
     }
 
     case "back": {
-      console.log("inside history context handler replace");
+      console.debug("inside history context handler replace");
       const last = history.pastNodeIds[history.pastNodeIds.length - 1];
       return {
         pastNodeIds: history.pastNodeIds.slice(

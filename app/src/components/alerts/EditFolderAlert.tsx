@@ -19,7 +19,7 @@ export default function EditFolderAlert({ id }: RenameFolderAlertProps) {
   const dispatch = usePopupDispatch();
 
   const onSubmit = (e: FormEvent) => {
-    console.log("submitting the form for edit folder", data, " id: ", id);
+    console.debug("submitting the form for edit folder", data, " id: ", id);
     e.preventDefault();
     chrome.bookmarks.update(id, data).then((r) => {
       close();

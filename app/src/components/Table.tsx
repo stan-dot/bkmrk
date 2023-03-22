@@ -51,7 +51,7 @@ export function TableLoader(): JSX.Element {
     // reloadWithNode(path.items);
     chrome.bookmarks.getTree().then(
       (root: chrome.bookmarks.BookmarkTreeNode[]) => {
-        console.log("loaded!");
+        console.debug("loaded!");
         // todo here might be an error
         setGlobalTree(root[0].children!);
         reloadWithNode(root);
@@ -67,7 +67,7 @@ export function TableLoader(): JSX.Element {
   }
 
   const deltaListener = useCallback((e?: string): void => {
-    console.log("the bookmarks have changed...", e);
+    console.debug("the bookmarks have changed...", e);
     reloadWithNode(path.items);
   }, [path.items, reloadWithNode]);
 
@@ -86,7 +86,7 @@ export function TableLoader(): JSX.Element {
 
   useEffect(() => {
     const currentLast = lastPathItem();
-    // console.log("current last:", currentLast);
+    // console.debug("current last:", currentLast);
     if (currentLast) {
       chrome.bookmarks.getChildren(currentLast.id).then((children) => {
         setRows(children);
@@ -101,7 +101,7 @@ export function TableLoader(): JSX.Element {
   const pathDisplayPasteHandler = (e: React.ClipboardEvent<Element>) => {
     const parentId = lastPathItem().id;
     e.preventDefault();
-    console.log(e);
+    console.debug(e);
     createBookmarksFromPaste(e, parentId);
   };
 

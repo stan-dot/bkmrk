@@ -7,7 +7,7 @@ import SettingsAlert from "../alerts/settings_stuff/SettingsAlert";
 
 export default function Popup() {
   const popup = usePopup();
-  console.log("current componentId", popup.componentId);
+  console.debug("current componentId", popup.componentId);
   return (
     <div>
       {popup.componentId === "s" && <SettingsAlert />}

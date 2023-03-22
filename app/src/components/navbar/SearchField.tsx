@@ -14,7 +14,11 @@ export function SearchField(props: {
   const onEnterHandler = async (
     event: React.KeyboardEvent<HTMLInputElement>,
   ) => {
-    if (event.key === "enter") await runSearch();
+    // console.log('event: ', event);
+    if (event.key === "Enter") {
+      // console.log('detected enter');
+      await runSearch();
+    };
   };
 
   const onSearchClickHandler = async () => await runSearch();
@@ -26,7 +30,7 @@ export function SearchField(props: {
   const isEmpty = value.length === 0;
 
   async function runSearch() {
-    console.log("starting the serach, term: ", value);
+    console.log("starting the search, term: ", value);
     const searchResults: chrome.bookmarks.BookmarkTreeNode[] = await chrome
       .bookmarks.search(value);
     console.log("search results: ", searchResults);

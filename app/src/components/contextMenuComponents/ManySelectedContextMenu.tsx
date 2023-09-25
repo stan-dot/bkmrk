@@ -25,8 +25,8 @@ export function ManySelectedContextMenu(
     protectedNames.includes(
       props.things[0].title ?? "",
     );
-  const dispatch = useContextMenuDispatch();
 
+  const dispatch = useContextMenuDispatch();
   const contextMenu = useContextMenu();
   const position = contextMenu.position;
 

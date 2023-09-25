@@ -12,10 +12,12 @@ import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-ce
 export type CellGetter = (
   v: chrome.bookmarks.BookmarkTreeNode,
 ) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
+
 type ComprehensiveColDef = {
   static: GridColumn;
   columnGetter: CellGetter;
 };
+
 function getDisplayDate(d: Date): string {
   const mins = d.getMinutes();
 
@@ -23,12 +25,14 @@ function getDisplayDate(d: Date): string {
   const day: string = `${d.getFullYear()}/${d.getMonth() + 1}/${d.getDate()}`;
   return `${day} ${hour}`;
 }
+
 const ErrorCell: TextCell = {
   kind: GridCellKind.Text,
   data: "error",
   allowOverlay: false,
   displayData: "error",
 };
+
 export const myCols: ComprehensiveColDef[] = [
   {
     static: { title: "Date Added", width: 130 },

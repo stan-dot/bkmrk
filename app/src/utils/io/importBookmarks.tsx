@@ -34,8 +34,8 @@ export function BookmarkImportAlert(
   props: { callback: Function },
 ): JSX.Element {
   const EMPTY_NAME = "";
-  const [open, setOpen] = useState(true);
-  const [fileName, setFileName] = useState(EMPTY_NAME);
+  const [open, setOpen] = useState<boolean>(true);
+  const [fileName, setFileName] = useState<string>(EMPTY_NAME);
   // todo there's some inconsistency, but it should be fine, the function above is for Node
 
   const handleClick = (name: string) => {

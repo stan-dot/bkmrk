@@ -5,13 +5,16 @@ type TracingRowProps = {
   i: number;
   localDispatch: Function;
 };
+
 type TracingLinksContainerProps = {
   rows: RegExp[] | undefined;
   localDispatch: Function;
 };
+
 type AddNewTracingLinkBoxProps = {
   localDispatch: Function;
 };
+
 export function AddNewTracingLink(
   { localDispatch }: AddNewTracingLinkBoxProps,
 ) {

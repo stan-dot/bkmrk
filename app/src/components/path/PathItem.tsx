@@ -1,28 +1,27 @@
 import React, { useState } from "react";
 import { SiblingBox } from "./SiblingBox";
 
+type PathItemProps = {
+  handleClick: (index: number, node: chrome.bookmarks.BookmarkTreeNode) => void;
+  index: number;
+  node: chrome.bookmarks.BookmarkTreeNode;
+  contextMenuHandler: (
+    e: React.MouseEvent<HTMLDivElement>,
+    node: chrome.bookmarks.BookmarkTreeNode,
+  ) => void;
+  siblings?: chrome.bookmarks.BookmarkTreeNode[];
+};
+
 export function PathItem(
-  props: {
-    handleClick: (
-      index: number,
-      node: chrome.bookmarks.BookmarkTreeNode,
-    ) => void;
-    index: number;
-    node: chrome.bookmarks.BookmarkTreeNode;
-    contextMenuHandler: (
-      e: React.MouseEvent<HTMLDivElement>,
-      node: chrome.bookmarks.BookmarkTreeNode,
-    ) => void;
-    siblings?: chrome.bookmarks.BookmarkTreeNode[];
-  },
+  { handleClick, index, node, contextMenuHandler, siblings }: PathItemProps,
 ): JSX.Element {
-  const [siblingsVisible, setSiblingsVisible] = useState(false);
+  const [siblingsVisible, setSiblingsVisible] = useState<boolean>(false);
 
   return (
     <div
       className="flex justify-start h-12 text-slate-50 m-1 z-20 rounded-sm border-1 border-solid focus:shadow "
       onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
-        props.contextMenuHandler(e, props.node)}
+        contextMenuHandler(e, node)}
     >
       <div className="flex flex-col">
         <button
@@ -33,15 +32,17 @@ export function PathItem(
         >
           {"/"}
         </button>
-        {/* <SiblingBox
+        {
+          /* <SiblingBox
           siblingsVisible={siblingsVisible}
-          node={props.node}
+          node={node}
           closeCallback={() => setSiblingsVisible(false)}
-          level={props.index}
-        /> */}
+          level={index}
+        /> */
+        }
       </div>
-      <button onClick={(v) => props.handleClick(props.index, props.node)}>
-        {props.node.title}
+      <button onClick={(v) => handleClick(index, node)}>
+        {node.title}
       </button>
     </div>
   );

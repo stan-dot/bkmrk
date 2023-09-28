@@ -19,9 +19,9 @@ export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
     setFullHistory(flat);
   });
 
-  const [fullFuture, setFullFuture] = useState(
-    [] as chrome.bookmarks.BookmarkTreeNode[],
-  );
+  const [fullFuture, setFullFuture] = useState<
+    chrome.bookmarks.BookmarkTreeNode[]
+  >([]);
 
   Promise.all(history.futureNodeIds.map((id) => {
     return chrome.bookmarks.get(id);
@@ -36,12 +36,8 @@ export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
       className="bg-slate-700 w-44 z-10 rounded-md shadow"
       style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
     >
-      {fullHistory.length === 0
-        ? <p>No history found</p>
-        : <DisplayEvents nodes={fullHistory} tag="past" />}
-      {fullFuture.length === 0
-        ? <p>No future found</p>
-        : <DisplayEvents nodes={fullFuture} tag="future" />}
+      <DisplayEvents nodes={fullHistory} tag="past" />
+      <DisplayEvents nodes={fullFuture} tag="future" />
     </div>
   );
 }
@@ -49,7 +45,7 @@ export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
 function DisplayOneEvent(
   props: { thing: chrome.bookmarks.BookmarkTreeNode },
 ): JSX.Element {
-  // todo onclick redirect
+  // todo onclick redirect. either with path imperative or window object change
   return (
     <p>
       {<a href={props.thing.url} className="link">{props.thing.title}</a>}
@@ -60,6 +56,11 @@ function DisplayOneEvent(
 function DisplayEvents(
   props: { nodes: chrome.bookmarks.BookmarkTreeNode[]; tag: string },
 ): JSX.Element {
+  const empty = props.nodes.length === 0;
+  if (empty) {
+    return <p>no {tag} found</p>;
+  }
+
   return (
     <div id={`eventsContainer-${props.tag}`}>
       {props.nodes.map((n) => <DisplayOneEvent thing={n} />)}

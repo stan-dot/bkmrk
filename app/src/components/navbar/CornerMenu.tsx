@@ -47,7 +47,7 @@ export function CornerMenu(
     searchResultsMode?: boolean;
   },
 ): JSX.Element {
-  const [showMenu, setShowMenu] = useState(false);
+  const [showMenu, setShowMenu] = useState<boolean>(false);
   const [openVariant, setOpenVariant] = useState<OpenMenuStates>(
     "NEW_BOOKMARK",
   );

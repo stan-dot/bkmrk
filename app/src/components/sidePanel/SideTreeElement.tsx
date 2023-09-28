@@ -17,16 +17,24 @@ export function SideTreeElement(
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
   },
 ): JSX.Element {
-  const [unrolled, setUnrolled] = useState(props.unrolled);
+  const [unrolled, setUnrolled] = useState<boolean>(props.unrolled);
   const isALeafNode: boolean = ifIsALeafNode(props.thing);
   const path = usePath();
-  const dispatch = usePathDispatch();
-
+  const pathDispatch = usePathDispatch();
+  const contextMenuDispatch = useContextMenuDispatch();
   const historyDispatch = useHistoryDispatch();
+
+  const isInPath = useCallback(
+    () => {
+      return path.items.includes(props.thing);
+    },
+    [path, props.thing],
+  );
+
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (isInPath()) return;
     getPath(props.thing).then((newPath) => {
-      dispatch({
+      pathDispatch({
         type: "full",
         nodes: newPath,
       });
@@ -36,7 +44,6 @@ export function SideTreeElement(
       });
     });
   };
-  const contextMenuDispatch = useContextMenuDispatch();
 
   const handleContextMenu = (
     e:
@@ -53,13 +60,6 @@ export function SideTreeElement(
       things: [props.thing],
     });
   };
-
-  const isInPath = useCallback(
-    () => {
-      return path.items.includes(props.thing);
-    },
-    [path, props.thing],
-  );
 
   const dragHandler = (e: React.DragEvent<HTMLDivElement>) => {
     const stringified: string = codeBookmarkToUriList([props.thing], true);
@@ -86,26 +86,27 @@ export function SideTreeElement(
     withParent.forEach((i) => chrome.bookmarks.create(i));
   };
 
+  const newPathClickHandler = () =>
+    getPath(props.thing).then((newPath) => {
+      pathDispatch({
+        type: "full",
+        nodes: newPath,
+      });
+    });
   return (
+
     <div
       className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${
         isInPath() ? "ring-cyan-300" : ""
       } overflow-auto min-h-30 flex-col cursor-pointer bg-slate-700 rounded-r-md`}
       id={`${props.thing.id}-side-tree-container`}
-      onClick={() =>
-        getPath(props.thing).then((newPath) => {
-          dispatch({
-            type: "full",
-            nodes: newPath,
-          });
-        })}
+      onClick={newPathClickHandler}
       style={{
-        // border: isInPath() ? "0.25rem solid" : "none",
         borderWidth: "0.25rem",
         borderStyle: isInPath() ? "solid" : "none",
         borderColor: "rgb(8, 145, 178)",
       }}
-      onContextMenu={(e) => handleContextMenu(e)}
+      onContextMenu={handleContextMenu}
       onDrop={dropHandler}
       onDragStart={dragHandler}
       draggable
@@ -128,7 +129,7 @@ export function SideTreeElement(
         </p>
         <button
           onClick={handleClick}
-          onContextMenu={(e) => handleContextMenu(e)}
+          onContextMenu={handleContextMenu}
           className="w-fit  text-left mr-2"
           onDoubleClick={(e) => setUnrolled(!unrolled)}
         >

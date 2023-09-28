@@ -3,8 +3,8 @@ import React, { useState } from "react";
 export function SearchField(props: {
   setDataCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
 }) {
-  const [value, setValue] = useState("");
-  const [iconHighlight, setIconHighlight] = useState(false);
+  const [value, setValue] = useState<string>("");
+  const [iconHighlight, setIconHighlight] = useState<boolean>(false);
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);

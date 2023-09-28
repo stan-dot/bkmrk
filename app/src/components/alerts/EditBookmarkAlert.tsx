@@ -55,6 +55,7 @@ export default function EditBookmarkAlert(
       direction: "close",
     });
   };
+
   return (
     <div
       className="fixed backdrop-blur-md w-full h-full z-50"
@@ -65,10 +66,9 @@ export default function EditBookmarkAlert(
       <form
         className="
       fixed 
-      
       flex flex-col px-6 py-2
       m-auto
-      z-60 inset-0 border-solid border-gray-500 h-60 w-96  bg-slate-800 overflow-y-auto rounded  "
+      z-60 inset-0 border-solid border-gray-500 h-60 w-96  bg-slate-800 overflow-y-auto rounded"
         id="editAlertForm"
         onSubmit={onSubmit}
       >

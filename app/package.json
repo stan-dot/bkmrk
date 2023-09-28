@@ -41,12 +41,6 @@
     "tailwind": "npx tailwindcss -i ./public/styles/globals.css -o ./build/static/css/output.css",
     "tailwind-watch": "npx tailwindcss -i ./public/styles/globals.css -o ./build/static/css/output.css --watch"
   },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
   "browserslist": {
     "production": [
       ">0.2%",

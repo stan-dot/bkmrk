@@ -7,7 +7,9 @@ import { PathItem } from "./PathItem";
 export function PathDisplay(): JSX.Element {
   const path = usePath();
   const pathDispatch = usePathDispatch();
-  const [lastInteracted, setLastInteracted] = useState(
+  const [lastInteracted, setLastInteracted] = useState<
+    chrome.bookmarks.BookmarkTreeNode
+  >(
     path.items[path.items.length - 1],
   );
 

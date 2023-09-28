@@ -2,61 +2,43 @@ import { toast } from "react-toastify";
 import { PopupAction, usePopupDispatch } from "../../contexts/PopupContext";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
-
-function DeleteUndoButton(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode; undoCallback: Function },
-): JSX.Element {
-  return (
-    <div>
-      <h2>
-        removed item {props.thing.title}
-      </h2>
-
-      <button onClick={() => props.undoCallback}>undo?</button>
-    </div>
-  );
-}
+import { DeleteUndoButton } from "./DeleteUndoButton";
 
 export function EditDeleteSection(
   props: { thing: chrome.bookmarks.BookmarkTreeNode; protected: boolean },
 ) {
   const dispatch = usePopupDispatch();
+
+  const handleEditClick = (e) => {
+    console.debug("clicked the edit button, opening the edit menu");
+    const changeType = isAFolder(props.thing) ? "edit-folder" : "edit-bookmark";
+
+    const changes: PopupAction = {
+      type: changeType,
+      direction: "open",
+      nodeId: props.thing.id,
+    };
+
+    dispatch(changes);
+  };
+
+  const handleDeleteClick = (e) => {
+    toast(<DeleteUndoButton thing={props.thing} />);
+    chrome.bookmarks.remove(props.thing.id);
+  };
+
   return (
     <div className="group1 flex flex-col">
       <button
         disabled={props.protected}
-        onClick={(e) => {
-          console.debug("clicked the edit button, opening the edit menu");
-          const changes: PopupAction = {
-            type: isAFolder(props.thing) ? "edit-folder" : "edit-bookmark",
-            direction: "open",
-            nodeId: props.thing.id,
-          };
-          dispatch(changes);
-        }}
+        onClick={handleEditClick}
         className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
       >
         <p>Edit</p>
       </button>
       <button
         disabled={props.protected}
-        onClick={(e) => {
-          toast(
-            <DeleteUndoButton
-              thing={props.thing}
-              undoCallback={() => {
-                const createArgs: chrome.bookmarks.BookmarkCreateArg = {
-                  parentId: props.thing.parentId,
-                  index: props.thing.index,
-                  title: props.thing.title,
-                  url: props.thing.url,
-                };
-                chrome.bookmarks.create(createArgs);
-              }}
-            />,
-          );
-          chrome.bookmarks.remove(props.thing.id);
-        }}
+        onClick={handleDeleteClick}
         className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
       >
         <p>Delete</p>

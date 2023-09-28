@@ -31,7 +31,7 @@ export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
   // todo change this to only store IDs
   chrome.storage.local.set({ "path": path }).then(() => {
-    console.debug("value is set to:", path);
+    console.debug("stored path value is set to:", path);
   });
   return (
     <PathContext.Provider value={path}>

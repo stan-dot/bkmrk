@@ -16,7 +16,7 @@ export function Navbar(
     rows,
   }: NavbarProps,
 ) {
-  const [historyVisible, setHistoryVisible] = useState(false);
+  const [historyVisible, setHistoryVisible] = useState<boolean>(false);
 
   return (
     <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">

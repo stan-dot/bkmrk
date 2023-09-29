@@ -33,7 +33,7 @@ export async function traverseTree(
   });
 }
 
-async function globalTraverse(args: TraverseArgs): Promise<void> {
+export async function globalTraverse(args: TraverseArgs): Promise<void> {
   const root: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
     .getTree();
   root.forEach((folder) => {

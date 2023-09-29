@@ -51,7 +51,7 @@ export function CornerMenu(
   const [openVariant, setOpenVariant] = useState<OpenMenuStates>(
     "NEW_BOOKMARK",
   );
-  const dispatch = usePopupDispatch();
+  const popupDispatch = usePopupDispatch();
 
   const removeHandler = async (_v: any) => {
     const rows = props.rows;
@@ -128,7 +128,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                dispatch({
+                popupDispatch({
                   type: "add-new-bookmark",
                   direction: "open",
                 });
@@ -141,7 +141,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={(v) => {
-                dispatch({
+                popupDispatch({
                   type: "add-new-folder",
                   direction: "open",
                 });
@@ -221,7 +221,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               onClick={() => {
-                dispatch({
+                popupDispatch({
                   type: "settings",
                   direction: "open",
                 });

@@ -8,6 +8,7 @@ import { Navbar } from "./navbar/Navbar";
 import { PathDisplay } from "./path/PathDisplay";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
+import { SideTree } from "./sidePanel/SideTree";
 
 type MainDisplayStates =
   | "LOADING"
@@ -127,7 +128,7 @@ export function TableLoader(): JSX.Element {
         {/* <LoadingScreen loading={true} /> */}
         <LoadingScreen loading={loaded === "LOADING"} />
         <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
-          <SideSubTree nodes={globalTree} setRowsCallback={dataCallback} />
+          <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
         </div>
         <div
           id="mainContainer"

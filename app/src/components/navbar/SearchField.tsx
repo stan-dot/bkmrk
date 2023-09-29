@@ -43,9 +43,9 @@ export function SearchField(props: {
     >
       <div id="left-side-items" className="justify-start">
         <button
-          className={`search-field-button h-fit  ${
+          className={`${
             iconHighlight ? "text-slate-50" : "text-slate-400"
-          } align-middle cursor-pointer hover:bg-slate-50 p-3 pb-2 text-l border-color-white rounded-full}`}
+          } search-field-button h-fit align-middle cursor-pointer hover:bg-slate-50 p-3 pb-2 hover:rounded text-l border-color-white rounded-full}`}
           type="button"
           aria-label="search button"
           onClick={onSearchClickHandler}

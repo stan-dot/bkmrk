@@ -2,7 +2,7 @@ import React, { MouseEvent, useCallback, useState } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { getPath } from "../../utils/interactivity/getPath";
-import { ifIsALeafNode } from "../../utils/ifHasChildrenFolders";
+import { ifIsALeafNode, isAFolder } from "../../utils/ifHasChildrenFolders";
 import { SideSubTree } from "./SideSubTree";
 import {
   codeBookmarkToUriList,
@@ -15,6 +15,7 @@ export function SideTreeElement(
     thing: chrome.bookmarks.BookmarkTreeNode;
     unrolled: boolean;
     setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
+    unrollCallback: (n: chrome.bookmarks.BookmarkTreeNode) => void;
   },
 ): JSX.Element {
   const [unrolled, setUnrolled] = useState<boolean>(props.unrolled);
@@ -94,7 +95,6 @@ export function SideTreeElement(
       });
     });
   return (
-
     <div
       className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${
         isInPath() ? "ring-cyan-300" : ""
@@ -120,7 +120,7 @@ export function SideTreeElement(
           onClick={(e) => setUnrolled(!unrolled)}
           className={`${
             !isALeafNode && "hidden"
-          } hover:bg-slate-400 text-slate-50 text-l mr-2 rounded-full`}
+          } hover:bg-slate-400 text-slate-50 text-l m-2 rounded-full`}
         >
           {unrolled ? <p>&#709;</p> : <p>&#707;</p>}
         </button>
@@ -136,12 +136,30 @@ export function SideTreeElement(
           <p className="text-slate-50">{props.thing.title}</p>
         </button>
       </div>
-      {unrolled && (
+
+      <div id="sidesubtree" className="relative l-10 ml-5 p-1 ">
+        {props.thing.children
+          ? props.thing.children.filter(isAFolder).map((n) => {
+            const unrolled: boolean = path.items.includes(n);
+            return (
+              <SideTreeElement
+                thing={n}
+                unrolled={unrolled}
+                setRowsCallback={props.setRowsCallback}
+                unrollCallback={props.unrollCallback}
+              />
+            );
+          })
+          : null}
+      </div>
+      {
+        /* {unrolled && (
         <SideSubTree
           nodes={props.thing.children!}
           setRowsCallback={props.setRowsCallback}
         />
-      )}
+      )} */
+      }
     </div>
   );
 }

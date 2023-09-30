@@ -54,8 +54,4 @@ export default function sorting() {
   // delete empty
   // merge neighboring
   // use comparison operators and ordering options
-
-
-
 }
-

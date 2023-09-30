@@ -2,7 +2,7 @@ import { SorterOptions } from '../../../sorting';
 
 export type Settings = {
   tracingLinksRegexes: RegExp[];
-  sortingSettings: SorterOptions;
+  sortingSettings?: SorterOptions;
 };
 
 // todo possibly join these by OR. that would also help settings processing

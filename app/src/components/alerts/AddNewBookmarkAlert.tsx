@@ -4,19 +4,11 @@ import { usePopupDispatch } from "../../contexts/PopupContext";
 import { CancelSaveGroup } from "./groups/CancelSaveGroup";
 import { RenameGroup } from "./groups/RenameGroup";
 import { UrlEditGroup } from "./groups/UrlEditGroup";
-import { validUrlRegexp } from "./validUrlRegexp";
+import { checkIfCreateBookmarkValid } from "./validUrlRegexp";
 
 type AddNewBookmarkProps = {
   parentId: string;
 };
-
-function checkIfCreateBookmarkValid(
-  data: chrome.bookmarks.BookmarkCreateArg,
-): boolean {
-  const url = data.url;
-  return url !== undefined && url.length > 0 &&
-    url.match(validUrlRegexp) !== undefined;
-}
 
 // todo this might be a bit off
 export default function AddNewBookmarkAlert(

@@ -39,13 +39,15 @@ const disabledLink = "block px-4 py-2 w-full text-left";
 
 type OpenMenuStates = "IMPORT" | "EXPORT" | "NEW_FOLDER" | "NEW_BOOKMARK";
 
+interface CornerMenuProps {
+  importCallback: Function;
+  rows: chrome.bookmarks.BookmarkTreeNode[];
+  dataCallback: (bookmarks: chrome.bookmarks.BookmarkTreeNode[]) => void;
+  searchResultsMode?: boolean;
+}
+
 export function CornerMenu(
-  props: {
-    importCallback: Function;
-    rows: chrome.bookmarks.BookmarkTreeNode[];
-    dataCallback: (bookmarks: chrome.bookmarks.BookmarkTreeNode[]) => void;
-    searchResultsMode?: boolean;
-  },
+  {importCallback, rows, dataCallback, searchResultsMode}: CornerMenuProps,
 ): JSX.Element {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [openVariant, setOpenVariant] = useState<OpenMenuStates>(
@@ -54,7 +56,6 @@ export function CornerMenu(
   const popupDispatch = usePopupDispatch();
 
   const removeHandler = async (_v: any) => {
-    const rows = props.rows;
     console.debug("all rows before partition", rows);
     const [folders, bkmrks] = await partition(rows, (b) => b.url === undefined);
     console.debug("just folders", folders);
@@ -69,7 +70,7 @@ export function CornerMenu(
     empty.forEach((b) => {
       chrome.bookmarks.remove(b.id);
     });
-    props.dataCallback([...nonEmptyFolders, ...bkmrks]);
+    dataCallback([...nonEmptyFolders, ...bkmrks]);
     toast(`filtered out ${empty.length} empty folders`);
     console.debug("diff: ", empty);
   };
@@ -98,7 +99,7 @@ export function CornerMenu(
               onClick={(v) => {
                 // console.debug("clicked to sort by name");
                 sortRows(
-                  props.rows,
+                  rows,
                   {
                     key: "title",
                     reverse: false,
@@ -114,7 +115,7 @@ export function CornerMenu(
               className={linkClass}
               onClick={(v) => {
                 // console.debug("clicked to sort by date");
-                sortRows(props.rows, {
+                sortRows(rows, {
                   key: "date",
                   reverse: false,
                 });
@@ -164,13 +165,13 @@ export function CornerMenu(
             <button
               className={disabledLink}
               disabled
-              onClick={(v) => exportBookmarks(props.rows)}
+              onClick={(v) => exportBookmarks(rows)}
             >
               (TBA) Export bookmarks{" "}
             </button>
           </li>
           <li>
-            <button className={linkClass} onClick={(v) => printCsv(props.rows)}>
+            <button className={linkClass} onClick={(v) => printCsv(rows)}>
               Download CSV
             </button>
           </li>
@@ -198,9 +199,9 @@ export function CornerMenu(
           <li>
             <button
               className={linkClass}
-              disabled={props.searchResultsMode}
+              disabled={searchResultsMode}
               onClick={async (v) => {
-                const parentId = props.rows[0].parentId;
+                const parentId = rows[0].parentId;
                 if (parentId) {
                   const parent = (await chrome.bookmarks.get(parentId))[0];
                   removeTracingLinksFromChildren(parent).then(
@@ -244,7 +245,7 @@ export function CornerMenu(
         </ul>
       </div>
       {openVariant === "IMPORT" && (
-        <BookmarkImportAlert callback={props.importCallback} />
+        <BookmarkImportAlert callback={importCallback} />
       )}
     </div>
   );

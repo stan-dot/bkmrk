@@ -7,27 +7,12 @@ modules
 - api connector
 - settings manager I guess
 
-## supersorter functions
-- [ ] autosort
-- [ ] reverse sort
-- [ ] folders before bookmarks
-- [ ] delete empty folders
-- [ ] merge neighboring folders
-- [ ] delete duplicates in the same folder
-- [ ] use case sensitive name comparisons
-- [ ] ignore bookmarks bar
-- [ ] don't start sorting if Bookmark Manager is active
-- [ ] treat http and https as equivalent
-- [ ] identify duplicates by URL only (ignore titles)
-EXTRA
-- [ ] add sorting by name and time time selection for exploration view when added
-
 ## dev features
 - [ ] useSearchParams
 - [ ] maybe history shouldn't be updated directly, but only downstream from the Path context object?
 - [ ] consider summary-detail html5 instead of unrolled boolean
 - [ ] consider side tree element issues
-- [ ] use suspense syntax instead of loading screen
+- [ ] use suspense syntax instead of loading screen - nah that's only if a framework or lazy code
 - [ ] lower panel is invisible rn if search results mode
 
 ## diagram

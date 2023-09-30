@@ -9,12 +9,27 @@ import { PathDisplay } from "./path/PathDisplay";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
 import { SideTree } from "./sidePanel/SideTree";
+import { TestContextMenu } from "./TestContextMenu";
+import MenuContextHook from "./MenuContextHook";
 
 type MainDisplayStates =
   | "LOADING"
   | "LOADED"
   | "RESULT_EMPTY"
   | "SEARCH_RESULT";
+
+
+type DataTest = {
+  id: number;
+  title: string;
+};
+
+const data: DataTest[] = [
+  { id: 1, title: "message1" },
+  { id: 2, title: "message2" },
+  { id: 3, title: "message3" },
+  { id: 4, title: "message4" },
+];
 
 export function TableLoader(): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
@@ -134,11 +149,15 @@ export function TableLoader(): JSX.Element {
           id="mainContainer"
           className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
         >
-          <BookmarkTable
+          <TestContextMenu />
+          <MenuContextHook data={data} />
+          {
+            /* <BookmarkTable
             rows={rows}
             setRowsCallback={dataCallback}
             searchResultsMode={loaded === "SEARCH_RESULT"}
-          />
+          /> */
+          }
         </div>
       </div>
     </>

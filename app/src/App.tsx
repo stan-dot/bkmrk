@@ -22,7 +22,7 @@ export default function App() {
     <div className="App w-full h-full">
       <RootProvider>
         <PopupProvider>
-          <ContextMenuProvider>
+          {/* <ContextMenuProvider> */}
             <PathProvider>
               <HistoryProvider>
                 <TableLoader />
@@ -30,7 +30,7 @@ export default function App() {
                 <ContextMenu />
               </HistoryProvider>
             </PathProvider>
-          </ContextMenuProvider>
+          {/* </ContextMenuProvider> */}
         </PopupProvider>
       </RootProvider>
       <ToastContainer position="bottom-left" />

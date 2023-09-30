@@ -108,32 +108,7 @@ export function ManySelectedContextMenu(
       }
 
       <hr />
-      {props.things.length === 1 &&
-        (
-          <button
-            // todo this doesn't show up
-            className={`${
-              !props.searchResults && "hidden"
-            } ${contextMenuButtonClass}`}
-            onClick={(e) => {
-              if (!props.setRowsCallback) return;
-              chrome
-                .bookmarks
-                .get(props.things[0].parentId!).then((parents) => {
-                  if (parents.length > 1) {
-                    console.error("there is more than one parent for this id");
-                    return;
-                  }
-                  const children: chrome.bookmarks.BookmarkTreeNode[] =
-                    parents[0]
-                      .children!;
-                  props.setRowsCallback!(children);
-                });
-            }}
-          >
-            <p>show in folder</p>
-          </button>
-        )}
+      {props.things.length === 1 && <ShowInFolderButton {...props} />}
       <div className="group-changing flex flex-col">
         <button
           onClick={() =>
@@ -160,5 +135,40 @@ export function ManySelectedContextMenu(
       <hr />
       <OpenAllSection things={props.things} />
     </div>
+  );
+}
+
+function ShowInFolderButton(
+  props: {
+    things: chrome.bookmarks.BookmarkTreeNode[];
+    setRowsCallback?:
+      | ((nodes: chrome.bookmarks.BookmarkTreeNode[]) => void)
+      | undefined;
+    searchResults?: boolean | undefined;
+  },
+): React.ReactNode {
+  return (
+    <button
+      // todo this doesn't show up
+      className={`${
+        !props.searchResults && "hidden"
+      } ${contextMenuButtonClass}`}
+      onClick={(e) => {
+        if (!props.setRowsCallback) return;
+        chrome
+          .bookmarks
+          .get(props.things[0].parentId!).then((parents) => {
+            if (parents.length > 1) {
+              console.error("there is more than one parent for this id");
+              return;
+            }
+            const children: chrome.bookmarks.BookmarkTreeNode[] = parents[0]
+              .children!;
+            props.setRowsCallback!(children);
+          });
+      }}
+    >
+      <p>show in folder</p>
+    </button>
   );
 }

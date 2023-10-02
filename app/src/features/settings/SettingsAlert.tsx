@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useReducer } from "react";
-import { usePopupDispatch } from "../../../contexts/PopupContext";
-import { CancelSaveGroup } from "../groups/CancelSaveGroup";
+import { usePopupDispatch } from "../../contexts/PopupContext";
+import { CancelSaveGroup } from "../../components/alerts/button-groups/CancelSaveGroup";
 import {
   AddNewTracingLink,
   TracingLinksContainer,
-} from "../TracingLinksContainer";
+} from "../tracing-links-deletion/TracingLinksContainer";
 import {
   defaultSettings,
   setSettingsToDefault,

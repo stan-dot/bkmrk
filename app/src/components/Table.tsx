@@ -2,22 +2,21 @@ import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useCallback, useEffect, useState } from "react";
 import { usePath, usePathDispatch } from "../contexts/PathContext";
 import { useRootDispatch } from "../contexts/RootContext";
-import { createBookmarksFromPaste } from "../utils/interactivity/createBookmarksFromPaste";
+import { createBookmarksFromPaste } from "../lib/CRUDBookmarkFacade";
 import { LoadingScreen } from "./LoadingScreen";
 import { Navbar } from "./navbar/Navbar";
-import { PathDisplay } from "./path/PathDisplay";
+import { PathDisplay } from "../features/path/PathDisplay";
 import { SideSubTree } from "./sidePanel/SideSubTree";
 import { BookmarkTable } from "./table/BookmarkTable";
-import { SideTree } from "./sidePanel/SideTree";
+import { SideTree } from "../features/sidetree/components/SideTree";
 import { TestContextMenu } from "./TestContextMenu";
-import MenuContextHook from "./MenuContextHook";
+import MenuContextHook from "../features/test-contextmenu/MenuContextHook";
 
 type MainDisplayStates =
   | "LOADING"
   | "LOADED"
   | "RESULT_EMPTY"
   | "SEARCH_RESULT";
-
 
 type DataTest = {
   id: number;
@@ -100,6 +99,7 @@ export function TableLoader(): JSX.Element {
     };
   }, [deltaListener]);
 
+  // todo make this into a custom hook
   useEffect(() => {
     const currentLast = lastPathItem();
     // console.debug("current last:", currentLast);

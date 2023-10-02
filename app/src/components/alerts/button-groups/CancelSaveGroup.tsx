@@ -1,4 +1,4 @@
-const buttonClass = " w-12 h-8 m-2 rounded";
+const buttonClass = "w-12 h-8 m-2 rounded";
 
 export function CancelSaveGroup(
   props: {

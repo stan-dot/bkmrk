@@ -1,9 +1,9 @@
 import { FormEvent, useEffect, useState } from "react";
 import { usePopupDispatch } from "../../contexts/PopupContext";
-import { CancelSaveGroup } from "./groups/CancelSaveGroup";
-import { RenameGroup } from "./groups/RenameGroup";
-import { UrlEditGroup } from "./groups/UrlEditGroup";
-import { checkIfCreateBookmarkValid } from "./validUrlRegexp";
+import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
+import { RenameGroup } from "./button-groups/RenameGroup";
+import { UrlEditGroup } from "./button-groups/UrlEditGroup";
+import { checkIfCreateBookmarkValid } from "../../lib/CRUDBookmarkFacade";
 
 type EditAlertProps = {
   id: string;

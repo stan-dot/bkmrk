@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
-import { useHistory, useHistoryDispatch } from "../../contexts/HistoryContext";
+import { useHistory, useHistoryDispatch } from "../history/HistoryContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { PathItem } from "./PathItem";
 

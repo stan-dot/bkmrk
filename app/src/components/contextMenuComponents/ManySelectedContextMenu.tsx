@@ -5,12 +5,13 @@ import {
   useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
 import { useRoot } from "../../contexts/RootContext";
-import { codeBookmarkToUriList } from "../../utils/interactivity/dragProcessing";
+import { codeBookmarkToUriList } from "../../utils/dragProcessing";
 import { sortRows } from "../../utils/interactivity/sortRows";
 import { contextMenuButtonClass } from "./contextMenuButtonClass";
 import { EditDeleteSection } from "./EditDeleteSection";
 import { OpenAllSection } from "./OpenAllSection";
 
+    const CLOSING_TIMEOUT = 3000;
 export function ManySelectedContextMenu(
   props: {
     things: chrome.bookmarks.BookmarkTreeNode[];
@@ -42,7 +43,7 @@ export function ManySelectedContextMenu(
   useEffect(() => {
     setTimeout(() => {
       close();
-    }, 3000);
+    }, CLOSING_TIMEOUT);
   }, [close, dispatch, position]);
 
   // todo make these buttons real

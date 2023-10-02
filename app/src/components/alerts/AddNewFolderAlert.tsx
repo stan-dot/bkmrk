@@ -1,8 +1,8 @@
 import { FormEvent, useEffect, useState } from "react";
 import { usePath } from "../../contexts/PathContext";
 import { usePopupDispatch } from "../../contexts/PopupContext";
-import { CancelSaveGroup } from "./groups/CancelSaveGroup";
-import { RenameGroup } from "./groups/RenameGroup";
+import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
+import { RenameGroup } from "./button-groups/RenameGroup";
 
 type AddNewFolderProps = {
   parent: chrome.bookmarks.BookmarkTreeNode;

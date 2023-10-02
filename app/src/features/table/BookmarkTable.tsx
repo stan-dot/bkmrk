@@ -11,15 +11,17 @@ import {
   ContextMenuActionTypes,
   useContextMenuDispatch,
 } from "../../contexts/ContextMenuContext";
-import { useHistoryDispatch } from "../../contexts/HistoryContext";
+import { useHistoryDispatch } from "../../features/history/HistoryContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { createBookmarksFromPaste } from "../../utils/interactivity/createBookmarksFromPaste";
+import CRUDBookmarkFacade, {
+  createBookmarksFromPaste,
+} from "../../lib/CRUDBookmarkFacade";
 import {
   readRawTextAsBookmarks,
   unpackBookmarks,
-} from "../../utils/interactivity/dragProcessing";
-import { getPath } from "../../utils/interactivity/getPath";
+} from "../../utils/dragProcessing";
+import { getPath } from "../../lib/CRUDBookmarkFacade";
 import { columns, getData, viewDetailsColNumber } from "./columns";
 
 export function BookmarkTable(
@@ -59,9 +61,8 @@ export function BookmarkTable(
     const parsed: chrome.bookmarks.BookmarkChangesArg[] = unpackBookmarks(
       dataTransfer,
     );
-    parsed.forEach((arg) => {
-      chrome.bookmarks.create(arg);
-    });
+
+    CRUDBookmarkFacade.createManyBookmarks(parsed);
   };
 
   const pasteHandler = (v: React.ClipboardEvent<HTMLDivElement>) => {
@@ -69,7 +70,7 @@ export function BookmarkTable(
     const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(
       data,
     );
-    items.forEach((i) => chrome.bookmarks.create(i));
+    CRUDBookmarkFacade.createManyBookmarks(items);
   };
 
   const containerDropHandler = (e: React.DragEvent<HTMLDivElement>) => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useHistoryDispatch } from "../../contexts/HistoryContext";
+import { useHistoryDispatch } from "../../features/history/HistoryContext";
 import { usePathDispatch } from "../../contexts/PathContext";
 
 type SiblingBoxTypes = {

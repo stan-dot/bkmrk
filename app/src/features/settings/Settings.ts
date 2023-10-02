@@ -1,4 +1,4 @@
-import { SorterOptions } from '../../../sorting';
+import { SorterOptions } from '../../sorting';
 
 export type Settings = {
   tracingLinksRegexes: RegExp[];

@@ -2,11 +2,11 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { usePopupDispatch } from "../../contexts/PopupContext";
 import { sortRows } from "../../utils/interactivity/sortRows";
-import { exportBookmarks } from "../../utils/io/exportBookmarks";
-import { BookmarkImportAlert } from "../../utils/io/importBookmarks";
-import { printCsv } from "../../utils/io/printCsv";
-import { recognizeDuplicates } from "../../utils/traversalFunctions/getCopies";
-import { removeTracingLinksFromChildren } from "../../utils/traversalFunctions/removeTracingLinks";
+import { exportBookmarks } from "../../features/import-export/exportBookmarks";
+import { BookmarkImportAlert } from "../../features/import-export/components/BookmarkImportAlert";
+import { printCsv } from "../../features/import-export/printCsv";
+import { recognizeDuplicates } from "../../features/prune-duplicates/getCopies";
+import { removeTracingLinksFromChildren } from "../../lib/removeTracingLinks";
 
 type TwoArrs = [
   chrome.bookmarks.BookmarkTreeNode[],
@@ -22,14 +22,6 @@ async function partition(
     await isValid(e) ? starter[0].push(e) : starter[1].push(e);
   });
   return starter;
-  // return array.reduce(
-  //   ([pass, fail]: TwoArrs, elem: chrome.bookmarks.BookmarkTreeNode) => {
-  //     return isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]];
-  //   },
-  //   starter,
-  // );
-  // https://stackoverflow.com/questions/11731072/dividing-an-array-by-filter-function
-  // that didn't work
 }
 
 const linkClass =
@@ -47,7 +39,7 @@ interface CornerMenuProps {
 }
 
 export function CornerMenu(
-  {importCallback, rows, dataCallback, searchResultsMode}: CornerMenuProps,
+  { importCallback, rows, dataCallback, searchResultsMode }: CornerMenuProps,
 ): JSX.Element {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [openVariant, setOpenVariant] = useState<OpenMenuStates>(
@@ -75,8 +67,21 @@ export function CornerMenu(
     console.debug("diff: ", empty);
   };
 
+  const removeTracingLinks = async (v) => {
+    const parentId = rows[0].parentId;
+    if (parentId) {
+      const parent = (await chrome.bookmarks.get(parentId))[0];
+      removeTracingLinksFromChildren(parent).then(
+        (tracedChanged) => {
+          toast(<RemovedPopup number={tracedChanged} />);
+          console.debug(tracedChanged);
+        }
+      );
+    }
+  };
+
   return (
-    <div className={"conrner-menu-button z-40 relative"} >
+    <div className={"conrner-menu-button z-40 relative"}>
       <button
         onClick={() => setShowMenu(!showMenu)}
         id="dropdownDefaultButton"
@@ -200,18 +205,7 @@ export function CornerMenu(
             <button
               className={linkClass}
               disabled={searchResultsMode}
-              onClick={async (v) => {
-                const parentId = rows[0].parentId;
-                if (parentId) {
-                  const parent = (await chrome.bookmarks.get(parentId))[0];
-                  removeTracingLinksFromChildren(parent).then(
-                    (tracedChanged) => {
-                      toast(<RemovedPopup number={tracedChanged} />);
-                      console.debug(tracedChanged);
-                    },
-                  );
-                }
-              }}
+              onClick={removeTracingLinks}
               // https://symbl.cc/en/1F9BA/ safety vest emoji
             >
               &#129466; Remove tracing links in this folder

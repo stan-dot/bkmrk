@@ -3,7 +3,7 @@ import AddNewBookmarkAlert from "../alerts/AddNewBookmarkAlert";
 import AddNewFolderAlert from "../alerts/AddNewFolderAlert";
 import EditBookmarkAlert from "../alerts/EditBookmarkAlert";
 import EditFolderAlert from "../alerts/EditFolderAlert";
-import SettingsAlert from "../alerts/settings_stuff/SettingsAlert";
+import SettingsAlert from "../../features/settings/SettingsAlert";
 
 export default function Popup() {
   const popup = usePopup();

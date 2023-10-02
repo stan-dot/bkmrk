@@ -37,21 +37,18 @@ function sorting(
   reverse: boolean,
 ): chrome.bookmarks.BookmarkTreeNode[] {
   if (key === "title") {
+    const multiplier = reverse ? -1 : 1;
     return rows.sort((a, b) =>
-      ("" + a.title).localeCompare(b.title) * (reverse ? -1 : 1)
+      ("" + a.title).localeCompare(b.title) * multiplier
     );
   }
 
   if (key === "date") {
-    // console.log('comparing dates');
+      const multiplier = reverse ? -1 : 1;
     return rows.sort((a, b) => {
-      // console.log('a date added ', a.dateAdded, 'b date added: ', b.dateAdded);
-      // const value = (a.dateAdded ?? 0 - (b.dateAdded ?? 0)) * (reverse ? -1 : 1);
-      const value = (a.dateAdded! - b.dateAdded!) * (reverse ? -1 : 1);
-      // console.log(value);
+      const value = (a.dateAdded! - b.dateAdded!) * multiplier;
       return value;
     });
   }
   throw Error("unknown sorting key");
-  // return rows;
 }

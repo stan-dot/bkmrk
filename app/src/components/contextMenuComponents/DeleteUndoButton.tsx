@@ -1,7 +1,10 @@
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
+
+// todo potentially use this with a stack
 export function DeleteUndoButton(
   props: { thing: chrome.bookmarks.BookmarkTreeNode },
 ): JSX.Element {
-  const saveObjectForUndo: chrome.bookmarks.BookmarkCreateArg = {
+  const savedBookmarkForUndo: chrome.bookmarks.BookmarkCreateArg = {
     parentId: props.thing.parentId,
     index: props.thing.index,
     title: props.thing.title,
@@ -13,7 +16,9 @@ export function DeleteUndoButton(
         removed item {props.thing.title}
       </h2>
 
-      <button onClick={() => chrome.bookmarks.create(saveObjectForUndo)}>
+      <button
+        onClick={() => CRUDBookmarkFacade.createBookmark(savedBookmarkForUndo)}
+      >
         undo?
       </button>
     </div>

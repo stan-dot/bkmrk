@@ -1,14 +1,14 @@
 import React, { MouseEvent, useCallback, useState } from "react";
 import { useContextMenuDispatch } from "../../contexts/ContextMenuContext";
 import { usePath, usePathDispatch } from "../../contexts/PathContext";
-import { getPath } from "../../utils/interactivity/getPath";
+import { getPath } from "../../lib/CRUDBookmarkFacade";
 import { ifIsALeafNode, isAFolder } from "../../utils/ifHasChildrenFolders";
 import { SideSubTree } from "./SideSubTree";
 import {
   codeBookmarkToUriList,
   readRawTextAsBookmarks,
 } from "../../utils/interactivity/dragProcessing";
-import { useHistoryDispatch } from "../../contexts/HistoryContext";
+import { useHistoryDispatch } from "../../features/history/HistoryContext";
 
 export function SideTreeElement(
   props: {

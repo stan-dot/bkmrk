@@ -1,8 +1,7 @@
 import {
   defaultTracingRegexes,
   getSettings,
-} from "../../components/alerts/settings_stuff/Settings";
-import { TraverseArgs, traverseTree } from "./traverseTree";
+} from "../features/settings/Settings";
 
 export async function getLinks(): Promise<RegExp[]> {
   const settings = await getSettings();
@@ -22,27 +21,13 @@ export async function removeTracingLinksFromChildren(
     console.log("inside the sanitize callback");
     removeTracingLinks(node, regexes);
   };
-
-  // let count = 0;
-
-  // const countCallback = (n: number) => count += n;
-  // const args: TraverseArgs = {
-  //   callbackOnNumber: countCallback,
-  //   //@ts-ignore line because it's union type of 2 functions, should be fine
-  //   callbackOnEachLeaf: sanitizeCallback,
-  // };
-
+  
   // todo refactor this
   const children = await chrome.bookmarks.getChildren(parent.id);
   children.forEach((c) => {
     sanitizeCallback(c);
   });
 
-  // traverseTree(args, parent).then(
-  //   () => {
-  //     return count;
-  //   },
-  // );
   return 0;
 }
 

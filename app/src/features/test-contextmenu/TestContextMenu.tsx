@@ -30,9 +30,11 @@ type Points = {
   x: number;
   y: number;
 };
+
 const MenuContext = ({ data }: { data: DataTest[] }) => {
-  const [clicked, setClicked] = useState<boolean>(false);
   const [points, setPoints] = useState<Points>({ x: 0, y: 0 });
+  const [clicked, setClicked] = useState<boolean>(false);
+
   useEffect(() => {
     const handleClick = () => setClicked(false);
     window.addEventListener("click", handleClick);
@@ -40,6 +42,7 @@ const MenuContext = ({ data }: { data: DataTest[] }) => {
       window.removeEventListener("click", handleClick);
     };
   });
+
   return (
     <div>
       {data.map((item) => (

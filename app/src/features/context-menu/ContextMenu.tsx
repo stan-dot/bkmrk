@@ -1,5 +1,8 @@
+import { PathDisplayContextMenu } from "../path/components/PathDisplayContextMenu";
+import { AddNewContextMenu } from "./AddNewContextMenu";
+import { useContextMenu } from "./ContextMenuContext";
+import { ManySelectedContextMenu } from "./ManySelectedContextMenu";
 
-// todo maybe all context menus in here? that'd be smart, wouldn't it be
 // and the branches would be subsections of the whole component, not switch cases
 const manySelectedArray: string[] = ["b", "f", "s", "side"];
 

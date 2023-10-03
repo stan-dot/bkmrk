@@ -1,13 +1,11 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
+import { BookmarkCreateArg } from "../../lib/typesFacade";
 import { usePath } from "../path/PathContext";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
 import { RenameGroup } from "./button-groups/RenameGroup";
 import { UrlEditGroup } from "./button-groups/UrlEditGroup";
-import CRUDBookmarkFacade, {
-  checkIfCreateBookmarkValid,
-} from "../../lib/CRUDBookmarkFacade";
-import { BookmarkCreateArg } from "../../lib/typesFacade";
 
 type AddNewBookmarkProps = {
   parentId: string;
@@ -23,15 +21,14 @@ export default function AddNewBookmarkAlert(
 
   const dispatch = usePopupDispatch();
   const [error, setError] = useState<boolean>(false);
-  const [data, setData] = useState<BookmarkCreateArg>({
+
+  const defaultFormData: BookmarkCreateArg = {
     title: "",
     url: "",
     parentId: locationId,
-  });
+  };
 
-  useEffect(() => {
-    setError(false);
-  }, [data, setError]);
+  const [data, setData] = useState<BookmarkCreateArg>(defaultFormData);
 
   const onSubmit = (e: FormEvent) => {
     console.debug("submitting the form");

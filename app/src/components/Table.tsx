@@ -1,9 +1,9 @@
 import "@glideapps/glide-data-grid/dist/index.css";
 import { useCallback, useEffect, useState } from "react";
-import { useLocationDispatch } from "../contexts/LocationContext";
+import { useLocationDispatch } from "../features/path/LocationContext";
 import { CornerMenu } from "../features/corner-menu/CornerMenu";
 import { usePath, usePathDispatch } from "../features/path/PathContext";
-import { PathDisplay } from "../features/path/PathDisplay";
+import { PathDisplay } from "../features/path/components/PathDisplay";
 import { SearchField } from "../features/search/components/SearchField";
 import { SideTree } from "../features/sidetree/components/SideTree";
 import MenuContextHook from "../features/test-contextmenu/MenuContextHook";
@@ -14,6 +14,7 @@ import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { MainContainer } from "./styled-components/MainContainer";
 import { BookmarkNode } from "../lib/typesFacade";
+import useBookmarkChange from "../lib/hooks/ChangeListener";
 
 type MainDisplayStates =
   | "LOADING"
@@ -83,23 +84,13 @@ export function TableLoader(): JSX.Element {
     );
   }
 
-  const deltaListener = useCallback((e?: string): void => {
-    console.debug("the bookmarks have changed...", e);
+  const handleBookmarkChange = (id: string, changeInfo: any) => {
+    console.log("Handling in component:", id, changeInfo);
+    // Handle the change event within your component...
     reloadWithNode(path.items);
-  }, [path.items, reloadWithNode]);
+  };
 
-  useEffect(() => {
-    chrome.bookmarks.onChanged.addListener(deltaListener);
-    chrome.bookmarks.onMoved.addListener(deltaListener);
-    chrome.bookmarks.onRemoved.addListener(deltaListener);
-    chrome.bookmarks.onImportEnded.addListener(deltaListener);
-    return () => {
-      chrome.bookmarks.onChanged.removeListener(deltaListener);
-      chrome.bookmarks.onMoved.removeListener(deltaListener);
-      chrome.bookmarks.onRemoved.removeListener(deltaListener);
-      chrome.bookmarks.onImportEnded.removeListener(deltaListener);
-    };
-  }, [deltaListener]);
+  useBookmarkChange(handleBookmarkChange);
 
   // todo make this into a custom hook
   useEffect(() => {
@@ -141,7 +132,6 @@ export function TableLoader(): JSX.Element {
           <MenuContextHook data={data} />
           <BookmarkTable
             rows={rows}
-            setRowsCallback={dataCallback}
             searchResultsMode={loaded === "SEARCH_RESULT"}
           />
         </MainContainer>

@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
-import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { contextMenuButtonClass } from "./contextMenuButtonClass";
+import { BookmarkNode } from "../../lib/typesFacade";
+import { ContextMenuButton } from "./ContextMenuButton";
+import { useChildLinks } from "./hooks/useChildLinks";
 
 type OpenAllOptions = {
   newWindow: boolean;
@@ -38,7 +38,8 @@ async function openAllSelected(
     chrome.tabs.create({ url: urlToSend });
   });
 }
-async function getChildenSimple(
+
+export async function getChildenSimple(
   things: BookmarkNode[],
 ): Promise<BookmarkNode[]> {
   const itemsPromise: Promise<BookmarkNode[]>[] = things
@@ -54,64 +55,45 @@ async function getChildenSimple(
 export function OpenAllSection(
   props: { things: BookmarkNode[] },
 ): JSX.Element {
-  const allFolders = props.things.every(isAFolder);
-
-  const [links, setLinks] = useState<BookmarkNode[]>(
-    props.things,
-  );
   // console.debug("open all links", props.things, "all are folders", allFolders);
+  const links: BookmarkNode[] = useChildLinks(props.things);
 
-  useEffect(() => {
-    if (allFolders) {
-      getChildenSimple(props.things).then((links) => {
-        // console.debug("children links", links);
-        setLinks(links);
-      });
-    }
-  }, [allFolders, props.things]);
-
-  const haslinks: boolean = links.length > 0;
+  const n = links.length;
+  const haslinks: boolean = n > 0;
 
   return (
     <div className="group3  flex flex-col">
-      <button
-        onClick={(e) => openAllSelected(links)}
+      <ContextMenuButton
+        textNode={<p>Open all &#40;{n}&#41;</p>}
+        callback={(e: any) => openAllSelected(links)}
         disabled={!haslinks}
-        className={contextMenuButtonClass}
-      >
-        <p>Open all &#40;{links.length}&#41;</p>
-      </button>
-      <button
-        onClick={(e) =>
+      />
+      <ContextMenuButton
+        textNode={<p>Open all &#40;{n}&#41; in new window</p>}
+        callback={(e: any) =>
           openAllSelected(links, { newWindow: true, incognito: false })}
         disabled={!haslinks}
-        className={contextMenuButtonClass}
-      >
-        <p>Open all &#40;{links.length}&#41; in new window</p>
-      </button>
-      <button
-        onClick={(e) =>
+      />
+      <ContextMenuButton
+        textNode={<p>Open all &#40;{n}&#41; in Incognito window</p>}
+        callback={(e: any) =>
           openAllSelected(links, { newWindow: true, incognito: true })}
         disabled={!haslinks}
-        className={contextMenuButtonClass}
-      >
-        <p>Open all &#40;{links.length}&#41; in Incognito window</p>
-      </button>
-      {links.length > 1 &&
-        (
-          <button
-            onClick={(e) => {
-              const index: number = Math.floor(
-                Math.random() * links.length,
-              );
-              chrome.tabs.create({ url: links[index].url });
-            }}
-            disabled={!haslinks}
-            className={contextMenuButtonClass}
-          >
-            <p>Open 1 random from &#40;{links.length}&#41; selected</p>
-          </button>
-        )}
+      />
+      <ContextMenuButton
+        disabled={!haslinks || n <= 1}
+        textNode={<p>Open 1 random from &#40;{n}&#41; selected</p>}
+        callback={() => openRandomTab(links)}
+      />
     </div>
   );
+}
+
+function openRandomTab(links: chrome.bookmarks.BookmarkTreeNode[]) {
+  return (e: any) => {
+    const index: number = Math.floor(
+      Math.random() * links.length,
+    );
+    chrome.tabs.create({ url: links[index].url });
+  };
 }

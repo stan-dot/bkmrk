@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { BookmarkNode } from "../../lib/typesFacade";
 
 const initialContextMenu: ContextMenuContextType = {
   position: [0, 0],

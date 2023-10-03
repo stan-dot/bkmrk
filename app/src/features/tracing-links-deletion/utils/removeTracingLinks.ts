@@ -1,3 +1,4 @@
+import { BookmarkNode } from "../../../lib/typesFacade";
 import {
   defaultTracingRegexes,
   getSettings,

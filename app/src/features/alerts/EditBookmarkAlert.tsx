@@ -1,17 +1,13 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
+import { checkIfCreateBookmarkValid } from "../../lib/CRUDBookmarkFacade";
+import useBookmark from "../../lib/hooks/useBookmark";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
 import { RenameGroup } from "./button-groups/RenameGroup";
 import { UrlEditGroup } from "./button-groups/UrlEditGroup";
-import { checkIfCreateBookmarkValid } from "../../lib/CRUDBookmarkFacade";
 
 type EditAlertProps = {
   id: string;
-};
-
-const initialData: chrome.bookmarks.BookmarkChangesArg = {
-  title: "",
-  url: "",
 };
 
 export default function EditBookmarkAlert(
@@ -19,23 +15,12 @@ export default function EditBookmarkAlert(
 ) {
   const dispatch = usePopupDispatch();
   console.debug("created the edit alert");
+  const currentBookmark = useBookmark(id);
+
   const [data, setData] = useState<chrome.bookmarks.BookmarkChangesArg>(
-    initialData,
+    { title: currentBookmark?.title ?? "", url: currentBookmark?.url ?? "" },
   );
-
-  // todo convert this to a custom hook
-  useEffect(() => {
-    chrome.bookmarks.get(id).then((l) => {
-      const b = l[0];
-      setData({ title: b.title, url: b.url });
-    });
-  }, []);
-
   const [error, setError] = useState<boolean>(false);
-
-  useEffect(() => {
-    setError(false);
-  }, [data, setError]);
 
   const onSubmit = (e: FormEvent) => {
     console.debug("submitting the form");

@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { useContextMenuDispatch } from "../context-menu/ContextMenuContext";
-import { useHistory, useHistoryDispatch } from "../history/HistoryContext";
-import { usePath, usePathDispatch } from "./PathContext";
+import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
+import { useHistory, useHistoryDispatch } from "../../history/HistoryContext";
+import { usePath, usePathDispatch } from "../PathContext";
 import { PathItem } from "./PathItem";
+import { BookmarkNode } from "../../../lib/typesFacade";
 
 interface PathDisplayProps {
   onPasteHandler: (e: React.ClipboardEvent<HTMLDivElement>) => void;
@@ -11,14 +12,10 @@ interface PathDisplayProps {
 export function PathDisplay({ onPasteHandler }: PathDisplayProps): JSX.Element {
   const path = usePath();
   const pathDispatch = usePathDispatch();
-  const [lastInteracted, setLastInteracted] = useState<
-    BookmarkNode
-  >(
-    path.items[path.items.length - 1],
+  const initLastIteraction = path.items[path.items.length - 1];
+  const [lastInteracted, setLastInteracted] = useState<BookmarkNode>(
+    initLastIteraction,
   );
-
-  const historyDispatch = useHistoryDispatch();
-  const history = useHistory();
 
   const contextMenuDispatch = useContextMenuDispatch();
 
@@ -86,32 +83,6 @@ export function PathDisplay({ onPasteHandler }: PathDisplayProps): JSX.Element {
         className="flex fixed h-12 justify-start bg-slate-700 ml-4 "
       >
         <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
-          {
-            /* <button
-          disabled={history.pastNodeIds.length === 0}
-          onClick={() => {
-            historyDispatch({
-              type: "back",
-            });
-            console.debug("history:", history);
-          }}
-          className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
-        >
-          {"<-"}
-        </button>
-        <button
-          disabled={history.futureNodeIds.length === 0}
-          onClick={() => {
-            historyDispatch({
-              type: "forward",
-            });
-            console.debug("history:", history);
-          }}
-          className={"text-l text-slate-50 p-2 m-0 hover:bg-slate-300  hover:border-slate-400"}
-        >
-          {"->"}
-        </button> */
-          }
           <button
             disabled={path.items.length < 2}
             onClick={upButtonHandler}

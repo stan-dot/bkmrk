@@ -1,10 +1,10 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
+import { BookmarkCreateArg, BookmarkNode } from "../../lib/typesFacade";
 import { usePath } from "../path/PathContext";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
 import { RenameGroup } from "./button-groups/RenameGroup";
-import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
-import { BookmarkCreateArg, BookmarkNode } from "../../lib/typesFacade";
 
 type AddNewFolderProps = {
   parent: BookmarkNode;
@@ -18,18 +18,12 @@ export default function AddNewFolderAlert(
   const locationId = path.items.at(-1)!.id;
 
   const dispatch = usePopupDispatch();
-  const [error, setError] = useState<boolean>(false);
   const defaultData = {
     title: "",
     parentId: locationId,
   };
 
   const [data, setData] = useState<BookmarkCreateArg>(defaultData);
-
-  useEffect(() => {
-    setError(false);
-  }, [data, setError]);
-
   const onSubmit = async (e: FormEvent) => {
     console.debug("submitting the form");
     e.preventDefault();

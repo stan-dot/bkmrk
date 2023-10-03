@@ -1,6 +1,6 @@
-import { contextMenuButtonClass } from "./contextMenuButtonClass";
-import { useContextMenu, useContextMenuDispatch } from "./ContextMenuContext";
 import { usePopupDispatch } from "../alerts/PopupContext";
+import { ContextMenuButton } from "./ContextMenuButton";
+import { useContextMenu, useContextMenuDispatch } from "./ContextMenuContext";
 
 export function AddNewContextMenu(props: {}): JSX.Element {
   const context = useContextMenu();
@@ -27,28 +27,24 @@ export function AddNewContextMenu(props: {}): JSX.Element {
       }}
     >
       <div className="group2 w-32 border-t-solid border-b-solid border-slate-200 m-2">
-        <button
-          className={contextMenuButtonClass}
-          onClick={(v) => {
+        <ContextMenuButton
+          textNode={<p>&#9734; Add new bookmark</p>}
+          callback={(v: any) => {
             popupDispatch({
               type: "add-new-bookmark",
               direction: "open",
             });
           }}
-        >
-          &#9734; Add new bookmark
-        </button>
-        <button
-          className={contextMenuButtonClass}
-          onClick={(v) => {
+        />
+        <ContextMenuButton
+          textNode={<p>&#128448; Add new folder</p>}
+          callback={(v: any) => {
             popupDispatch({
               type: "add-new-folder",
               direction: "open",
             });
           }}
-        >
-          &#128448; Add new folder
-        </button>
+        />
       </div>
     </div>
   );

@@ -1,15 +1,16 @@
 import { toast } from "react-toastify";
-import { PopupAction, usePopupDispatch } from "../alerts/PopupContext";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
+import { BookmarkCreateArg, BookmarkNode } from "../../lib/typesFacade";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import { contextMenuButtonClass } from "./contextMenuButtonClass";
-import { DeleteUndoButton } from "./DeleteUndoButton";
+import { PopupAction, usePopupDispatch } from "../alerts/PopupContext";
+import { ContextMenuButton } from "./ContextMenuButton";
 
 export function EditDeleteSection(
   props: { thing: BookmarkNode; protected: boolean },
 ) {
   const dispatch = usePopupDispatch();
 
-  const handleEditClick = (e) => {
+  const handleEditClick = (e: any) => {
     console.debug("clicked the edit button, opening the edit menu");
     const changeType = isAFolder(props.thing) ? "edit-folder" : "edit-bookmark";
 
@@ -22,27 +23,35 @@ export function EditDeleteSection(
     dispatch(changes);
   };
 
-  const handleDeleteClick = (e) => {
-    toast(<DeleteUndoButton thing={props.thing} />);
+  const handleDeleteClick = (_e: any) => {
+    const savedBookmarkForUndo: BookmarkCreateArg = {
+      parentId: props.thing.parentId,
+      index: props.thing.index,
+      title: props.thing.title,
+      url: props.thing.url,
+    };
+    toast(
+      <ContextMenuButton
+        textNode={<p>"undo?"</p>}
+        callback={() => CRUDBookmarkFacade.createBookmark(savedBookmarkForUndo)}
+        title={`removed item ${props.thing.title}`}
+      />,
+    );
     chrome.bookmarks.remove(props.thing.id);
   };
 
   return (
     <div className="group1 flex flex-col">
-      <button
+      <ContextMenuButton
+        textNode={<p>Edit</p>}
+        callback={handleEditClick}
         disabled={props.protected}
-        onClick={handleEditClick}
-        className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
-      >
-        <p>Edit</p>
-      </button>
-      <button
+      />
+      <ContextMenuButton
+        textNode={<p>Delete</p>}
+        callback={handleDeleteClick}
         disabled={props.protected}
-        onClick={handleDeleteClick}
-        className={`${contextMenuButtonClass} 'disabled:opacity-25'`}
-      >
-        <p>Delete</p>
-      </button>
+      />
     </div>
   );
 }

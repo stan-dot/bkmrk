@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useReducer } from "react";
+import { FormEvent, useReducer } from "react";
 import { usePopupDispatch } from "../alerts/PopupContext";
 import { CancelSaveGroup } from "../alerts/button-groups/CancelSaveGroup";
 import {
@@ -19,14 +19,6 @@ export default function SettingsAlert() {
     settingsReducer,
     defaultSettings,
   );
-
-  useEffect(() => {
-    // todo that should be in the final version
-    // todo add loading support, maybe some fancy icon
-    // getSettings().then((s) => {
-    //   setData(s);
-    // });
-  }, []);
 
   const onSubmit = (e: FormEvent) => {
     console.debug("submitting the settings change form");

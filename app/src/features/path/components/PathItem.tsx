@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { SiblingBox } from "./SiblingBox";
+import { BookmarkNode } from "../../../lib/typesFacade";
 
 type PathItemProps = {
   handleClick: (index: number, node: BookmarkNode) => void;

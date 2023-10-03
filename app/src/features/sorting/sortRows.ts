@@ -1,3 +1,5 @@
+import { BookmarkNode } from "../../lib/typesFacade";
+
 export type SortOptions = {
   key: PossibleKeys;
   reverse: boolean;

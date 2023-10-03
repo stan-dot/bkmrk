@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { BookmarkNode } from "../../lib/typesFacade";
 
 const initialPath: Path = {
   items: [],
@@ -8,7 +9,7 @@ type Path = {
   items: BookmarkNode[];
 };
 
-type PathAction = {
+export type PathAction = {
   type: "changed" | "added" | "up" | "branch" | "full";
   nodes?: BookmarkNode[];
   changeLevelsUp?: number;

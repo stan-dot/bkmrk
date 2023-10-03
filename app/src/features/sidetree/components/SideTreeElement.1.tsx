@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import { BookmarkNode } from "../../../lib/typesFacade";
-import {
+import ClipboardFacade, {
   codeBookmarkToUriList,
   readRawTextAsBookmarks,
 } from "../../../lib/ClipboardFacade";
@@ -9,16 +9,7 @@ import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
 import { useHistoryDispatch } from "../../history/HistoryContext";
 import { usePath, usePathDispatch } from "../../path/PathContext";
 import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
-
-export function ifIsALeafNode(
-  item: BookmarkNode,
-): boolean {
-  if (!item.children) return true;
-  const existingChildFolder: BookmarkNode | undefined = item.children.find(
-    isAFolder,
-  );
-  return !!existingChildFolder;
-}
+import { ifIsALeafNode } from "./SideTreeElement";
 
 export function SideTreeElement(
   props: {
@@ -72,31 +63,6 @@ export function SideTreeElement(
     });
   };
 
-  const dragHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    const stringified: string = codeBookmarkToUriList([props.thing], true);
-    e.dataTransfer.setData("text/uri-list", stringified);
-    e.dataTransfer.setData(
-      "text/plain",
-      codeBookmarkToUriList([props.thing], false),
-    );
-    e.dataTransfer.dropEffect = "move";
-    console.debug("dragging the side element", e);
-  };
-
-  const dropHandler = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    console.debug("ondrop triggered");
-    const data: DataTransfer = e.dataTransfer;
-    const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(
-      data,
-    );
-    const parentId = props.thing.id;
-    const withParent = items.map((i) => {
-      return { ...i, parentId: parentId };
-    });
-    withParent.forEach((i) => chrome.bookmarks.create(i));
-  };
-
   const newPathClickHandler = () =>
     CRUDBookmarkFacade.getPath(props.thing).then((newPath) => {
       pathDispatch({
@@ -104,6 +70,7 @@ export function SideTreeElement(
         nodes: newPath,
       });
     });
+
   return (
     <div
       className={`flex w-fit  min-w-[20rem] pt-2 justify-between ${
@@ -117,8 +84,8 @@ export function SideTreeElement(
         borderColor: "rgb(8, 145, 178)",
       }}
       onContextMenu={handleContextMenu}
-      onDrop={dropHandler}
-      onDragStart={dragHandler}
+      onDrop={ClipboardFacade.createDropHandlerInParent(props.thing.id)}
+      onDragStart={ClipboardFacade.createDragHandler(props.thing)}
       draggable
     >
       <div

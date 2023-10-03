@@ -8,10 +8,10 @@ import DataEditor, {
 } from "@glideapps/glide-data-grid";
 import React from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
-import {
+import ClipboardFacade, {
   readRawTextAsBookmarks,
   unpackBookmarks,
-} from "../../utils/dragProcessing";
+} from "../../lib/ClipboardFacade";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import {
   ContextMenuActionTypes,
@@ -20,12 +20,12 @@ import {
 import { useHistoryDispatch } from "../history/HistoryContext";
 import { usePath, usePathDispatch } from "../path/PathContext";
 import { columns, getData, viewDetailsColNumber } from "./columns";
+import { BookmarkNode } from "../../lib/typesFacade";
 
 export function BookmarkTable(
   props: {
     rows: BookmarkNode[];
     searchResultsMode: boolean;
-    setRowsCallback: (nodes: BookmarkNode[]) => void;
   },
 ): JSX.Element {
   const path = usePath();
@@ -74,7 +74,7 @@ export function BookmarkTable(
     e.preventDefault();
     const parentId = path.items.at(-1)!.id;
     console.debug("ondrop triggered, data: ", e.dataTransfer);
-    createBookmarksFromPaste(e, parentId);
+    CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
   };
 
   // CLICK HANDLING
@@ -103,7 +103,7 @@ export function BookmarkTable(
       console.debug("col number:", colNumber);
 
       if (props.searchResultsMode && isFolder) {
-        getPath(b).then((newPath) => {
+        CRUDBookmarkFacade.getPath(b).then((newPath) => {
           console.debug("path:", newPath);
           pathDispatch({
             type: "full",

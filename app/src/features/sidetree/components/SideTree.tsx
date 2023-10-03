@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { usePath } from "../../path/PathContext";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
-import { SideTreeElement } from "./SideTreeElement";
+import { SideTreeElement } from "./SideTreeElement.1";
 
 export function SideTree(props: {
   nodes: BookmarkNode[];

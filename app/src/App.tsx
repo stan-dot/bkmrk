@@ -7,7 +7,7 @@ import { ContextMenuProvider } from "./features/context-menu/ContextMenuContext"
 import { HistoryProvider } from "./features/history/HistoryContext";
 import { PathProvider } from "./features/path/PathContext";
 import { PopupProvider } from "./features/alerts/PopupContext";
-import { LocationProvider } from "./contexts/LocationContext";
+import { LocationProvider } from "./features/path/LocationContext";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change

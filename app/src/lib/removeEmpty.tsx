@@ -6,9 +6,9 @@ export default class CurrentFolderActionsFacade {
     dataCallback: (bookmarks: chrome.bookmarks.BookmarkTreeNode[]) => void,
   ) {
     console.debug("all rows before partition", rows);
-    const [folders, bkmrks] = await partition(rows, (b) => b.url === undefined);
+    const [folders, bkmrks] = await this.partition(rows, (b) => b.url === undefined);
     console.debug("just folders", folders);
-    const [empty, nonEmptyFolders] = await partition(
+    const [empty, nonEmptyFolders] = await this.partition(
       folders,
       async (b) => {
         const children = await chrome.bookmarks.getChildren(b.id);

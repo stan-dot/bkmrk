@@ -1,5 +1,5 @@
 import React from "react";
-import { readRawTextAsBookmarks } from "../utils/dragProcessing";
+import { readRawTextAsBookmarks } from "./ClipboardFacade";
 import { BookmarkNode } from "./typesFacade";
 
 export default class CRUDBookmarkFacade {

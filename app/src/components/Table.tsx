@@ -1,16 +1,19 @@
 import "@glideapps/glide-data-grid/dist/index.css";
-import React, { useCallback, useEffect, useState } from "react";
-import { usePath, usePathDispatch } from "../contexts/PathContext";
-import { useRootDispatch } from "../contexts/RootContext";
-import { createBookmarksFromPaste } from "../lib/CRUDBookmarkFacade";
-import { LoadingScreen } from "./LoadingScreen";
-import { Navbar } from "./navbar/Navbar";
+import { useCallback, useEffect, useState } from "react";
+import { useLocationDispatch } from "../contexts/LocationContext";
+import { CornerMenu } from "../features/corner-menu/CornerMenu";
+import { usePath, usePathDispatch } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/PathDisplay";
-import { SideSubTree } from "./sidePanel/SideSubTree";
-import { BookmarkTable } from "./table/BookmarkTable";
+import { SearchField } from "../features/search/components/SearchField";
 import { SideTree } from "../features/sidetree/components/SideTree";
-import { TestContextMenu } from "./TestContextMenu";
 import MenuContextHook from "../features/test-contextmenu/MenuContextHook";
+import { TestContextMenu } from "../features/test-contextmenu/TestContextMenu";
+import { BookmarkTable } from "../features/table/BookmarkTable";
+import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
+import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
+import { LoadingScreen } from "./styled-components/LoadingScreen";
+import { MainContainer } from "./styled-components/MainContainer";
+import { BookmarkNode } from "../lib/typesFacade";
 
 type MainDisplayStates =
   | "LOADING"
@@ -32,26 +35,25 @@ const data: DataTest[] = [
 
 export function TableLoader(): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
-  const [rows, setRows] = useState<chrome.bookmarks.BookmarkTreeNode[]>([]);
+  const [rows, setRows] = useState<BookmarkNode[]>([]);
   const [globalTree, setGlobalTree] = useState<
-    chrome.bookmarks.BookmarkTreeNode[]
+    BookmarkNode[]
   >([]);
 
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
-  const rootNodesDispatch = useRootDispatch();
+  const rootNodesDispatch = useLocationDispatch();
 
-  const lastPathItem: () => chrome.bookmarks.BookmarkTreeNode = useCallback(
+  const lastPathItem: () => BookmarkNode = useCallback(
     () => path.items.at(-1) ?? globalTree[0],
     [globalTree, path.items],
   );
 
   const reloadWithNode = useCallback(
-    (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+    (root: BookmarkNode[]) => {
       setLoaded("LOADED");
-      const bookmarksBar: chrome.bookmarks.BookmarkTreeNode =
-        root[0].children![0];
+      const bookmarksBar: BookmarkNode = root[0].children![0];
 
       // setRows(bookmarksBar.children ?? []);
       pathDispatch({
@@ -65,7 +67,7 @@ export function TableLoader(): JSX.Element {
   if (loaded === "LOADING") {
     // reloadWithNode(path.items);
     chrome.bookmarks.getTree().then(
-      (root: chrome.bookmarks.BookmarkTreeNode[]) => {
+      (root: BookmarkNode[]) => {
         console.debug("loaded!");
         // todo here might be an error
         setGlobalTree(root[0].children!);
@@ -110,7 +112,7 @@ export function TableLoader(): JSX.Element {
     }
   }, [path, lastPathItem]);
 
-  const dataCallback = (nodes: chrome.bookmarks.BookmarkTreeNode[]): void => {
+  const dataCallback = (nodes: BookmarkNode[]): void => {
     setRows(nodes);
   };
 
@@ -118,7 +120,7 @@ export function TableLoader(): JSX.Element {
     const parentId = lastPathItem().id;
     e.preventDefault();
     console.debug(e);
-    createBookmarksFromPaste(e, parentId);
+    CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
   };
 
   return (
@@ -128,38 +130,51 @@ export function TableLoader(): JSX.Element {
         lastPathItem={lastPathItem}
         rows={rows}
       />
-      <hr />
-      <div
-        className="fixed w-full h-12 top-16 bg-slate-700 flex-col justify-evenly"
-        onPaste={pathDisplayPasteHandler}
-      >
-        <PathDisplay />
-      </div>
-      <div
-        id="lowerPanel"
-        className={"flex flex-grow h-full fixed top-28 w-full bg-slate-800 "}
-        style={{ visibility: loaded === "LOADED" ? "visible" : "hidden" }}
-      >
-        {/* <LoadingScreen loading={true} /> */}
+      <PathDisplay
+        onPasteHandler={pathDisplayPasteHandler}
+      />
+      <LowerPanelContainer>
         <LoadingScreen loading={loaded === "LOADING"} />
-        <div className="overflow-auto z-20 left-4 w-[250px] h-full mb-40">
-          <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
-        </div>
-        <div
-          id="mainContainer"
-          className=" overflow-auto drop-shadow m-2 p-2 flex flex-col rounded-md"
-        >
+        <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
+        <MainContainer>
           <TestContextMenu />
           <MenuContextHook data={data} />
-          {
-            /* <BookmarkTable
+          <BookmarkTable
             rows={rows}
             setRowsCallback={dataCallback}
             searchResultsMode={loaded === "SEARCH_RESULT"}
-          /> */
-          }
-        </div>
-      </div>
+          />
+        </MainContainer>
+      </LowerPanelContainer>
     </>
+  );
+}
+
+type NavbarProps = {
+  dataCallback: (nodes: BookmarkNode[]) => void;
+  lastPathItem: () => BookmarkNode;
+  rows: BookmarkNode[];
+};
+
+export function Navbar(
+  {
+    dataCallback,
+    lastPathItem,
+    rows,
+  }: NavbarProps,
+) {
+  return (
+    <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
+      <div className="flex align-middle" id="brandingBit">
+        <p className="text-2xl mt-2 ml-2 text-white">
+          &#128366; BKMRK
+        </p>
+      </div>
+      <SearchField setDataCallback={dataCallback} />
+      <CornerMenu
+        dataCallback={dataCallback}
+        rows={rows}
+      />
+    </nav>
   );
 }

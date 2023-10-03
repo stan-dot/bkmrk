@@ -10,7 +10,7 @@ import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-
 import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-cell";
 
 export type CellGetter = (
-  v: chrome.bookmarks.BookmarkTreeNode,
+  v: BookmarkNode,
 ) => TextCell | UriCell | ButtonCell | LinksCell | TagsCell;
 
 type ComprehensiveColDef = {

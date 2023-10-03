@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import { SiblingBox } from "./SiblingBox";
 
 type PathItemProps = {
-  handleClick: (index: number, node: chrome.bookmarks.BookmarkTreeNode) => void;
+  handleClick: (index: number, node: BookmarkNode) => void;
   index: number;
-  node: chrome.bookmarks.BookmarkTreeNode;
+  node: BookmarkNode;
   contextMenuHandler: (
     e: React.MouseEvent<HTMLDivElement>,
-    node: chrome.bookmarks.BookmarkTreeNode,
+    node: BookmarkNode,
   ) => void;
-  siblings?: chrome.bookmarks.BookmarkTreeNode[];
+  siblings?: BookmarkNode[];
 };
 
 export function PathItem(

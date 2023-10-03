@@ -9,7 +9,7 @@ export function BookmarkImportAlert(
   const [fileName, setFileName] = useState<string>(EMPTY_NAME);
   // todo there's some inconsistency, but it should be fine, the function above is for Node
   const handleClick = (name: string) => {
-    const bookmarks: chrome.bookmarks.BookmarkTreeNode[] = syncReadFile(
+    const bookmarks: BookmarkNode[] = syncReadFile(
       fileName,
     );
     props.callback(bookmarks);

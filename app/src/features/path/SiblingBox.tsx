@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useHistoryDispatch } from "../../features/history/HistoryContext";
-import { usePathDispatch } from "../../contexts/PathContext";
+import { usePathDispatch } from "./PathContext";
 
 type SiblingBoxTypes = {
   siblingsVisible: boolean;
-  node: chrome.bookmarks.BookmarkTreeNode;
+  node: BookmarkNode;
   closeCallback: () => void;
   level: number;
 };
@@ -63,8 +63,8 @@ export function SiblingBox(
   );
 }
 
-function useSiblings(node: chrome.bookmarks.BookmarkTreeNode) {
-  const [siblings, setSiblings] = useState<chrome.bookmarks.BookmarkTreeNode[]>(
+function useSiblings(node: BookmarkNode) {
+  const [siblings, setSiblings] = useState<BookmarkNode[]>(
     [],
   );
 
@@ -74,7 +74,7 @@ function useSiblings(node: chrome.bookmarks.BookmarkTreeNode) {
       return;
     }
     chrome.bookmarks.getChildren(node.parentId).then(
-      (children: chrome.bookmarks.BookmarkTreeNode[]) => {
+      (children: BookmarkNode[]) => {
         setSiblings(children);
       },
     );

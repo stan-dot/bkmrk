@@ -1,15 +1,15 @@
 import { OpenAllSection } from "../contextMenuComponents/OpenAllSection";
 import { getPath } from "../../lib/CRUDBookmarkFacade";
-import { useContextMenu } from "../../contexts/ContextMenuContext";
+import { useContextMenu } from "../context-menu/ContextMenuContext";
 import { EditDeleteSection } from "../contextMenuComponents/EditDeleteSection";
 import { toast } from "react-toastify";
 
-function stringifyPath(nodes: chrome.bookmarks.BookmarkTreeNode[]): string {
-  return nodes.map((b: chrome.bookmarks.BookmarkTreeNode) => b.title).join("/");
+function stringifyPath(nodes: BookmarkNode[]): string {
+  return nodes.map((b: BookmarkNode) => b.title).join("/");
 }
 
 export function PathDisplayContextMenu(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode },
+  props: { thing: BookmarkNode },
 ): JSX.Element {
   const handleCopyOption = () => {
     getPath(props.thing).then((path) => {

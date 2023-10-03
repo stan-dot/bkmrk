@@ -1,5 +1,5 @@
 export function codeBookmarkToUriList(
-  bookmarks: chrome.bookmarks.BookmarkTreeNode[],
+  bookmarks: BookmarkNode[],
   includeComments: boolean,
 ): string {
   let info = "";

@@ -7,6 +7,10 @@ modules
 - api connector
 - settings manager I guess
 
+- [ ] change to my local node types, my own itnerfaces
+- [ ] change useEffect to custom effect hooks
+- [ ] some useBookmark hook?
+
 ## dev features
 - [ ] useSearchParams
 - [ ] maybe history shouldn't be updated directly, but only downstream from the Path context object?

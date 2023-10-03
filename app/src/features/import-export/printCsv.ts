@@ -1,6 +1,6 @@
 import Papa from "papaparse";
 
-export function printCsv(list: chrome.bookmarks.BookmarkTreeNode[]): void {
+export function printCsv(list: BookmarkNode[]): void {
   const uniformized = list.map((b) =>
     b.url === undefined ? { ...b, url: "" } : b
   );

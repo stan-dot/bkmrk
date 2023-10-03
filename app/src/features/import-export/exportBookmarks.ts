@@ -1,5 +1,5 @@
 export function exportBookmarks(
-  rows: chrome.bookmarks.BookmarkTreeNode[],
+  rows: BookmarkNode[],
 ): void {
   chrome.bookmarkManagerPrivate()
 

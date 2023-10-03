@@ -1,13 +1,13 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ContextMenu from "./components/multi-displayers/ContextMenu";
+import ContextMenu from "./features/context-menu/ContextMenu";
 import Popup from "./components/multi-displayers/Popup";
 import { TableLoader } from "./components/Table";
-import { ContextMenuProvider } from "./contexts/ContextMenuContext";
+import { ContextMenuProvider } from "./features/context-menu/ContextMenuContext";
 import { HistoryProvider } from "./features/history/HistoryContext";
-import { PathProvider } from "./contexts/PathContext";
-import { PopupProvider } from "./contexts/PopupContext";
-import { RootProvider } from "./contexts/RootContext";
+import { PathProvider } from "./features/path/PathContext";
+import { PopupProvider } from "./features/alerts/PopupContext";
+import { LocationProvider } from "./contexts/LocationContext";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change
@@ -20,7 +20,7 @@ import { RootProvider } from "./contexts/RootContext";
 export default function App() {
   return (
     <div className="App w-full h-full">
-      <RootProvider>
+      <LocationProvider>
         <PopupProvider>
           {/* <ContextMenuProvider> */}
           <PathProvider>
@@ -32,7 +32,7 @@ export default function App() {
           </PathProvider>
           {/* </ContextMenuProvider> */}
         </PopupProvider>
-      </RootProvider>
+      </LocationProvider>
       <ToastContainer position="bottom-left" />
     </div>
   );

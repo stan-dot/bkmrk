@@ -9,24 +9,24 @@ export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
   const history = useHistory();
 
   const [fullHistory, setFullHistory] = useState<
-    chrome.bookmarks.BookmarkTreeNode[]
+    BookmarkNode[]
   >([]);
 
   Promise.all(history.pastNodeIds.map((id) => {
     return chrome.bookmarks.get(id);
   })).then((all) => {
-    const flat: chrome.bookmarks.BookmarkTreeNode[] = all.flat();
+    const flat: BookmarkNode[] = all.flat();
     setFullHistory(flat);
   });
 
   const [fullFuture, setFullFuture] = useState<
-    chrome.bookmarks.BookmarkTreeNode[]
+    BookmarkNode[]
   >([]);
 
   Promise.all(history.futureNodeIds.map((id) => {
     return chrome.bookmarks.get(id);
   })).then((all) => {
-    const flat: chrome.bookmarks.BookmarkTreeNode[] = all.flat();
+    const flat: BookmarkNode[] = all.flat();
     setFullFuture(flat);
   });
 
@@ -43,7 +43,7 @@ export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
 }
 
 function DisplayOneEvent(
-  props: { thing: chrome.bookmarks.BookmarkTreeNode },
+  props: { thing: BookmarkNode },
 ): JSX.Element {
   // todo onclick redirect. either with path imperative or window object change
   return (
@@ -54,7 +54,7 @@ function DisplayOneEvent(
 }
 
 function DisplayEvents(
-  props: { nodes: chrome.bookmarks.BookmarkTreeNode[]; tag: string },
+  props: { nodes: BookmarkNode[]; tag: string },
 ): JSX.Element {
   const empty = props.nodes.length === 0;
   if (empty) {

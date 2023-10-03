@@ -12,10 +12,10 @@ import { useHistoryDispatch } from "../../features/history/HistoryContext";
 
 export function SideTreeElement(
   props: {
-    thing: chrome.bookmarks.BookmarkTreeNode;
+    thing: BookmarkNode;
     unrolled: boolean;
-    setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
-    unrollCallback: (n: chrome.bookmarks.BookmarkTreeNode) => void;
+    setRowsCallback: (nodes: BookmarkNode[]) => void;
+    unrollCallback: (n: BookmarkNode) => void;
   },
 ): JSX.Element {
   const [unrolled, setUnrolled] = useState<boolean>(props.unrolled);

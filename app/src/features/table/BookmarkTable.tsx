@@ -6,29 +6,26 @@ import DataEditor, {
   gridSelectionHasItem,
   Item,
 } from "@glideapps/glide-data-grid";
-import React, { useEffect } from "react";
-import {
-  ContextMenuActionTypes,
-  useContextMenuDispatch,
-} from "../../contexts/ContextMenuContext";
-import { useHistoryDispatch } from "../../features/history/HistoryContext";
-import { usePath, usePathDispatch } from "../../contexts/PathContext";
-import { isAFolder } from "../../utils/ifHasChildrenFolders";
-import CRUDBookmarkFacade, {
-  createBookmarksFromPaste,
-} from "../../lib/CRUDBookmarkFacade";
+import React from "react";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import {
   readRawTextAsBookmarks,
   unpackBookmarks,
 } from "../../utils/dragProcessing";
-import { getPath } from "../../lib/CRUDBookmarkFacade";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
+import {
+  ContextMenuActionTypes,
+  useContextMenuDispatch,
+} from "../context-menu/ContextMenuContext";
+import { useHistoryDispatch } from "../history/HistoryContext";
+import { usePath, usePathDispatch } from "../path/PathContext";
 import { columns, getData, viewDetailsColNumber } from "./columns";
 
 export function BookmarkTable(
   props: {
-    rows: chrome.bookmarks.BookmarkTreeNode[];
+    rows: BookmarkNode[];
     searchResultsMode: boolean;
-    setRowsCallback: (nodes: chrome.bookmarks.BookmarkTreeNode[]) => void;
+    setRowsCallback: (nodes: BookmarkNode[]) => void;
   },
 ): JSX.Element {
   const path = usePath();
@@ -89,7 +86,7 @@ export function BookmarkTable(
     if (includes) {
       const start = selection.current?.range.y ?? 0;
       // todo can change to use always full width
-      const selectedBookmarks: chrome.bookmarks.BookmarkTreeNode[] = props.rows
+      const selectedBookmarks: BookmarkNode[] = props.rows
         .slice(
           start,
           start + (selection.current?.range.height ?? 0),

@@ -21,7 +21,7 @@ const DEFAULT_GRID_CELL: LoadingCell = {
 // If fetching data is slow you can use the DataEditor ref to send updates for cells
 // once data is loaded.
 export function getData(
-  bookmarksArr: chrome.bookmarks.BookmarkTreeNode[],
+  bookmarksArr: BookmarkNode[],
 ): ([col, row]: Item) => GridCell {
   const curriedFunction: ([col, row]: Item) => GridCell = (
     coordinates: Item,
@@ -34,7 +34,7 @@ export function getData(
     if (columnSpecificFunction === undefined) {
       return DEFAULT_GRID_CELL as GridCell;
     }
-    const bookmark: chrome.bookmarks.BookmarkTreeNode = bookmarksArr[row];
+    const bookmark: BookmarkNode = bookmarksArr[row];
     return columnSpecificFunction(bookmark);
   };
   return curriedFunction;

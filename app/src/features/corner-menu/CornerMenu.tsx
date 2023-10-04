@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BookmarkNode } from "../../lib/typesFacade";
 import { CornerMenuButtons } from "./CornerMenuButtons";
 
 interface CornerMenuProps {

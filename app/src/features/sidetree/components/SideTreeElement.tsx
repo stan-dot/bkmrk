@@ -1,14 +1,14 @@
 import { useCallback, useState } from "react";
-import { BookmarkNode } from "../../../lib/typesFacade";
+import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 import {
   codeBookmarkToUriList,
   readRawTextAsBookmarks,
 } from "../../../lib/ClipboardFacade";
+import { BookmarkChangesArg, BookmarkNode } from "../../../lib/typesFacade";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
 import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
-import { useHistoryDispatch } from "../../history/HistoryContext";
+import { useHistoryIdsDispatch } from "../../history/HistoryContext";
 import { usePath, usePathDispatch } from "../../path/PathContext";
-import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 
 export function ifIsALeafNode(
   item: BookmarkNode,
@@ -33,7 +33,7 @@ export function SideTreeElement(
   const path = usePath();
   const pathDispatch = usePathDispatch();
   const contextMenuDispatch = useContextMenuDispatch();
-  const historyDispatch = useHistoryDispatch();
+  const historyDispatch = useHistoryIdsDispatch();
 
   const isInPath = useCallback(
     () => {
@@ -57,9 +57,10 @@ export function SideTreeElement(
   };
 
   const handleContextMenu = (
-    e:
-      | MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
-      | React.MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    e: React.MouseEvent<
+      (HTMLDivElement | HTMLButtonElement),
+      globalThis.MouseEvent
+    >,
   ) => {
     console.debug("launching context menu for side element", props.thing);
     e.preventDefault();
@@ -87,7 +88,7 @@ export function SideTreeElement(
     e.preventDefault();
     console.debug("ondrop triggered");
     const data: DataTransfer = e.dataTransfer;
-    const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(
+    const items: BookmarkChangesArg[] = readRawTextAsBookmarks(
       data,
     );
     const parentId = props.thing.id;
@@ -148,8 +149,8 @@ export function SideTreeElement(
       </div>
 
       <div id="sidesubtree" className="relative l-10 ml-5 p-1 ">
-        {props.thing.children
-          ? props.thing.children.filter(isAFolder).map((n) => {
+        {props.thing.children &&
+          props.thing.children.filter(isAFolder).map((n) => {
             const unrolled: boolean = path.items.includes(n);
             return (
               <SideTreeElement
@@ -159,8 +160,7 @@ export function SideTreeElement(
                 unrollCallback={props.unrollCallback}
               />
             );
-          })
-          : null}
+          })}
       </div>
       {
         /* {unrolled && (

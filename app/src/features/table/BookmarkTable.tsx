@@ -7,20 +7,20 @@ import DataEditor, {
   Item,
 } from "@glideapps/glide-data-grid";
 import React from "react";
-import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
-import ClipboardFacade, {
+import {
   readRawTextAsBookmarks,
   unpackBookmarks,
 } from "../../lib/ClipboardFacade";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
+import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import {
   ContextMenuActionTypes,
   useContextMenuDispatch,
 } from "../context-menu/ContextMenuContext";
-import { useHistoryDispatch } from "../history/HistoryContext";
+import { useHistoryIdsDispatch } from "../history/HistoryContext";
 import { usePath, usePathDispatch } from "../path/PathContext";
 import { columns, getData, viewDetailsColNumber } from "./columns";
-import { BookmarkNode } from "../../lib/typesFacade";
 
 export function BookmarkTable(
   props: {
@@ -36,14 +36,14 @@ export function BookmarkTable(
     rows: CompactSelection.empty(),
   });
 
-  const historyDispatch = useHistoryDispatch();
+  const historyDispatch = useHistoryIdsDispatch();
 
   // DRAG AND DROP HANDLING
   const dragHandler = (e: GridDragEventArgs) => {
     e.preventDefault();
     const x = e.location[0];
     // const y = e.location[1];
-    const data: chrome.bookmarks.BookmarkChangesArg = {
+    const data: BookmarkChangesArg = {
       title: props.rows[x].title,
       url: props.rows[x].url,
     };
@@ -55,7 +55,7 @@ export function BookmarkTable(
     if (dataTransfer === null) {
       return;
     }
-    const parsed: chrome.bookmarks.BookmarkChangesArg[] = unpackBookmarks(
+    const parsed: BookmarkChangesArg[] = unpackBookmarks(
       dataTransfer,
     );
 
@@ -64,7 +64,7 @@ export function BookmarkTable(
 
   const pasteHandler = (v: React.ClipboardEvent<HTMLDivElement>) => {
     const data: DataTransfer = v.clipboardData;
-    const items: chrome.bookmarks.BookmarkChangesArg[] = readRawTextAsBookmarks(
+    const items: BookmarkChangesArg[] = readRawTextAsBookmarks(
       data,
     );
     CRUDBookmarkFacade.createManyBookmarks(items);

@@ -4,7 +4,7 @@ import { BookmarkCreateArg, BookmarkNode } from "../../lib/typesFacade";
 import { usePath } from "../path/PathContext";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
-import { RenameGroup } from "./button-groups/RenameGroup";
+import { NameEditField } from "./button-groups/EditField";
 
 type AddNewFolderProps = {
   parent: BookmarkNode;
@@ -55,7 +55,7 @@ export default function AddNewFolderAlert(
         onSubmit={onSubmit}
       >
         <h2 id="title" className="text-xl text-slate-50 m-4">Add new folder</h2>
-        <RenameGroup dataCallback={setData} />
+        <NameEditField dataCallback={setData} />
         <CancelSaveGroup closeCallback={close} />
       </form>
     </div>

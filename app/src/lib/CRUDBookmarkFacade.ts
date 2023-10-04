@@ -1,6 +1,9 @@
 import React from "react";
 import { readRawTextAsBookmarks } from "./ClipboardFacade";
-import { BookmarkNode } from "./typesFacade";
+import { BookmarkChangesArg, BookmarkNode } from "./typesFacade";
+
+const validUrlRegexp: RegExp =
+  /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
 
 export default class CRUDBookmarkFacade {
   static async createBookmark(
@@ -10,7 +13,16 @@ export default class CRUDBookmarkFacade {
     return b.id;
   }
 
-  static createFolder() {
+  static async createFolder(
+    obj: chrome.bookmarks.BookmarkCreateArg,
+  ): Promise<string> {
+    const b = await chrome.bookmarks.create(obj);
+    return b.id;
+  }
+  
+  // no feedback here from the api
+  static  removeBookmark(id: string):void {
+    chrome.bookmarks.remove(id);
   }
 
   static async createManyBookmarks(
@@ -56,15 +68,19 @@ export default class CRUDBookmarkFacade {
     }
     return output;
   }
-}
+  static async update(id: string, args: BookmarkChangesArg): Promise<BookmarkNode|null>{
+    const valid =  this._checkIfCreateBookmarkValid(args);
+    if(!valid) return null
+    const p = await chrome.bookmarks.update(id, args);
+    return p as BookmarkNode;
+  }
 
-const validUrlRegexp: RegExp =
-  /[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-
-export function checkIfCreateBookmarkValid(
+private static  _checkIfCreateBookmarkValid(
   data: chrome.bookmarks.BookmarkCreateArg,
 ): boolean {
   const url = data.url;
   return url !== undefined && url.length > 0 &&
     url.match(validUrlRegexp) !== undefined;
 }
+}
+

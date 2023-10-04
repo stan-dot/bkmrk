@@ -15,6 +15,8 @@ import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { MainContainer } from "./styled-components/MainContainer";
 import { BookmarkNode } from "../lib/typesFacade";
 import useBookmarkChange from "../lib/hooks/ChangeListener";
+import useChildren from "../lib/hooks/useChildren";
+import { useRoot } from "../lib/hooks/useRoot";
 
 type MainDisplayStates =
   | "LOADING"
@@ -43,8 +45,7 @@ export function TableLoader(): JSX.Element {
 
   const path = usePath();
   const pathDispatch = usePathDispatch();
-
-  const rootNodesDispatch = useLocationDispatch();
+  const locationDispatch = useLocationDispatch();
 
   const lastPathItem: () => BookmarkNode = useCallback(
     () => path.items.at(-1) ?? globalTree[0],
@@ -55,8 +56,6 @@ export function TableLoader(): JSX.Element {
     (root: BookmarkNode[]) => {
       setLoaded("LOADED");
       const bookmarksBar: BookmarkNode = root[0].children![0];
-
-      // setRows(bookmarksBar.children ?? []);
       pathDispatch({
         type: "full",
         nodes: [...root, bookmarksBar],
@@ -67,21 +66,11 @@ export function TableLoader(): JSX.Element {
 
   if (loaded === "LOADING") {
     // reloadWithNode(path.items);
-    chrome.bookmarks.getTree().then(
-      (root: BookmarkNode[]) => {
-        console.debug("loaded!");
-        // todo here might be an error
-        setGlobalTree(root[0].children!);
-        reloadWithNode(root);
-        const names = root[0].children?.map((b) => b.title);
-        if (names) {
-          rootNodesDispatch({
-            type: "replace",
-            nodeNames: names,
-          });
-        }
-      },
-    );
+    const root = useRoot();
+    const children = useChildren(root.id);
+    locationDispatch({type:'replace', nodeNames:children.map(c=>c.id)})
+    setGlobalTree(children);
+    reloadWithNode(root);
   }
 
   const handleBookmarkChange = (id: string, changeInfo: any) => {
@@ -91,17 +80,9 @@ export function TableLoader(): JSX.Element {
   };
 
   useBookmarkChange(handleBookmarkChange);
-
-  // todo make this into a custom hook
-  useEffect(() => {
-    const currentLast = lastPathItem();
-    // console.debug("current last:", currentLast);
-    if (currentLast) {
-      chrome.bookmarks.getChildren(currentLast.id).then((children) => {
-        setRows(children);
-      });
-    }
-  }, [path, lastPathItem]);
+  const currentLast = lastPathItem();
+  const children = useChildren(currentLast.id);
+  // todo change this, not sure. maybe all should be through a context, not like this
 
   const dataCallback = (nodes: BookmarkNode[]): void => {
     setRows(nodes);

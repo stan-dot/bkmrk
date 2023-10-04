@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
-import { useHistory, useHistoryDispatch } from "../../history/HistoryContext";
+import {
+  useHistoryIds,
+  useHistoryIdsDispatch,
+} from "../../history/HistoryContext";
 import { usePath, usePathDispatch } from "../PathContext";
 import { PathItem } from "./PathItem";
 import { BookmarkNode } from "../../../lib/typesFacade";

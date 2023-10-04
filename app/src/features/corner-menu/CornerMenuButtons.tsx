@@ -6,31 +6,37 @@ import { recognizeDuplicates } from "../sorting/getCopies";
 import { sortRows } from "../sorting/sortRows";
 import { DropDownButton } from "./DropDownButton";
 import { removeTracingLinksFromChildren } from "../tracing-links-deletion/utils/removeTracingLinks";
-import { CornerMenuButtonsProps } from "./Buttons";
+import { usePopupDispatch } from "../alerts/PopupContext";
+import useParent from "../../lib/hooks/useParent";
+import { BookmarkNode } from "../../lib/typesFacade";
+
+export interface CornerMenuButtonsProps {
+  rows: BookmarkNode[];
+  dataCallback: (bookmarks: BookmarkNode[]) => void;
+  searchResultsMode?: boolean;
+}
 
 export function CornerMenuButtons(
   {
     rows,
-    setOpenVariant,
     dataCallback,
     searchResultsMode,
   }: CornerMenuButtonsProps,
 ) {
   const popupDispatch = usePopupDispatch();
-  const removeTracingLinks = async (v) => {
-    const parentId = rows[0].parentId;
-    if (parentId) {
-      const parent = (await chrome.bookmarks.get(parentId))[0];
-      removeTracingLinksFromChildren(parent).then(
-        (n) =>
-          toast(
-            <p>
-              Removed {n} tracing links &#128373;
-            </p>,
-          ),
+  // note - should always have a parent
+  const parent = useParent(rows[0].parentId!);
+  const removeTracingLinks = async (_v: any) => {
+    if (parent && parent.id) {
+      const n = await removeTracingLinksFromChildren(parent);
+      toast(
+        <p>
+          Removed {n} tracing links &#128373;
+        </p>,
       );
     }
   };
+
   return (
     <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 justify-start">
       <DropDownButton
@@ -86,7 +92,11 @@ export function CornerMenuButtons(
         }
       />
       <DropDownButton
-        callback={setOpenVariant("IMPORT")}
+        callback={popupDispatch({
+          type: "none",
+          direction: "open",
+          // todo add the dispatch for the import window
+        })}
         disabled
         textNode={
           <>
@@ -125,7 +135,7 @@ export function CornerMenuButtons(
           )}
       />
       <DropDownButton
-        callback={async (v) => {
+        callback={async (_v: any) => {
           const copiesNumber = await recognizeDuplicates();
           toast(`copies number:  ${copiesNumber}`);
           console.debug(copiesNumber);
@@ -162,7 +172,7 @@ export function CornerMenuButtons(
         callback={() => {}}
         textNode={
           <a
-            className={linkClass}
+            className="block px-4 py-2 w-full text-left hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
             target="_blank"
             rel="noreferrer"
             href="https://github.com/stan-dot/bkmrk"

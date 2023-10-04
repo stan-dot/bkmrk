@@ -4,8 +4,8 @@ import { BookmarkCreateArg } from "../../lib/typesFacade";
 import { usePath } from "../path/PathContext";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
-import { RenameGroup } from "./button-groups/RenameGroup";
-import { UrlEditGroup } from "./button-groups/UrlEditGroup";
+import { NameEditField } from "./button-groups/EditField";
+import { UrlEditField } from "./button-groups/UrlEditGroup";
 
 type AddNewBookmarkProps = {
   parentId: string;
@@ -63,8 +63,8 @@ export default function AddNewBookmarkAlert(
         <h2 id="title" className="text-xl text-slate-50 m-4">
           Add new bookmark
         </h2>
-        <RenameGroup dataCallback={setData} />
-        <UrlEditGroup dataCallback={setData} error={error} />
+        <NameEditField dataCallback={setData} />
+        <UrlEditField dataCallback={setData} error={error} />
         <CancelSaveGroup closeCallback={close} submitDisabled={error} />
       </form>
     </div>

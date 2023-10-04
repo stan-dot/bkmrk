@@ -1,34 +1,17 @@
-import React, { useState } from "react";
-import { useHistory } from "../../../contexts/HistoryContext";
+import React from "react";
+import { BookmarkNode } from "../../lib/typesFacade";
+import { useHistoryIds } from "./HistoryContext";
+import { useNodesBasedOnIds } from "./hooks/useNodesBasedOnIds";
 
 type HistoryPanelProps = {
   historyVisible: boolean;
 };
 
 export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
-  const history = useHistory();
+  const historyIds = useHistoryIds();
+  const historyNodes = useNodesBasedOnIds(historyIds.futureNodeIds);
 
-  const [fullHistory, setFullHistory] = useState<
-    BookmarkNode[]
-  >([]);
-
-  Promise.all(history.pastNodeIds.map((id) => {
-    return chrome.bookmarks.get(id);
-  })).then((all) => {
-    const flat: BookmarkNode[] = all.flat();
-    setFullHistory(flat);
-  });
-
-  const [fullFuture, setFullFuture] = useState<
-    BookmarkNode[]
-  >([]);
-
-  Promise.all(history.futureNodeIds.map((id) => {
-    return chrome.bookmarks.get(id);
-  })).then((all) => {
-    const flat: BookmarkNode[] = all.flat();
-    setFullFuture(flat);
-  });
+  const futureNodes = useNodesBasedOnIds(historyIds.futureNodeIds);
 
   return (
     <div
@@ -36,8 +19,22 @@ export function HistoryPanel({ historyVisible }: HistoryPanelProps) {
       className="bg-slate-700 w-44 z-10 rounded-md shadow"
       style={{ visibility: `${historyVisible ? "visible" : "hidden"}` }}
     >
-      <DisplayEvents nodes={fullHistory} tag="past" />
-      <DisplayEvents nodes={fullFuture} tag="future" />
+      <DisplayEvents nodes={historyNodes} tag="past" />
+      <DisplayEvents nodes={futureNodes} tag="future" />
+    </div>
+  );
+}
+
+function DisplayEvents(
+  props: { nodes: BookmarkNode[]; tag: string },
+): JSX.Element {
+  const empty = props.nodes.length === 0;
+  if (empty) {
+    return <p>no {props.tag} found</p>;
+  }
+  return (
+    <div id={`eventsContainer-${props.tag}`}>
+      {props.nodes.map((n) => <DisplayOneEvent thing={n} />)}
     </div>
   );
 }
@@ -50,20 +47,5 @@ function DisplayOneEvent(
     <p>
       {<a href={props.thing.url} className="link">{props.thing.title}</a>}
     </p>
-  );
-}
-
-function DisplayEvents(
-  props: { nodes: BookmarkNode[]; tag: string },
-): JSX.Element {
-  const empty = props.nodes.length === 0;
-  if (empty) {
-    return <p>no {tag} found</p>;
-  }
-
-  return (
-    <div id={`eventsContainer-${props.tag}`}>
-      {props.nodes.map((n) => <DisplayOneEvent thing={n} />)}
-    </div>
   );
 }

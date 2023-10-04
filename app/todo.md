@@ -8,11 +8,11 @@ modules
 - settings manager I guess
 
 - [x] change to my local node types in most places, my own interfaces
-- [ ] change all to local types - must 
-  - [ ] change
-  - [ ] remove
-  - [ ] get
-  - [ ] getTree
+- [x] change all to local types - must 
+  - [x] change
+  - [x] remove
+  - [x] get
+  - [x] getTree
 - [x] change useEffect in most places
 - [ ] change useEffect to custom effect hooks - that requires disassembling `Table.tsx`
 - [x] some useBookmark hook?

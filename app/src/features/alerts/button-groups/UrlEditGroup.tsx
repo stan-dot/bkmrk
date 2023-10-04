@@ -1,4 +1,6 @@
-export function UrlEditGroup(
+import { BookmarkChangesArg } from "../../../lib/typesFacade";
+
+export function UrlEditField(
   props: { dataCallback: Function; error?: boolean },
 ) {
   return (
@@ -15,7 +17,7 @@ export function UrlEditGroup(
         style={{ borderColor: props.error ? "red" : "white" }}
         onChange={(e) =>
           props.dataCallback(
-            (previous: chrome.bookmarks.BookmarkChangesArg) => {
+            (previous: BookmarkChangesArg) => {
               return { ...previous, url: e.target.value };
             },
           )}

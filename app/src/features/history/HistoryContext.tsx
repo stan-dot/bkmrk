@@ -20,11 +20,11 @@ const HistoryDispatchContext = createContext<React.Dispatch<HistoryAction>>(
   null as unknown as React.Dispatch<HistoryAction>,
 );
 
-export function useHistory() {
+export function useHistoryIds() {
   return useContext(HistoryContext);
 }
 
-export function useHistoryDispatch() {
+export function useHistoryIdsDispatch() {
   return useContext(HistoryDispatchContext);
 }
 

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { usePath } from "../../path/PathContext";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
+import { usePath } from "../../path/PathContext";
 import { SideTreeElement } from "./SideTreeElement.1";
 
 export function SideTree(props: {

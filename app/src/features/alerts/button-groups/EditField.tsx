@@ -1,4 +1,6 @@
-export function RenameGroup(props: { dataCallback: Function }) {
+import { BookmarkChangesArg } from "../../../lib/typesFacade";
+
+export function NameEditField(props: { dataCallback: Function }) {
   return (
     <div id="editGroup" className="group/edit flex flex-col ">
       <label
@@ -12,7 +14,7 @@ export function RenameGroup(props: { dataCallback: Function }) {
         className={`w-3/5 text bg-slate-900 text-slate-50 border-cyan-400 focus:border-solid rounded group/edit group-focus/edit:border-b-4 `}
         onChange={(e) =>
           props.dataCallback(
-            (previous: chrome.bookmarks.BookmarkChangesArg) => {
+            (previous: BookmarkChangesArg) => {
               return { ...previous, title: e.target.value };
             },
           )}

@@ -3,6 +3,8 @@ import {
   defaultTracingRegexes,
   getSettings,
 } from "../../settings/Settings";
+import { useRoot } from "../../../lib/hooks/useRoot";
+import useChildren from "../../../lib/hooks/useChildren";
 
 export async function getLinks(): Promise<RegExp[]> {
   const settings = await getSettings();
@@ -23,18 +25,21 @@ export async function removeTracingLinksFromChildren(
     removeTracingLinks(node, regexes);
   };
   
+  let count = 0;
   // todo refactor this
-  const children = await chrome.bookmarks.getChildren(parent.id);
+  const children = useChildren(parent.id);
   children.forEach((c) => {
     sanitizeCallback(c);
+    count++;
   });
 
-  return 0;
+  return count;
 }
 
 async function removeAllTracingLinks(): Promise<number> {
-  const root = (await chrome.bookmarks.getTree())[0];
-  return removeTracingLinksFromChildren(root);
+  const root = useRoot();
+  if(root) return removeTracingLinksFromChildren(root);
+  return 0;
 }
 
 function truncateUrl(url: string): string {

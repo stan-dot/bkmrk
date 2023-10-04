@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
-import { getChildenSimple } from "../OpenAllSection";
+import { useFirstLayerAllChildren } from "./useFirstLayerAllChildren";
 
 export function useChildLinks(
   things: BookmarkNode[],
@@ -11,7 +11,7 @@ export function useChildLinks(
 
   useEffect(() => {
     if (allFolders) {
-      getChildenSimple(things).then((links) => {
+      useFirstLayerAllChildren(things).then((links) => {
         setLinks(links);
       });
     }

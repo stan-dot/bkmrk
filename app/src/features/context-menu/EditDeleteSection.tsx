@@ -37,7 +37,7 @@ export function EditDeleteSection(
         title={`removed item ${props.thing.title}`}
       />,
     );
-    chrome.bookmarks.remove(props.thing.id);
+    CRUDBookmarkFacade.removeBookmark(props.thing.id);
   };
 
   return (

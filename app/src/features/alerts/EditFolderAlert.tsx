@@ -1,19 +1,20 @@
 import { FormEvent, useState } from "react";
+import { BookmarkChangesArg } from "../../lib/typesFacade";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
-import { RenameGroup } from "./button-groups/RenameGroup";
+import { NameEditField } from "./button-groups/EditField";
 
 type RenameFolderAlertProps = {
   id: string;
 };
 
-const initialData: chrome.bookmarks.BookmarkChangesArg = {
+const initialData: BookmarkChangesArg = {
   title: "",
   url: undefined,
 };
 
 export default function EditFolderAlert({ id }: RenameFolderAlertProps) {
-  const [data, setData] = useState<chrome.bookmarks.BookmarkChangesArg>(
+  const [data, setData] = useState<BookmarkChangesArg>(
     initialData,
   );
   const dispatch = usePopupDispatch();
@@ -51,7 +52,7 @@ export default function EditFolderAlert({ id }: RenameFolderAlertProps) {
         // onBlur={closeCallback}
       >
         <h2 id="title" className="text-xl text-slate-50 m-4">Rename folder</h2>
-        <RenameGroup dataCallback={setData} />
+        <NameEditField dataCallback={setData} />
         <CancelSaveGroup closeCallback={close} />
       </form>
     </div>

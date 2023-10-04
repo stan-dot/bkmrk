@@ -70,7 +70,6 @@ export const myCols: ComprehensiveColDef[] = [
         return ErrorCell;
       }
       const isRealLink = v.url !== undefined;
-      // NOTE would need to have the chrome.bookmarks.getChildren(id) to get their number. that would be longer
       const display: string =
         (isRealLink ? v.url : v.children?.length.toString()) ?? "folder";
       const d: TextCell = {

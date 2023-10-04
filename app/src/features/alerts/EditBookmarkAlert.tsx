@@ -1,10 +1,11 @@
 import { FormEvent, useState } from "react";
-import { checkIfCreateBookmarkValid } from "../../lib/CRUDBookmarkFacade";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import useBookmark from "../../lib/hooks/useBookmark";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
-import { RenameGroup } from "./button-groups/RenameGroup";
-import { UrlEditGroup } from "./button-groups/UrlEditGroup";
+import { NameEditField } from "./button-groups/EditField";
+import { UrlEditField } from "./button-groups/UrlEditGroup";
+import { BookmarkChangesArg } from "../../lib/typesFacade";
 
 type EditAlertProps = {
   id: string;
@@ -17,21 +18,16 @@ export default function EditBookmarkAlert(
   console.debug("created the edit alert");
   const currentBookmark = useBookmark(id);
 
-  const [data, setData] = useState<chrome.bookmarks.BookmarkChangesArg>(
+  const [data, setData] = useState<BookmarkChangesArg>(
     { title: currentBookmark?.title ?? "", url: currentBookmark?.url ?? "" },
   );
   const [error, setError] = useState<boolean>(false);
 
-  const onSubmit = (e: FormEvent) => {
+  const onSubmit = async (e: FormEvent) => {
     console.debug("submitting the form");
     e.preventDefault();
-    if (checkIfCreateBookmarkValid(data)) {
-      chrome.bookmarks.update(id, data).then((r) => {
-        close();
-      });
-    } else {
-      setError(true);
-    }
+    const response = await CRUDBookmarkFacade.update(id, data);
+    response === null ? setError(true) : close();
   };
 
   const close = () => {
@@ -58,8 +54,8 @@ export default function EditBookmarkAlert(
         onSubmit={onSubmit}
       >
         <h2 id="title" className="text-xl text-slate-50 m-4">Edit bookmark</h2>
-        <RenameGroup dataCallback={setData} />
-        <UrlEditGroup dataCallback={setData} error={error} />
+        <NameEditField dataCallback={setData} />
+        <UrlEditField dataCallback={setData} error={error} />
         <CancelSaveGroup closeCallback={close} submitDisabled={error} />
       </form>
     </div>

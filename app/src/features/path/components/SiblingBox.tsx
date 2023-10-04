@@ -1,5 +1,5 @@
 import { BookmarkNode } from "../../../lib/typesFacade";
-import { useHistoryDispatch } from "../../history/HistoryContext";
+import { useHistoryIdsDispatch } from "../../history/HistoryContext";
 import { usePathDispatch } from "../PathContext";
 import { useSiblings } from "../hooks/useSiblings";
 import { SiblingButton } from "./SiblingButton";
@@ -15,7 +15,7 @@ export function SiblingBox(
   { siblingsVisible, node, closeCallback, level }: SiblingBoxTypes,
 ) {
   const siblings = useSiblings(node);
-  const historyDispatch = useHistoryDispatch();
+  const historyDispatch = useHistoryIdsDispatch();
   const pathDispatch = usePathDispatch();
   return (
     <>

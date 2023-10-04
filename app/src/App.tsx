@@ -1,13 +1,12 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ContextMenu from "./features/context-menu/ContextMenu";
-import Popup from "./components/multi-displayers/Popup";
 import { TableLoader } from "./components/Table";
-import { ContextMenuProvider } from "./features/context-menu/ContextMenuContext";
-import { HistoryProvider } from "./features/history/HistoryContext";
-import { PathProvider } from "./features/path/PathContext";
 import { PopupProvider } from "./features/alerts/PopupContext";
+import ContextMenu from "./features/context-menu/ContextMenu";
+import { HistoryProvider } from "./features/history/HistoryContext";
 import { LocationProvider } from "./features/path/LocationContext";
+import { PathProvider } from "./features/path/PathContext";
+import AlertManager from "./features/alerts/AlertManager";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change
@@ -26,7 +25,7 @@ export default function App() {
           <PathProvider>
             <HistoryProvider>
               <TableLoader />
-              <Popup />
+              <AlertManager />
               <ContextMenu />
             </HistoryProvider>
           </PathProvider>

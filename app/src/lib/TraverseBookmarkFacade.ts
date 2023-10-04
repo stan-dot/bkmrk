@@ -1,4 +1,11 @@
-import React from "react";
+import { BookmarkNode } from "./typesFacade";
+
+type CopyData = {
+  sameTitles: BookmarkNode[][];
+  sameUrls: BookmarkNode[][];
+  sameBoth: BookmarkNode[][];
+};
+
 export default class TraverseBookmarkFacade {
   private static async _globalTraverse(args: TraverseArgs): Promise<void> {
     const root: chrome.bookmarks.BookmarkTreeNode[] = await chrome.bookmarks
@@ -8,7 +15,7 @@ export default class TraverseBookmarkFacade {
     });
   }
 
-  private static  async _traverseTree(
+  private static async _traverseTree(
     args: TraverseArgs,
     root?: chrome.bookmarks.BookmarkTreeNode,
   ): Promise<void> {
@@ -42,6 +49,25 @@ export default class TraverseBookmarkFacade {
       callbackOnNumber: countCallback,
       //@ts-ignore line because it's union type of 2 functions, should be fine
       callbackOnEachLeaf: deleteCallback,
+    };
+    await this._traverseTree(args);
+    return count;
+  }
+  // todo that is not finished, need to count each separately
+  static async recognizeDuplicates(): Promise<number> {
+    let count = 0;
+    const uniqueUrlsSet = new Set();
+    const addToCopiesCallback = (node: BookmarkNode) => {
+      const url = node.url;
+      if (uniqueUrlsSet.has(url)) {
+        count++;
+      }
+      uniqueUrlsSet.add(url);
+    };
+
+    const args: TraverseArgs = {
+      //@ts-ignore line because it's union type of 2 functions, should be fine
+      callbackOnEachNode: addToCopiesCallback,
     };
     await this._traverseTree(args);
     return count;

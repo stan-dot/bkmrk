@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
 import { usePath } from "../../path/PathContext";
-import { SideTreeElement } from "./SideTreeElement.1";
+import { BookmarkNode } from "../../../lib/typesFacade";
+import { SideTreeElement } from "./SideTreeElement";
 
 export function SideTree(props: {
   nodes: BookmarkNode[];
@@ -25,16 +26,19 @@ export function SideTree(props: {
         {props.nodes.filter(isAFolder).map((n) => {
           const unrolled: boolean = path.items.includes(n) ||
             expandedNodeIds.includes(n.id);
+          const unrollCallback = (
+            n: chrome.bookmarks.BookmarkTreeNode,
+          ) => {
+            setExpandedNodeIds((prev) => {
+              return [...prev, n.id];
+            });
+          };
           return (
             <SideTreeElement
               thing={n}
               unrolled={unrolled}
               setRowsCallback={props.setRowsCallback}
-              unrollCallback={(n) => {
-                setExpandedNodeIds((prev) => {
-                  return [...prev, n.id];
-                });
-              }}
+              unrollCallback={unrollCallback}
             />
           );
         })}

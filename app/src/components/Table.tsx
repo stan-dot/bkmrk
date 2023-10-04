@@ -24,18 +24,6 @@ type MainDisplayStates =
   | "RESULT_EMPTY"
   | "SEARCH_RESULT";
 
-type DataTest = {
-  id: number;
-  title: string;
-};
-
-const data: DataTest[] = [
-  { id: 1, title: "message1" },
-  { id: 2, title: "message2" },
-  { id: 3, title: "message3" },
-  { id: 4, title: "message4" },
-];
-
 export function TableLoader(): JSX.Element {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
   const [rows, setRows] = useState<BookmarkNode[]>([]);
@@ -110,7 +98,7 @@ export function TableLoader(): JSX.Element {
         <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
         <MainContainer>
           <TestContextMenu />
-          <MenuContextHook data={data} />
+          <MenuContextHook  />
           <BookmarkTable
             rows={rows}
             searchResultsMode={loaded === "SEARCH_RESULT"}

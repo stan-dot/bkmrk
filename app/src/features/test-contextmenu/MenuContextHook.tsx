@@ -1,12 +1,19 @@
 import React from "react";
 import useContextMenu from "./hooks/useContextMenu";
 
+const defaultData: DataTest[] = [
+  { id: 1, title: "message1" },
+  { id: 2, title: "message2" },
+  { id: 3, title: "message3" },
+  { id: 4, title: "message4" },
+];
+
 type DataTest = {
   id: number;
   title: string;
 };
 
-const MenuContextHook = ({ data }: { data: DataTest[] }) => {
+function MenuContextHook(data: DataTest[] = defaultData) {
   const { clicked, setClicked, points, setPoints } = useContextMenu();
   return (
     <div>
@@ -37,7 +44,7 @@ const MenuContextHook = ({ data }: { data: DataTest[] }) => {
       )}
     </div>
   );
-};
+}
 export default MenuContextHook;
 
 interface MenuContextItemProps {

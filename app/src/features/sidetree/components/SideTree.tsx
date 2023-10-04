@@ -36,7 +36,7 @@ export function SideTree(props: {
           return (
             <SideTreeElement
               thing={n}
-              unrolled={unrolled}
+              initialUnrolled={unrolled}
               setRowsCallback={props.setRowsCallback}
               unrollCallback={unrollCallback}
             />

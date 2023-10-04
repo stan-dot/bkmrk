@@ -22,12 +22,11 @@ export default class ClipboardFacade {
       `all ${list.length} bookmarks are in your clipboard now.`,
     );
   }
-  static pasteFromClipboard(e:any, parentId:string) {
-      const output = window.navigator.clipboard.read();
-      console.debug(output);
-      CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId)
-
-      }
+  static pasteFromClipboard(e: any, parentId: string) {
+    const output = window.navigator.clipboard.read();
+    console.debug(output);
+    CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
+  }
 
   static createDragHandler(
     thing: BookmarkNode,
@@ -65,11 +64,11 @@ export default class ClipboardFacade {
     return handler;
   }
 
-  static copyNodes(nodes:BookmarkNode[]) {
-      const text: string = stringifyPath(nodes);
-      window.navigator.clipboard.writeText(text);
-      const content = `copied to clipboard ${text}`;
-      toast(content);
+  static copyNodes(nodes: BookmarkNode[]) {
+    const text: string = stringifyPath(nodes);
+    window.navigator.clipboard.writeText(text);
+    const content = `copied to clipboard ${text}`;
+    toast(content);
   }
 }
 

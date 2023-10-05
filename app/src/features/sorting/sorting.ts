@@ -1,4 +1,4 @@
-import { TraverseArgs, globalTraverse } from "./utils/traversalFunctions/traverseTree";
+import { TraverseArgs } from "../../lib/TraverseBookmarkFacade";
 
 export const defaultSorterOptions: SorterOptions = {
   autosort: false,

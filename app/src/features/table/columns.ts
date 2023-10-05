@@ -8,6 +8,7 @@ import {
 import "@glideapps/glide-data-grid/dist/index.css";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import { CellGetter, myCols } from "./columnDefinitions";
+import { BookmarkNode } from "../../lib/typesFacade";
 
 const columnNumberToGridCell: Map<number, CellGetter> = new Map(
   myCols.map((v, i) => [i, v.columnGetter]),

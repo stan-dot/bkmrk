@@ -17,16 +17,16 @@ modules
 - [x] change useEffect in most places
 - [x] some useBookmark hook?
 - [x] consider side tree element issues
-- [ ] change useEffect to custom effect hooks - that requires disassembling `Table.tsx`
 
 ## base refatoring
-- [ ] ask ChatGPT to regfactor the table component
-- [ ] move the refactoring from search results talbe also to the main table
-- [ ] in search results change the path whenever the highlighted bookmark shows. do not just jump between things in the side tree
-- [ ] deal with dual drop handling in the bookmark table
-- [ ] make a separate search result component, reusing maybe half of the logic, but also a filter component there instead of path stuff
+- [x] move the refactoring from search results talbe also to the main table
+- [x] deal with dual drop handling in the bookmark table
+- [x] make a separate search result component, reusing maybe half of the logic, but also a filter component there instead of path stuff
 - [ ] try a simpler, local context menu for clicking from a tutorial and see if all works there. right now both the location and the passing of props do not work for edition
-- [ ] possibly use a custom event listener for all the history and path changes - for these to be automatic
+- [ ] ask ChatGPT to refactor the table component
+- [ ] change useEffect to custom effect hooks - that requires disassembling `Table.tsx`
+- [ ] possibly use a custom event listener for all the history and path changes - for these to be automatic - ask chat
+- [ ] in search results change the path whenever the highlighted bookmark shows. do not just jump between things in the side tree
 
 ## questionabl dev decision
 - [ ] useSearchParams - might be too weird, but the native bookmark manager uses that

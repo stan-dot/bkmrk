@@ -98,7 +98,7 @@ export function TableLoader(): JSX.Element {
         <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
         <MainContainer>
           <TestContextMenu />
-          <MenuContextHook  />
+          {/* <MenuContextHook  /> */}
           <BookmarkTable
             rows={rows}
             searchResultsMode={loaded === "SEARCH_RESULT"}

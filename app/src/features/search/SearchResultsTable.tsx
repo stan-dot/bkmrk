@@ -1,6 +1,7 @@
 import DataEditor, {
   CellClickedEventArgs,
   CompactSelection,
+  GridMouseEventArgs,
   GridSelection,
   Item,
 } from "@glideapps/glide-data-grid";
@@ -45,15 +46,7 @@ export function SearchResultsTable(
     );
     if (selectedBookmarks.length === 0) return;
     const b = selectedBookmarks[0]; // always double click only on one thing
-    const isFolder = isAFolder(b);
-
-    runDoubleClickSideEffects(
-      cell[0],
-      contextMenuDispatch,
-      isFolder,
-      b,
-      pathDispatch,
-    );
+    runDoubleClickSideEffects(cell[0], b);
   };
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {

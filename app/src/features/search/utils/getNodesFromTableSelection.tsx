@@ -10,17 +10,19 @@ import { isAFolder } from "../../../utils/ifHasChildrenFolders";
 import {
   ContextMenuActionTypes,
   ContextMenuContextAction,
+  useContextMenuDispatch,
 } from "../../context-menu/ContextMenuContext";
-import { PathAction } from "../../path/PathContext";
+import { PathAction, usePathDispatch } from "../../path/PathContext";
 import { viewDetailsColNumber } from "../../table/columns";
 
 export function runDoubleClickSideEffects(
   col: number,
-  contextMenuDispatch: React.Dispatch<ContextMenuContextAction>,
-  isFolder: boolean,
   b: BookmarkNode,
-  pathDispatch: React.Dispatch<PathAction>,
 ): void {
+  const isFolder = isAFolder(b);
+  const contextMenuDispatch = useContextMenuDispatch();
+  const pathDispatch = usePathDispatch();
+
   if (col === viewDetailsColNumber) {
     contextMenuDispatch({
       type: isFolder ? "folder" : "single-bookmark",

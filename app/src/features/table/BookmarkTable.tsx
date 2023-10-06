@@ -1,9 +1,7 @@
 import DataEditor, {
   CellClickedEventArgs,
   CompactSelection,
-  GridDragEventArgs,
   GridSelection,
-  gridSelectionHasItem,
   Item,
 } from "@glideapps/glide-data-grid";
 import React from "react";
@@ -13,14 +11,17 @@ import {
 } from "../../lib/ClipboardFacade";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";
-import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import {
   ContextMenuActionTypes,
   useContextMenuDispatch,
 } from "../context-menu/ContextMenuContext";
-import { useHistoryIdsDispatch } from "../history/HistoryContext";
-import { usePath, usePathDispatch } from "../path/PathContext";
-import { columns, getData, viewDetailsColNumber } from "./columns";
+import { usePath } from "../path/PathContext";
+import {
+  decideContextType,
+  getNodesFromTableSelection,
+  runDoubleClickSideEffects,
+} from "../search/utils/getNodesFromTableSelection";
+import { columns, getData } from "./columns";
 
 export function BookmarkTable(
   props: {
@@ -29,38 +30,11 @@ export function BookmarkTable(
   },
 ): JSX.Element {
   const path = usePath();
-  const pathDispatch = usePathDispatch();
   const contextMenuDispatch = useContextMenuDispatch();
   const [selection, setSelection] = React.useState<GridSelection>({
     columns: CompactSelection.empty(),
     rows: CompactSelection.empty(),
   });
-
-  const historyDispatch = useHistoryIdsDispatch();
-
-  // DRAG AND DROP HANDLING
-  const dragHandler = (e: GridDragEventArgs) => {
-    e.preventDefault();
-    const x = e.location[0];
-    // const y = e.location[1];
-    const data: BookmarkChangesArg = {
-      title: props.rows[x].title,
-      url: props.rows[x].url,
-    };
-    const stringified = JSON.stringify(data);
-    e.setData("text/uri-list", stringified);
-  };
-
-  const dropHandler = (cell: Item, dataTransfer: DataTransfer | null) => {
-    if (dataTransfer === null) {
-      return;
-    }
-    const parsed: BookmarkChangesArg[] = unpackBookmarks(
-      dataTransfer,
-    );
-
-    CRUDBookmarkFacade.createManyBookmarks(parsed);
-  };
 
   const pasteHandler = (v: React.ClipboardEvent<HTMLDivElement>) => {
     const data: DataTransfer = v.clipboardData;
@@ -79,86 +53,31 @@ export function BookmarkTable(
 
   // CLICK HANDLING
   const doubleClickHandler = (cell: Item) => {
-    const colNumber = cell[0];
-    // const b = props.rows[colNumber];
-    // const isFolder = isAFolder(b);
-    const includes = gridSelectionHasItem(selection, cell);
-    if (includes) {
-      const start = selection.current?.range.y ?? 0;
-      // todo can change to use always full width
-      const selectedBookmarks: BookmarkNode[] = props.rows
-        .slice(
-          start,
-          start + (selection.current?.range.height ?? 0),
-        );
-      const b = selectedBookmarks[0];
-      const isFolder = isAFolder(b);
-      console.debug(
-        "selected bookmarks",
-        selectedBookmarks,
-        " vs theoretical simple get",
-        b,
-      );
-
-      console.debug("col number:", colNumber);
-
-      if (props.searchResultsMode && isFolder) {
-        CRUDBookmarkFacade.getPath(b).then((newPath) => {
-          console.debug("path:", newPath);
-          pathDispatch({
-            type: "full",
-            nodes: newPath,
-          });
-          historyDispatch({
-            type: "add",
-            nodeId: newPath[newPath.length - 1].id,
-          });
-        });
-      } else if (colNumber === viewDetailsColNumber) {
-        contextMenuDispatch({
-          type: isFolder ? "folder" : "single-bookmark",
-          direction: "open",
-          // todo change that hardcoded value for position
-          position: [550, 550],
-          things: [b],
-        });
-      } else if (isFolder) {
-        // put this together with the other bit as 2 similar logical brnaches
-        pathDispatch({
-          type: "added",
-          nodes: [b],
-        });
-      } else {
-        chrome.tabs.create({ url: b.url });
-      }
-    }
+    const selectedBookmarks = getNodesFromTableSelection(
+      props.rows,
+      selection,
+      cell,
+    );
+    if (selectedBookmarks.length === 0) return;
+    const b = selectedBookmarks[0];
+    runDoubleClickSideEffects(cell[0], b);
   };
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
     event.preventDefault();
-    const includes = gridSelectionHasItem(selection, cell);
-    if (includes) {
-      const start = selection.current?.range.y ?? 0;
-      const selectedBookmarks = props.rows.slice(
-        start,
-        start + (selection.current?.range.height ?? 0),
-      );
-      // console.debug("selected bookmarks", selectedBookmarks);
-
-      // todo here logic does not seem to work actualyl
-      const type: ContextMenuActionTypes = selectedBookmarks.length === 1
-        ? "mixed"
-        : isAFolder(selectedBookmarks[0])
-        ? "folder"
-        : "single-bookmark";
-
-      contextMenuDispatch({
-        type: type,
-        direction: "open",
-        position: [event.localEventX, event.localEventY],
-        things: selectedBookmarks,
-      });
-    }
+    const selectedBookmarks = getNodesFromTableSelection(
+      props.rows,
+      selection,
+      cell,
+    );
+    if (selectedBookmarks.length === 0) return;
+    const type: ContextMenuActionTypes = decideContextType(selectedBookmarks);
+    contextMenuDispatch({
+      type: type,
+      direction: "open",
+      position: [event.localEventX, event.localEventY],
+      things: selectedBookmarks,
+    });
   };
 
   return (
@@ -196,9 +115,7 @@ export function BookmarkTable(
         // }}
         // drag and drop interactivity
         // isDraggable="cell" //this might be dragging the whole thing, experimental
-        onDragStart={dragHandler}
         getCellsForSelection={true}
-        onDrop={dropHandler}
       />
     </div>
   );

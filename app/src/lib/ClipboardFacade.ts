@@ -1,7 +1,8 @@
 import React from "react";
 import { toast } from "react-toastify";
-import { BookmarkCreateArg, BookmarkNode } from "./typesFacade";
+import { BookmarkChangesArg, BookmarkCreateArg, BookmarkNode } from "./typesFacade";
 import CRUDBookmarkFacade from "./CRUDBookmarkFacade";
+import { GridDragEventArgs } from "@glideapps/glide-data-grid";
 
 export default class ClipboardFacade {
   static cutToClipboard(things: BookmarkNode[]) {
@@ -70,6 +71,19 @@ export default class ClipboardFacade {
     const content = `copied to clipboard ${text}`;
     toast(content);
   }
+
+  static dragHandler(e: GridDragEventArgs, thing:BookmarkNode) {
+    e.preventDefault();
+    const x = e.location[0];
+    // const y = e.location[1];
+    const data: BookmarkChangesArg = {
+      title: thing.title,
+      url: thing.url,
+    };
+    const stringified = JSON.stringify(data);
+    e.setData("text/uri-list", stringified);
+  };
+
 }
 
 export function codeBookmarkToUriList(

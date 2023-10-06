@@ -29,3 +29,16 @@ these only show up if not empty
 ## deletion
 Uncaught (in promise) Error: Can't remove non-empty folder (use recursive to force).
 need to empty it first
+
+## prompt
+given this filter interface in typescript: `
+export interface FilterSearch {
+  urlRegex?: RegExp;
+  titleRegex?: RegExp;
+  mainPage?: string;
+  substringInName?: string;
+  onlyFolder: boolean;
+  onlyBookmark: boolean;
+  dateAddedBefore?: Date;
+  dateAddedAfter?: Date;
+}` and knowledge that there is React pattern with table rows passed as props, which then get filtered and that the state of the filter (of the FilterSearch type) is responsible for that, design a filterPanel div that would update the React state. use string input for string data, use html5 date picker for date and for only folder/only bookmark use 1 slider that in the middle accepts both, turned to the left only folders, to the right only bookmarks

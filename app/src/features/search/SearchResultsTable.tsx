@@ -4,7 +4,7 @@ import DataEditor, {
   GridSelection,
   Item,
 } from "@glideapps/glide-data-grid";
-import React from "react";
+import React, { useState } from "react";
 import { BookmarkNode } from "../../lib/typesFacade";
 import { isAFolder } from "../../utils/ifHasChildrenFolders";
 import {
@@ -18,16 +18,9 @@ import {
   getNodesFromTableSelection,
   runDoubleClickSideEffects,
 } from "./utils/getNodesFromTableSelection";
-
-// todo use a reducer for the whole thing probably
-interface FilterSearch {
-  regex?: RegExp;
-  page?: string;
-  substringInName?: string;
-  onlyFolder: boolean;
-  onlyBookmark: boolean;
-  // todo this with a slider interface between 3 things
-}
+import Filterer from "../filter/Filterer";
+import { defaultFilters, FilterSearch } from "../filter/Filterer";
+import { FilterPanel } from "./components/FilterPanel";
 
 export function SearchResultsTable(
   props: {
@@ -36,6 +29,8 @@ export function SearchResultsTable(
 ): JSX.Element {
   const pathDispatch = usePathDispatch();
   const contextMenuDispatch = useContextMenuDispatch();
+  const [filter, setFilter] = useState<FilterSearch>(defaultFilters);
+  const filteredRows = Filterer.bigFilter(filter, props.rows);
   const [selection, setSelection] = React.useState<GridSelection>({
     columns: CompactSelection.empty(),
     rows: CompactSelection.empty(),
@@ -44,7 +39,7 @@ export function SearchResultsTable(
   // CLICK HANDLING
   const doubleClickHandler = (cell: Item) => {
     const selectedBookmarks = getNodesFromTableSelection(
-      props.rows,
+      filteredRows,
       selection,
       cell,
     );
@@ -64,7 +59,7 @@ export function SearchResultsTable(
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
     event.preventDefault();
     const selectedBookmarks = getNodesFromTableSelection(
-      props.rows,
+      filteredRows,
       selection,
       cell,
     );
@@ -87,22 +82,14 @@ export function SearchResultsTable(
         e.dataTransfer.dropEffect = "move";
       }}
     >
-      <div id="filter" className="m-2 p-2 rounded flex flex-row">
-        <button id="filterBlock1" className="mx-2 py-6">
-          isFolder filter
-        </button>
-        <button id="filterBlock1" className="mx-2 py-6">
-          contains word
-        </button>
-        <button id="filterBlock1" className="mx-2 py-6">
-          match regex
-        </button>
-      </div>
+      <FilterPanel
+        onFilterChange={setFilter}
+      />
       <DataEditor
         // contents
-        rows={props.rows.length}
+        rows={filteredRows.length}
         columns={columns}
-        getCellContent={getData(props.rows)}
+        getCellContent={getData(filteredRows)}
         // click interactivity
         keybindings={{
           search: true,

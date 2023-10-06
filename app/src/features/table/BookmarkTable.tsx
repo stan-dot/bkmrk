@@ -4,12 +4,10 @@ import DataEditor, {
   GridSelection,
   Item,
 } from "@glideapps/glide-data-grid";
+import "@glideapps/glide-data-grid/dist/index.css";
 import React from "react";
-import {
-  readRawTextAsBookmarks,
-  unpackBookmarks,
-} from "../../lib/ClipboardFacade";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
+import { readRawTextAsBookmarks } from "../../lib/ClipboardFacade";
 import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";
 import {
   ContextMenuActionTypes,

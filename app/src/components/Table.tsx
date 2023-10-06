@@ -1,22 +1,21 @@
 import "@glideapps/glide-data-grid/dist/index.css";
-import { useCallback, useEffect, useState } from "react";
-import { useLocationDispatch } from "../features/path/LocationContext";
+import { useCallback, useState } from "react";
 import { CornerMenu } from "../features/corner-menu/CornerMenu";
+import { useLocationDispatch } from "../features/path/LocationContext";
 import { usePath, usePathDispatch } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/components/PathDisplay";
 import { SearchField } from "../features/search/components/SearchField";
 import { SideTree } from "../features/sidetree/components/SideTree";
-import MenuContextHook from "../features/test-contextmenu/MenuContextHook";
-import { TestContextMenu } from "../features/test-contextmenu/TestContextMenu";
 import { BookmarkTable } from "../features/table/BookmarkTable";
+import { TestContextMenu } from "../features/test-contextmenu/TestContextMenu";
 import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
-import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
-import { LoadingScreen } from "./styled-components/LoadingScreen";
-import { MainContainer } from "./styled-components/MainContainer";
-import { BookmarkNode } from "../lib/typesFacade";
 import useBookmarkChange from "../lib/hooks/ChangeListener";
 import useChildren from "../lib/hooks/useChildren";
 import { useRoot } from "../lib/hooks/useRoot";
+import { BookmarkNode } from "../lib/typesFacade";
+import { LoadingScreen } from "./styled-components/LoadingScreen";
+import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
+import { MainContainer } from "./styled-components/MainContainer";
 
 type MainDisplayStates =
   | "LOADING"

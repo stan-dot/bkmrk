@@ -1,5 +1,5 @@
 import { toast } from "react-toastify";
-import CurrentFolderActionsFacade from "../../lib/removeEmpty";
+import CurrentFolderActionsFacade from "../../lib/CurrentFolderActionsFacade";
 import { exportBookmarks } from "../import-export/exportBookmarks";
 import { printCsv } from "../import-export/printCsv";
 import { recognizeDuplicates } from "../sorting/getCopies";

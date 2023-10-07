@@ -25,6 +25,7 @@ export function CornerMenuButtons(
 ) {
   const popupDispatch = usePopupDispatch();
   // note - should always have a parent
+  console.log("rows at 0", rows[0]);
   const parent = useParent(rows[0].parentId!);
   const removeTracingLinks = async (_v: any) => {
     if (parent && parent.id) {

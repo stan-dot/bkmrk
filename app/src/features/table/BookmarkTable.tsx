@@ -24,7 +24,6 @@ import { columns, getData } from "./columns";
 export function BookmarkTable(
   props: {
     rows: BookmarkNode[];
-    searchResultsMode: boolean;
   },
 ): JSX.Element {
   const path = usePath();

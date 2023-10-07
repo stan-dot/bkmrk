@@ -11,6 +11,7 @@ interface CornerMenuProps {
 export function CornerMenu(
   { rows, dataCallback, searchResultsMode }: CornerMenuProps,
 ): JSX.Element {
+  console.log("rows", rows);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   return (
     <div className={"conrner-menu-button z-40 relative"}>
@@ -29,11 +30,14 @@ export function CornerMenu(
           !showMenu && "hidden"
         } bg-white divide-y divide-gray-100 rounded-md shadow w-44 dark:bg-gray-700`}
       >
-        <CornerMenuButtons
-          rows={rows}
-          dataCallback={dataCallback}
-          searchResultsMode={searchResultsMode}
-        />
+        {rows.length !== 0 &&
+          (
+            <CornerMenuButtons
+              rows={rows}
+              dataCallback={dataCallback}
+              searchResultsMode={searchResultsMode}
+            />
+          )}
       </div>
     </div>
   );

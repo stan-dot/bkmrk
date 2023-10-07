@@ -7,6 +7,8 @@ import { HistoryProvider } from "./features/history/HistoryContext";
 import { LocationProvider } from "./features/path/LocationContext";
 import { PathProvider } from "./features/path/PathContext";
 import AlertManager from "./features/alerts/AlertManager";
+import { NewTableLoader } from "./components/NewTable";
+import { ContextMenuProvider } from "./features/context-menu/ContextMenuContext";
 // import "../public/styles/globals.css";
 
 // If you want your app to work offline and load faster, you can change
@@ -21,15 +23,18 @@ export default function App() {
     <div className="App w-full h-full">
       <LocationProvider>
         <PopupProvider>
-          {/* <ContextMenuProvider> */}
-          <PathProvider>
-            <HistoryProvider>
-              <TableLoader />
-              <AlertManager />
-              <ContextMenu />
-            </HistoryProvider>
-          </PathProvider>
-          {/* </ContextMenuProvider> */}
+          <ContextMenuProvider>
+            <PathProvider>
+              <HistoryProvider>
+                {/* <TableLoader /> */}
+                <NewTableLoader />
+                {
+                  /* <AlertManager />
+              <ContextMenu /> */
+                }
+              </HistoryProvider>
+            </PathProvider>
+          </ContextMenuProvider>
         </PopupProvider>
       </LocationProvider>
       <ToastContainer position="bottom-left" />

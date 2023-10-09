@@ -1,16 +1,13 @@
-import "@glideapps/glide-data-grid/dist/index.css";
 import { useCallback, useState } from "react";
-import { CornerMenu } from "../features/corner-menu/CornerMenu";
 import { useLocationDispatch } from "../features/path/LocationContext";
 import { usePath, usePathDispatch } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/components/PathDisplay";
-import { SearchField } from "../features/search/components/SearchField";
 import { SideTree } from "../features/sidetree/components/SideTree";
 import { BookmarkTable } from "../features/table/BookmarkTable";
-import { TestContextMenu } from "../features/test-contextmenu/TestContextMenu";
 import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
 import useBookmarkChange from "../lib/hooks/ChangeListener";
 import { BookmarkNode } from "../lib/typesFacade";
+import { Navbar } from "./Navbar";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
 import { MainContainer } from "./styled-components/MainContainer";
@@ -94,42 +91,11 @@ export function TableLoader(): JSX.Element {
         <LoadingScreen loading={loaded === "LOADING"} />
         <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
         <MainContainer>
-          <TestContextMenu />
-          {/* <MenuContextHook  /> */}
           <BookmarkTable
             rows={rows}
           />
         </MainContainer>
       </LowerPanelContainer>
     </>
-  );
-}
-
-type NavbarProps = {
-  dataCallback: (nodes: BookmarkNode[]) => void;
-  lastPathItem: () => BookmarkNode;
-  rows: BookmarkNode[];
-};
-
-export function Navbar(
-  {
-    dataCallback,
-    lastPathItem,
-    rows,
-  }: NavbarProps,
-) {
-  return (
-    <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
-      <div className="flex align-middle" id="brandingBit">
-        <p className="text-2xl mt-2 ml-2 text-white">
-          &#128366; BKMRK
-        </p>
-      </div>
-      <SearchField setDataCallback={dataCallback} />
-      <CornerMenu
-        dataCallback={dataCallback}
-        rows={rows}
-      />
-    </nav>
   );
 }

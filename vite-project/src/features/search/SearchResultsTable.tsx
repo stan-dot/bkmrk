@@ -2,8 +2,9 @@ import DataEditor, {
   CellClickedEventArgs,
   CompactSelection,
   GridSelection,
-  Item
+  Item,
 } from "@glideapps/glide-data-grid";
+import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useState } from "react";
 import { BookmarkNode } from "../../lib/typesFacade";
 import {

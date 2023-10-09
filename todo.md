@@ -1,6 +1,6 @@
 ## questionable dev decisions
 - [ ] in search results change the path whenever the highlighted bookmark shows. do not just jump between things in the side tree
-- [ ] useSearchParams - might be too weird, but the native bookmark manager uses that
+- [ ] useSearchParams - might be too weird, but the native bookmark manager uses that. might need react-router memory router
 
 ## current errors
 - [x] edit folder does not use the name first

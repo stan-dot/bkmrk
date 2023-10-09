@@ -2,11 +2,10 @@ import DataEditor, {
   CellClickedEventArgs,
   CompactSelection,
   GridSelection,
-  Item,
-  Slice,
+  Item
 } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import React, { useEffect } from "react";
+import React from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import { readRawTextAsBookmarks } from "../../lib/ClipboardFacade";
 import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";

@@ -31,11 +31,12 @@ export function usePathDispatch() {
 
 export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
-  const [searchParams, setSearchParams] = useSearchParams();
+  // const [searchParams, setSearchParams] = useSearchParams();
   // todo change this to only store IDs
   chrome.storage.local.set({ "path": path }).then(() => {
     console.debug("stored path value is set to:", path);
   });
+
   return (
     <PathContext.Provider value={path}>
       <PathDispatchContext.Provider value={dispatch}>

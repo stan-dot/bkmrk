@@ -18,6 +18,10 @@ modules
 - [x] some useBookmark hook?
 - [x] consider side tree element issues
 
+## VITE movement
+- [ ] add content script for right getting images https://crxjs.dev/vite-plugin/getting-started/react/add-content-script
+- [ ] add ts manifest
+
 ## base refatoring
 - [x] move the refactoring from search results talbe also to the main table
 - [x] deal with dual drop handling in the bookmark table

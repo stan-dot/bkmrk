@@ -1,12 +1,8 @@
 import { useState } from "react";
+import { BookmarkNode } from "../../../lib/typesFacade";
 import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
-import {
-  useHistoryIds,
-  useHistoryIdsDispatch,
-} from "../../history/HistoryContext";
 import { usePath, usePathDispatch } from "../PathContext";
 import { PathItem } from "./PathItem";
-import { BookmarkNode } from "../../../lib/typesFacade";
 
 interface PathDisplayProps {
   onPasteHandler: (e: React.ClipboardEvent<HTMLDivElement>) => void;
@@ -54,10 +50,10 @@ export function PathDisplay({ onPasteHandler }: PathDisplayProps): JSX.Element {
         nodes: newPath,
       });
 
-      historyDispatch({
-        type: "add",
-        nodeId: node.id,
-      });
+      // historyDispatch({
+      //   type: "add",
+      //   nodeId: node.id,
+      // });
     }
   };
 
@@ -70,10 +66,10 @@ export function PathDisplay({ onPasteHandler }: PathDisplayProps): JSX.Element {
       type: "full",
       nodes: newPath,
     });
-    historyDispatch({
-      type: "add",
-      nodeId: newPath[-1].id,
-    });
+    // historyDispatch({
+    //   type: "add",
+    //   nodeId: newPath[-1].id,
+    // });
   };
 
   return (

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { BookmarkNode } from "../../../lib/typesFacade";
 
 export function SearchField(props: {
   setDataCallback: (nodes: BookmarkNode[]) => void;

@@ -13,7 +13,7 @@ import {
   ContextMenuActionTypes,
   useContextMenuDispatch,
 } from "../context-menu/ContextMenuContext";
-import { usePath } from "../path/PathContext";
+import { usePath, usePathDispatch } from "../path/PathContext";
 import {
   decideContextType,
   getNodesFromTableSelection,
@@ -32,6 +32,8 @@ export function BookmarkTable(
     columns: CompactSelection.empty(),
     rows: CompactSelection.empty(),
   });
+
+  const pathDispatch = usePathDispatch();
 
   const pasteHandler = (v: React.ClipboardEvent<HTMLDivElement>) => {
     const data: DataTransfer = v.clipboardData;
@@ -57,7 +59,7 @@ export function BookmarkTable(
     );
     if (selectedBookmarks.length === 0) return;
     const b = selectedBookmarks[0];
-    runDoubleClickSideEffects(cell[0], b);
+    runDoubleClickSideEffects(cell[0], b, contextMenuDispatch, pathDispatch);
   };
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {

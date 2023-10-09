@@ -8,6 +8,7 @@ import {
 import { ButtonCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/button-cell";
 import { LinksCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/links-cell";
 import { TagsCell } from "@glideapps/glide-data-grid-cells/dist/ts/cells/tags-cell";
+import { BookmarkNode } from "../../lib/typesFacade";
 
 export type CellGetter = (
   v: BookmarkNode,

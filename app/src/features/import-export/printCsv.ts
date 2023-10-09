@@ -1,4 +1,5 @@
 import Papa from "papaparse";
+import { BookmarkNode } from "../../lib/typesFacade";
 
 export function printCsv(list: BookmarkNode[]): void {
   const uniformized = list.map((b) =>

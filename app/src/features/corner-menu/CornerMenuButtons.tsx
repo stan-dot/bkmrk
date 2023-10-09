@@ -2,13 +2,13 @@ import { toast } from "react-toastify";
 import CurrentFolderActionsFacade from "../../lib/CurrentFolderActionsFacade";
 import { exportBookmarks } from "../import-export/exportBookmarks";
 import { printCsv } from "../import-export/printCsv";
-import { recognizeDuplicates } from "../sorting/getCopies";
 import { sortRows } from "../sorting/sortRows";
 import { DropDownButton } from "./DropDownButton";
 import { removeTracingLinksFromChildren } from "../tracing-links-deletion/utils/removeTracingLinks";
 import { usePopupDispatch } from "../alerts/PopupContext";
 import useParent from "../../lib/hooks/useParent";
 import { BookmarkNode } from "../../lib/typesFacade";
+import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 
 export interface CornerMenuButtonsProps {
   rows: BookmarkNode[];
@@ -137,9 +137,11 @@ export function CornerMenuButtons(
       />
       <DropDownButton
         callback={async (_v: any) => {
-          const copiesNumber = await recognizeDuplicates();
-          toast(`copies number:  ${copiesNumber}`);
-          console.debug(copiesNumber);
+          // todo complete the sorting
+          console.log("complete the sorting, TODO");
+          // const copiesNumber = await ();
+          // toast(`copies number:  ${copiesNumber}`);
+          // console.debug(copiesNumber);
         }}
         textNode={
           <>

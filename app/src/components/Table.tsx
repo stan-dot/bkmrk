@@ -10,8 +10,6 @@ import { BookmarkTable } from "../features/table/BookmarkTable";
 import { TestContextMenu } from "../features/test-contextmenu/TestContextMenu";
 import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
 import useBookmarkChange from "../lib/hooks/ChangeListener";
-import useChildren from "../lib/hooks/useChildren";
-import { useRoot } from "../lib/hooks/useRoot";
 import { BookmarkNode } from "../lib/typesFacade";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
@@ -51,14 +49,14 @@ export function TableLoader(): JSX.Element {
     [pathDispatch],
   );
 
-  if (loaded === "LOADING") {
-    // reloadWithNode(path.items);
-    const root = useRoot();
-    const children = useChildren(root.id!);
-    locationDispatch({type:'replace', nodeNames:children.map(c=>c.id)})
-    setGlobalTree(children);
-    reloadWithNode(root);
-  }
+  // if (loaded === "LOADING") {
+  //   // reloadWithNode(path.items);
+  //   const root = useRoot();
+  //   const children = useChildren(root.id!);
+  //   locationDispatch({type:'replace', nodeNames:children.map(c=>c.id)})
+  //   setGlobalTree(children);
+  //   reloadWithNode(root);
+  // }
 
   const handleBookmarkChange = (id: string, changeInfo: any) => {
     console.log("Handling in component:", id, changeInfo);
@@ -67,8 +65,8 @@ export function TableLoader(): JSX.Element {
   };
 
   useBookmarkChange(handleBookmarkChange);
-  const currentLast = lastPathItem();
-  const children = useChildren(currentLast.id);
+  // const currentLast = lastPathItem();
+  // const children = useChildren(currentLast.id);
   // todo change this, not sure. maybe all should be through a context, not like this
 
   const dataCallback = (nodes: BookmarkNode[]): void => {
@@ -100,7 +98,6 @@ export function TableLoader(): JSX.Element {
           {/* <MenuContextHook  /> */}
           <BookmarkTable
             rows={rows}
-            searchResultsMode={loaded === "SEARCH_RESULT"}
           />
         </MainContainer>
       </LowerPanelContainer>

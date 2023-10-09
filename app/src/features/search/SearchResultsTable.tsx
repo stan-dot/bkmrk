@@ -43,7 +43,7 @@ export function SearchResultsTable(
     );
     if (selectedBookmarks.length === 0) return;
     const b = selectedBookmarks[0]; // always double click only on one thing
-    runDoubleClickSideEffects(cell[0], b);
+    runDoubleClickSideEffects(cell[0], b, contextMenuDispatch, pathDispatch);
   };
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {

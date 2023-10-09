@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { syncReadFile } from "../importBookmarks";
+import { BookmarkNode } from "../../../lib/typesFacade";
 
 export function BookmarkImportAlert(
   props: { callback: Function },

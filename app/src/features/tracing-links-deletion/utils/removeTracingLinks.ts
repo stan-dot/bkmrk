@@ -1,10 +1,9 @@
+import { useRoot } from "../../../lib/hooks/useRoot";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import {
   defaultTracingRegexes,
   getSettings,
 } from "../../settings/Settings";
-import { useRoot } from "../../../lib/hooks/useRoot";
-import useChildren from "../../../lib/hooks/useChildren";
 
 export async function getLinks(): Promise<RegExp[]> {
   const settings = await getSettings();
@@ -26,8 +25,7 @@ export async function removeTracingLinksFromChildren(
   };
   
   let count = 0;
-  // todo refactor this
-  const children = useChildren(parent.id);
+    const children: BookmarkNode[] = await chrome.bookmarks.getChildren(parent.id);
   children.forEach((c) => {
     sanitizeCallback(c);
     count++;
@@ -36,8 +34,7 @@ export async function removeTracingLinksFromChildren(
   return count;
 }
 
-async function removeAllTracingLinks(): Promise<number> {
-  const root = useRoot();
+async function removeAllTracingLinks(root:BookmarkNode): Promise<number> {
   if(root) return removeTracingLinksFromChildren(root);
   return 0;
 }

@@ -1,20 +1,17 @@
-import { useCallback, useEffect, useState } from "react";
-import { usePath, usePathDispatch } from "../features/path/PathContext";
-import useBookmarkChange from "../lib/hooks/ChangeListener";
-import useChildren from "../lib/hooks/useChildren";
-import { useRoot } from "../lib/hooks/useRoot";
-import { BookmarkNode } from "../lib/typesFacade";
+import { useCallback, useState } from "react";
 import { CornerMenu } from "../features/corner-menu/CornerMenu";
+import { usePath, usePathDispatch } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/components/PathDisplay";
 import { SearchField } from "../features/search/components/SearchField";
 import { SideTree } from "../features/sidetree/components/SideTree";
 import { BookmarkTable } from "../features/table/BookmarkTable";
-import { TestContextMenu } from "../features/test-contextmenu/TestContextMenu";
+import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
+import useBookmarkChange from "../lib/hooks/ChangeListener";
+import useRootAndChildren from "../lib/hooks/useRootAndChildren";
+import { BookmarkNode } from "../lib/typesFacade";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
 import { MainContainer } from "./styled-components/MainContainer";
-import { useLocationDispatch } from "../features/path/LocationContext";
-import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
 
 type MainDisplayStates =
   | "LOADING"
@@ -30,63 +27,50 @@ function useBookmarks() {
   const path = usePath();
   const pathDispatch = usePathDispatch();
 
-  const reloadWithNode = useCallback(
-    (root: BookmarkNode[]) => {
-      setLoaded("LOADED");
-      const bookmarksBar: BookmarkNode = root[0].children![0];
-      pathDispatch({
-        type: "full",
-        nodes: [...root, bookmarksBar],
-      });
-    },
-    [pathDispatch],
-  );
+  const { rootArray, children } = useRootAndChildren();
+  setGlobalTree(children);
 
-  const root = useRoot();
-  useEffect(() => {
-    if (!root) {
-      throw (_e: any) => {
-        console.error("error loading bookmark tree root");
-      };
-    }
-    const children = useChildren(root!.id);
-    setGlobalTree(children);
-    reloadWithNode([root]);
-  }, [loaded, reloadWithNode]);
+  if (rootArray[0] && rootArray[0].children) {
+    const bookmarksBar: BookmarkNode = rootArray[0].children[0];
+    pathDispatch({
+      type: "full",
+      nodes: [rootArray[0], bookmarksBar],
+    });
+  }
 
   const handleBookmarkChange = useCallback(
     (id: string, changeInfo: any) => {
       console.log("handling in the component: ", id, changeInfo);
-      reloadWithNode(path.items);
     },
-    [reloadWithNode],
+    [],
   );
   useBookmarkChange(handleBookmarkChange);
 
-  return { root, loaded, rows, globalTree, reloadWithNode, setRows, setLoaded };
+  return {
+    rootArray,
+    loaded,
+    rows,
+    globalTree,
+    setRows,
+    setLoaded,
+  };
 }
 
 export function NewTableLoader(): JSX.Element {
   const {
-    root,
+    rootArray,
     loaded,
     rows,
     globalTree,
-    reloadWithNode,
     setRows,
   } = useBookmarks();
 
   const path = usePath();
-  const pathDispatch = usePathDispatch();
-  const locationDispatch = useLocationDispatch();
 
   const lastPathItem: () => BookmarkNode = useCallback(
     () => path.items.at(-1) ?? globalTree[0],
     [globalTree, path.items],
   );
-
-  const currentLast = lastPathItem();
-  // const children = useChildren(currentLast.id);
 
   const pathDisplayPasteHandler = (e: React.ClipboardEvent<Element>) => {
     const parentId = lastPathItem().id;

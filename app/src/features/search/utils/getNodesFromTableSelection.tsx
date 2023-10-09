@@ -3,25 +3,21 @@ import {
   gridSelectionHasItem,
   Item,
 } from "@glideapps/glide-data-grid";
-import React from "react";
 import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
 import {
-  ContextMenuActionTypes,
-  ContextMenuContextAction,
-  useContextMenuDispatch,
+  ContextMenuActionTypes
 } from "../../context-menu/ContextMenuContext";
-import { PathAction, usePathDispatch } from "../../path/PathContext";
 import { viewDetailsColNumber } from "../../table/columns";
 
 export function runDoubleClickSideEffects(
   col: number,
   b: BookmarkNode,
+  contextMenuDispatch: Function,
+  pathDispatch: Function,
 ): void {
   const isFolder = isAFolder(b);
-  const contextMenuDispatch = useContextMenuDispatch();
-  const pathDispatch = usePathDispatch();
 
   if (col === viewDetailsColNumber) {
     contextMenuDispatch({

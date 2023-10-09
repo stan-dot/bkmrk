@@ -40,17 +40,17 @@ export type SorterOptions = {
   addSourceTag?:string;
 };
 
-function getLocalSortingOptions(): SorterOptions {
-}
+// function getLocalSortingOptions(): SorterOptions {
+// }
 
 export default function sorting() {
-  const options:SorterOptions = getLocalSortingOptions();
-  const args:TraverseArgs={
-    callbackOnEachLeaf:{},
-    callbackOnEachNode:{}
-  };
-  // first ignore bookmarks mark
-  globalTraverse(args);
+  // const options:SorterOptions = getLocalSortingOptions();
+  // const args:TraverseArgs={
+  //   callbackOnEachLeaf:{},
+  //   callbackOnEachNode:{}
+  // };
+  // // first ignore bookmarks mark
+  // globalTraverse(args);
   // delete empty
   // merge neighboring
   // use comparison operators and ordering options

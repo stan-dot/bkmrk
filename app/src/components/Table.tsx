@@ -54,7 +54,7 @@ export function TableLoader(): JSX.Element {
   if (loaded === "LOADING") {
     // reloadWithNode(path.items);
     const root = useRoot();
-    const children = useChildren(root.id);
+    const children = useChildren(root.id!);
     locationDispatch({type:'replace', nodeNames:children.map(c=>c.id)})
     setGlobalTree(children);
     reloadWithNode(root);

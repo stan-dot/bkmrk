@@ -49,7 +49,7 @@ function useBookmarks() {
         console.error("error loading bookmark tree root");
       };
     }
-    const children = useChildren(root.id);
+    const children = useChildren(root!.id);
     setGlobalTree(children);
     reloadWithNode([root]);
   }, [loaded, reloadWithNode]);

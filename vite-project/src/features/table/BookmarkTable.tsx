@@ -3,9 +3,10 @@ import DataEditor, {
   CompactSelection,
   GridSelection,
   Item,
+  Slice,
 } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import React from "react";
+import React, { useEffect } from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import { readRawTextAsBookmarks } from "../../lib/ClipboardFacade";
 import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";

@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { useSearchParams } from 'react-router-dom';
 import { BookmarkNode } from "../../lib/typesFacade";
 
 const initialPath: Path = {
@@ -30,6 +31,7 @@ export function usePathDispatch() {
 
 export function PathProvider({ children }: any) {
   const [path, dispatch] = useReducer(pathReducer, initialPath);
+  const [searchParams, setSearchParams] = useSearchParams();
   // todo change this to only store IDs
   chrome.storage.local.set({ "path": path }).then(() => {
     console.debug("stored path value is set to:", path);

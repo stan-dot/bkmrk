@@ -20,16 +20,18 @@ modules
 
 ## VITE movement
 - [ ] add content script for right getting images https://crxjs.dev/vite-plugin/getting-started/react/add-content-script
-- [ ] add ts manifest
+- [x] add ts manifest
 
 ## base refatoring
 - [x] move the refactoring from search results talbe also to the main table
 - [x] deal with dual drop handling in the bookmark table
 - [x] make a separate search result component, reusing maybe half of the logic, but also a filter component there instead of path stuff
-- [ ] try a simpler, local context menu for clicking from a tutorial and see if all works there. right now both the location and the passing of props do not work for edition
-- [ ] ask ChatGPT to refactor the table component
-- [ ] change useEffect to custom effect hooks - that requires disassembling `Table.tsx`
-- [ ] possibly use a custom event listener for all the history and path changes - for these to be automatic - ask chat
+- [x] try a simpler, local context menu for clicking from a tutorial and see if all works there. right now both the location and the passing of props do not work for edition
+- [x] ask ChatGPT to refactor the table component
+- [x] change useEffect to custom effect hooks - that requires disassembling `Table.tsx`
+- [x] possibly use a custom event listener for all the history and path changes - for these to be automatic - ask chat
+
+- [ ] add useSearchParams
 - [ ] in search results change the path whenever the highlighted bookmark shows. do not just jump between things in the side tree
 
 ## questionabl dev decision

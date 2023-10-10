@@ -4,14 +4,12 @@ import { BookmarkNode } from "../lib/typesFacade";
 
 type NavbarProps = {
   dataCallback: (nodes: BookmarkNode[]) => void;
-  lastPathItem: () => BookmarkNode;
   rows: BookmarkNode[];
 };
 
 export function Navbar(
   {
     dataCallback,
-    lastPathItem,
     rows,
   }: NavbarProps,
 ) {

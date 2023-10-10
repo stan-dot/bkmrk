@@ -1,9 +1,9 @@
 import { useCallback, useState } from "react";
 import { usePathDispatch } from "../features/path/PathContext";
-import useBookmarkChange from "../lib/hooks/ChangeListener";
 import useRootAndChildren from "../lib/hooks/useRootAndChildren";
 import { BookmarkNode } from "../lib/typesFacade";
 import { MainDisplayStates } from "./NewTable";
+import { useBookmarkChange } from "../lib/hooks/useBookmarkChange";
 
 // Custom Hook for managing bookmark nodes
 export function useBookmarks() {

@@ -2,17 +2,15 @@ import { useCallback, useState } from "react";
 import { useLocationDispatch } from "../features/path/LocationContext";
 import { usePath, usePathDispatch } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/components/PathDisplay";
-import { SideTree } from "../features/sidetree/components/SideTree";
-import { BookmarkTable } from "../features/table/BookmarkTable";
-import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
+import { useBookmarkChange } from "../lib/hooks/useBookmarkChange";
+import useRootAndChildren from "../lib/hooks/useRootAndChildren";
 import { BookmarkNode } from "../lib/typesFacade";
 import { Navbar } from "./Navbar";
-import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
+import { SideTree } from "../features/sidetree/components/SideTree";
+import { BookmarkTable } from "../features/table/BookmarkTable";
+import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { MainContainer } from "./styled-components/MainContainer";
-import useRootAndChildren from "../lib/hooks/useRootAndChildren";
-import { BookmarkComponent } from "./BookmarkComponent";
-import { useBookmarkChange } from "../lib/hooks/useBookmarkChange";
 
 type MainDisplayStates =
   | "LOADING"
@@ -31,32 +29,31 @@ export function TableLoader(): JSX.Element {
   const pathDispatch = usePathDispatch();
   const locationDispatch = useLocationDispatch();
 
-  const lastPathItem: () => BookmarkNode = useCallback(
-    () => path.items.at(-1) ?? globalTree[0],
-    [globalTree, path.items],
-  );
-
-  const reloadWithNode = useCallback(
+   const reloadWithNode = useCallback(
     (root: BookmarkNode[]) => {
-      setLoaded("LOADED");
-      const bookmarksBar: BookmarkNode = root[0].children![0];
-      pathDispatch({
-        type: "full",
-        nodes: [...root, bookmarksBar],
-      });
+      if (root && root.length > 0) {
+        const children = root[0].children;
+        if (children && children.length > 0) {
+          setLoaded("LOADED");
+          const bookmarksBar: BookmarkNode = children[0];
+          pathDispatch({
+            type: "full",
+            nodes: [...root, bookmarksBar],
+          });
+        }
+      }
     },
     [pathDispatch],
   );
-  const { rootArray, children } = useRootAndChildren();
 
-  // if (loaded === "LOADING") {
-  //   // reloadWithNode(path.items);
-  //   const root = useRoot();
-  //   const children = useChildren(root.id!);
-  //   locationDispatch({type:'replace', nodeNames:children.map(c=>c.id)})
-  //   setGlobalTree(children);
-  //   reloadWithNode(root);
-  // }
+  const { rootArray, children } = useRootAndChildren();
+  console.log("root: ", rootArray, " children: ", children);
+
+  if (children) {
+    setGlobalTree(children);
+    locationDispatch({ type: "replace", nodeNames: children.map((c) => c.id) });
+    reloadWithNode(rootArray);
+  }
 
   const callback = (eventType: string, id: string, info: string) => {
     console.log("Handling in component:", id, info);
@@ -64,31 +61,20 @@ export function TableLoader(): JSX.Element {
   };
 
   useBookmarkChange(callback);
-  // const currentLast = lastPathItem();
-  // const children = useChildren(currentLast.id);
-  // todo change this, not sure. maybe all should be through a context, not like this
-
-  const dataCallback = (nodes: BookmarkNode[]): void => {
-    setRows(nodes);
-  };
 
   return (
     <>
       <Navbar
-        dataCallback={dataCallback}
-        lastPathItem={lastPathItem}
+        dataCallback={setRows}
         rows={rows}
       />
       <PathDisplay />
       <LowerPanelContainer>
-        <BookmarkComponent />
-        {
-          /* <LoadingScreen loading={loaded === "LOADING"} />
-        <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
+        <LoadingScreen loading={loaded === "LOADING"} />
+        <SideTree nodes={globalTree} setRowsCallback={setRows} />
         <MainContainer>
           <BookmarkTable rows={rows} />
-        </MainContainer> */
-        }
+        </MainContainer>
       </LowerPanelContainer>
     </>
   );

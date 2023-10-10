@@ -1,20 +1,32 @@
-import { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
 import { usePath, usePathDispatch } from "../PathContext";
 import { PathItem } from "./PathItem";
+import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 
 interface PathDisplayProps {
-  onPasteHandler: (e: React.ClipboardEvent<HTMLDivElement>) => void;
 }
 
-export function PathDisplay({ onPasteHandler }: PathDisplayProps): JSX.Element {
+export function PathDisplay(): JSX.Element {
   const path = usePath();
   const pathDispatch = usePathDispatch();
   const initLastIteraction = path.items[path.items.length - 1];
   const [lastInteracted, setLastInteracted] = useState<BookmarkNode>(
     initLastIteraction,
   );
+
+  const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
+    if (path && path.items && path.items.length > 0) {
+      const parent = path.items.at(-1);
+      if (parent) {
+        const parentId = parent.id;
+        e.preventDefault();
+        console.debug(e);
+        CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
+      }
+    }
+  };
 
   const contextMenuDispatch = useContextMenuDispatch();
 

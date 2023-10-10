@@ -4,6 +4,7 @@ import { TableLoader } from "./components/Table";
 import { PopupProvider } from "./features/alerts/PopupContext";
 import { LocationProvider } from "./features/path/LocationContext";
 import { PathProvider } from "./features/path/PathContext";
+import { NewTableLoader } from "./components/NewTable";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -14,6 +15,7 @@ function App() {
         <PopupProvider>
           <PathProvider>
             <TableLoader />
+            {/* <NewTableLoader /> */}
           </PathProvider>
         </PopupProvider>
       </LocationProvider>

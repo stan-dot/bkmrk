@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { usePath, usePathDispatch } from "../features/path/PathContext";
+import { usePathDispatch } from "../features/path/PathContext";
 import useBookmarkChange from "../lib/hooks/ChangeListener";
 import useRootAndChildren from "../lib/hooks/useRootAndChildren";
 import { BookmarkNode } from "../lib/typesFacade";
@@ -10,7 +10,6 @@ export function useBookmarks() {
   const [loaded, setLoaded] = useState<MainDisplayStates>("LOADING");
   const [rows, setRows] = useState<BookmarkNode[]>([]);
   const [globalTree, setGlobalTree] = useState<BookmarkNode[]>([]);
-  const path = usePath();
   const pathDispatch = usePathDispatch();
 
   const { rootArray, children } = useRootAndChildren();

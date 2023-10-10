@@ -5,12 +5,14 @@ import { PathDisplay } from "../features/path/components/PathDisplay";
 import { SideTree } from "../features/sidetree/components/SideTree";
 import { BookmarkTable } from "../features/table/BookmarkTable";
 import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
-import useBookmarkChange from "../lib/hooks/ChangeListener";
 import { BookmarkNode } from "../lib/typesFacade";
 import { Navbar } from "./Navbar";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
 import { MainContainer } from "./styled-components/MainContainer";
+import useRootAndChildren from "../lib/hooks/useRootAndChildren";
+import { BookmarkComponent } from "./BookmarkComponent";
+import { useBookmarkChange } from "../lib/hooks/useBookmarkChange";
 
 type MainDisplayStates =
   | "LOADING"
@@ -45,6 +47,7 @@ export function TableLoader(): JSX.Element {
     },
     [pathDispatch],
   );
+  const { rootArray, children } = useRootAndChildren();
 
   // if (loaded === "LOADING") {
   //   // reloadWithNode(path.items);
@@ -55,26 +58,18 @@ export function TableLoader(): JSX.Element {
   //   reloadWithNode(root);
   // }
 
-  const handleBookmarkChange = (id: string, changeInfo: any) => {
-    console.log("Handling in component:", id, changeInfo);
-    // Handle the change event within your component...
+  const callback = (eventType: string, id: string, info: string) => {
+    console.log("Handling in component:", id, info);
     reloadWithNode(path.items);
   };
 
-  useBookmarkChange(handleBookmarkChange);
+  useBookmarkChange(callback);
   // const currentLast = lastPathItem();
   // const children = useChildren(currentLast.id);
   // todo change this, not sure. maybe all should be through a context, not like this
 
   const dataCallback = (nodes: BookmarkNode[]): void => {
     setRows(nodes);
-  };
-
-  const pathDisplayPasteHandler = (e: React.ClipboardEvent<Element>) => {
-    const parentId = lastPathItem().id;
-    e.preventDefault();
-    console.debug(e);
-    CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
   };
 
   return (
@@ -84,17 +79,16 @@ export function TableLoader(): JSX.Element {
         lastPathItem={lastPathItem}
         rows={rows}
       />
-      <PathDisplay
-        onPasteHandler={pathDisplayPasteHandler}
-      />
+      <PathDisplay />
       <LowerPanelContainer>
-        <LoadingScreen loading={loaded === "LOADING"} />
+        <BookmarkComponent />
+        {
+          /* <LoadingScreen loading={loaded === "LOADING"} />
         <SideTree nodes={globalTree} setRowsCallback={dataCallback} />
         <MainContainer>
-          <BookmarkTable
-            rows={rows}
-          />
-        </MainContainer>
+          <BookmarkTable rows={rows} />
+        </MainContainer> */
+        }
       </LowerPanelContainer>
     </>
   );

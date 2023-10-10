@@ -3,14 +3,12 @@ import { usePath } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/components/PathDisplay";
 import { SideTree } from "../features/sidetree/components/SideTree";
 import { BookmarkTable } from "../features/table/BookmarkTable";
-import CRUDBookmarkFacade from "../lib/CRUDBookmarkFacade";
 import { BookmarkNode } from "../lib/typesFacade";
+import { Navbar } from "./Navbar";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
 import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
 import { MainContainer } from "./styled-components/MainContainer";
 import { useBookmarks } from "./useBookmarks";
-import { Navbar } from "./Navbar";
-import MenuContextHook from "../test-contextmenu/MenuContextHook";
 
 export type MainDisplayStates =
   | "LOADING"
@@ -20,7 +18,6 @@ export type MainDisplayStates =
 
 export function NewTableLoader(): JSX.Element {
   const {
-    rootArray,
     loaded,
     rows,
     globalTree,
@@ -34,13 +31,6 @@ export function NewTableLoader(): JSX.Element {
     [globalTree, path.items],
   );
 
-  const pathDisplayPasteHandler = (e: React.ClipboardEvent<Element>) => {
-    const parentId = lastPathItem().id;
-    e.preventDefault();
-    console.debug(e);
-    CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
-  };
-
   return (
     <>
       <Navbar
@@ -48,15 +38,11 @@ export function NewTableLoader(): JSX.Element {
         lastPathItem={lastPathItem}
         rows={rows}
       />
-      <PathDisplay
-        onPasteHandler={pathDisplayPasteHandler}
-      />
+      <PathDisplay />
       <LowerPanelContainer>
         <LoadingScreen loading={loaded === "LOADING"} />
         <SideTree nodes={globalTree} setRowsCallback={setRows} />
         <MainContainer>
-          {/* <TestContextMenu />
-          <MenuContextHook  /> */}
           <BookmarkTable rows={rows} />
         </MainContainer>
       </LowerPanelContainer>

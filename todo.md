@@ -9,4 +9,4 @@
 - [ ] reload when new thing created - with a listener to refresh things on event, probably in the context object
 - [ ] sometimes path gets too many items
 - [ ] search does not change the path - then clicking on 'current path' does not redirect
-- [ ] ctrl + a does not select everything in the table, but all text - should use the native library
+- [ ] ctrl + a does not select everything in the table, but all text - should use the native feature of the glide apps thing

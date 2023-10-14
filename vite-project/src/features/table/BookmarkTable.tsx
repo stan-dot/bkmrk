@@ -5,7 +5,7 @@ import DataEditor, {
   Item,
 } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
-import React from "react";
+import React, { useEffect } from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import { readRawTextAsBookmarks } from "../../lib/ClipboardFacade";
 import { useBookmarks } from "../../lib/GlobalReducer";
@@ -69,9 +69,29 @@ export function BookmarkTable(
     // todo open context menu
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: any) => {
+      // Check if 'Ctrl + A' is pressed
+      if (e.ctrlKey && e.key === "a") {
+        // Check if the target is not within your table
+        if (!e.target.closest("#bookmarkTableContainer")) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    // Add the event listener to the window object
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup: remove the event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
   return (
     <div
-      // onClick={contextClickHandler}
+      id="bookmarkTableContainer"
       className="table-container flex flex-grow pb-4 mb-40 "
       onDragOver={(e) => {
         e.preventDefault();

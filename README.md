@@ -3,6 +3,19 @@ font color #0AA
 
 #025 background
 
+## notes
+https://www.producthunt.com/
+
+mention that to compete with:
+
+  - that’s like Readable, so not quite
+  save to pocket
+  https://chrome.google.com/webstore/detail/save-to-pocket/niloccemoadcdkdjlinkgdfekeahmflj
+  https://booky.io/
+
+supersorter
+  https://chrome.google.com/webstore/detail/supersorter/hjebfgojnlefhdgmomncgjglmdckngij?hl=en
+
 
 ### developer notes
 context menus need to be with style inline prop as tailwind does that statically

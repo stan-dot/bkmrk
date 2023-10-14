@@ -2,14 +2,14 @@ import { useCallback, useState } from "react";
 import { useLocationDispatch } from "../features/path/LocationContext";
 import { usePath, usePathDispatch } from "../features/path/PathContext";
 import { PathDisplay } from "../features/path/components/PathDisplay";
+import { SideTree } from "../features/sidetree/components/SideTree";
+import { BookmarkTable } from "../features/table/BookmarkTable";
 import { useBookmarkChange } from "../lib/hooks/useBookmarkChange";
 import useRootAndChildren from "../lib/hooks/useRootAndChildren";
 import { BookmarkNode } from "../lib/typesFacade";
 import { Navbar } from "./Navbar";
-import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
-import { SideTree } from "../features/sidetree/components/SideTree";
-import { BookmarkTable } from "../features/table/BookmarkTable";
 import { LoadingScreen } from "./styled-components/LoadingScreen";
+import { LowerPanelContainer } from "./styled-components/LowerPanelContainer";
 import { MainContainer } from "./styled-components/MainContainer";
 
 type MainDisplayStates =
@@ -29,7 +29,7 @@ export function TableLoader(): JSX.Element {
   const pathDispatch = usePathDispatch();
   const locationDispatch = useLocationDispatch();
 
-   const reloadWithNode = useCallback(
+  const reloadWithNode = useCallback(
     (root: BookmarkNode[]) => {
       if (root && root.length > 0) {
         const children = root[0].children;
@@ -64,14 +64,11 @@ export function TableLoader(): JSX.Element {
 
   return (
     <>
-      <Navbar
-        dataCallback={setRows}
-        rows={rows}
-      />
+      <Navbar rows={rows} />
       <PathDisplay />
       <LowerPanelContainer>
         <LoadingScreen loading={loaded === "LOADING"} />
-        <SideTree nodes={globalTree} setRowsCallback={setRows} />
+        <SideTree tree={globalTree} />
         <MainContainer>
           <BookmarkTable rows={rows} />
         </MainContainer>

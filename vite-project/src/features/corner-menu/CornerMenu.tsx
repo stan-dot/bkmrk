@@ -4,12 +4,11 @@ import { CornerMenuButtons } from "./CornerMenuButtons";
 
 interface CornerMenuProps {
   rows: BookmarkNode[];
-  dataCallback: (bookmarks: BookmarkNode[]) => void;
   searchResultsMode?: boolean;
 }
 
 export function CornerMenu(
-  { rows, dataCallback, searchResultsMode }: CornerMenuProps,
+  { rows, searchResultsMode }: CornerMenuProps,
 ): JSX.Element {
   console.log("rows", rows);
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -34,7 +33,6 @@ export function CornerMenu(
           (
             <CornerMenuButtons
               rows={rows}
-              dataCallback={dataCallback}
               searchResultsMode={searchResultsMode}
             />
           )}

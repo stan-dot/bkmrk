@@ -12,14 +12,12 @@ import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 
 export interface CornerMenuButtonsProps {
   rows: BookmarkNode[];
-  dataCallback: (bookmarks: BookmarkNode[]) => void;
   searchResultsMode?: boolean;
 }
 
 export function CornerMenuButtons(
   {
     rows,
-    dataCallback,
     searchResultsMode,
   }: CornerMenuButtonsProps,
 ) {
@@ -130,10 +128,7 @@ export function CornerMenuButtons(
           </>
         }
         callback={() =>
-          CurrentFolderActionsFacade.removeEmpty(
-            rows,
-            dataCallback,
-          )}
+          CurrentFolderActionsFacade.removeEmpty( rows)}
       />
       <DropDownButton
         callback={async (_v: any) => {

@@ -2,14 +2,10 @@ import { CornerMenu } from "../features/corner-menu/CornerMenu";
 import { SearchField } from "../features/search/components/SearchField";
 import { BookmarkNode } from "../lib/typesFacade";
 
-type NavbarProps = {
-  dataCallback: (nodes: BookmarkNode[]) => void;
-  rows: BookmarkNode[];
-};
+type NavbarProps = { rows: BookmarkNode[] };
 
 export function Navbar(
   {
-    dataCallback,
     rows,
   }: NavbarProps,
 ) {
@@ -20,11 +16,8 @@ export function Navbar(
           &#128366; BKMRK
         </p>
       </div>
-      <SearchField setDataCallback={dataCallback} />
-      <CornerMenu
-        dataCallback={dataCallback}
-        rows={rows}
-      />
+      <SearchField  />
+      <CornerMenu rows={rows} />
     </nav>
   );
 }

@@ -33,15 +33,11 @@ export function NewTableLoader(): JSX.Element {
 
   return (
     <>
-      <Navbar
-        dataCallback={setRows} // directly pass the setRows
-        lastPathItem={lastPathItem}
-        rows={rows}
-      />
+      <Navbar  rows={rows} />
       <PathDisplay />
       <LowerPanelContainer>
         <LoadingScreen loading={loaded === "LOADING"} />
-        <SideTree nodes={globalTree} setRowsCallback={setRows} />
+        <SideTree tree={globalTree} />
         <MainContainer>
           <BookmarkTable rows={rows} />
         </MainContainer>

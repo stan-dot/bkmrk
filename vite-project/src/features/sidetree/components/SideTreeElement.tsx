@@ -19,7 +19,6 @@ export function ifIsALeafNode(
 type SideTreeElementProps = {
   thing: BookmarkNode;
   initialUnrolled: boolean;
-  setRowsCallback: (nodes: BookmarkNode[]) => void;
   unrollCallback: (n: BookmarkNode) => void;
 };
 
@@ -27,7 +26,6 @@ export function SideTreeElement(
   {
     thing,
     initialUnrolled,
-    setRowsCallback,
     unrollCallback,
   }: SideTreeElementProps,
 ): JSX.Element {
@@ -132,7 +130,6 @@ export function SideTreeElement(
               <SideTreeElement
                 thing={n}
                 initialUnrolled={unrolled}
-                setRowsCallback={setRowsCallback}
                 unrollCallback={unrollCallback}
               />
             );

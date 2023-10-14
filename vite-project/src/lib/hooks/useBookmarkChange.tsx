@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-export function useBookmarkChange(callback: any) {
+export function useBookmarkChange(callback: Function) {
   useEffect(() => {
     const createListener = (id: string, changeInfo: any) => {
       console.log(`Bookmark ${id} created`, changeInfo);

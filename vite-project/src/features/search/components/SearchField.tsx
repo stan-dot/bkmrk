@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { BookmarkNode } from "../../../lib/typesFacade";
+import { useBookmarks } from "../../../lib/GlobalReducer";
 
-export function SearchField(props: {
-  setDataCallback: (nodes: BookmarkNode[]) => void;
-}) {
+export function SearchField(props: {}) {
   const [value, setValue] = useState<string>("");
   const [iconHighlight, setIconHighlight] = useState<boolean>(false);
+  const { state, dispatch } = useBookmarks();
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setValue(event.target.value);
@@ -35,7 +35,7 @@ export function SearchField(props: {
     const searchResults: BookmarkNode[] = await chrome
       .bookmarks.search(value);
     console.debug("search results: ", searchResults);
-    props.setDataCallback(searchResults);
+    dispatch({ type: "SET_SEARCH", payload: searchResults });
   }
 
   return (

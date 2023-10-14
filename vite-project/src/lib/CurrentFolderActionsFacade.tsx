@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 export default class CurrentFolderActionsFacade {
   static async removeEmpty(
     rows: chrome.bookmarks.BookmarkTreeNode[],
-    dataCallback: (bookmarks: chrome.bookmarks.BookmarkTreeNode[]) => void,
   ) {
     console.debug("all rows before partition", rows);
     const [folders, bkmrks] = await this.partition(rows, (b) => b.url === undefined);
@@ -19,7 +18,6 @@ export default class CurrentFolderActionsFacade {
     empty.forEach((b) => {
       chrome.bookmarks.remove(b.id);
     });
-    dataCallback([...nonEmptyFolders, ...bkmrks]);
     toast(`filtered out ${empty.length} empty folders`);
     console.debug("diff: ", empty);
   }

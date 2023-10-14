@@ -136,4 +136,8 @@ current path
 loaded status?
 global tree - complex, it changes, but only folders changes matter, the numbers should update too though
 
-todo maybe simplify with reducer, with diff actions for all of these
+maybe simplify with reducer, with diff actions for all of these
+
+## moved because now a different layout
+- [ ] sometimes path gets too many items
+- [ ] search does not change the path - then clicking on 'current path' does not redirect

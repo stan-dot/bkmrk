@@ -53,6 +53,7 @@ export default class TraverseBookmarkFacade {
     await this._traverseTree(args);
     return count;
   }
+
   // todo that is not finished, need to count each separately
   static async recognizeDuplicates(): Promise<number> {
     let count = 0;

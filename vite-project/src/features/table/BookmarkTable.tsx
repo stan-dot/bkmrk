@@ -11,7 +11,7 @@ import { readRawTextAsBookmarks } from "../../lib/ClipboardFacade";
 import { useBookmarks } from "../../lib/GlobalReducer";
 import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";
 import {
-  getNodesFromTableSelection
+  getNodesFromTableSelection,
 } from "../search/utils/getNodesFromTableSelection";
 import { columns, getData } from "./columns";
 
@@ -95,16 +95,13 @@ export function BookmarkTable(
         }}
         onCellActivated={doubleClickHandler}
         onCellContextMenu={contextMenuHandler}
+        // selection
         rowSelect={"single"}
         gridSelection={selection}
         onGridSelectionChange={setSelection}
-        // onGridSelectionChange={(newSelection: GridSelection) => {
-        //   console.debug("changing selection into", newSelection);
-        //   setselection(newSelection);
-        // }}
+        getCellsForSelection={true}
         // drag and drop interactivity
         // isDraggable="cell" //this might be dragging the whole thing, experimental
-        getCellsForSelection={true}
       />
     </div>
   );

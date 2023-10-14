@@ -9,14 +9,14 @@ import React, { useState } from "react";
 import { useBookmarks } from "../../lib/GlobalReducer";
 import { BookmarkNode } from "../../lib/typesFacade";
 import Filterer, { defaultFilters, FilterSearch } from "../filter/Filterer";
-import { columns, getData } from "../table/columns";
+import { columns, getData, viewDetailsColNumber } from "../table/columns";
 import { FilterPanel } from "./components/FilterPanel";
 import { getNodesFromTableSelection } from "./utils/getNodesFromTableSelection";
+import { isAFolder } from "../../utils/ifHasChildrenFolders";
+import useContextMenu from "../../test-contextmenu/hooks/useContextMenu";
 
 export function SearchResultsTable(
-  props: {
-    rows: BookmarkNode[];
-  },
+  props: { rows: BookmarkNode[] },
 ): JSX.Element {
   const [filter, setFilter] = useState<FilterSearch>(defaultFilters);
   const filteredRows = Filterer.bigFilter(filter, props.rows);
@@ -25,6 +25,7 @@ export function SearchResultsTable(
     rows: CompactSelection.empty(),
   });
 
+  const { clicked, setClicked, points, setPoints } = useContextMenu();
   // CLICK HANDLING
   const doubleClickHandler = (cell: Item) => {
     const selectedBookmarks = getNodesFromTableSelection(
@@ -34,7 +35,16 @@ export function SearchResultsTable(
     );
     if (selectedBookmarks.length === 0) return;
     const b = selectedBookmarks[0]; // always double click only on one thing
-    // todo fix this
+    const isF = isAFolder(b);
+    if (cell[0] === viewDetailsColNumber) {
+      setClicked(true);
+    } else if (isF) {
+      // todo fix this. if bookmark, open it, if folder navigate
+      // todo might need to dispatch
+    } else {
+      // open the page
+      chrome.tabs.create({ url: b.url });
+    }
     // runDoubleClickSideEffects(cell[0], b, contextMenuDispatch, pathDispatch);
   };
 
@@ -50,37 +60,45 @@ export function SearchResultsTable(
   };
 
   return (
-    <div
-      className="table-container flex flex-grow pb-4 mb-40 "
-      id="search-results-table-container"
-      onDragOver={(e) => {
-        e.preventDefault();
-        e.dataTransfer.dropEffect = "move";
-      }}
-    >
-      <FilterPanel
-        onFilterChange={setFilter}
-      />
-      <DataEditor
-        // contents
-        rows={filteredRows.length}
-        columns={columns}
-        getCellContent={getData(filteredRows)}
-        // click interactivity
-        keybindings={{
-          search: true,
-          selectAll: true,
-          selectRow: true,
-          copy: true,
-          paste: true,
+    <>
+      <div
+        className="table-container flex flex-grow pb-4 mb-40 "
+        id="search-results-table-container"
+        onDragOver={(e) => {
+          e.preventDefault();
+          e.dataTransfer.dropEffect = "move";
         }}
-        onCellActivated={doubleClickHandler}
-        onCellContextMenu={contextMenuHandler}
-        rowSelect={"single"}
-        gridSelection={selection}
-        onGridSelectionChange={setSelection}
-        getCellsForSelection={true}
-      />
-    </div>
+      >
+        <FilterPanel
+          onFilterChange={setFilter}
+        />
+        <DataEditor
+          // contents
+          rows={filteredRows.length}
+          columns={columns}
+          getCellContent={getData(filteredRows)}
+          // click interactivity
+          keybindings={{
+            search: true,
+            selectAll: true,
+            selectRow: true,
+            copy: true,
+            paste: true,
+          }}
+          onCellActivated={doubleClickHandler}
+          onCellContextMenu={contextMenuHandler}
+          rowSelect={"single"}
+          gridSelection={selection}
+          onGridSelectionChange={setSelection}
+          getCellsForSelection={true}
+        />
+      </div>
+      {clicked &&
+        (
+          <>
+            <h2>Clicked!</h2>
+          </>
+        )}
+    </>
   );
 }

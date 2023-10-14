@@ -8,8 +8,10 @@
 - [x] fix the duality between tables/boards
 
 - [x] add the global state manager with reducer and siblings are closely mapped to the path anyway
-- [ ] reload when new thing created - with a listener to refresh things on event, probably in the context object
 
-- [ ] sometimes path gets too many items
-- [ ] search does not change the path - then clicking on 'current path' does not redirect
+- [ ] make sure clicks work for
+  - [ ] context menus
+  - [ ] change in paths
+- [ ] number of selection tracked in the navbar!
+- [ ] reload when new thing created - with a listener to refresh things on event, probably in the context object
 - [ ] ctrl + a does not select everything in the table, but all text - should use the native feature of the glide apps thing

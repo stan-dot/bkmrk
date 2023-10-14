@@ -11,7 +11,7 @@ import { MainContainer } from "./styled-components/MainContainer";
 
 function Table() {
   const { state, dispatch } = useBookmarks();
-  const { tree, path, rows, loading, error, search } = state;
+  const { path, rows, search } = state;
 
   const callback = (eventType: string, id: string, info: string) => {
     console.log("Handling in component:", id, info);

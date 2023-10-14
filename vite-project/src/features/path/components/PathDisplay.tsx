@@ -3,9 +3,7 @@ import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import { PathItem } from "./PathItem";
 import { useBookmarks } from "../../../lib/GlobalReducer";
-
-interface PathDisplayProps {
-}
+import useContextMenu from "../../../test-contextmenu/hooks/useContextMenu";
 
 export function PathDisplay(): JSX.Element {
   const { state, dispatch } = useBookmarks();
@@ -25,15 +23,6 @@ export function PathDisplay(): JSX.Element {
         CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
       }
     }
-  };
-
-  const contextClickHandler = (
-    e: React.MouseEvent<HTMLDivElement>,
-    node: BookmarkNode,
-  ): void => {
-    e.preventDefault();
-    e.stopPropagation();
-    // todo add the new context menu trick
   };
 
   const handleClick = (
@@ -87,7 +76,6 @@ export function PathDisplay(): JSX.Element {
                 index={i}
                 node={n}
                 key={n.id}
-                contextMenuHandler={contextClickHandler}
                 openBranch={openBranchOnSibling}
                 siblings={i > 0 ? path[i - 1].children : undefined}
               />

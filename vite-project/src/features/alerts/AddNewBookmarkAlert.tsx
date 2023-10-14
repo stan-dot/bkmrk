@@ -11,7 +11,6 @@ type AddNewBookmarkProps = {
   path: BookmarkNode[];
 };
 
-// todo this might be a bit off
 export default function AddNewBookmarkAlert(
   { parentId, path }: AddNewBookmarkProps,
 ) {

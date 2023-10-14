@@ -56,7 +56,7 @@ export  function processBookmarksFile(yourHtmlString: string): BookmarkCreateArg
     return createArgs;
   }
 
-// todo display all the ready fields, and then just to confirm
+
 export function getMetadataForFileList(fileList: FileList): void {
   for (const file of fileList) {
     // Not supported in Safari for iOS.

@@ -26,7 +26,6 @@ export function settingsReducer(
     case "delete": {
       return {
         ...settings,
-        // todo that order-based solution might not preserve
         tracingLinksRegexes: settings.tracingLinksRegexes.filter((r, i) =>
           i !== action.removeOrChangeId
         ),

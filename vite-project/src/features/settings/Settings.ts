@@ -5,7 +5,6 @@ export type Settings = {
   sortingSettings?: SorterOptions;
 };
 
-// todo possibly join these by OR. that would also help settings processing
 export const defaultTracingRegexes: RegExp[] = [
   /((&|\?)ref=)/ig,
   /((&|\?)mtrref)/ig,

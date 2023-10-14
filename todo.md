@@ -9,6 +9,8 @@
 
 - [x] add the global state manager with reducer and siblings are closely mapped to the path anyway
 
+- [ ] settings somehow worked! but on close some reducer error
+- [ ] ask chat how to simpify logic between alert manager and popup context reducer, too many read strings
 - [ ] make sure clicks work for
   - [ ] context menus
   - [ ] change in paths

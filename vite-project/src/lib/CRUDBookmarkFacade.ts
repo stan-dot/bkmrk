@@ -55,7 +55,7 @@ export default class CRUDBookmarkFacade {
     });
   }
 
-  static async getPath(
+  static async getPathOfABookmark(
     node: BookmarkNode,
   ): Promise<BookmarkNode[]> {
     let output: BookmarkNode[] = [node];

@@ -24,7 +24,7 @@ export function CornerMenuButtons(
   const popupDispatch = usePopupDispatch();
   // note - should always have a parent
   console.log("rows at 0", rows[0]);
-  const parent = useParent(rows[0].parentId!);
+  const parent: BookmarkNode | null = useParent(rows[0].parentId!);
   const removeTracingLinks = async (_v: any) => {
     if (parent && parent.id) {
       const n = await removeTracingLinksFromChildren(parent);
@@ -44,13 +44,14 @@ export function CornerMenuButtons(
             <span className="italic text-l ">A-Z</span> Sort by name
           </>
         }
-        callback={sortRows(
-          rows,
-          {
-            key: "title",
-            reverse: false,
-          },
-        )}
+        callback={() =>
+          sortRows(
+            rows,
+            {
+              key: "title",
+              reverse: false,
+            },
+          )}
       />
 
       <DropDownButton
@@ -59,13 +60,14 @@ export function CornerMenuButtons(
             &#128197; Sort by date
           </>
         }
-        callback={sortRows(
-          rows,
-          {
-            key: "date",
-            reverse: false,
-          },
-        )}
+        callback={() =>
+          sortRows(
+            rows,
+            {
+              key: "date",
+              reverse: false,
+            },
+          )}
       />
       <DropDownButton
         textNode={
@@ -73,17 +75,19 @@ export function CornerMenuButtons(
             &#9734; Add new bookmark
           </>
         }
-        callback={popupDispatch({
-          type: "add-new-bookmark",
-          direction: "open",
-        })}
+        callback={() =>
+          popupDispatch({
+            type: "add-new-bookmark",
+            direction: "open",
+          })}
       />
 
       <DropDownButton
-        callback={popupDispatch({
-          type: "add-new-folder",
-          direction: "open",
-        })}
+        callback={() =>
+          popupDispatch({
+            type: "add-new-folder",
+            direction: "open",
+          })}
         textNode={
           <>
             &#128448; Add new folder
@@ -91,11 +95,11 @@ export function CornerMenuButtons(
         }
       />
       <DropDownButton
-        callback={popupDispatch({
-          type: "none",
-          direction: "open",
-          // todo add the dispatch for the import window
-        })}
+        callback={() =>
+          popupDispatch({
+            type: "bookmarks-import",
+            direction: "open",
+          })}
         disabled
         textNode={
           <>
@@ -105,7 +109,7 @@ export function CornerMenuButtons(
       />
 
       <DropDownButton
-        callback={exportBookmarks(rows)}
+        callback={() => exportBookmarks(rows)}
         disabled
         textNode={
           <>
@@ -114,7 +118,7 @@ export function CornerMenuButtons(
         }
       />
       <DropDownButton
-        callback={printCsv(rows)}
+        callback={() => printCsv(rows)}
         textNode={
           <>
             <p>Download CSV</p>
@@ -127,8 +131,7 @@ export function CornerMenuButtons(
             &#128465; Delete empty folders in this folder
           </>
         }
-        callback={() =>
-          CurrentFolderActionsFacade.removeEmpty( rows)}
+        callback={() => CurrentFolderActionsFacade.removeEmpty(rows)}
       />
       <DropDownButton
         callback={async (_v: any) => {
@@ -156,10 +159,11 @@ export function CornerMenuButtons(
       />
 
       <DropDownButton
-        callback={popupDispatch({
-          type: "settings",
-          direction: "open",
-        })}
+        callback={() =>
+          popupDispatch({
+            type: "settings",
+            direction: "open",
+          })}
         textNode={
           <>
             &#9881; Settings

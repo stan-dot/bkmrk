@@ -1,7 +1,5 @@
 import { BookmarkNode } from "../lib/typesFacade";
 
-
-
 export function isAFolder(item: BookmarkNode): boolean {
   return !item.url;
 }
@@ -20,3 +18,4 @@ function getChildrenLinks(
   if (!item.children) return []; 
   return item.children.filter((v) => !isAFolder(v));
 }
+

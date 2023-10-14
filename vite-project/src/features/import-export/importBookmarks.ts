@@ -1,4 +1,4 @@
-import { readFileSync } from "fs";
+import { BookmarkCreateArg } from "../../lib/typesFacade";
 
 // <DL>
 //     <DT><H3>Folder Name 1</H3></DT>
@@ -15,16 +15,56 @@ import { readFileSync } from "fs";
 // </DL>
 // https://support.mozilla.org/en-US/questions/1319392
 
-// ✅ read file SYNCHRONOUSLY
-export function syncReadFile(filename: string): any[] {
-  const contents: string = readFileSync(filename, "utf-8");
+export const createBookmarkTree = (node:Node):BookmarkCreateArg[] => {
+    const tree:BookmarkCreateArg[] = [];
+    console.log('node:', node);
 
-  const parser: DOMParser = new DOMParser();
-  const t2: Document = parser.parseFromString(contents, "text/html");
+    // for (let child of node.childNodes) {
+    //     if (child.nodeValue === 'DL') {
+    //         // It's a folder since it contains other elements.
+    //         const lastTreeItem = tree[tree.length - 1];  // Folders are always before their contents in the HTML structure
+    //         lastTreeItem.childNodes = createBookmarkTree(child);  // Recursive call to process the folder's children
+    //     } else if (child.nodeValue === 'DT') {
+    //         if (child.childNodes[0].nodeValue === 'H3') {
+    //             // It's a folder title
+    //             tree.push({
+    //                 title: child.childNodes[0].textContent,
+    //             });
+    //         } else if (child.childNodes[0].tagName === 'A') {
+    //             // It's a bookmark
+    //             tree.push({
+    //                 title: child.childNodes[0].textContent,
+    //                 url: child.childNodes[0].getAttribute('HREF')
+    //             });
+    //         }
+    //     }
+    // }
 
-  const arr = contents.split(/\r?\n/);
+    return tree;
+};
 
-  console.debug(arr); // 👉️ ['One', 'Two', 'Three', 'Four']
 
-  return arr;
+export  function processBookmarksFile(yourHtmlString: string): BookmarkCreateArg[] {
+    const parser = new DOMParser();
+    const parsedHtml: Document = parser.parseFromString(
+      yourHtmlString,
+      "text/html",
+    );
+    const createArgs: BookmarkCreateArg[] = createBookmarkTree(
+      parsedHtml,
+    );
+    return createArgs;
+  }
+
+// todo display all the ready fields, and then just to confirm
+export function getMetadataForFileList(fileList: FileList): void {
+  for (const file of fileList) {
+    // Not supported in Safari for iOS.
+    const name = file.name ? file.name : "NOT SUPPORTED";
+    // Not supported in Firefox for Android or Opera for Android.
+    const type = file.type ? file.type : "NOT SUPPORTED";
+    // Unknown cross-browser support.
+    const size = file.size ? file.size : "NOT SUPPORTED";
+    console.log({ file, name, type, size });
+  }
 }

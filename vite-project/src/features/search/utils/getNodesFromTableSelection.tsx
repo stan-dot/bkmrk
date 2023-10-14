@@ -6,9 +6,6 @@ import {
 import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
-import {
-  ContextMenuActionTypes
-} from "../../context-menu/ContextMenuContext";
 import { viewDetailsColNumber } from "../../table/columns";
 
 export function runDoubleClickSideEffects(
@@ -28,7 +25,7 @@ export function runDoubleClickSideEffects(
       things: [b],
     });
   } else if (isFolder) {
-    CRUDBookmarkFacade.getPath(b).then((newPath) => {
+    CRUDBookmarkFacade.getPathOfABookmark(b).then((newPath) => {
       console.debug("path:", newPath);
       pathDispatch({
         type: "full",
@@ -38,17 +35,6 @@ export function runDoubleClickSideEffects(
   } else {
     chrome.tabs.create({ url: b.url });
   }
-}
-
-// todo here logic does not seem to work actualyl
-export function decideContextType(
-  selectedBookmarks: BookmarkNode[],
-): ContextMenuActionTypes {
-  return selectedBookmarks.length === 1
-    ? "mixed"
-    : isAFolder(selectedBookmarks[0])
-    ? "folder"
-    : "single-bookmark";
 }
 
 export function getNodesFromTableSelection(

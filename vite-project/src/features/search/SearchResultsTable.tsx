@@ -6,28 +6,18 @@ import DataEditor, {
 } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
 import React, { useState } from "react";
+import { useBookmarks } from "../../lib/GlobalReducer";
 import { BookmarkNode } from "../../lib/typesFacade";
-import {
-  ContextMenuActionTypes,
-  useContextMenuDispatch,
-} from "../context-menu/ContextMenuContext";
-import Filterer, { FilterSearch, defaultFilters } from "../filter/Filterer";
-import { usePathDispatch } from "../path/PathContext";
+import Filterer, { defaultFilters, FilterSearch } from "../filter/Filterer";
 import { columns, getData } from "../table/columns";
 import { FilterPanel } from "./components/FilterPanel";
-import {
-  decideContextType,
-  getNodesFromTableSelection,
-  runDoubleClickSideEffects,
-} from "./utils/getNodesFromTableSelection";
+import { getNodesFromTableSelection } from "./utils/getNodesFromTableSelection";
 
 export function SearchResultsTable(
   props: {
     rows: BookmarkNode[];
   },
 ): JSX.Element {
-  const pathDispatch = usePathDispatch();
-  const contextMenuDispatch = useContextMenuDispatch();
   const [filter, setFilter] = useState<FilterSearch>(defaultFilters);
   const filteredRows = Filterer.bigFilter(filter, props.rows);
   const [selection, setSelection] = React.useState<GridSelection>({
@@ -44,7 +34,8 @@ export function SearchResultsTable(
     );
     if (selectedBookmarks.length === 0) return;
     const b = selectedBookmarks[0]; // always double click only on one thing
-    runDoubleClickSideEffects(cell[0], b, contextMenuDispatch, pathDispatch);
+    // todo fix this
+    // runDoubleClickSideEffects(cell[0], b, contextMenuDispatch, pathDispatch);
   };
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
@@ -55,13 +46,7 @@ export function SearchResultsTable(
       cell,
     );
     if (selectedBookmarks.length === 0) return;
-    const type: ContextMenuActionTypes = decideContextType(selectedBookmarks);
-    contextMenuDispatch({
-      type: type,
-      direction: "open",
-      position: [event.localEventX, event.localEventY],
-      things: selectedBookmarks,
-    });
+    // todo add context menu new variant
   };
 
   return (

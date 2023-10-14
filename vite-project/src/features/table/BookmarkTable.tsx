@@ -2,38 +2,33 @@ import DataEditor, {
   CellClickedEventArgs,
   CompactSelection,
   GridSelection,
-  Item
+  Item,
 } from "@glideapps/glide-data-grid";
 import "@glideapps/glide-data-grid/dist/index.css";
 import React from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import { readRawTextAsBookmarks } from "../../lib/ClipboardFacade";
+import { useBookmarks } from "../../lib/GlobalReducer";
 import { BookmarkChangesArg, BookmarkNode } from "../../lib/typesFacade";
 import {
-  ContextMenuActionTypes,
-  useContextMenuDispatch,
-} from "../context-menu/ContextMenuContext";
-import { usePath, usePathDispatch } from "../path/PathContext";
-import {
-  decideContextType,
-  getNodesFromTableSelection,
-  runDoubleClickSideEffects,
+  getNodesFromTableSelection
 } from "../search/utils/getNodesFromTableSelection";
 import { columns, getData } from "./columns";
 
+const initialSelection = {
+  columns: CompactSelection.empty(),
+  rows: CompactSelection.empty(),
+};
 export function BookmarkTable(
   props: {
     rows: BookmarkNode[];
   },
 ): JSX.Element {
-  const path = usePath();
-  const contextMenuDispatch = useContextMenuDispatch();
-  const [selection, setSelection] = React.useState<GridSelection>({
-    columns: CompactSelection.empty(),
-    rows: CompactSelection.empty(),
-  });
-
-  const pathDispatch = usePathDispatch();
+  const { state, dispatch } = useBookmarks();
+  const path = state.path;
+  const [selection, setSelection] = React.useState<GridSelection>(
+    initialSelection,
+  );
 
   const pasteHandler = (v: React.ClipboardEvent<HTMLDivElement>) => {
     const data: DataTransfer = v.clipboardData;
@@ -45,7 +40,7 @@ export function BookmarkTable(
 
   const containerDropHandler = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    const parentId = path.items.at(-1)!.id;
+    const parentId = path.at(-1)!.id;
     console.debug("ondrop triggered, data: ", e.dataTransfer);
     CRUDBookmarkFacade.createBookmarksFromPaste(e, parentId);
   };
@@ -59,7 +54,8 @@ export function BookmarkTable(
     );
     if (selectedBookmarks.length === 0) return;
     const b = selectedBookmarks[0];
-    runDoubleClickSideEffects(cell[0], b, contextMenuDispatch, pathDispatch);
+    // todo run double click side effects
+    // runDoubleClickSideEffects(cell[0], b);
   };
 
   const contextMenuHandler = (cell: Item, event: CellClickedEventArgs) => {
@@ -70,13 +66,7 @@ export function BookmarkTable(
       cell,
     );
     if (selectedBookmarks.length === 0) return;
-    const type: ContextMenuActionTypes = decideContextType(selectedBookmarks);
-    contextMenuDispatch({
-      type: type,
-      direction: "open",
-      position: [event.localEventX, event.localEventY],
-      things: selectedBookmarks,
-    });
+    // todo open context menu
   };
 
   return (

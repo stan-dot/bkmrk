@@ -5,6 +5,8 @@ import EditBookmarkAlert from "./EditBookmarkAlert";
 import EditFolderAlert from "./EditFolderAlert";
 import SettingsAlert from "../settings/SettingsAlert";
 import { BookmarkImportAlert } from "../import-export/components/BookmarkImportAlert";
+import { useBookmarks } from "../../lib/GlobalReducer";
+import OpenSelectedAlert from "./OpenSelectedAlert";
 
 const PopupComponents: Record<string, React.FC<any>> = {
   s: SettingsAlert,
@@ -12,24 +14,16 @@ const PopupComponents: Record<string, React.FC<any>> = {
   efa: EditFolderAlert,
   anb: AddNewBookmarkAlert,
   anf: AddNewFolderAlert,
-  bi: BookmarkImportAlert
+  bi: BookmarkImportAlert,
+  os: OpenSelectedAlert,
 };
 
 export default function AlertManager() {
   const popup = usePopup();
+  const { state } = useBookmarks();
+  const path = state.path;
   console.debug("current componentId", popup.componentId);
-  if (!popup.componentId) return;
+  if (!popup.componentId) return <></>;
   const Component: React.FC<any> = PopupComponents[popup.componentId];
-  return <Component />;
-  // return (
-  //   <div>
-  //     {popup.componentId === "s" && <SettingsAlert />}
-  //     {popup.componentId === "eba" && <EditBookmarkAlert id={popup.args} />}
-  //     {popup.componentId === "efa" && <EditFolderAlert id={popup.args} />}
-  //     {popup.componentId === "anb" && (
-  //       <AddNewBookmarkAlert parentId={popup.args} />
-  //     )}
-  //     {popup.componentId === "anf" && <AddNewFolderAlert parent={popup.args} />}
-  //   </div>
-  // );
+  return <Component path={path} />;
 }

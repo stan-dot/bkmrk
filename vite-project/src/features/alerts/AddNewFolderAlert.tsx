@@ -1,21 +1,20 @@
 import { FormEvent, useState } from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
 import { BookmarkCreateArg, BookmarkNode } from "../../lib/typesFacade";
-import { usePath } from "../path/PathContext";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
 import { NameEditField } from "./button-groups/EditField";
 
 type AddNewFolderProps = {
   parent: BookmarkNode;
+  path: BookmarkNode[];
 };
 
 // can do an empty one
 export default function AddNewFolderAlert(
-  { parent }: AddNewFolderProps,
+  { parent, path }: AddNewFolderProps,
 ) {
-  const path = usePath();
-  const locationId = path.items.at(-1)!.id;
+  const locationId = path.at(-1)!.id;
 
   const dispatch = usePopupDispatch();
   const defaultData = {

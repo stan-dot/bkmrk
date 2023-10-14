@@ -1,23 +1,21 @@
-import { toast } from "react-toastify";
-import { BookmarkNode } from "../../../lib/typesFacade";
 import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
-import { useContextMenu } from "../../context-menu/ContextMenuContext";
+import ClipboardFacade from "../../../lib/ClipboardFacade";
+import { BookmarkNode } from "../../../lib/typesFacade";
+import useContextMenu from "../../../test-contextmenu/hooks/useContextMenu";
+import { ContextMenuButton } from "../../context-menu/ContextMenuButton";
 import { EditDeleteSection } from "../../context-menu/EditDeleteSection";
 import { OpenAllSection } from "../../context-menu/OpenAllSection";
-import ClipboardFacade from "../../../lib/ClipboardFacade";
-import { ContextMenuButton } from "../../context-menu/ContextMenuButton";
 
 export function PathDisplayContextMenu(
   props: { thing: BookmarkNode },
 ): JSX.Element {
   const handleCopyStringPath = () => {
-    CRUDBookmarkFacade.getPath(props.thing).then((nodes) => {
+    CRUDBookmarkFacade.getPathOfABookmark(props.thing).then((nodes) => {
       ClipboardFacade.copyNodes(nodes);
     });
   };
 
-  const contextMenu = useContextMenu();
-  const position = contextMenu.position;
+  const { clicked, setClicked, points, setPoints } = useContextMenu();
 
   return (
     <div
@@ -25,18 +23,18 @@ export function PathDisplayContextMenu(
       className={`contextMenu absolute`}
       style={{
         position: "absolute",
-        left: `${position[0]}px`,
-        right: `${position[1]}px`,
+        left: `${points.x}px`,
+        top: `${points.y}px`,
       }}
     >
       <EditDeleteSection thing={props.thing} protected={false} />
       <div className="group2">
         <ContextMenuButton
-          textNode={<p>copy path</p>}
+          textNode={<p>Copy path</p>}
           callback={ClipboardFacade.copyToClipboard([props.thing])}
         />
         <ContextMenuButton
-          textNode={<p>paste buton</p>}
+          textNode={<p>Paste buton</p>}
           callback={(e: any) =>
             ClipboardFacade.pasteFromClipboard(e, props.thing.id)}
         />

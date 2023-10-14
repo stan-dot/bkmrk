@@ -15,7 +15,7 @@ import { settingsReducer } from "./SettingsReducer";
 export default function SettingsAlert() {
   console.debug("created the add new folder alert");
   const dispatch = usePopupDispatch();
-  const [localSettings, localDispatch] = useReducer(
+  const [localSettings, localSettingsDispatch] = useReducer(
     settingsReducer,
     defaultSettings,
   );
@@ -56,17 +56,17 @@ export default function SettingsAlert() {
             <h3 className="text-lg text-white">Tracing link settings</h3>
             <TracingLinksContainer
               rows={localSettings.tracingLinksRegexes}
-              localDispatch={localDispatch}
+              localDispatch={localSettingsDispatch}
             />
             <AddNewTracingLink
-              localDispatch={localDispatch}
+              localDispatch={localSettingsDispatch}
             />
           </div>
           <button
             className="text-white m-2 p-2 bg-slate-700 rounded-sm  "
             onClick={() => {
               setSettingsToDefault().then((d) => {
-                localDispatch({ type: "reset" });
+                localSettingsDispatch({ type: "reset" });
               });
             }}
           >

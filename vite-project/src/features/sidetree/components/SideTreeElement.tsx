@@ -1,10 +1,9 @@
 import { useCallback, useState } from "react";
 import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
 import ClipboardFacade from "../../../lib/ClipboardFacade";
+import { useBookmarks } from "../../../lib/GlobalReducer";
 import { BookmarkNode } from "../../../lib/typesFacade";
 import { isAFolder } from "../../../utils/ifHasChildrenFolders";
-import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
-import { usePath, usePathDispatch } from "../../path/PathContext";
 
 export function ifIsALeafNode(
   item: BookmarkNode,
@@ -20,6 +19,8 @@ type SideTreeElementProps = {
   thing: BookmarkNode;
   initialUnrolled: boolean;
   unrollCallback: (n: BookmarkNode) => void;
+  path: BookmarkNode[];
+  changePath: (nodes: BookmarkNode[]) => void;
 };
 
 export function SideTreeElement(
@@ -27,28 +28,24 @@ export function SideTreeElement(
     thing,
     initialUnrolled,
     unrollCallback,
+    path,
+    changePath,
   }: SideTreeElementProps,
 ): JSX.Element {
   const [unrolled, setUnrolled] = useState<boolean>(initialUnrolled);
   const isALeafNode: boolean = ifIsALeafNode(thing);
-  const path = usePath();
-  const pathDispatch = usePathDispatch();
-  const contextMenuDispatch = useContextMenuDispatch();
 
   const isInPath = useCallback(
     () => {
-      return path.items.includes(thing);
+      return path.includes(thing);
     },
     [path, thing],
   );
 
   const handleClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
     if (isInPath()) return;
-    CRUDBookmarkFacade.getPath(thing).then((newPath) => {
-      pathDispatch({
-        type: "full",
-        nodes: newPath,
-      });
+    CRUDBookmarkFacade.getPathOfABookmark(thing).then((newPath) => {
+      changePath(newPath);
     });
   };
 
@@ -61,20 +58,12 @@ export function SideTreeElement(
     console.debug("launching context menu for side element", thing);
     e.preventDefault();
     e.stopPropagation();
-    contextMenuDispatch({
-      type: "folder",
-      position: [e.pageX, e.pageY],
-      direction: "open",
-      things: [thing],
-    });
+    // todo add context menu
   };
 
   const newPathClickHandler = () =>
-    CRUDBookmarkFacade.getPath(thing).then((newPath) => {
-      pathDispatch({
-        type: "full",
-        nodes: newPath,
-      });
+    CRUDBookmarkFacade.getPathOfABookmark(thing).then((newPath) => {
+      changePath(newPath);
     });
 
   return (
@@ -125,12 +114,14 @@ export function SideTreeElement(
       <div id="sidesubtree" className="relative l-10 ml-5 p-1 ">
         {thing.children &&
           thing.children.filter(isAFolder).map((n) => {
-            const unrolled: boolean = path.items.includes(n);
+            const unrolled: boolean = path.includes(n);
             return (
               <SideTreeElement
                 thing={n}
                 initialUnrolled={unrolled}
                 unrollCallback={unrollCallback}
+                changePath={changePath}
+                path={path}
               />
             );
           })}

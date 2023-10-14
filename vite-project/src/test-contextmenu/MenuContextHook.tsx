@@ -13,7 +13,7 @@ type DataTest = {
   title: string;
 };
 
-function MenuContextHook(data: DataTest[] = defaultData) {
+export default function MenuContextHook(data: DataTest[] = defaultData) {
   const { clicked, setClicked, points, setPoints } = useContextMenu();
   return (
     <div>
@@ -45,7 +45,6 @@ function MenuContextHook(data: DataTest[] = defaultData) {
     </div>
   );
 }
-export default MenuContextHook;
 
 interface MenuContextItemProps {
   setClicked: React.Dispatch<React.SetStateAction<boolean>>;

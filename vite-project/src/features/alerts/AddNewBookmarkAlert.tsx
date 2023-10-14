@@ -1,7 +1,6 @@
 import { FormEvent, useState } from "react";
 import CRUDBookmarkFacade from "../../lib/CRUDBookmarkFacade";
-import { BookmarkCreateArg } from "../../lib/typesFacade";
-import { usePath } from "../path/PathContext";
+import { BookmarkCreateArg, BookmarkNode } from "../../lib/typesFacade";
 import { usePopupDispatch } from "./PopupContext";
 import { CancelSaveGroup } from "./button-groups/CancelSaveGroup";
 import { NameEditField } from "./button-groups/EditField";
@@ -9,14 +8,14 @@ import { UrlEditField } from "./button-groups/UrlEditGroup";
 
 type AddNewBookmarkProps = {
   parentId: string;
+  path: BookmarkNode[];
 };
 
 // todo this might be a bit off
 export default function AddNewBookmarkAlert(
-  { parentId }: AddNewBookmarkProps,
+  { parentId, path }: AddNewBookmarkProps,
 ) {
-  const path = usePath();
-  const locationId = path.items.at(-1)!.id;
+  const locationId = path.at(-1)!.id;
   console.debug("created the add new bookmark alert");
 
   const dispatch = usePopupDispatch();

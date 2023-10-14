@@ -1,16 +1,15 @@
-import React from "react";
-import { PathAction } from "../PathContext";
+import { BookmarkNode } from "../../../lib/typesFacade";
 
 interface SiblingButtonProps {
   s: chrome.bookmarks.BookmarkTreeNode;
   node: chrome.bookmarks.BookmarkTreeNode;
-  pathDispatch: React.Dispatch<PathAction>;
+  addNodeToBranch: (node: BookmarkNode) => void;
   level: number;
   closeCallback: () => void;
 }
 
 export function SiblingButton(
-  { s, node, pathDispatch, level, closeCallback }: SiblingButtonProps,
+  { s, node, addNodeToBranch, closeCallback }: SiblingButtonProps,
 ) {
   return (
     <button
@@ -20,11 +19,7 @@ export function SiblingButton(
       }}
       className=" w-10  mb-2  bg-slate-700 text-slate-50 z-70 "
       onClick={() => {
-        pathDispatch({
-          type: "branch",
-          nodes: [s],
-          changeLevelsUp: level,
-        });
+        addNodeToBranch(node);
         closeCallback();
       }}
     >

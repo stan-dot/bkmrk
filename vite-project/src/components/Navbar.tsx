@@ -4,11 +4,7 @@ import { BookmarkNode } from "../lib/typesFacade";
 
 type NavbarProps = { rows: BookmarkNode[] };
 
-export function Navbar(
-  {
-    rows,
-  }: NavbarProps,
-) {
+export function Navbar({ rows }: NavbarProps) {
   return (
     <nav className="fixed w-full h-16 top-0 flex justify-between bg-slate-700 z-10">
       <div className="flex align-middle" id="brandingBit">
@@ -16,7 +12,7 @@ export function Navbar(
           &#128366; BKMRK
         </p>
       </div>
-      <SearchField  />
+      <SearchField />
       <CornerMenu rows={rows} />
     </nav>
   );

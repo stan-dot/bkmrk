@@ -71,9 +71,10 @@ export function BookmarksProvider(
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const fetchedTree = await chrome.bookmarks.getTree();
-        dispatch({ type: "SET_TREE", payload: fetchedTree });
-        // Additional logic for path and rows initialization...
+        const fetchedTree: BookmarkNode[] = await chrome.bookmarks.getTree();
+        const trueRoot = await chrome.bookmarks.getChildren(fetchedTree[0]!.id);
+        dispatch({ type: "SET_TREE", payload: trueRoot });
+        dispatch({ type: "SET_ROWS", payload: trueRoot });
         dispatch({ type: "SET_LOADING", payload: false });
       } catch (e: any) {
         dispatch({ type: "SET_ERROR", payload: e });

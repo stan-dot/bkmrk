@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { SiblingBox } from "./SiblingBox";
 import { BookmarkNode } from "../../../lib/typesFacade";
+import { SiblingBox } from "./SiblingBox";
 
 type PathItemProps = {
   handleClick: (index: number, node: BookmarkNode) => void;
@@ -11,10 +11,12 @@ type PathItemProps = {
     node: BookmarkNode,
   ) => void;
   siblings?: BookmarkNode[];
+  openBranch: (node: BookmarkNode) => void;
 };
 
 export function PathItem(
-  { handleClick, index, node, contextMenuHandler, siblings }: PathItemProps,
+  { handleClick, index, node, contextMenuHandler, siblings, openBranch }:
+    PathItemProps,
 ): JSX.Element {
   const [siblingsVisible, setSiblingsVisible] = useState<boolean>(false);
 
@@ -33,14 +35,13 @@ export function PathItem(
         >
           {"/"}
         </button>
-        {
-          /* <SiblingBox
+        <SiblingBox
           siblingsVisible={siblingsVisible}
           node={node}
           closeCallback={() => setSiblingsVisible(false)}
           level={index}
-        /> */
-        }
+          openBranch={openBranch}
+        />
       </div>
       <button onClick={(v) => handleClick(index, node)}>
         {node.title}

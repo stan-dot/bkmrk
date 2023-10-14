@@ -13,7 +13,6 @@
   "dependencies": {
     "@glideapps/glide-data-grid": "^5.3.0",
     "@glideapps/glide-data-grid-cells": "^5.3.0",
-    "fs": "^0.0.1-security",
     "papaparse": "^5.4.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

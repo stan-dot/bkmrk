@@ -1,5 +1,4 @@
 import { BookmarkNode } from "../../../lib/typesFacade";
-import { usePathDispatch } from "../PathContext";
 import { useSiblings } from "../hooks/useSiblings";
 import { SiblingButton } from "./SiblingButton";
 
@@ -8,13 +7,13 @@ type SiblingBoxTypes = {
   node: BookmarkNode;
   closeCallback: () => void;
   level: number;
+  openBranch: (node: BookmarkNode) => void;
 };
 
 export function SiblingBox(
-  { siblingsVisible, node, closeCallback, level }: SiblingBoxTypes,
+  { siblingsVisible, node, closeCallback, level, openBranch }: SiblingBoxTypes,
 ) {
   const siblings = useSiblings(node);
-  const pathDispatch = usePathDispatch();
   return (
     <>
       {siblingsVisible &&
@@ -28,9 +27,9 @@ export function SiblingBox(
                 <SiblingButton
                   s={s}
                   node={node}
-                  pathDispatch={pathDispatch}
                   level={0}
                   closeCallback={closeCallback}
+                  addNodeToBranch={openBranch}
                 />
               );
             })}

@@ -1,24 +1,23 @@
-import React, { useCallback, useState } from "react";
-import { BookmarkNode } from "../../../lib/typesFacade";
-import { useContextMenuDispatch } from "../../context-menu/ContextMenuContext";
-import { usePath, usePathDispatch } from "../PathContext";
-import { PathItem } from "./PathItem";
+import React, { useState } from "react";
 import CRUDBookmarkFacade from "../../../lib/CRUDBookmarkFacade";
+import { BookmarkNode } from "../../../lib/typesFacade";
+import { PathItem } from "./PathItem";
+import { useBookmarks } from "../../../lib/GlobalReducer";
 
 interface PathDisplayProps {
 }
 
 export function PathDisplay(): JSX.Element {
-  const path = usePath();
-  const pathDispatch = usePathDispatch();
-  const initLastIteraction = path.items[path.items.length - 1];
+  const { state, dispatch } = useBookmarks();
+  const path = state.path;
+  const initLastIteraction = path[path.length - 1];
   const [lastInteracted, setLastInteracted] = useState<BookmarkNode>(
     initLastIteraction,
   );
 
   const onPasteHandler = (e: React.ClipboardEvent<HTMLDivElement>) => {
-    if (path && path.items && path.items.length > 0) {
-      const parent = path.items.at(-1);
+    if (path && path.length > 0) {
+      const parent = path.at(-1);
       if (parent) {
         const parentId = parent.id;
         e.preventDefault();
@@ -28,23 +27,13 @@ export function PathDisplay(): JSX.Element {
     }
   };
 
-  const contextMenuDispatch = useContextMenuDispatch();
-
   const contextClickHandler = (
     e: React.MouseEvent<HTMLDivElement>,
     node: BookmarkNode,
   ): void => {
     e.preventDefault();
     e.stopPropagation();
-    contextMenuDispatch({
-      type: "single-bookmark",
-      things: [node],
-      direction: "open",
-      position: [
-        e.pageX,
-        e.pageY,
-      ],
-    });
+    // todo add the new context menu trick
   };
 
   const handleClick = (
@@ -52,36 +41,24 @@ export function PathDisplay(): JSX.Element {
     node: BookmarkNode,
   ) => {
     setLastInteracted(node);
-    if (index !== 0 && index !== path.items.length - 1) {
-      const newPath: BookmarkNode[] = path.items.slice(
-        0,
-        index,
-      );
-      pathDispatch({
-        type: "full",
-        nodes: newPath,
-      });
-
-      // historyDispatch({
-      //   type: "add",
-      //   nodeId: node.id,
-      // });
+    if (index !== 0 && index !== path.length - 1) {
+      const newPath: BookmarkNode[] = path.slice(0, index);
+      dispatch({ type: "SET_PATH", payload: newPath });
     }
   };
 
   const upButtonHandler = () => {
-    const newPath: BookmarkNode[] = path.items.slice(
+    const newPath: BookmarkNode[] = path.slice(
       0,
-      path.items.length - 1,
+      path.length - 1,
     );
-    pathDispatch({
-      type: "full",
-      nodes: newPath,
-    });
-    // historyDispatch({
-    //   type: "add",
-    //   nodeId: newPath[-1].id,
-    // });
+    dispatch({ type: "SET_PATH", payload: newPath });
+  };
+
+  const openBranchOnSibling = (node: BookmarkNode) => {
+    const newPath = [...path];
+    newPath[newPath.length - 1] = node;
+    dispatch({ type: "SET_PATH", payload: newPath });
   };
 
   return (
@@ -95,7 +72,7 @@ export function PathDisplay(): JSX.Element {
       >
         <div id="buttonArea" className="relative bg-slate-600 mr-4 h-12">
           <button
-            disabled={path.items.length < 2}
+            disabled={path.length < 2}
             onClick={upButtonHandler}
             className={"text-l text-slate-50 hover:bg-slate-300  p-2 m-0 hover:border-slate-400"}
           >
@@ -103,16 +80,19 @@ export function PathDisplay(): JSX.Element {
           </button>
         </div>
         <div className="justify-between flex border-2 ">
-          {path.items.map((n, i) => (
-            <PathItem
-              handleClick={handleClick}
-              index={i}
-              node={n}
-              key={n.id}
-              contextMenuHandler={contextClickHandler}
-              siblings={i > 0 ? path.items[i - 1].children : []}
-            />
-          ))}
+          {path.map((n, i) => {
+            return (
+              <PathItem
+                handleClick={handleClick}
+                index={i}
+                node={n}
+                key={n.id}
+                contextMenuHandler={contextClickHandler}
+                openBranch={openBranchOnSibling}
+                siblings={i > 0 ? path[i - 1].children : undefined}
+              />
+            );
+          })}
         </div>
       </div>
     </div>
